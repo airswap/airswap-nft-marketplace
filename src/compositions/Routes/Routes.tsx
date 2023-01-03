@@ -4,6 +4,7 @@ import { createHashRouter, RouterProvider } from 'react-router-dom';
 
 import {
   CollectionPage,
+  ListNftPage,
   NftDetailPage,
   ProfilePage,
   SwapPage,
@@ -15,6 +16,10 @@ const Routes: FC = () => {
     {
       path: '/',
       element: <CollectionPage />,
+    },
+    {
+      path: `/${AppRoutes.listNft}`,
+      element: <ListNftPage />,
     },
     {
       path: `/${AppRoutes.nftDetail}`,

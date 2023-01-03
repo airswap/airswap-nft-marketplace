@@ -1,6 +1,8 @@
 import React, { FC } from 'react';
 
+import { AppRoutes } from '../../routes';
 import IconButton from '../IconButton/IconButton';
+import IconNavLink from '../IconNavLink/IconNavLink';
 
 import './TopBar.scss';
 
@@ -22,9 +24,10 @@ const TopBar: FC<TopBarProps> = ({ className = '' }) => (
       text="Menu button"
       className="top-bar__menu-button"
     />
-    <IconButton
+    <IconNavLink
       icon="plus"
       text="List"
+      to={`/${AppRoutes.listNft}`}
       className="top-bar__list-button"
       iconClassName="top-bar__list-button-icon"
     />

@@ -1,7 +1,9 @@
 import React, { FC } from 'react';
 
+import Page from '../../compositions/Page/Page';
+
 const ProfilePage: FC = () => (
-  <div>profile</div>
+  <Page>profile</Page>
 );
 
 export default ProfilePage;

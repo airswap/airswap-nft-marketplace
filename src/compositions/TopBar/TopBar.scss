@@ -1,6 +1,8 @@
 @import "../../styles/index";
 
-.top-bar {
+$component: top-bar;
+
+.#{$component} {
     display: flex;
     justify-content: space-between;
     align-items: center;
@@ -21,7 +23,7 @@
         left: calc(50% - 1rem);
     }
 
-    &__list-button  {
+    .#{$component}__list-button  {
         border: 1px solid var(--c-light-grey);
         border-radius: .25rem;
         height: 100%;
