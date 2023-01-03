@@ -1,7 +1,7 @@
 import { Web3Provider } from '@ethersproject/providers';
 import { createSlice, PayloadAction } from '@reduxjs/toolkit';
 
-interface Web3State {
+export interface Web3State {
   isActive: boolean;
   account?: string;
   chainId?: number;
@@ -13,7 +13,7 @@ const initialState: Web3State = {
   isActive: false,
 };
 
-const web3Slice = createSlice({
+export const web3Slice = createSlice({
   name: 'web3',
   initialState,
   reducers: {
