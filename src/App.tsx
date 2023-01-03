@@ -1,4 +1,4 @@
-import React, { FC } from 'react';
+import React from 'react';
 
 import { Web3ReactProvider } from '@web3-react/core';
 
@@ -6,7 +6,7 @@ import Routes from './compositions/Routes/Routes';
 import { getLibrary } from './helpers/web3';
 import useMapWeb3ReactToStore from './hooks/useMapWeb3ReactToStore';
 
-const ConnectedApp : FC = () => {
+const ConnectedApp = () => {
   useMapWeb3ReactToStore();
 
   return (
