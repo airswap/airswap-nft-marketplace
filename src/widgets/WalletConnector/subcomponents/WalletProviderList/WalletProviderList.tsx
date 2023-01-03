@@ -7,15 +7,17 @@ import './WalletProviderList.scss';
 
 interface WalletProviderListProps {
   walletProviders: WalletProvider[];
+  onWalletProviderButtonClick: (provider: WalletProvider) => void;
   className?: string;
 }
 
-const WalletProviderList: FC<WalletProviderListProps> = ({ walletProviders, className = '' }) => (
+const WalletProviderList: FC<WalletProviderListProps> = ({ walletProviders, onWalletProviderButtonClick, className = '' }) => (
   <div className={`wallet-provider-list ${className}`}>
     {walletProviders.map((provider) => (
       <WalletProviderButton
         key={provider.name}
         walletProvider={provider}
+        onClick={onWalletProviderButtonClick}
         className="wallet-provider-list__button"
       />
     ))}

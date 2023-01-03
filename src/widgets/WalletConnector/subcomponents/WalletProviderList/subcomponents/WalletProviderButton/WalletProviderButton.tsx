@@ -7,20 +7,20 @@ import './WalletProviderButton.scss';
 
 interface WalletProviderButtonProps {
   walletProvider: WalletProvider;
+  onClick: (provider: WalletProvider) => void;
   className?: string;
 }
 
-const WalletProviderButton: FC<WalletProviderButtonProps> = ({ walletProvider, className = '' }) => {
-  const handleClick = (event: WalletProvider) => {
-    console.log(event.getConnector());
-    event.getConnector();
+const WalletProviderButton: FC<WalletProviderButtonProps> = ({ walletProvider, onClick, className = '' }) => {
+  const handleClick = () => {
+    onClick(walletProvider);
   };
 
   return (
     <Button
       text={walletProvider.name}
       className={`wallet-provider-button ${className}`}
-      onClick={() => handleClick(walletProvider)}
+      onClick={handleClick}
     >
       <img
         alt={`${walletProvider.name} logo`}
