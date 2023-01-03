@@ -1,7 +1,11 @@
 import { Action, configureStore, ThunkAction } from '@reduxjs/toolkit';
 
+import web3Reducer from './stores/web3/web3Slice';
+
 export const store = configureStore({
-  reducer: {},
+  reducer: {
+    web3: web3Reducer,
+  },
 });
 
 export type AppDispatch = typeof store.dispatch;

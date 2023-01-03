@@ -79,6 +79,7 @@ module.exports = {
     'jsx-a11y/label-has-associated-control': 'off',
     'jsx-a11y/label-has-for': 'off',
     'jsx-a11y/media-has-caption': 'off',
+    'linebreak-style': ['error', process.platform === 'win32' ? 'windows' : 'unix'],
     'max-len': [
       'warn',
       {
