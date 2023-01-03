@@ -1,15 +1,17 @@
 import { createSlice } from '@reduxjs/toolkit';
 
-import config from '../../../config';
-
-interface ConfigState {
-  appToken?: string;
-  nfts: string[];
+export interface ConfigState {
+  currencyToken: string;
+  collectionToken: string;
+  collectionName: string;
+  collectionImage: string;
 }
 
 const initialState: ConfigState = {
-  appToken: config.appToken,
-  nfts: config.nfts,
+  currencyToken: process.env.REACT_APP_CURRENCY_TOKEN || '',
+  collectionToken: process.env.REACT_APP_COLLECTION_TOKEN || '',
+  collectionName: process.env.REACT_APP_COLLECTION_NAME || '',
+  collectionImage: process.env.REACT_APP_COLLECTION_IMAGE || '',
 };
 
 const configSlice = createSlice({
