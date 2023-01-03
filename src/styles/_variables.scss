@@ -1,6 +1,8 @@
 $c-primary: #2B71FF;
 $c-white: #FFF;
 $c-black: #000;
+$c-kuroi-black: #101217;
+$c-river-styx: #1A1E25;
 
 @mixin light-mode-variables {
     --c-primary:        $c-primary;
@@ -9,18 +11,23 @@ $c-black: #000;
 }
 
 :root {
-    --c-primary: $c-primary;
-    --c-white: $c-white;
-    --c-white-always: $c-white;
-    --c-black: $c-black;
-    --c-black-always: $c-black;
+    --c-primary: #{$c-primary};
+    --c-white: #{$c-white};
+    --c-white-always: #{$c-white};
+    --c-black: #{$c-black};
+    --c-black-always: #{$c-black};
+    --c-dark: #{$c-kuroi-black};
+    --c-dark-border: #{$c-river-styx};
 
     --f-primary: "loos-normal", sans-serif;
     --f-mono: "DM Mono", monospace;
 
-    @media (prefers-color-scheme: light) {
-        @include light-mode-variables;
-    }
+    --page-padding: 1.5rem;
+
+    // Disable this for now since the default theme is dark
+    // @media (prefers-color-scheme: light) {
+    //     @include light-mode-variables;
+    // }
 
     &[data-theme="light"] {
         @include light-mode-variables;

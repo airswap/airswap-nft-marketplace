@@ -1,4 +1,4 @@
-import { FC, ReactElement, Ref } from 'react';
+import { FC, ReactElement } from 'react';
 
 import './Button.scss';
 
@@ -14,10 +14,9 @@ const Button: FC<ButtonProps> = ({
   className = '',
   children,
   ...buttonProps
-}, ref: Ref<HTMLButtonElement>): ReactElement => (
+}): ReactElement => (
   <button
     {...buttonProps}
-    ref={ref}
     type={type} // eslint-disable-line react/button-has-type
     className={`button ${className}`}
   >

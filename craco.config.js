@@ -17,8 +17,14 @@ module.exports = {
   },
   style: {
     postcss: {
-      plugins: [require('autoprefixer')],
+      plugins: [
+        require('autoprefixer'),
+        require('postcss-import'),
+      ],
     },
+    modules: {
+      localIdentName: '[path][name]__[local]--[hash:base64:5]'
+    }
   },
   plugins: [
     {
@@ -37,7 +43,9 @@ module.exports = {
     {
       plugin: sassResourcesLoader,
       options: {
-        resources: './src/styles/global.scss',
+        resources: [
+          './src/styles/global.scss',
+        ],
       },
     },
   ],

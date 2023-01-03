@@ -5,22 +5,25 @@
   </component>
   <component name="ChangeListManager">
     <list default="true" id="1658ab55-5a41-42e0-8e8d-85e7a20e6209" name="Changes" comment="">
-      <change afterPath="$PROJECT_DIR$/src/helpers/web3/index.ts" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/redux/hooks.ts" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/redux/store.ts" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/widgets/WalletConnector/WalletConnector.tsx" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/widgets/WalletConnector/subcomponents/WalletProviderList/WalletProviderList.tsx" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/widgets/WalletConnector/subcomponents/WalletProviderList/subcomponents/WalletProviderButton/WalletProviderButton.scss" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/widgets/WalletConnector/subcomponents/WalletProviderList/subcomponents/WalletProviderButton/WalletProviderButton.tsx" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/compositions/Page/Page.scss" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/widgets/WalletConnector/subcomponents/WalletProviderList/WalletProviderList.scss" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/craco.config.js" beforeDir="false" afterPath="$PROJECT_DIR$/craco.config.js" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/package.json" beforeDir="false" afterPath="$PROJECT_DIR$/package.json" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/App.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/src/App.tsx" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/components/Button/Button.scss" beforeDir="false" afterPath="$PROJECT_DIR$/src/components/Button/Button.scss" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/components/Button/Button.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/src/components/Button/Button.tsx" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/compositions/Page/Page.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/src/compositions/Page/Page.tsx" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/constants/supportedWalletProviders.ts" beforeDir="false" afterPath="$PROJECT_DIR$/src/constants/supportedWalletProviders.ts" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/images/metamask.svg" beforeDir="false" afterPath="$PROJECT_DIR$/public/logos/metamask.svg" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/images/walletconnect.svg" beforeDir="false" afterPath="$PROJECT_DIR$/public/logos/walletconnect.svg" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/index.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/src/index.tsx" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/styles/_variables.scss" beforeDir="false" afterPath="$PROJECT_DIR$/src/styles/_variables.scss" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/styles/extends/_button.scss" beforeDir="false" afterPath="$PROJECT_DIR$/src/styles/extends/button.scss" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/styles/extends/index.scss" beforeDir="false" afterPath="$PROJECT_DIR$/src/styles/extends/index.scss" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/styles/global.scss" beforeDir="false" afterPath="$PROJECT_DIR$/src/styles/global.scss" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/styles/index.scss" beforeDir="false" afterPath="$PROJECT_DIR$/src/styles/index.scss" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/widgets/WalletConnector/subcomponents/WalletProviderList/WalletProviderList.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/src/widgets/WalletConnector/subcomponents/WalletProviderList/WalletProviderList.tsx" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/widgets/WalletConnector/subcomponents/WalletProviderList/subcomponents/WalletProviderButton/WalletProviderButton.scss" beforeDir="false" afterPath="$PROJECT_DIR$/src/widgets/WalletConnector/subcomponents/WalletProviderList/subcomponents/WalletProviderButton/WalletProviderButton.scss" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/widgets/WalletConnector/subcomponents/WalletProviderList/subcomponents/WalletProviderButton/WalletProviderButton.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/src/widgets/WalletConnector/subcomponents/WalletProviderList/subcomponents/WalletProviderButton/WalletProviderButton.tsx" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/tsconfig.json" beforeDir="false" afterPath="$PROJECT_DIR$/tsconfig.json" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/yarn.lock" beforeDir="false" afterPath="$PROJECT_DIR$/yarn.lock" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
@@ -88,7 +91,7 @@
       <workItem from="1671796198450" duration="8018000" />
       <workItem from="1671806393680" duration="5941000" />
       <workItem from="1672224924058" duration="1050000" />
-      <workItem from="1672262326074" duration="6520000" />
+      <workItem from="1672262326074" duration="15468000" />
     </task>
     <servers />
   </component>
@@ -117,6 +120,12 @@
         <line-breakpoint enabled="true" type="javascript">
           <url>file://$PROJECT_DIR$/src/compositions/Routes/Routes.tsx</url>
           <option name="timeStamp" value="2" />
+        </line-breakpoint>
+        <line-breakpoint enabled="true" type="javascript">
+          <url>file://$PROJECT_DIR$/src/constants/supportedWalletProviders.ts</url>
+          <line>10</line>
+          <properties lambdaOrdinal="-1" />
+          <option name="timeStamp" value="3" />
         </line-breakpoint>
       </breakpoints>
     </breakpoint-manager>
