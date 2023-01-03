@@ -3,9 +3,6 @@ import { AbstractConnector } from '@web3-react/abstract-connector';
 import { InjectedConnector } from '@web3-react/injected-connector';
 import { WalletConnectConnector } from '@web3-react/walletconnect-connector';
 
-import metamaskLogo from '../images/metamask.svg';
-import walletConnectLogo from '../images/walletconnect.svg';
-
 declare let window: any;
 
 export type WalletProvider = {
@@ -21,7 +18,7 @@ const cachedConnectors: Record<string, AbstractConnector> = {};
 const SUPPORTED_WALLET_PROVIDERS: WalletProvider[] = [
   {
     name: 'MetaMask',
-    logo: metamaskLogo,
+    logo: 'logos/metamask.svg',
     isInstalled: typeof window.ethereum !== 'undefined',
     url: 'https://metamask.io/',
     getConnector: () => {
@@ -35,7 +32,7 @@ const SUPPORTED_WALLET_PROVIDERS: WalletProvider[] = [
   },
   {
     name: 'WalletConnect',
-    logo: walletConnectLogo,
+    logo: 'logos/walletconnect.svg',
     isInstalled: true,
     url: 'https://walletconnect.com/',
     getConnector: () => {

@@ -5,15 +5,22 @@
   </component>
   <component name="ChangeListManager">
     <list default="true" id="1658ab55-5a41-42e0-8e8d-85e7a20e6209" name="Changes" comment="">
-      <change afterPath="$PROJECT_DIR$/src/components/Button/Button.scss" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/components/Button/Button.tsx" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/constants/supportedWalletProviders.ts" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/images/metamask.svg" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/images/walletconnect.svg" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/helpers/web3/index.ts" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/redux/hooks.ts" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/redux/store.ts" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/widgets/WalletConnector/WalletConnector.tsx" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/widgets/WalletConnector/subcomponents/WalletProviderList/WalletProviderList.tsx" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/widgets/WalletConnector/subcomponents/WalletProviderList/subcomponents/WalletProviderButton/WalletProviderButton.scss" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/widgets/WalletConnector/subcomponents/WalletProviderList/subcomponents/WalletProviderButton/WalletProviderButton.tsx" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/craco.config.js" beforeDir="false" afterPath="$PROJECT_DIR$/craco.config.js" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/package.json" beforeDir="false" afterPath="$PROJECT_DIR$/package.json" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/styles/_variables.scss" beforeDir="false" afterPath="$PROJECT_DIR$/src/styles/_variables.scss" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/styles/extends/_button.scss" beforeDir="false" afterPath="$PROJECT_DIR$/src/styles/extends/_button.scss" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/App.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/src/App.tsx" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/compositions/Page/Page.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/src/compositions/Page/Page.tsx" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/constants/supportedWalletProviders.ts" beforeDir="false" afterPath="$PROJECT_DIR$/src/constants/supportedWalletProviders.ts" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/images/metamask.svg" beforeDir="false" afterPath="$PROJECT_DIR$/public/logos/metamask.svg" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/images/walletconnect.svg" beforeDir="false" afterPath="$PROJECT_DIR$/public/logos/walletconnect.svg" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/index.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/src/index.tsx" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/yarn.lock" beforeDir="false" afterPath="$PROJECT_DIR$/yarn.lock" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
@@ -43,26 +50,29 @@
     "RunOnceActivity.OpenProjectViewOnStart": "true",
     "RunOnceActivity.ShowReadmeOnStart": "true",
     "WebServerToolWindowFactoryState": "false",
-    "last_opened_file_path": "/Users/pieter/Sites/personal/airswap/airswap-marketplace/src/images",
+    "last_opened_file_path": "/Users/pieter/Sites/personal/airswap/airswap-marketplace/src/redux",
     "node.js.detected.package.eslint": "true",
     "node.js.detected.package.tslint": "true",
     "node.js.selected.package.eslint": "(autodetect)",
     "node.js.selected.package.tslint": "(autodetect)",
     "nodejs_package_manager_path": "yarn",
     "run.code.analysis.last.selected.profile": "pProject Default",
+    "settings.editor.selected.configurable": "editing.templates",
     "ts.external.directory.path": "/Users/pieter/Sites/personal/airswap/airswap-marketplace/node_modules/typescript/lib",
     "vue.rearranger.settings.migration": "true"
   }
 }]]></component>
   <component name="RecentsManager">
     <key name="CopyFile.RECENT_KEYS">
+      <recent name="$PROJECT_DIR$/src/redux" />
       <recent name="$PROJECT_DIR$/src/images" />
       <recent name="$PROJECT_DIR$/src/constants" />
       <recent name="$PROJECT_DIR$" />
       <recent name="$PROJECT_DIR$/public" />
-      <recent name="$PROJECT_DIR$/src" />
     </key>
     <key name="MoveFile.RECENT_KEYS">
+      <recent name="$PROJECT_DIR$/public/logos" />
+      <recent name="$PROJECT_DIR$/src/widgets/WalletConnector/subcomponents" />
       <recent name="$PROJECT_DIR$/src/styles" />
     </key>
   </component>
@@ -76,7 +86,9 @@
       <updated>1671795882638</updated>
       <workItem from="1671795883902" duration="313000" />
       <workItem from="1671796198450" duration="8018000" />
-      <workItem from="1671806393680" duration="3363000" />
+      <workItem from="1671806393680" duration="5941000" />
+      <workItem from="1672224924058" duration="1050000" />
+      <workItem from="1672262326074" duration="6520000" />
     </task>
     <servers />
   </component>
@@ -108,5 +120,9 @@
         </line-breakpoint>
       </breakpoints>
     </breakpoint-manager>
+  </component>
+  <component name="XSLT-Support.FileAssociations.UIState">
+    <expand />
+    <select />
   </component>
 </project>
