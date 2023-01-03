@@ -1,17 +1,23 @@
 import { store } from '../../store';
-import { ConfigState } from '../config/configSlice';
+import { Web3State } from '../web3/web3Slice';
+import { scrapeTokens } from './metadataApi';
 
 export const configureMetadataSubscriber = () => {
-  let currencyToken: ConfigState['currencyToken'];
-  // let collectionToken: ConfigState['currencyToken'];
+  let account: Web3State['account'];
+  let chainId: Web3State['chainId'];
 
   store.subscribe(() => {
-    const { config } = store.getState();
-    if (config.currencyToken !== currencyToken) {
-      currencyToken = config.currencyToken;
+    const { config, web3 } = store.getState();
 
-      // Fetch metadata here
-      // store.dispatch(fetchMetadata());
+    if ((web3.account !== account || web3.chainId !== chainId) && web3.library && web3.chainId) {
+      account = web3.account;
+      chainId = web3.chainId;
+
+      store.dispatch(scrapeTokens({
+        tokens: [config.currencyToken, config.collectionToken],
+        provider: web3.library,
+        chainId: web3.chainId,
+      }));
     }
   });
 };
