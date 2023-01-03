@@ -1,6 +1,8 @@
 @import "../../styles/index";
 
-.icon-button {
+$component: icon-button;
+
+.#{$component} {
     display: flex;
     justify-content: center;
     align-items: center;
@@ -11,8 +13,24 @@
     border: 1px solid transparent;
     border-radius: 2px;
 
-    &__icon {
+    &--icon-align-right {
+        flex-direction: row-reverse;
+
+        .#{$component}__icon {
+            margin-right: 0;
+            margin-left: .5rem;
+        }
+
+    }
+
+    &--hidden-label &__icon {
+        margin-right: 0;
+        margin-left: 0;
         height: 100%;
+    }
+
+    &__icon {
+        margin-right: .5rem;
         aspect-ratio: 1;
     }
 

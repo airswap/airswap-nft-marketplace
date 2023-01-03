@@ -1,6 +1,5 @@
 import React, { FC } from 'react';
 
-import Button from '../../components/Button/Button';
 import IconButton from '../IconButton/IconButton';
 
 import './TopBar.scss';
@@ -23,7 +22,12 @@ const TopBar: FC<TopBarProps> = ({ className = '' }) => (
       text="Menu button"
       className="top-bar__menu-button"
     />
-    <Button text="list" />
+    <IconButton
+      icon="plus"
+      text="List"
+      className="top-bar__list-button"
+      iconClassName="top-bar__list-button-icon"
+    />
   </div>
 );
 

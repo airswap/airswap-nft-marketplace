@@ -10,6 +10,7 @@ import './IconButton.scss';
 interface IconButtonProps extends ButtonProps {
   hideLabel?: boolean;
   icon: keyof IconSet;
+  iconAlign?: 'left' | 'right';
   iconClassName?: string;
   className?: string;
 }
@@ -17,13 +18,15 @@ interface IconButtonProps extends ButtonProps {
 const IconButton: FC<IconButtonProps> = ({
   hideLabel,
   icon,
-  iconClassName,
+  iconAlign = 'left',
   text,
+  iconClassName,
   className = '',
   ...restProps
 }) => {
   const iconButtonClassName = classNames('icon-button', {
     'icon-button--hidden-label': hideLabel,
+    [`icon-button--icon-align-${iconAlign}`]: iconAlign,
   }, className);
 
   return (
