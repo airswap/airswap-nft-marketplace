@@ -12,25 +12,14 @@ While we use GitHub for issue tracking and project management, development is ge
 - [AirSwap protocols](https://github.com/airswap/airswap-protocols)
 - [ethers](https://docs.ethers.io/)
 - [Redux](https://redux-toolkit.js.org/)
-- [Styled components](https://www.npmjs.com/package/styled-components)
 
 ## Code Style
 
-When multiple people are working on the same body of code, it is important that everyone conforms to a style. We use a linter for code style, which you can use with a simple command.
+When multiple people are working on the same body of code, it is important that everyone conforms to a style. We use eslint for formatting our code.
 
-```
-$ yarn lint
-```
+## BEM
 
-For code formatting we use [prettier](https://www.npmjs.com/package/prettier). This will be run after you commit your code but can also be run manually. 
-
-```
-$ yarn prettier
-```
-
-## Styled components
-
-We use styled-components for styling. When styling a component put your scss in a separate *.styles.tsx file in the `src/component` folder. We also have a `src/styled-components` folder purely for components only meant for styling.
+We use BEM for styling. When styling a component put your scss in a separate .scss file. Please follow the rules lined out by [sparkbox](https://sparkbox.com/foundry/bem_by_example). When your component gets too crowded try to split your code in subcomponents.
 
 We define dimensions using `rem` based on 16px, so use units like `0.125rem`, `0.25rem`, etc.
 
@@ -53,6 +42,19 @@ interface CheckboxProps {
 For naming conventions please refer to [this article of David Linau](https://dlinau.wordpress.com/2016/02/22/how-to-name-props-for-react-components/).
 The order of properties are as following: first we have modifiers (ie: `isActive`, `hideLabel`), then other data properties (ie: `items`, `label`), then event handlers (ie: `onClick`, `onChange`) and finally the `className?` which every components needs to have so it can be styled by it's parent.
 
+### Component types
+
+We divide our components very similar to [Atomic design from Brad Frost](https://bradfrost.com/blog/post/atomic-web-design/). We use 4 types of components:
+
+- Component
+- Composition
+- Widget
+- Page
+
+The `component` is the smallest. Then when a component has one or more components it's a `composition`. A `widget` is where all components are gathered and connected to the store and actions dispatched. A `widget` is standalone; it should always work without a parent giving it props.
+
+A `page` is connected to the routing of the app and should direct the user to one or more widgets.
+
 ## Redux
 
 We use [redux toolkit](https://redux-toolkit.js.org) for store management. Use [createAsyncThunk](https://redux-toolkit.js.org/api/createAsyncThunk) for all asynchronous actions. Errors should be transformed to `AppError`, processed in the action and saved in the store. An example:
@@ -69,6 +71,8 @@ const UsersComponent = () => {
   // render UI here
 }
 ```
+
+// TODO: some more explanation about error handling
 
 ## Translations (POEditor)
 

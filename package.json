@@ -15,6 +15,7 @@
     "classnames": "^2.3.2",
     "craco-plugin-env": "^1.0.5",
     "craco-sass-resources-loader": "^1.1.0",
+    "eth-rpc-errors": "^4.0.3",
     "ethers": "^5.7.2",
     "react": "^17.0.2",
     "react-dom": "^17.0.2",
