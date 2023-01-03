@@ -4,6 +4,7 @@ import { Web3Provider } from '@ethersproject/providers';
 import { useWeb3React } from '@web3-react/core';
 
 import WalletConnector from '../../widgets/WalletConnector/WalletConnector';
+import TopBar from '../TopBar/TopBar';
 
 import './Page.scss';
 
@@ -16,9 +17,11 @@ const Page: FC<PageProps> = ({ children }) => {
 
   return (
     <div className="page">
-      {/* top menu here */}
-      {!active && <WalletConnector />}
-      {children}
+      <TopBar />
+      <div className="page__content">
+        {!active && <WalletConnector />}
+        {children}
+      </div>
     </div>
   );
 };

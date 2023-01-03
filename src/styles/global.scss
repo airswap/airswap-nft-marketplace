@@ -1,5 +1,8 @@
 @import "index";
+
+@import "variables";
 @import "reset";
+@import "typography";
 
 body {
   margin: 0;
@@ -15,10 +18,6 @@ body {
 code {
   font-family: source-code-pro, Menlo, Monaco, Consolas, 'Courier New',
     monospace;
-}
-
-p, h1, h2, h3, h4, h5, h6 {
-  color: var(--c-white);
 }
 
 input[inputmode="decimal"] {

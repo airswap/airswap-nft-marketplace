@@ -35,6 +35,7 @@ We use styled-components for styling. When styling a component put your scss in 
 We define dimensions using `rem` based on 16px, so use units like `0.125rem`, `0.25rem`, etc.
 
 The order of css properties should be based on matter of importance it has on the box-model. For instance these properties are sorted by their importance: `display`, `position`, `margin`, `border`, `width`, `padding`, `line-height`, `font-size`, `z-index`, `background`. This could be a little arbitrary so we're not very strict about this. 
+
 ## React components
 
 When making a new component please take a look at the current components to get an idea what style we are using. Here's an example of the interface of a simple component:
@@ -67,26 +68,6 @@ const UsersComponent = () => {
 
   // render UI here
 }
-```
-
-```typescript
-const fetchUserById = createAsyncThunk (
-  'users/fetchByIdStatus',
-  async (userId: string, { dispatch }) => {
-    const user = await userAPI.fetchById(userId);
-
-    if (isAppError(user)) {
-      dispatch(setStatus("failed"));
-      dispatch(setError(user));
-      showToast('failed fetching user');
-      return;
-    }
-
-    dispatch(setStatus("success"));
-    dispatch(setUser(user))
-    showToast('success', `Fetched ${user.name}`)
-  }
-);
 ```
 
 ## Translations (POEditor)

@@ -1,0 +1,27 @@
+@import "../../styles/index";
+
+.icon-button {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    position: relative;
+    padding: .25rem;
+    font-weight: 600;
+    box-sizing: border-box;
+    border: 1px solid transparent;
+    border-radius: 2px;
+
+    &__icon {
+        height: 100%;
+        aspect-ratio: 1;
+    }
+
+    &:focus {
+        outline: 0;
+        border-color: var(--c-grey);
+    }
+
+    &:active {
+        border-color: var(--c-primary);
+    }
+}

@@ -1,0 +1,10 @@
+@import "../../styles/index";
+
+.collection-widget {
+
+    &__proceed-button {
+        @extend %button--is-primary;
+
+        width: 100%;
+    }
+}

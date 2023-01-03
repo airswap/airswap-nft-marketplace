@@ -2,7 +2,8 @@ import React from 'react';
 
 import { Web3ReactProvider } from '@web3-react/core';
 
-import { Page, Routes } from './compositions';
+import Page from './compositions/Page/Page';
+import Routes from './compositions/Routes/Routes';
 import { getLibrary } from './helpers/web3';
 
 
