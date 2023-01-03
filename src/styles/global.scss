@@ -1,0 +1,24 @@
+@import "index";
+
+body {
+  margin: 0;
+  padding: 0;
+  overflow-x: hidden;
+  font-family: var(--f-primary);
+  color: var(--c-white);
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+}
+
+code {
+  font-family: source-code-pro, Menlo, Monaco, Consolas, 'Courier New',
+    monospace;
+}
+
+p, h1, h2, h3, h4, h5, h6 {
+  color: var(--c-white);
+}
+
+input[inputmode="decimal"] {
+  font-family: var(--f-mono);
+}
