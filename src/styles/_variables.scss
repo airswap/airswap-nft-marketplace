@@ -1,7 +1,28 @@
+$c-primary: #2B71FF;
+$c-white: #FFF;
+$c-black: #000;
+
+@mixin light-mode-variables {
+    --c-primary:        $c-primary;
+    --c-white:          $c-black;
+    --c-black:          $c-white;
+}
+
 :root {
-    --c-primary: #2B71FF;
-    --c-white: #FFF;
+    --c-primary: $c-primary;
+    --c-white: $c-white;
+    --c-white-always: $c-white;
+    --c-black: $c-black;
+    --c-black-always: $c-black;
 
     --f-primary: "loos-normal", sans-serif;
-    --f-mono: "DM Mono", monospace'
+    --f-mono: "DM Mono", monospace;
+
+    @media (prefers-color-scheme: light) {
+        @include light-mode-variables;
+    }
+
+    &[data-theme="light"] {
+        @include light-mode-variables;
+    }
 }
