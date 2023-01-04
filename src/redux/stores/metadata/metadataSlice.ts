@@ -32,13 +32,21 @@ const metadataSlice = createSlice({
     builder.addCase(scrapeTokens.fulfilled, (state, action) => {
       const tokens = action.payload.reduce((total, token) => ({
         ...total,
-        [token.address]: token,
+        ...(token ? { [token.address]: token } : {}),
       }), {});
 
       return {
         ...state,
         isLoading: false,
         tokens,
+      };
+    });
+
+    builder.addCase(scrapeTokens.rejected, (state, action) => {
+      console.error(action.error);
+
+      return {
+        ...state,
       };
     });
   },
