@@ -1,3 +1,4 @@
+import { getLibrary } from '../../../helpers/ethers';
 import { store } from '../../store';
 import { scrapeTokens } from './metadataApi';
 
@@ -7,12 +8,14 @@ export const configureMetadataSubscriber = () => {
   store.subscribe(() => {
     const { config, web3 } = store.getState();
 
-    if (!initialized && web3.library && config.currencyToken && config.collectionToken) {
+    if (!initialized && web3.chainId) {
       initialized = true;
+
+      const library = getLibrary(web3.chainId);
 
       store.dispatch(scrapeTokens({
         tokens: [config.currencyToken, config.collectionToken],
-        library: web3.library,
+        library,
         chainId: web3.chainId,
       }));
     }

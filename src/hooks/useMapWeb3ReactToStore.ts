@@ -22,7 +22,6 @@ const useMapWeb3ReactToStore = (): void => {
       isActive,
       account: account || undefined,
       chainId,
-      library,
     }));
   }, [isActive, account, chainId, library]);
 

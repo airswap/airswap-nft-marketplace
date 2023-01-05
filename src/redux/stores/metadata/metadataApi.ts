@@ -2,7 +2,7 @@ import { TokenInfo } from '@airswap/typescript';
 import { createAsyncThunk } from '@reduxjs/toolkit';
 import { ethers } from 'ethers';
 
-import scrapeToken from '../../../helpers/scrapeToken';
+import { scrapeToken } from '../../../helpers/airswap';
 import { wait } from '../../../helpers/tools';
 
 interface ScrapeTokensParams {
