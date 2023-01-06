@@ -2,7 +2,7 @@ import { FC } from 'react';
 
 import IconButton from '../../compositions/IconButton/IconButton';
 
-import './WallelInfo.scss';
+import './WalletInfo.scss';
 
 
 interface WalletInfoProps {
@@ -11,7 +11,7 @@ interface WalletInfoProps {
 }
 
 const WallelInfo: FC<WalletInfoProps> = ({ mode, className = '' }) => (
-  <div className={`wallet-info ${mode === 'BANNER' ? 'wallet-info--banner' : 'wallet-info--menu'} ${className}`}>
+  <div className={`wallet-info ${mode === 'BANNER' ? 'wallet-info__banner' : 'wallet-info__menu'} ${className}`}>
     <img
       src="/wallet-connexion.png"
       width={40}

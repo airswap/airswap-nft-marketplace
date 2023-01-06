@@ -2,7 +2,7 @@ import {
   FC, useEffect, useRef, useState,
 } from 'react';
 
-import WallelInfo from '../../../components/WallelInfo/WallelInfo';
+import WallelInfo from '../../../components/WalletInfo/WalletInfo';
 
 import './MobileMenu.scss';
 
