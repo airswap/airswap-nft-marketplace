@@ -9,7 +9,8 @@ $component: top-bar;
     width: 100%;
     height: 3rem;
     padding: 0.5rem;
-    background: var(--c-grey);
+    position: relative;
+    z-index: 1;
 
     &__menu-button,
     &__airswap-button {
@@ -21,6 +22,19 @@ $component: top-bar;
     &__menu-button {
         position: absolute;
         left: calc(50% - 1rem);
+    }
+
+    &__close-icon {
+        width: .875rem;
+    }
+
+    &__mobile {
+        background: transparent;
+        animation: mobile-in ease-in-out 0.5s forwards;
+    }
+    &__desktop {
+        background: var(--c-grey);
+        animation: mobile-out ease-in-out 0.5s forwards;
     }
 
     .#{$component}__list-button  {
@@ -37,5 +51,24 @@ $component: top-bar;
     &__list-button-icon {
         width: 0.75rem;
         height: 0.75rem;
+    }
+}
+
+@keyframes mobile-in {
+    from {
+        background: var(--c-grey);
+    }
+    to {
+        background: transparent;
+    }
+}
+
+// have to find a way to activate this keyframes on click of the close icons
+@keyframes mobile-out {
+    from {
+        background: transparent;
+    }
+    to {
+        background: var(--c-grey);
     }
 }

@@ -30,7 +30,7 @@ const MobileMenu: FC<MobileMenuProp> = ({ displayMenu, className = '' }) => {
   }, [displayMenu]);
   useEffect(() => () => clearTimeout(timeoutRef.current), []);
   const template = !hide ? (
-    <div className={`container ${!show ? 'fly-out' : ''} ${className}`}>
+    <div className={`container ${!show ? 'container--fly-out' : ''} ${className}`}>
       <WallelInfo mode="MENU" />
       <div>My NFTs</div>
       <div>My Activity</div>

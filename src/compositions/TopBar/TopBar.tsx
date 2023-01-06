@@ -16,7 +16,7 @@ const TopBar: FC<TopBarProps> = ({ className = '' }) => {
 
   return (
     <>
-      <div className={`top-bar ${className}`}>
+      <div className={`top-bar ${className} ${displayMenu ? 'top-bar__mobile' : null}`}>
         <IconButton
           hideLabel
           icon="airswap"
@@ -25,10 +25,11 @@ const TopBar: FC<TopBarProps> = ({ className = '' }) => {
         />
         <IconButton
           hideLabel
-          icon="menu"
+          icon={!displayMenu ? 'menu' : 'close'}
           text="Menu button"
           onClick={() => setDisplayMenu(!displayMenu)}
           className="top-bar__menu-button"
+          iconClassName={displayMenu ? 'top-bar__close-icon' : ''}
         />
         <IconNavLink
           icon="plus"

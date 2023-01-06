@@ -8,32 +8,32 @@
     flex-direction: column;
     padding: 1.5rem;
     background-color: var(--c-black);
-    animation: fly-in-right ease-in-out 0.5s forwards;
+    animation: fly-in-top ease-in-out 0.5s forwards;
     font-weight: var(--fw-700);
+    
+    &--fly-out {
+        animation: fly-out-top ease-in-out 0.5s forwards;
+    }
     div {
         padding-top: 2.5rem;
         padding-left: 1rem;
     }
 }
 
-.fly-out {
-    animation: fly-out-right ease-in-out 0.5s forwards;
-}
-
-@keyframes fly-in-right {
+@keyframes fly-in-top {
     from {
-        transform: translateX(100vw);
+        transform: translateY(-100vh);
     }
     to {
-        transform: translateX(0);
+        transform: translateY(0);
     }
 }
 
-@keyframes fly-out-right {
+@keyframes fly-out-top {
     from {
-        transform: translateX(0);
+        transform: translateY(0);
     }
     to {
-        transform: translateX(100vw);
+        transform: translateY(-100vh);
     }
 }
