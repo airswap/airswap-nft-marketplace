@@ -2,11 +2,11 @@ import { createSlice, PayloadAction } from '@reduxjs/toolkit';
 
 import { scrapeTokens } from './metadataApi';
 
-interface MetadataState {
+export interface MetadataState {
   isLoading: boolean;
   tokens: {
     [address: string]: any;
-  }
+  },
 }
 
 const initialState: MetadataState = {
