@@ -1,0 +1,12 @@
+@import "variables";
+
+p, h1, h2, h3, h4, h5, h6 {
+    color: var(--c-white);
+}
+
+h1 {
+    line-height: 1.375;
+    font-size: 1.125rem;
+    font-weight: var(--fw-700);
+    color: var(--c-white);
+}

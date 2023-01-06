@@ -1,0 +1,51 @@
+@import "flex";
+
+%button {
+    @extend %flex-align-center;
+
+    margin: 0;
+    padding: .25rem;
+    font: inherit;
+    font-size: 1rem;
+    font-weight: 500;
+    line-height: 1;
+    color: var(--c-primary);
+    cursor: pointer;
+    border: none;
+    background: none;
+
+    &:hover,
+    &:focus {
+        outline: none;
+    }
+
+    &:disabled {
+        color: var(--c-disabled-grey);
+        cursor: not-allowed;
+    }
+}
+
+%button--is-primary {
+    @extend %button;
+
+    border-radius: 4px;
+    height: 3rem;
+    padding: .75rem;
+    font-weight: var(--fw-700);
+    font-size: .9375rem;
+    text-transform: uppercase;
+    background: var(--c-primary);
+    color: var(--c-white);
+}
+
+%icon-button {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    position: relative;
+    padding: .25rem;
+    font-weight: 600;
+    box-sizing: border-box;
+    border: 1px solid transparent;
+    border-radius: 2px;
+}

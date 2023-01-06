@@ -1,0 +1,10 @@
+@import "../../styles/index";
+
+.page {
+    margin: 0 auto;
+    max-width: 30rem;
+
+    &__content {
+        padding: var(--page-padding);
+    }
+}

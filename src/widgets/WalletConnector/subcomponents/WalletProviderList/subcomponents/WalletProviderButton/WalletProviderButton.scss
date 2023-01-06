@@ -1,0 +1,15 @@
+@import "../../../../../../styles/index";
+
+.wallet-provider-button {
+    @extend %button;
+
+    border: 1px solid var(--c-dark-border);
+    border-radius: 4px;
+    height: 4.5rem;
+    background: var(--c-dark);
+
+    &__logo {
+        margin-right: .5rem;
+        width: 2rem;
+    }
+}

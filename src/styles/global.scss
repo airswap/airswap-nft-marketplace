@@ -1,0 +1,25 @@
+@import "index";
+
+@import "variables";
+@import "reset";
+@import "typography";
+
+body {
+  margin: 0;
+  padding: 0;
+  overflow-x: hidden;
+  font-family: var(--f-primary);
+  color: var(--c-white);
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+  background: var(--c-black);
+}
+
+code {
+  font-family: source-code-pro, Menlo, Monaco, Consolas, 'Courier New',
+    monospace;
+}
+
+input[inputmode="decimal"] {
+  font-family: var(--f-mono);
+}

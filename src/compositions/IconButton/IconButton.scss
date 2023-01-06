@@ -1,0 +1,34 @@
+@import "src/styles/index";
+
+.icon-button {
+    @extend %icon-button;
+
+    &--icon-align-right {
+        flex-direction: row-reverse;
+    }
+
+    &--icon-align-right &__icon {
+        margin-right: 0;
+        margin-left: .5rem;
+    }
+
+    &--hidden-label &__icon {
+        margin-right: 0;
+        margin-left: 0;
+        height: 100%;
+    }
+
+    &__icon {
+        margin-right: .5rem;
+        aspect-ratio: 1;
+    }
+
+    &:focus {
+        outline: 0;
+        border-color: var(--c-grey);
+    }
+
+    &:active {
+        border-color: var(--c-primary);
+    }
+}

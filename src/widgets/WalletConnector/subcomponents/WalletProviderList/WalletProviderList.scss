@@ -1,0 +1,13 @@
+@import "../../../../styles/index";
+
+.wallet-provider-list {
+    width: 100%;
+
+    &__button {
+        width: 100%;
+    }
+
+    &__button + &__button {
+        margin-top: .5rem;
+    }
+}
