@@ -16,7 +16,7 @@ const TopBar: FC<TopBarProps> = ({ className = '' }) => {
 
   return (
     <>
-      <div className={`top-bar ${className} ${displayMenu ? 'top-bar__mobile' : null}`}>
+      <div className={`top-bar ${className} ${displayMenu ? 'top-bar__mobile' : ''}`}>
         <IconButton
           hideLabel
           icon="airswap"
