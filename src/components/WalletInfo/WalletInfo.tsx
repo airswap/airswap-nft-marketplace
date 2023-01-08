@@ -12,7 +12,7 @@ interface WalletInfoProps {
   className?: string
 }
 
-const WallelInfo: FC<WalletInfoProps> = ({ isBanner, className = '' }) => {
+const WalletInfo: FC<WalletInfoProps> = ({ isBanner = false, className = '' }) => {
   const walletInfoClassName = classNames('wallet-info wallet-info--padding', {
     'wallet-info--is-banner': isBanner,
     'wallet-info--is-menu': !isBanner,
