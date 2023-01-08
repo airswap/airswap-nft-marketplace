@@ -1,4 +1,7 @@
 .wallet-info {
+  display: flex;
+  align-items: center;
+
   &--is-menu {
     background-color: var(--c-grey);
     border: .06rem solid var(--c-dark-border);
@@ -10,8 +13,12 @@
   &--padding {
     padding: 1rem;
   }
-  display: flex;
-  align-items: center;
+   
+  &__img { 
+    width: 2.5rem;
+    height: 2.5rem;
+    border: 1px solid gray; //temp css, replace later by a generate img from address
+  }
   &__address {
     margin-left: 0.875rem;
     flex-grow: 1;
