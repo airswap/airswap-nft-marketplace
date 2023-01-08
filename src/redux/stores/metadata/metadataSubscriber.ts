@@ -1,17 +1,23 @@
+import { getLibrary } from '../../../helpers/ethers';
 import { store } from '../../store';
-import { ConfigState } from '../config/configSlice';
+import { scrapeTokens } from './metadataApi';
 
 export const configureMetadataSubscriber = () => {
-  let currencyToken: ConfigState['currencyToken'];
-  // let collectionToken: ConfigState['currencyToken'];
+  let initialized = false;
 
   store.subscribe(() => {
-    const { config } = store.getState();
-    if (config.currencyToken !== currencyToken) {
-      currencyToken = config.currencyToken;
+    const { config, web3 } = store.getState();
 
-      // Fetch metadata here
-      // store.dispatch(fetchMetadata());
+    if (!initialized && web3.chainId) {
+      initialized = true;
+
+      const library = getLibrary(web3.chainId);
+
+      store.dispatch(scrapeTokens({
+        tokens: [config.currencyToken, config.collectionToken],
+        library,
+        chainId: web3.chainId,
+      }));
     }
   });
 };

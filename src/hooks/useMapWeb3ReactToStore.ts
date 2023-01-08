@@ -6,7 +6,6 @@ import { useWeb3React } from '@web3-react/core';
 import { useAppDispatch } from '../redux/hooks';
 import { setError, setWeb3Data } from '../redux/stores/web3/web3Slice';
 
-
 const useMapWeb3ReactToStore = (): void => {
   const dispatch = useAppDispatch();
 
@@ -23,7 +22,6 @@ const useMapWeb3ReactToStore = (): void => {
       isActive,
       account: account || undefined,
       chainId,
-      library,
     }));
   }, [isActive, account, chainId, library]);
 

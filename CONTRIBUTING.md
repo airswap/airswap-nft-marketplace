@@ -21,9 +21,59 @@ When multiple people are working on the same body of code, it is important that 
 
 We use BEM for styling. When styling a component put your scss in a separate .scss file. Please follow the rules lined out by [sparkbox](https://sparkbox.com/foundry/bem_by_example). When your component gets too crowded try to split your code in subcomponents.
 
+#### Rem
+
 We define dimensions using `rem` based on 16px, so use units like `0.125rem`, `0.25rem`, etc.
 
-The order of css properties should be based on matter of importance it has on the box-model. For instance these properties are sorted by their importance: `display`, `position`, `margin`, `border`, `width`, `padding`, `line-height`, `font-size`, `z-index`, `background`. This could be a little arbitrary so we're not very strict about this. 
+#### Order of properties
+
+The order of css properties should be based on matter of importance it has on the box-model. For instance these properties are sorted by their importance: `display`, `position`, `margin`, `border`, `width`, `padding`, `line-height`, `font-size`, `z-index`, `background`. This could be a little arbitrary so we're not very too about this.
+
+On top you have @extend and @include. Then the component styles. After that the modifiers and then the children styles.
+
+### Scss file example
+
+```scss
+@import "src/styles/index";
+
+.some-component {
+    @extend %flex-align-center;   
+
+    border: 1px solid var(--c-light-grey);
+    width: 100%;
+    height: 3rem;
+    padding: 0.5rem;
+    background: var(--c-grey);
+    z-index: 1;
+    
+    &--is-primary {
+        background: var(--c-red);
+    }
+
+    &__a-button,
+    &__b-button {
+        height: 2rem;
+        aspect-ratio: 1;
+        color: var(--c-white);
+    }
+
+    &__a-button {
+        position: absolute;
+        left: calc(50% - 1rem);
+    }
+```
+
+#### Naming of modifiers
+
+When naming of modifiers the same rules apply for react properties lined out in [this article of David Linau](https://dlinau.wordpress.com/2016/02/22/how-to-name-props-for-react-components/). For example: `--is-primary` and `--has-header`.
+
+#### Positioning elements
+
+When positioning an element using `absolute`, `fixed` or similar, the parent should set the style of the child.
+
+#### Please Do not
+
+Directly style tags (`div`, `span`, etc). Unless your branch is WIP and you add a `TODO` above to it.
 
 ## React components
 
@@ -32,6 +82,7 @@ When making a new component please take a look at the current components to get 
 ```typescript
 interface CheckboxProps {
   hideLabel?: boolean;
+  isChecked: boolean;
   label: string;
   subLabel?: string;
   onChange: (isChecked: boolean) => void;
@@ -39,8 +90,43 @@ interface CheckboxProps {
 }
 ```
 
+#### Naming conventions and order of properties
+
 For naming conventions please refer to [this article of David Linau](https://dlinau.wordpress.com/2016/02/22/how-to-name-props-for-react-components/).
 The order of properties are as following: first we have modifiers (ie: `isActive`, `hideLabel`), then other data properties (ie: `items`, `label`), then event handlers (ie: `onClick`, `onChange`) and finally the `className?` which every components needs to have so it can be styled by it's parent.
+
+### Component structure
+
+As you can see below the order of data and handlers are: hooks, states, useEffect, event handlers.
+
+```typescript
+const TopBar: FC<TopBarProps> = ({ hideLabel, className = '' }) => {
+  const { t } = useTranslation();
+
+  const [isConnecting, setIsConnecting] = useState(false);
+  const [mobileMenuIsVisible, setMobileMenuIsVisible] = useState(false);
+
+  useEffect(() => {
+    // Some effect here
+  }, [mobileMenuIsVisible]);
+  
+  const handleMobileToggleButtonClick = () => {
+    setMobileMenuIsVisible(!mobileMenuIsVisible);
+  }
+
+  return (
+    <div className={`top-bar ${className}`}>
+```
+
+### Classnames
+
+If you have dynamic modifiers for your BEM classes use `classNames` preferable at the top of your component.
+
+```typescript
+const checkboxClassNames = classNames('checkbox', {
+    'checkbox--is-checked': checked,
+}, className);
+```
 
 ### Component types
 
@@ -81,6 +167,8 @@ New translations should be added manually to `public/locales/en/translation.json
 ## Pull Requests (PRs)
 
 It’s a good idea to make PRs early on. A PR represents the start of a discussion, and doesn’t necessarily need to be the final, completed submission. Create a [draft PR](https://github.blog/2019-02-14-introducing-draft-pull-requests/) if you're looking for feedback but not ready for a final review. If the PR is in response to a GitHub issue, make sure to notate the issue as well.
+
+#### PR Description
 
 Usually your PR is connected to a ticket number, so please put the ticket number (for example 101) in the description of your PR like so:
 

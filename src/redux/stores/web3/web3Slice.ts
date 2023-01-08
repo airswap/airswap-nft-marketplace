@@ -1,4 +1,3 @@
-import { Web3Provider } from '@ethersproject/providers';
 import { createSlice, PayloadAction } from '@reduxjs/toolkit';
 
 export interface Web3State {
@@ -6,7 +5,6 @@ export interface Web3State {
   account?: string;
   chainId?: number;
   error?: Error;
-  library?: Web3Provider;
 }
 
 const initialState: Web3State = {
