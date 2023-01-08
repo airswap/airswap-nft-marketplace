@@ -8,9 +8,10 @@ import WalletProviderList from './subcomponents/WalletProviderList/WalletProvide
 
 interface WalletConnectorProps {
   afterProviderSelect?: () => void;
+  className?: string;
 }
 
-const WalletConnector: FC<WalletConnectorProps> = ({ afterProviderSelect }) => {
+const WalletConnector: FC<WalletConnectorProps> = ({ afterProviderSelect, className = '' }) => {
   const { activate } = useWeb3React<Web3Provider>();
 
   const handleWalletProviderButtonClick = (provider: WalletProvider): void => {
@@ -22,7 +23,7 @@ const WalletConnector: FC<WalletConnectorProps> = ({ afterProviderSelect }) => {
   };
 
   return (
-    <div className="wallet-connector">
+    <div className={`wallet-connector ${className}`}>
       <WalletProviderList
         walletProviders={SUPPORTED_WALLET_PROVIDERS}
         onWalletProviderButtonClick={handleWalletProviderButtonClick}

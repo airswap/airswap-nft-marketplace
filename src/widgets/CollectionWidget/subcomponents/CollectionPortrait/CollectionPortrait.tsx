@@ -1,0 +1,27 @@
+import React, { FC } from 'react';
+
+import './CollectionPortrait.scss';
+
+interface CollectionPortraitProps {
+  backgroundImage: string;
+  subTitle: string;
+  title: string;
+  className?: string;
+}
+
+const CollectionPortrait: FC<CollectionPortraitProps> = ({
+  backgroundImage,
+  title,
+  subTitle,
+  className = '',
+}) => (
+  <div
+    style={{ backgroundImage: `url("${backgroundImage}")` }}
+    className={`collection-portrait ${className}`}
+  >
+    <h1>{title}</h1>
+    <h2 className="collection-portrait__sub-title">{subTitle}</h2>
+  </div>
+);
+
+export default CollectionPortrait;

@@ -25,7 +25,11 @@ $c-light-grey: #6E7686;
     --f-primary: "loos-normal", sans-serif;
     --f-mono: "DM Mono", monospace;
 
+    --page-max-width: 70rem;
     --page-padding: 1.5rem;
+    --top-bar-height: 3rem;
+    --desktop-top-bar-height: 5rem;
+    --portrait-border-radius: .5rem;
 
     // loos-normal font-weights
     --fw-800: 800;
@@ -44,4 +48,5 @@ $c-light-grey: #6E7686;
     &[data-theme="light"] {
         @include light-mode-variables;
     }
+
 }
