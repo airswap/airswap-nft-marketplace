@@ -1,5 +1,7 @@
 import React, { FC, useState } from 'react';
 
+import classNames from 'classnames';
+
 import { AppRoutes } from '../../routes';
 import IconButton from '../IconButton/IconButton';
 import IconNavLink from '../IconNavLink/IconNavLink';
@@ -14,8 +16,20 @@ interface TopBarProps {
 const TopBar: FC<TopBarProps> = ({ className = '' }) => {
   const [mobileMenuIsVisible, setMobileMenuIsVisible] = useState<boolean>(false);
 
+  const topBarClassName = classNames('top-bar', {
+    'top-bar__mobile': mobileMenuIsVisible,
+  }, className);
+
+  const closeIconClassName = classNames('', {
+    'top-bar__close-icon': mobileMenuIsVisible,
+  });
+
+  const handleIconButtonClick = (): void => {
+    setMobileMenuIsVisible(!mobileMenuIsVisible);
+  };
+
   return (
-    <div className={`top-bar ${className} ${mobileMenuIsVisible ? 'top-bar__mobile' : ''}`}>
+    <div className={topBarClassName}>
       <IconButton
         hideLabel
         icon="airswap"
@@ -26,9 +40,9 @@ const TopBar: FC<TopBarProps> = ({ className = '' }) => {
         hideLabel
         icon={!mobileMenuIsVisible ? 'menu' : 'close'}
         text="Menu button"
-        onClick={() => setMobileMenuIsVisible(!mobileMenuIsVisible)}
+        onClick={handleIconButtonClick}
         className="top-bar__menu-button"
-        iconClassName={mobileMenuIsVisible ? 'top-bar__close-icon' : ''}
+        iconClassName={closeIconClassName}
       />
       <IconNavLink
         icon="plus"
