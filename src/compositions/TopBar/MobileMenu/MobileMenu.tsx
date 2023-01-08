@@ -3,7 +3,7 @@ import { FC } from 'react';
 import classNames from 'classnames';
 import { NavLink } from 'react-router-dom';
 
-import WallelInfo from '../../../components/WalletInfo/WalletInfo';
+import WalletInfo from '../../../components/WalletInfo/WalletInfo';
 import { AppRoutes } from '../../../routes';
 
 import './MobileMenu.scss';
@@ -20,7 +20,7 @@ const MobileMenu: FC<MobileMenuProp> = ({ isHidden, className = '' }) => {
 
   return (
     <div className={mobileMenuClassName}>
-      <WallelInfo isBanner={false} />
+      <WalletInfo isBanner={false} />
       <NavLink className="mobile-menu__nav-link" to="">My NFTs</NavLink>
       <NavLink className="mobile-menu__nav-link" to="">My Activity</NavLink>
       <NavLink className="mobile-menu__nav-link" to="">My Listed NFTs</NavLink>
