@@ -11,7 +11,7 @@ interface WalletInfoProps {
 }
 
 const WallelInfo: FC<WalletInfoProps> = ({ isBanner, className = '' }) => (
-  <div className={`wallet-info ${isBanner ? 'wallet-info--is-banner' : 'wallet-info--is-menu'} ${className}`}>
+  <div className={`wallet-info wallet-info--padding ${isBanner ? 'wallet-info--is-banner' : 'wallet-info--is-menu'} ${className}`}>
     <img
       src="/wallet-connexion.png"
       width={40}

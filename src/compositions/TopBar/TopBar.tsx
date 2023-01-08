@@ -15,33 +15,30 @@ const TopBar: FC<TopBarProps> = ({ className = '' }) => {
   const [displayMenu, setDisplayMenu] = useState<boolean>(false);
 
   return (
-    <>
-      <div className={`top-bar ${className} ${displayMenu ? 'top-bar__mobile' : ''}`}>
-        <IconButton
-          hideLabel
-          icon="airswap"
-          text="AirSwap button"
-          className="top-bar__airswap-button"
-        />
-        <IconButton
-          hideLabel
-          icon={!displayMenu ? 'menu' : 'close'}
-          text="Menu button"
-          onClick={() => setDisplayMenu(!displayMenu)}
-          className="top-bar__menu-button"
-          iconClassName={displayMenu ? 'top-bar__close-icon' : ''}
-        />
-        <IconNavLink
-          icon="plus"
-          text="List"
-          to={`/${AppRoutes.listNft}`}
-          className="top-bar__list-button"
-          iconClassName="top-bar__list-button-icon"
-        />
-      </div>
-
-      <MobileMenu displayMenu={displayMenu} />
-    </>
+    <div className={`top-bar ${className} ${displayMenu ? 'top-bar__mobile' : ''}`}>
+      <IconButton
+        hideLabel
+        icon="airswap"
+        text="AirSwap button"
+        className="top-bar__airswap-button"
+      />
+      <IconButton
+        hideLabel
+        icon={!displayMenu ? 'menu' : 'close'}
+        text="Menu button"
+        onClick={() => setDisplayMenu(!displayMenu)}
+        className="top-bar__menu-button"
+        iconClassName={displayMenu ? 'top-bar__close-icon' : ''}
+      />
+      <IconNavLink
+        icon="plus"
+        text="List"
+        to={`/${AppRoutes.listNft}`}
+        className="top-bar__list-button"
+        iconClassName="top-bar__list-button-icon"
+      />
+      <MobileMenu displayMenu={displayMenu} className="top-bar__mobile-menu" />
+    </div>
   );
 };
 
