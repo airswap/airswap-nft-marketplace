@@ -14,18 +14,18 @@ interface MobileMenuProp {
 }
 
 const MobileMenu: FC<MobileMenuProp> = ({ isHidden, className = '' }) => {
-  const containerClassName = classNames('container', {
-    'container--is-hidden': isHidden,
+  const mobileMenuClassName = classNames('mobile-menu', {
+    'mobile-menu--is-hidden': isHidden,
   }, className);
 
   return (
-    <div className={containerClassName}>
+    <div className={mobileMenuClassName}>
       <WallelInfo isBanner={false} />
-      <NavLink className="container__nav-link" to="">My NFTs</NavLink>
-      <NavLink className="container__nav-link" to="">My Activity</NavLink>
-      <NavLink className="container__nav-link" to="">My Listed NFTs</NavLink>
-      <NavLink className="container__nav-link" to={`/${AppRoutes.listNft}`}>List NFT</NavLink>
-      <NavLink className="container__nav-link" to="">Project Discord</NavLink>
+      <NavLink className="mobile-menu__nav-link" to="">My NFTs</NavLink>
+      <NavLink className="mobile-menu__nav-link" to="">My Activity</NavLink>
+      <NavLink className="mobile-menu__nav-link" to="">My Listed NFTs</NavLink>
+      <NavLink className="mobile-menu__nav-link" to={`/${AppRoutes.listNft}`}>List NFT</NavLink>
+      <a className="mobile-menu__nav-link" target="_blank" rel="noreferrer" href="https://discord.com/invite/ecQbV7H">Project Discord</a>
     </div>
   );
 };

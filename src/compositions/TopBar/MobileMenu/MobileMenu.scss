@@ -1,4 +1,4 @@
-.container {
+.mobile-menu {
     display: flex;
     flex-direction: column;
     padding: 1.5rem;
@@ -6,12 +6,16 @@
     background-color: var(--c-black);
     transform: translateY(0vh);
     transition: transform 0.5s ease-out;
+    overflow-y: auto;
+    
     &--is-hidden {
         transform: translateY(-100vh);
     }
 
     &__nav-link {
-        padding-top: 2.5rem;
+        display: flex;
+        align-items: center;
+        margin-top: 2.5rem;
         padding-left: 1rem;
     }
 }

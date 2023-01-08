@@ -1,17 +1,16 @@
 .wallet-info {
   display: flex;
   align-items: center;
+  padding: 1rem;;
 
   &--is-menu {
     background-color: var(--c-grey);
     border: 1px solid var(--c-dark-border);
     border-radius: .3125rem;
   }
+
   &--is-banner {
     background-color: transparent;
-  }
-  &--padding {
-    padding: 1rem;
   }
    
   &__img { 
@@ -19,6 +18,7 @@
     height: 2.5rem;
     border: 1px solid gray; //temp css, replace later by a generate img from address
   }
+
   &__address {
     margin-left: 0.875rem;
     flex-grow: 1;

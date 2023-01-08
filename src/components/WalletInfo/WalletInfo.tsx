@@ -13,7 +13,7 @@ interface WalletInfoProps {
 }
 
 const WalletInfo: FC<WalletInfoProps> = ({ isBanner = false, className = '' }) => {
-  const walletInfoClassName = classNames('wallet-info wallet-info--padding', {
+  const walletInfoClassName = classNames('wallet-info', {
     'wallet-info--is-banner': isBanner,
     'wallet-info--is-menu': !isBanner,
   }, className);
@@ -35,4 +35,4 @@ const WalletInfo: FC<WalletInfoProps> = ({ isBanner = false, className = '' }) =
   );
 };
 
-export default WallelInfo;
+export default WalletInfo;

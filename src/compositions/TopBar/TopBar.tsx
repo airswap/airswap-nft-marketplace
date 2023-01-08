@@ -16,8 +16,8 @@ interface TopBarProps {
 const TopBar: FC<TopBarProps> = ({ className = '' }) => {
   const [mobileMenuIsVisible, setMobileMenuIsVisible] = useState<boolean>(false);
 
-  const topBarClassName = classNames('top-bar', {
-    'top-bar__mobile': mobileMenuIsVisible,
+  const containerClassName = classNames('top-bar', {
+    'top-bar--mobile-menu-is-visible': mobileMenuIsVisible,
   }, className);
 
   const closeIconClassName = classNames('', {
@@ -29,7 +29,7 @@ const TopBar: FC<TopBarProps> = ({ className = '' }) => {
   };
 
   return (
-    <div className={topBarClassName}>
+    <div className={containerClassName}>
       <IconButton
         hideLabel
         icon="airswap"
