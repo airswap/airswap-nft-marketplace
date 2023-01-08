@@ -22,7 +22,14 @@ const WalletInfo: FC<WalletInfoProps> = ({ isBanner = false, className = '' }) =
     <div className={walletInfoClassName}>
       <div className="wallet-info__img" />
       <span className="wallet-info__address">swapthebestnfts.eth</span>
-      { isBanner ? (<IconButton icon="launch" text="" iconClassName="wallet-info__icon" />) : null }
+      {isBanner && (
+        <IconButton
+          hideLabel
+          icon="launch"
+          text="wallet"
+          iconClassName="wallet-info__icon"
+        />
+      )}
       <IconButton icon="logout" text="" iconClassName="wallet-info__icon" />
     </div>
   );
