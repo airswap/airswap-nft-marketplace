@@ -18,7 +18,7 @@ const WallelInfo: FC<WalletInfoProps> = ({ isBanner, className = '' }) => (
       height={40}
       alt="displayWallet"
     />
-    <span>swapthebestnfts.eth</span>
+    <span className="wallet-info__address">swapthebestnfts.eth</span>
     { isBanner ? (<IconButton icon="launch" text="" iconClassName="wallet-info__icon" />) : null }
     <IconButton icon="logout" text="" iconClassName="wallet-info__icon" />
   </div>

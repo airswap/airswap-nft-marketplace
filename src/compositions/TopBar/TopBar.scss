@@ -18,7 +18,7 @@ $component: top-bar;
         left: 0;
         top: 3rem;
         width: 100vw;
-        height: calc(100vh - 3rem);
+        height: calc(100svh - 3rem);
         z-index: -1;
     }
     &__menu-button,
@@ -39,12 +39,6 @@ $component: top-bar;
 
     &__mobile {
         background: transparent;
-        animation: mobile-in ease-in-out 0.5s forwards;
-    }
-    // have to find a way to activate this keyframes on click of the close icons but not in the initialization of the component
-    &__desktop {
-        background: var(--c-grey);
-        animation: mobile-out ease-in-out 0.5s forwards;
     }
 
     .#{$component}__list-button  {
@@ -61,23 +55,5 @@ $component: top-bar;
     &__list-button-icon {
         width: 0.75rem;
         height: 0.75rem;
-    }
-}
-
-@keyframes mobile-in {
-    from {
-        background: var(--c-grey);
-    }
-    to {
-        background: transparent;
-    }
-}
-
-@keyframes mobile-out {
-    from {
-        background: transparent;
-    }
-    to {
-        background: var(--c-grey);
     }
 }

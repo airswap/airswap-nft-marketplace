@@ -12,10 +12,10 @@ interface TopBarProps {
 }
 
 const TopBar: FC<TopBarProps> = ({ className = '' }) => {
-  const [displayMenu, setDisplayMenu] = useState<boolean>(false);
+  const [mobileMenuIsVisible, setMobileMenuIsVisible] = useState<boolean>(false);
 
   return (
-    <div className={`top-bar ${className} ${displayMenu ? 'top-bar__mobile' : ''}`}>
+    <div className={`top-bar ${className} ${mobileMenuIsVisible ? 'top-bar__mobile' : ''}`}>
       <IconButton
         hideLabel
         icon="airswap"
@@ -24,11 +24,11 @@ const TopBar: FC<TopBarProps> = ({ className = '' }) => {
       />
       <IconButton
         hideLabel
-        icon={!displayMenu ? 'menu' : 'close'}
+        icon={!mobileMenuIsVisible ? 'menu' : 'close'}
         text="Menu button"
-        onClick={() => setDisplayMenu(!displayMenu)}
+        onClick={() => setMobileMenuIsVisible(!mobileMenuIsVisible)}
         className="top-bar__menu-button"
-        iconClassName={displayMenu ? 'top-bar__close-icon' : ''}
+        iconClassName={mobileMenuIsVisible ? 'top-bar__close-icon' : ''}
       />
       <IconNavLink
         icon="plus"
@@ -37,7 +37,7 @@ const TopBar: FC<TopBarProps> = ({ className = '' }) => {
         className="top-bar__list-button"
         iconClassName="top-bar__list-button-icon"
       />
-      <MobileMenu displayMenu={displayMenu} className="top-bar__mobile-menu" />
+      <MobileMenu isHidden={!mobileMenuIsVisible} className="top-bar__mobile-menu" />
     </div>
   );
 };

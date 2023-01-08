@@ -4,31 +4,13 @@
     padding: 1.5rem;
     font-weight: var(--fw-700);
     background-color: var(--c-black);
-    animation: fly-in-top ease-in-out 0.5s forwards;
-
-    &--fly-out {
-        animation: fly-out-top ease-in-out 0.5s forwards;
+    transform: translateY(0vh);
+    transition: transform 0.5s;
+    &--is-hidden {
+        transform: translateY(-100vh);
     }
     &__nav-link {
         padding-top: 2.5rem;
         padding-left: 1rem;
-    }
-}
-
-@keyframes fly-in-top {
-    from {
-        transform: translateY(-100vh);
-    }
-    to {
-        transform: translateY(0);
-    }
-}
-
-@keyframes fly-out-top {
-    from {
-        transform: translateY(0);
-    }
-    to {
-        transform: translateY(-100vh);
     }
 }
