@@ -6,12 +6,12 @@ import './WalletInfo.scss';
 
 
 interface WalletInfoProps {
-  mode: 'BANNER' | 'MENU',
+  isBanner?: boolean
   className?: string
 }
 
-const WallelInfo: FC<WalletInfoProps> = ({ mode, className = '' }) => (
-  <div className={`wallet-info ${mode === 'BANNER' ? 'wallet-info__banner' : 'wallet-info__menu'} ${className}`}>
+const WallelInfo: FC<WalletInfoProps> = ({ isBanner, className = '' }) => (
+  <div className={`wallet-info ${isBanner ? 'wallet-info--is-banner' : 'wallet-info--is-menu'} ${className}`}>
     <img
       src="/wallet-connexion.png"
       width={40}
@@ -19,7 +19,7 @@ const WallelInfo: FC<WalletInfoProps> = ({ mode, className = '' }) => (
       alt="displayWallet"
     />
     <span>swapthebestnfts.eth</span>
-    { mode !== 'BANNER' ? (<IconButton icon="launch" text="" iconClassName="wallet-info__icon" />) : null }
+    { isBanner ? (<IconButton icon="launch" text="" iconClassName="wallet-info__icon" />) : null }
     <IconButton icon="logout" text="" iconClassName="wallet-info__icon" />
   </div>
 );

@@ -1,10 +1,10 @@
 .wallet-info {
-  &__menu {
+  &--is-menu {
     background-color: var(--c-grey);
     border: .06rem solid var(--c-dark-border);
     border-radius: .3rem;
   }
-  &__banner {
+  &--is-banner {
     background-color: transparent;
   }
   padding: 1rem!important;
