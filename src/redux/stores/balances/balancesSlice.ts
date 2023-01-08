@@ -1,11 +1,14 @@
 import { createSlice, PayloadAction } from '@reduxjs/toolkit';
 import { BigNumber } from 'ethers';
 
+import { fetchBalances } from './balancesApi';
+
 interface BalancesState {
   isLoading: boolean;
-  balance?: BigNumber;
-  allowance?: BigNumber;
-  nftBalances?: {
+  allowances?: {
+    [address: string]: BigNumber;
+  }
+  balances?: {
     [address: string]: BigNumber;
   }
 }
@@ -22,6 +25,18 @@ const balancesSlice = createSlice({
       ...state,
       isLoading: action.payload,
     }),
+  },
+  extraReducers: builder => {
+    builder.addCase(fetchBalances.pending, (state) => ({
+      ...state,
+      isLoading: true,
+    }));
+
+    builder.addCase(fetchBalances.fulfilled, (state, action) => ({
+      ...state,
+      isLoading: false,
+      balances: action.payload,
+    }));
   },
 });
 
