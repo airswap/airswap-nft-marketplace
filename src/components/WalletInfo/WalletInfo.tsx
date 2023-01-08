@@ -19,8 +19,8 @@ const WallelInfo: FC<WalletInfoProps> = ({ mode, className = '' }) => (
       alt="displayWallet"
     />
     <span>swapthebestnfts.eth</span>
-    { mode === 'BANNER' ? (<IconButton icon="launch" text="" className="icon" />) : null }
-    <IconButton icon="logout" text="" className="icon" />
+    { mode !== 'BANNER' ? (<IconButton icon="launch" text="" iconClassName="wallet-info__icon" />) : null }
+    <IconButton icon="logout" text="" iconClassName="wallet-info__icon" />
   </div>
 );
 

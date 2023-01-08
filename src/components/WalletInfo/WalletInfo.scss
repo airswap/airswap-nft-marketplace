@@ -15,7 +15,8 @@
     flex-grow: 1;
     font-weight: var(--fw-700);
   }
-  .icon {
+  &__icon {
     color: var(--c-white);
+    height: 1.125rem;
   }
 }
