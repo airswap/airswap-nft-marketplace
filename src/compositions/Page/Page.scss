@@ -4,6 +4,7 @@
     position: relative;
     margin: 0 auto;
     max-width: var(--page-max-width);
+    z-index: 100;
 
     &__top-bar {
         z-index: 3;
@@ -29,13 +30,17 @@
 
     &__wallet-connector {
         position: absolute;
-        top: calc(var(--top-bar-height) + var(--page-padding));
-        left: var(--page-padding);
-        width: calc(100% - var(--page-padding) * 2);
+        top: var(--top-bar-height);
+        left: 0;
+        width: 100%;
+        height: calc(100svh - var(--top-bar-height));
+        min-height: 100%;
         z-index: 1;
+        overflow-y: auto;
 
         @include for-size(tablet-portrait-up) {
-            top: calc(var(--desktop-top-bar-height) + var(--page-padding));
+            top: var(--desktop-top-bar-height);
+            height: calc(100svh - var(--desktop-top-bar-height));
         }
     }
 }

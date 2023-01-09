@@ -3,13 +3,23 @@
 .wallet-provider-button {
     @extend %button;
 
+    justify-content: flex-start;
     border: 1px solid var(--c-dark-border);
     border-radius: 4px;
-    height: 4.5rem;
+    padding: 0 1.5rem;
+    color: var(--c-white);
     background: var(--c-dark);
+
+    &:hover {
+        background: var(--c-dark-border);
+    }
 
     &__logo {
         margin-right: .5rem;
         width: 2rem;
+    }
+
+    &__name {
+        @extend %text-ellipsis;
     }
 }
