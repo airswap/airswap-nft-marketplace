@@ -30,7 +30,12 @@ const WalletInfo: FC<WalletInfoProps> = ({ isBanner = false, className = '' }) =
           iconClassName="wallet-info__icon"
         />
       )}
-      <IconButton icon="logout" text="" iconClassName="wallet-info__icon" />
+      <IconButton
+        hideLabel
+        icon="logout"
+        text="logout"
+        iconClassName="wallet-info__icon"
+      />
     </div>
   );
 };

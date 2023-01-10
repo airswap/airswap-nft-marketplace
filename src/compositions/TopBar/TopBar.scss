@@ -11,7 +11,6 @@ $component: top-bar;
     padding: 0.5rem;
     background: var(--c-grey);
     position: relative;
-    z-index: 2;
 
     @include for-size(tablet-portrait-up) {
         height: var(--desktop-top-bar-height);
@@ -34,19 +33,11 @@ $component: top-bar;
     }
 
     &--mobile-menu-is-visible {
-        background: transparent;
+        background: var(--c-black);
+
         .#{$component}__menu-button-icon {
             width: .875rem;   
         }
-    }
-
-    &__mobile-menu {
-        position: fixed;
-        left: 0;
-        top: 3rem;
-        width: 100vw;
-        height: calc(100svh - 3rem);
-        z-index: -1;
     }
 
     &__menu-button,
