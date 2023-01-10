@@ -11,7 +11,7 @@ $component: top-bar;
     padding: 0.5rem;
     background: var(--c-grey);
     position: relative;
-    z-index: 1;
+    z-index: 2;
 
     @include for-size(tablet-portrait-up) {
         height: var(--desktop-top-bar-height);
