@@ -20,10 +20,6 @@ const TopBar: FC<TopBarProps> = ({ className = '' }) => {
     'top-bar--mobile-menu-is-visible': mobileMenuIsVisible,
   }, className);
 
-  const closeIconClassName = classNames('', {
-    'top-bar__close-icon': mobileMenuIsVisible,
-  });
-
   const handleIconButtonClick = (): void => {
     setMobileMenuIsVisible(!mobileMenuIsVisible);
   };
@@ -42,7 +38,7 @@ const TopBar: FC<TopBarProps> = ({ className = '' }) => {
         text="Menu button"
         onClick={handleIconButtonClick}
         className="top-bar__menu-button"
-        iconClassName={closeIconClassName}
+        iconClassName="top-bar__menu-button-icon"
       />
       <IconNavLink
         icon="plus"

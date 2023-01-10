@@ -15,6 +15,9 @@ $component: top-bar;
 
     &--mobile-menu-is-visible {
         background: transparent;
+        .#{$component}__menu-button-icon {
+            width: .875rem;   
+        }
     }
 
     &__mobile-menu {
@@ -35,10 +38,6 @@ $component: top-bar;
     &__menu-button {
         position: absolute;
         left: calc(50% - 1rem);
-    }
-
-    &__close-icon {
-        width: .875rem;
     }
 
     .#{$component}__list-button  {
