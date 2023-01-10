@@ -1,10 +1,24 @@
 @import "../../styles/index";
 
 .page {
+    position: relative;
     margin: 0 auto;
-    max-width: 30rem;
+    max-width: var(--page-max-width);
 
     &__content {
+        position: relative;
         padding: var(--page-padding);
+    }
+
+    &__wallet-connector {
+        position: absolute;
+        top: calc(var(--top-bar-height) + var(--page-padding));
+        left: var(--page-padding);
+        width: calc(100% - var(--page-padding) * 2);
+        z-index: 1;
+
+        @include for-size(tablet-portrait-up) {
+            top: calc(var(--desktop-top-bar-height) + var(--page-padding));
+        }
     }
 }

@@ -19,6 +19,10 @@
         outline: none;
     }
 
+    &:focus {
+        border: 1px solid var(--c-primary);
+    }
+
     &:disabled {
         color: var(--c-disabled-grey);
         cursor: not-allowed;
@@ -48,4 +52,13 @@
     box-sizing: border-box;
     border: 1px solid transparent;
     border-radius: 2px;
+
+    &:hover,
+    &:focus {
+        outline: none;
+    }
+
+    &:focus {
+        border: 1px solid var(--c-primary);
+    }
 }

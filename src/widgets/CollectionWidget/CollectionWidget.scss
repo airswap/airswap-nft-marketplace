@@ -1,6 +1,21 @@
-@import "../../styles/index";
+@import "src/styles/index";
 
 .collection-widget {
+
+    &__portrait {
+        width: 100%;
+        min-height: 15rem;
+        max-height: 25rem;
+        aspect-ratio: 1.5;
+
+        @include for-size(phone-only) {
+            aspect-ratio: 3;
+        }
+
+        @include for-size(tablet-portrait-up) {
+            aspect-ratio: 2;
+        }
+    }
 
     &__proceed-button {
         @extend %button--is-primary;
