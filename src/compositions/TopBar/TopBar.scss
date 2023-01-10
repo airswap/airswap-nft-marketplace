@@ -1,4 +1,4 @@
-@import "../../styles/index";
+@import "src/styles/index";
 
 $component: top-bar;
 
@@ -7,9 +7,29 @@ $component: top-bar;
     justify-content: space-between;
     align-items: center;
     width: 100%;
-    height: 3rem;
+    height: var(--top-bar-height);
     padding: 0.5rem;
     background: var(--c-grey);
+
+    @include for-size(tablet-portrait-up) {
+        height: var(--desktop-top-bar-height);
+        padding: 0 var(--page-padding);
+        background: none;
+
+        &__menu-button {
+            display: none;
+        }
+
+        .#{$component}__airswap-button {
+            height: 3rem;
+        }
+
+        .#{$component}__list-button  {
+            border-color: var(--c-grey);
+            height: 2.5rem;
+            font-size: .9375rem;
+        }
+    }
 
     &__menu-button,
     &__airswap-button {
@@ -23,7 +43,7 @@ $component: top-bar;
         left: calc(50% - 1rem);
     }
 
-    .#{$component}__list-button  {
+    &__list-button  {
         border: 1px solid var(--c-light-grey);
         border-radius: .25rem;
         height: 100%;
@@ -32,6 +52,10 @@ $component: top-bar;
         font-size: .75rem;
         font-weight: var(--fw-700);
         color: var(--c-white);
+
+        &:focus {
+            border: 1px solid var(--c-primary);
+        }
     }
 
     &__list-button-icon {

@@ -10,16 +10,19 @@ import './Page.scss';
 
 interface PageProps {
   children?: ReactNode;
+  className?: string;
+  contentClassName?: string;
 }
 
-const Page: FC<PageProps> = ({ children }) => {
+const Page: FC<PageProps> = ({ className = '', contentClassName = '', children }) => {
   const { active } = useWeb3React<Web3Provider>();
 
   return (
-    <div className="page">
+    <div className={`page ${className}`}>
       <TopBar />
-      <div className="page__content">
-        {!active && <WalletConnector />}
+      {!active && <WalletConnector className="page__wallet-connector" />}
+
+      <div className={`page__content ${contentClassName}`}>
         {children}
       </div>
     </div>

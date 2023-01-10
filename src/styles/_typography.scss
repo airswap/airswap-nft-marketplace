@@ -9,4 +9,19 @@ h1 {
     font-size: 1.125rem;
     font-weight: var(--fw-700);
     color: var(--c-white);
+
+    @include for-size(tablet-portrait-up) {
+        font-size: 2.25rem;
+    }
+}
+
+h2 {
+    line-height: 1.25;
+    font-size: 1rem;
+    font-weight: var(--fw-700);
+    color: var(--c-white);
+
+    @include for-size(tablet-portrait-up) {
+        font-size: 1.25rem;
+    }
 }
