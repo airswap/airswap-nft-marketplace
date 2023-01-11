@@ -14,7 +14,7 @@ $component: top-bar;
 
     @include for-size(tablet-portrait-up) {
         height: var(--desktop-top-bar-height);
-        padding: 0 var(--page-padding);
+        padding: 0 1rem;
         background: none;
 
         &__menu-button {
@@ -52,6 +52,12 @@ $component: top-bar;
         left: calc(50% - 1rem);
     }
 
+    &__list-button-and-wallet-button-wrapper {
+        display: flex;
+        align-items: center;
+        height: 100%;
+    }
+
     &__list-button  {
         border: 1px solid var(--c-light-grey);
         border-radius: .25rem;
@@ -70,5 +76,18 @@ $component: top-bar;
     &__list-button-icon {
         width: 0.75rem;
         height: 0.75rem;
+    }
+
+    &__connect-button {
+        @extend %button--is-primary;
+
+        display: none;
+        margin-left: 1rem;
+        height: 2.5rem;
+        padding: 0 1rem;
+
+        @include for-size(tablet-portrait-up) {
+            display: flex;
+        }
     }
 }

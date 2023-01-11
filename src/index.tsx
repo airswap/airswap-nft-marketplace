@@ -7,6 +7,8 @@ import App from './App';
 import { store } from './redux/store';
 import reportWebVitals from './reportWebVitals';
 
+import './styles/global.scss';
+
 ReactDOM.render(
   <React.StrictMode>
     <Provider store={store}>

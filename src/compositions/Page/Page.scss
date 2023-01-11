@@ -16,7 +16,7 @@
         top: var(--top-bar-height);
         width: 100vw;
         height: calc(100svh - var(--top-bar-height));
-        z-index: 2;
+        z-index: 3;
 
         @include for-size(tablet-portrait-up) {
             display: none;
@@ -35,12 +35,29 @@
         width: 100%;
         height: calc(100svh - var(--top-bar-height));
         min-height: 100%;
-        z-index: 1;
+        z-index: 2;
         overflow-y: auto;
 
         @include for-size(tablet-portrait-up) {
-            top: var(--desktop-top-bar-height);
-            height: calc(100svh - var(--desktop-top-bar-height));
+            position: fixed;
+            top: 0;
+            height: calc(100svh - var(--top-bar-height));
+            padding-top: var(--top-bar-height);
+            z-index: 3;
+            backdrop-filter: blur(3px);
+        }
+    }
+
+    &__connect-wallet-button {
+        @extend %button--is-primary;
+
+        position: fixed;
+        width: calc(100% - var(--page-padding) * 2);
+        left: var(--page-padding);
+        top: calc(100svh - 3rem - var(--page-padding));
+
+        @include for-size(tablet-portrait-up) {
+            display: none;
         }
     }
 }

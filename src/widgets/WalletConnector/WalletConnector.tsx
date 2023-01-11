@@ -10,19 +10,15 @@ import WalletProviderList from './subcomponents/WalletProviderList/WalletProvide
 import './WalletConnector.scss';
 
 interface WalletConnectorProps {
-  afterProviderSelect?: () => void;
+  onCloseButtonClick: () => void;
   className?: string;
 }
 
-const WalletConnector: FC<WalletConnectorProps> = ({ afterProviderSelect, className = '' }) => {
+const WalletConnector: FC<WalletConnectorProps> = ({ onCloseButtonClick, className = '' }) => {
   const { activate } = useWeb3React<Web3Provider>();
 
   const handleWalletProviderButtonClick = (provider: WalletProvider): void => {
     activate(provider.getConnector());
-
-    if (afterProviderSelect) {
-      afterProviderSelect();
-    }
   };
 
   return (
@@ -34,6 +30,7 @@ const WalletConnector: FC<WalletConnectorProps> = ({ afterProviderSelect, classN
             hideLabel
             icon="close"
             text="Close"
+            onClick={onCloseButtonClick}
             className="wallet-connector__close-button"
           />
         </div>
