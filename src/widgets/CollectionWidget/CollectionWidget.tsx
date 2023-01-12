@@ -3,21 +3,20 @@ import React, { FC } from 'react';
 import ERC721 from '@openzeppelin/contracts/build/contracts/ERC721.json';
 
 import useContract from '../../hooks/useContract';
+import useInfiniteScroll from '../../hooks/useInfiniteScroll';
 import { useAppSelector } from '../../redux/hooks';
 import CollectionPortrait from './subcomponents/CollectionPortrait/CollectionPortrait';
 
 import './CollectionWidget.scss';
 
 const CollectionWidget: FC = () => {
-  const { collectionImage, collectionName, collectionToken } = useAppSelector((state) => state.config);
+  const [tokensData, setTokensData] = React.useState<any[]>([]);
 
   const index = React.useRef(0);
   const tokenIds = React.useRef<any[]>([]);
 
-  const [tokensData, setTokensData] = React.useState<any[]>([]);
-
+  const { collectionImage, collectionName, collectionToken } = useAppSelector((state) => state.config);
   const collectionContract = useContract({ abi: ERC721.abi, address: collectionToken });
-
 
   const fetchCollectionData = async () => {
     const CHUNK_SIZE = 20;
@@ -38,28 +37,16 @@ const CollectionWidget: FC = () => {
     index.current += CHUNK_SIZE;
   };
 
-  const handleScroll = async () => {
-    if (window.innerHeight + document.documentElement.scrollTop !== document.documentElement.offsetHeight) return;
-
-    /* Fetch more items */
-    await fetchCollectionData();
-  };
-
-  const getTokenIds = async () => {
-    const transferFilter = collectionContract.filters.Transfer('0x0000000000000000000000000000000000000000');
-    const events = await collectionContract.queryFilter(transferFilter, 0);
-
-    tokenIds.current = events.map((e) => e.args?.at(2));
-    fetchCollectionData();
-  };
+  useInfiniteScroll({ fetchCallback: fetchCollectionData });
 
   React.useEffect(() => {
-    getTokenIds();
-
-    window.addEventListener('scroll', handleScroll);
-    return () => window.removeEventListener('scroll', handleScroll);
+    /* Get token ids by filtering past events */
+    const transferFilter = collectionContract.filters.Transfer('0x0000000000000000000000000000000000000000');
+    collectionContract.queryFilter(transferFilter, 0).then((events) => {
+      tokenIds.current = events.map((e) => e.args?.at(2));
+      fetchCollectionData();
+    });
   }, []);
-
 
   return (
     <div className="collection-widget">
