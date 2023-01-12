@@ -1,8 +1,8 @@
 import React, { FC } from 'react';
 
 import ERC721 from '@openzeppelin/contracts/build/contracts/ERC721.json';
-import { ethers } from 'ethers';
 
+import useContract from '../../hooks/useContract';
 import { useAppSelector } from '../../redux/hooks';
 import CollectionPortrait from './subcomponents/CollectionPortrait/CollectionPortrait';
 
@@ -16,14 +16,8 @@ const CollectionWidget: FC = () => {
 
   const [tokensData, setTokensData] = React.useState<any[]>([]);
 
-  const erc721Interface = new ethers.utils.Interface(ERC721.abi);
-  // @ts-ignore
-  const provider = new ethers.providers.Web3Provider(window.ethereum);
-  const collectionContract = new ethers.Contract(
-    collectionToken,
-    erc721Interface,
-    provider,
-  );
+  const collectionContract = useContract({ abi: ERC721.abi, address: collectionToken });
+
 
   const fetchCollectionData = async () => {
     const CHUNK_SIZE = 20;
