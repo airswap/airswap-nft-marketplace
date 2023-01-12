@@ -9,7 +9,7 @@
 
 .nft-list {
     display: grid;
-    gap: 24px;
+    row-gap: 24px;
     grid-template-columns: repeat(auto-fill, minmax(262px, 1fr));
     margin: 24px;
     justify-items: center;
