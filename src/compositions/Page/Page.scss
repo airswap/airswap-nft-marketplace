@@ -1,10 +1,17 @@
 @import "../../styles/index";
 
-.page {
+$component: page;
+
+.#{$component} {
     position: relative;
     margin: 0 auto;
     max-width: var(--page-max-width);
     z-index: 100;
+
+    &--show-wallet-connector .#{$component}__wallet-connector {
+        visibility: visible;
+        pointer-events: visible;
+    }
 
     &__top-bar {
         z-index: 3;
@@ -37,6 +44,8 @@
         min-height: 100%;
         z-index: 2;
         overflow-y: auto;
+        visibility: hidden;
+        pointer-events: none;
 
         @include for-size(tablet-portrait-up) {
             position: fixed;
