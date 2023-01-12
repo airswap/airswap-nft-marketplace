@@ -34,6 +34,7 @@ const Page: FC<PageProps> = ({ className = '', contentClassName = '', children }
 
       <MobileMenu
         isHidden={!mobileMenuIsVisible}
+        onNavLinkClick={handleIconButtonClick}
         className="page__mobile-menu"
       />
       {!active && <WalletConnector className="page__wallet-connector" />}
