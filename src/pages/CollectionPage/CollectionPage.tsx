@@ -2,6 +2,7 @@ import React, { FC } from 'react';
 
 import ERC721 from '@openzeppelin/contracts/build/contracts/ERC721.json';
 
+import NFTCard from '../../components/NFTCard/NFTCard';
 import Page from '../../compositions/Page/Page';
 import useContract from '../../hooks/useContract';
 import useInfiniteScroll from '../../hooks/useInfiniteScroll';
@@ -55,13 +56,15 @@ const CollectionPage: FC = () => {
       contentClassName="collection-page__content"
     >
       <CollectionWidget />
-
-      {tokensData.map((t) => (
-        <div key={t.name}>
-          <div>{t.name}</div>
-          <div>{t.description}</div>
-        </div>
-      ))}
+      <div className="nft-list">
+        {tokensData.map((t) => (
+          <NFTCard
+            name={t.name}
+            imageURI={t.image.replace('ipfs://', 'https://ipfs.io/ipfs/')}
+            price={Math.floor(Math.random() * (1000 - 100) + 100) / 100}
+          />
+        ))}
+      </div>
     </Page>
   );
 };
