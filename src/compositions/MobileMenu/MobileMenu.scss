@@ -14,7 +14,7 @@
         transform: translateY(-100vh);
     }
 
-    &__nav-links {
+    &__nav-links:not(:first-child) {
         margin-top: 1.5rem;
     }
 
