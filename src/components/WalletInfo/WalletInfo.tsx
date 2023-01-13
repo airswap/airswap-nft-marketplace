@@ -9,10 +9,15 @@ import './WalletInfo.scss';
 
 interface WalletInfoProps {
   isBanner?: boolean
+  address?: string;
   className?: string
 }
 
-const WalletInfo: FC<WalletInfoProps> = ({ isBanner = false, className = '' }) => {
+const WalletInfo: FC<WalletInfoProps> = ({
+  isBanner = false,
+  address = '',
+  className = '',
+}) => {
   const walletInfoClassName = classNames('wallet-info', {
     'wallet-info--is-banner': isBanner,
     'wallet-info--is-menu': !isBanner,
@@ -21,7 +26,7 @@ const WalletInfo: FC<WalletInfoProps> = ({ isBanner = false, className = '' }) =
   return (
     <div className={walletInfoClassName}>
       <div className="wallet-info__img" />
-      <span className="wallet-info__address">swapthebestnfts.eth</span>
+      <span className="wallet-info__address">{address}</span>
       {isBanner && (
         <IconButton
           hideLabel

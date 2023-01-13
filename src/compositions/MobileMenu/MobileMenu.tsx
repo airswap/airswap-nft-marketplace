@@ -4,24 +4,30 @@ import classNames from 'classnames';
 import { NavLink } from 'react-router-dom';
 
 import WalletInfo from '../../components/WalletInfo/WalletInfo';
+import useEnsAddress from '../../hooks/useEnsAddress';
 import { AppRoutes } from '../../routes';
 
 import './MobileMenu.scss';
 
 interface MobileMenuProp {
   isHidden: boolean;
+  address?: string;
   onNavLinkClick: () => void;
   className?: string;
 }
 
-const MobileMenu: FC<MobileMenuProp> = ({ isHidden, onNavLinkClick, className = '' }) => {
+const MobileMenu: FC<MobileMenuProp> = ({
+  isHidden, address, onNavLinkClick, className = '',
+}) => {
   const mobileMenuClassName = classNames('mobile-menu', {
     'mobile-menu--is-hidden': isHidden,
   }, className);
 
+  const ensAddress = useEnsAddress(address);
+
   return (
     <div className={mobileMenuClassName}>
-      <WalletInfo isBanner={false} />
+      {address && <WalletInfo address={ensAddress || address} />}
       <div className="mobile-menu__nav-links">
         <NavLink className="mobile-menu__nav-link" to="" onClick={onNavLinkClick}>My NFTs</NavLink>
         <NavLink className="mobile-menu__nav-link" to="" onClick={onNavLinkClick}>My Activity</NavLink>
