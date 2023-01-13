@@ -13,3 +13,6 @@ export const setLibrary = (provider: any): Web3Provider => {
 };
 
 export const getLibrary = (chainId: number): Web3Provider => cachedLibrary[chainId];
+
+export const startsWithIPFS: (str: string) => boolean = (str: string) => str.startsWith('ipfs://');
+export const ipfsToUrl: (string: string) => string = (ipfsAddress) => `${process.env.REACT_APP_IPFS_GATEWAY_URL}${ipfsAddress.split('ipfs://')[1]}`;
