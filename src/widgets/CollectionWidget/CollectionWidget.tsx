@@ -3,6 +3,7 @@
 import React, { FC, useEffect } from 'react';
 
 import useNftMetadata from '../../hooks/useNftMetadata';
+import useTokenIdForAddress from '../../hooks/useTokenIdForAddress';
 import { useAppSelector } from '../../redux/hooks';
 import CollectionPortrait from './subcomponents/CollectionPortrait/CollectionPortrait';
 
@@ -14,6 +15,7 @@ const CollectionWidget: FC = () => {
   );
 
   const nftMetadata = useNftMetadata(collectionToken, '3060');
+  const tokenIDs = useTokenIdForAddress(collectionToken);
 
   return (
     <div className="collection-widget">
