@@ -2,7 +2,6 @@
 // ref: https://github.com/gsoft-inc/craco/blob/master/packages/craco/README.md
 /* eslint-disable  */
 
-const sassResourcesLoader = require('craco-sass-resources-loader');
 const fs = require('fs');
 const cracoEnvPlugin = require('craco-plugin-env');
 
@@ -38,14 +37,6 @@ module.exports = {
             .execSync('git show -s --format=%ci', { cwd: __dirname })
             .toString().trim() : new Date().toLocaleDateString(),
         },
-      },
-    },
-    {
-      plugin: sassResourcesLoader,
-      options: {
-        resources: [
-          './src/styles/global.scss',
-        ],
       },
     },
   ],

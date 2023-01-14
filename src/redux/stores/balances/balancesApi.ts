@@ -61,14 +61,15 @@ const fetchBalancesOrAllowances: (
   return amounts.map((amount) => amount);
 };
 
-export const fetchBalances = createAsyncThunk<{ [address: string]: BigNumber }, WalletParams>(
+export const fetchBalances = createAsyncThunk<{ [address: string]: string }, WalletParams>(
   'balances/fetchBalances',
   async (params) => {
     const responses = await fetchBalancesOrAllowances('walletBalances', 'none', params);
+    const bigNumbers = responses.map(bigNumber => bigNumber.toString());
 
     return params.tokenAddresses.reduce((total, token, index) => ({
       ...total,
-      [token]: responses[index],
+      [token]: bigNumbers[index],
     }), {});
   },
 );

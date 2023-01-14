@@ -1,15 +1,14 @@
 import { createSlice, PayloadAction } from '@reduxjs/toolkit';
-import { BigNumber } from 'ethers';
 
 import { fetchBalances } from './balancesApi';
 
 interface BalancesState {
   isLoading: boolean;
   allowances?: {
-    [address: string]: BigNumber;
+    [address: string]: string;
   }
   balances?: {
-    [address: string]: BigNumber;
+    [address: string]: string;
   }
 }
 
