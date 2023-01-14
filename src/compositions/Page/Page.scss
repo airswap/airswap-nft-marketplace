@@ -5,6 +5,7 @@ $component: page;
 .#{$component} {
     position: relative;
     margin: 0 auto;
+    min-width: 12.5rem;
     max-width: var(--page-max-width);
     z-index: 100;
 

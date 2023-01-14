@@ -54,6 +54,10 @@
     }
 
     &:focus {
-        border: 1px solid var(--c-primary);
+        border-color: var(--c-grey);
+    }
+
+    &:active {
+        border-color: var(--c-primary);
     }
 }

@@ -29,6 +29,7 @@ import IconMedium from './IconMedium';
 import IconMenu from './IconMenu';
 import IconPending from './IconPending';
 import IconPlus from './IconPlus';
+import IconSearch from './IconSearch';
 import IconStar from './IconStar';
 import IconSwap from './IconSwap';
 import IconSwapHorizontal from './IconSwapHorizontal';
@@ -70,6 +71,7 @@ export {
   IconMenu,
   IconPending,
   IconPlus,
+  IconSearch,
   IconTelegram,
   IconTwitter,
   IconStar,

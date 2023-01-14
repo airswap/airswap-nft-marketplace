@@ -1,5 +1,6 @@
 import React, { FC } from 'react';
 
+import SearchInput from '../../components/SearchInput/SearchInput';
 import { useAppSelector } from '../../redux/hooks';
 import CollectionPortrait from './subcomponents/CollectionPortrait/CollectionPortrait';
 
@@ -16,6 +17,9 @@ const CollectionWidget: FC = () => {
         title={collectionName}
         className="collection-widget__portrait"
       />
+      <div className="collection-widget__content">
+        <SearchInput placeholder="Search Collection" className="collection-widget__search-input" />
+      </div>
     </div>
   );
 };
