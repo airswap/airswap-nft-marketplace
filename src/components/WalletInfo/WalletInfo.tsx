@@ -3,6 +3,7 @@ import { FC } from 'react';
 import classNames from 'classnames';
 
 import IconButton from '../../compositions/IconButton/IconButton';
+import Avatar from '../Avatar/Avatar';
 
 import './WalletInfo.scss';
 
@@ -25,7 +26,7 @@ const WalletInfo: FC<WalletInfoProps> = ({
 
   return (
     <div className={walletInfoClassName}>
-      <div className="wallet-info__img" />
+      <Avatar className="wallet-info__avatar" address={address} />
       <span className="wallet-info__address">{address}</span>
       {isBanner && (
         <IconButton
