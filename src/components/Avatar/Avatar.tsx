@@ -8,7 +8,7 @@ interface AvatarProps {
 }
 
 const Avatar: FC<AvatarProps> = ({ address = '', className = '' }) => {
-  const [img, setImg] = useState<string>('');
+  const [linkIcon, setlinkIcon] = useState<string>('');
   async function getIcon(): Promise<string> {
     const response = await fetch(
       `https://api.dicebear.com/5.x/identicon/svg?seed=${address}`,
@@ -22,15 +22,15 @@ const Avatar: FC<AvatarProps> = ({ address = '', className = '' }) => {
   }
 
   useEffect(() => {
-    const fetchImage = async () => {
+    const fetchLinkIcon = async () => {
       const src: string = await getIcon();
       return src;
     };
-    fetchImage().then(src => setImg(src));
+    fetchLinkIcon().then(link => setlinkIcon(link));
   }, [address]);
 
   return (
-    <img className={className} src={img} width="30" height="30" alt="icon" />
+    <img className={className} src={linkIcon} width="30" height="30" alt="icon" />
   );
 };
 
