@@ -12,13 +12,13 @@ import CollectionWidget from '../../widgets/CollectionWidget/CollectionWidget';
 import './CollectionPage.scss';
 
 const CollectionPage: FC = () => {
+  const { collectionToken } = useAppSelector((state) => state.config);
+  const collectionContract = useContract({ abi: ERC721.abi, address: collectionToken });
+
   const [tokensData, setTokensData] = React.useState<any[]>([]);
 
   const index = React.useRef(0);
   const tokenIds = React.useRef<any[]>([]);
-
-  const { collectionToken } = useAppSelector((state) => state.config);
-  const collectionContract = useContract({ abi: ERC721.abi, address: collectionToken });
 
   const fetchCollectionData = async () => {
     const CHUNK_SIZE = 20;
