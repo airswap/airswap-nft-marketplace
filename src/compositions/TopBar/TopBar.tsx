@@ -6,6 +6,7 @@ import Button from '../../components/Button/Button';
 import { AppRoutes } from '../../routes';
 import IconButton from '../IconButton/IconButton';
 import IconNavLink from '../IconNavLink/IconNavLink';
+import DesktopNav from './subcomponents/DesktopNav/DesktopNav';
 
 import './TopBar.scss';
 
@@ -30,10 +31,11 @@ const TopBar: FC<TopBarProps> = ({
 
   return (
     <div className={containerClassName}>
-      <IconButton
+      <IconNavLink
         hideLabel
         icon="airswap"
         text="AirSwap button"
+        to="/"
         className="top-bar__airswap-button"
       />
       <IconButton
@@ -44,6 +46,7 @@ const TopBar: FC<TopBarProps> = ({
         className="top-bar__menu-button"
         iconClassName="top-bar__menu-button-icon"
       />
+      <DesktopNav className="top-bar__desktop-nav" />
       <div className="top-bar__list-button-and-wallet-button-wrapper">
         <IconNavLink
           icon="plus"
