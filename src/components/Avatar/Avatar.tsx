@@ -30,7 +30,7 @@ const Avatar: FC<AvatarProps> = ({ address = '', className = '' }) => {
   }, [address]);
 
   return (
-    <img className={className} src={linkIcon} width="30" height="30" alt="icon" />
+    <img className={`avatar ${className}`} src={linkIcon} alt="avatar" />
   );
 };
 
