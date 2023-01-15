@@ -2,12 +2,12 @@
 
 .nft-card {
     display: grid;
-    background-color: $c-river-styx;
-    border-radius: 8px;
-    height: 309px;
     grid-template-rows: 70% 1fr 1fr 1fr 1fr;
     align-items: center;
+    border-radius: .5rem;
+    height: 19.5rem;
     width: fit-content;
+    background-color: var(--c-grey);
 
     &__img {
         height: 100%;
@@ -16,18 +16,18 @@
     }
     
     &__name {
-        color: $c-white;
-        font-size: 1rem;
-        font-weight: 700;
         grid-row: 3;
         margin-left: .75rem;
+        font-size: 1rem;
+        font-weight: 700;
+        color: var(--c-white);
     }
     
     &__price {
-        color: $c-light-grey;
-        font-size: .75rem;
-        font-weight: 400;
         grid-row: 4;
         margin-left: .75rem;
+        font-size: .75rem;
+        font-weight: 400;
+        color: var(--c-light-grey);
     }
 }
