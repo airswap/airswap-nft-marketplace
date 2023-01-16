@@ -29,9 +29,7 @@ const CollectionPage: FC = () => {
 
   const fetchCollectionData = async () => {
     const CHUNK_SIZE = 20;
-
     const tokensToFetch = tokenIds.current.slice(index.current, index.current + CHUNK_SIZE);
-    console.log(tokensToFetch);
 
     try {
       const dataPromises = tokensToFetch.map(async (tokenId) => {
