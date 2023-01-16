@@ -1,21 +1,24 @@
-import { Web3Provider } from '@ethersproject/providers';
-import { ethers } from 'ethers';
+import { Contract, ethers } from 'ethers';
+
+import { getLibrary } from '../helpers/ethers';
+import { useAppSelector } from '../redux/hooks';
 
 type useContractProps = {
   abi: any;
   address: string;
-  provider?: Web3Provider;
 }
 
-const useContract = ({ abi, address, provider } : useContractProps): ethers.Contract => {
+const useContract = ({ abi, address } : useContractProps): Contract | null => {
   const erc721Interface = new ethers.utils.Interface(abi);
-  // @ts-ignore
-  const web3Provider = provider ?? new Web3Provider(window.ethereum);
 
-  return new ethers.Contract(
+  const { chainId } = useAppSelector((state) => state.web3);
+  if (!chainId) return null;
+  const library = getLibrary(chainId);
+
+  return new Contract(
     address,
     erc721Interface,
-    web3Provider,
+    library,
   );
 };
 
