@@ -1,4 +1,4 @@
-import { useEffect, useState } from 'react';
+import { useEffect, useRef, useState } from 'react';
 
 type UseInfiniteScrollProps = {
   fetchCallback: () => Promise<void>;
@@ -10,13 +10,25 @@ type UseInfiniteScrollReturn = {
 
 const useInfiniteScroll = ({ fetchCallback }: UseInfiniteScrollProps): UseInfiniteScrollReturn => {
   const [isLoading, setIsLoading] = useState<boolean>(false);
+
+  /* 'fetchCallback' is an async function and it can be triggered multiple times.
+  To avoid fetching the same data, this lock is used. */
+  const lock = useRef<boolean>(false);
+
   const handleScroll = async () => {
-    if (window.innerHeight + document.documentElement.scrollTop !== document.documentElement.offsetHeight) return;
+    if (lock.current) return;
+
+    const { scrollTop } = document.documentElement;
+    const { scrollHeight } = document.documentElement;
+    const { clientHeight } = document.documentElement;
+    if (scrollTop + clientHeight < scrollHeight) return;
 
     /* Fetch more items */
+    lock.current = true;
     setIsLoading(true);
     await fetchCallback();
     setIsLoading(false);
+    lock.current = false;
   };
 
   useEffect(() => {
