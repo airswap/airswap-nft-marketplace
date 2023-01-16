@@ -1,30 +1,33 @@
-import { FC } from 'react';
+import React, { FC } from "react";
 
-import classNames from 'classnames';
+import classNames from "classnames";
 
-import IconButton from '../../compositions/IconButton/IconButton';
-import Avatar from '../Avatar/Avatar';
+import IconButton from "../../compositions/IconButton/IconButton";
+import Avatar from "../Avatar/Avatar";
 
-import './WalletInfo.scss';
-
+import "./WalletInfo.scss";
 
 interface WalletInfoProps {
   isBanner?: boolean;
   avatarUrl?: string;
   address?: string;
-  className?: string
+  className?: string;
 }
 
 const WalletInfo: FC<WalletInfoProps> = ({
   isBanner = false,
-  avatarUrl = '',
-  address = '',
-  className = '',
+  avatarUrl = "",
+  address = "",
+  className = "",
 }) => {
-  const walletInfoClassName = classNames('wallet-info', {
-    'wallet-info--is-banner': isBanner,
-    'wallet-info--is-menu': !isBanner,
-  }, className);
+  const walletInfoClassName = classNames(
+    "wallet-info",
+    {
+      "wallet-info--is-banner": isBanner,
+      "wallet-info--is-menu": !isBanner,
+    },
+    className
+  );
 
   return (
     <div className={walletInfoClassName}>

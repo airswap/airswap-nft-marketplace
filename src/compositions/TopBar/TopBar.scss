@@ -106,4 +106,22 @@ $component: top-bar;
             display: flex;
         }
     }
+
+    &__user-button {
+        display: none;
+        margin-left: 1rem;
+        height: 2.5rem;
+        padding: 0 1rem;
+        font-weight: var(--fw-700);
+        color: var(--c-white);
+
+        @include for-size(tablet-portrait-up) {
+            display: flex;
+        }
+    }
+
+    &__user-button-icon {
+        height: 100%;
+        width: auto;
+    }
 }

@@ -40,11 +40,12 @@ const Page: FC<PageProps> = ({ className = '', contentClassName = '', children }
       <TopBar
         mobileMenuIsVisible={mobileMenuIsVisible}
         showDesktopConnectButton={isInitialized && !active}
+        showDesktopUserButton={isInitialized && active}
+        account={account}
         onConnectButtonClick={toggleShowWalletConnector}
         onMobileMenuButtonClick={handleIconButtonClick}
         className="page__top-bar"
       />
-
       <MobileMenu
         isHidden={!mobileMenuIsVisible}
         avatarUrl={avatarUrl}
