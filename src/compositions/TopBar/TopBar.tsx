@@ -1,9 +1,10 @@
-import React, { FC, useState } from 'react';
+import React, { FC } from 'react';
 
 import classNames from 'classnames';
 
 import Button from '../../components/Button/Button';
 import { truncateAddress } from '../../helpers/stringUtils';
+import useToggle from '../../hooks/useToggle';
 import { clearLastProvider } from '../../redux/stores/web3/web3Api';
 import { AppRoutes } from '../../routes';
 import IconButton from '../IconButton/IconButton';
@@ -32,16 +33,12 @@ const TopBar: FC<TopBarProps> = ({
   onMobileMenuButtonClick,
   className = '',
 }) => {
-  const [isPopupOpen, setIsPopupOpen] = useState(false);
+  const [isPopupOpen, toggleIsPopupOpen] = useToggle(false);
 
   const containerClassName = classNames('top-bar', {
     'top-bar--mobile-menu-is-visible': mobileMenuIsVisible,
   }, className);
   const truncatedAddress = truncateAddress(account || '');
-
-  const handleUserClick = () => {
-    setIsPopupOpen(!isPopupOpen);
-  };
 
   const handleLogoutClick = () => {
     clearLastProvider();
@@ -49,52 +46,50 @@ const TopBar: FC<TopBarProps> = ({
   };
 
   return (
-    <div>
-      <div className={containerClassName}>
+    <div className={containerClassName}>
+      <IconNavLink
+        hideLabel
+        icon="airswap"
+        text="AirSwap button"
+        to="/"
+        className="top-bar__airswap-button"
+      />
+      <IconButton
+        hideLabel
+        icon={!mobileMenuIsVisible ? 'menu' : 'close'}
+        text="Menu button"
+        onClick={onMobileMenuButtonClick}
+        className="top-bar__menu-button"
+        iconClassName="top-bar__menu-button-icon"
+      />
+      <DesktopNav className="top-bar__desktop-nav" />
+      <div className="top-bar__list-button-and-wallet-button-wrapper">
         <IconNavLink
-          hideLabel
-          icon="airswap"
-          text="AirSwap button"
-          to="/"
-          className="top-bar__airswap-button"
+          icon="plus"
+          text="List"
+          to={`/${AppRoutes.listNft}`}
+          className="top-bar__list-button"
+          iconClassName="top-bar__list-button-icon"
         />
-        <IconButton
-          hideLabel
-          icon={!mobileMenuIsVisible ? 'menu' : 'close'}
-          text="Menu button"
-          onClick={onMobileMenuButtonClick}
-          className="top-bar__menu-button"
-          iconClassName="top-bar__menu-button-icon"
-        />
-        <DesktopNav className="top-bar__desktop-nav" />
-        <div className="top-bar__list-button-and-wallet-button-wrapper">
-          <IconNavLink
-            icon="plus"
-            text="List"
-            to={`/${AppRoutes.listNft}`}
-            className="top-bar__list-button"
-            iconClassName="top-bar__list-button-icon"
+        {showDesktopConnectButton && (
+          <Button
+            text="Connect"
+            onClick={onConnectButtonClick}
+            className="top-bar__connect-button"
           />
-          {showDesktopConnectButton && (
-            <Button
-              text="Connect"
-              onClick={onConnectButtonClick}
-              className="top-bar__connect-button"
-            />
-          )}
-          {showDesktopUserButton
+        )}
+        {showDesktopUserButton
             && (
               <IconButton
                 icon="launch"
                 text={truncatedAddress}
                 className="top-bar__user-button"
                 iconClassName="top-bar__user-button-icon"
-                onClick={handleUserClick}
+                onClick={toggleIsPopupOpen}
               />
             )}
-        </div>
       </div>
-      {isPopupOpen && <UserPopup address={truncatedAddress} onLogoutClick={handleLogoutClick} />}
+      {isPopupOpen && <UserPopup address={truncatedAddress} onLogoutClick={handleLogoutClick} className="top-bar__user-popup" />}
     </div>
   );
 };

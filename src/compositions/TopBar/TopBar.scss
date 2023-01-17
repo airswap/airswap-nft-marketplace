@@ -132,4 +132,10 @@ $component: top-bar;
         border-radius: 100%;
         color: var(--c-black);
     }
+
+    &__user-popup {
+        position: absolute;
+        right: 1rem;
+        top: calc(var(--desktop-top-bar-height) - .5rem);
+    }
 }

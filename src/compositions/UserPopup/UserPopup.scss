@@ -5,11 +5,9 @@ $component: user-popup;
 .#{$component} {
     display: none;
     flex-direction: column;
-    position: absolute;
-    right: 2%;
     border: 1px solid var(--c-dark-border);
     border-radius: .25rem;
-    width: 274px;
+    width: 17.125rem;
     padding: 0.5rem;
     background: var(--c-dark);
 
@@ -48,13 +46,18 @@ $component: user-popup;
     }
 
     &__nav-link {
-        padding: 0.25rem 0 0.3rem 1.25rem;
+        @extend %button;
+        @extend %button-border-style;
+
+        justify-content: flex-start;
+        border-radius: .25rem;
+        height: 2rem;
+        padding: 0 1.125rem;
         color: var(--c-text-grey);
         font-weight: var(--fw-400);
-        z-index: 1;
-
-        &:hover {
-            border-radius: .25rem;
+        font-size: .875rem;
+        
+        &:hover, &:focus {
             font-weight: var(--fw-500);
             color: var(--c-white);
             background-color: var(--c-grey);
