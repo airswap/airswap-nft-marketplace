@@ -5,6 +5,7 @@ import { useWeb3React } from '@web3-react/core';
 import classNames from 'classnames';
 
 import Button from '../../components/Button/Button';
+import useEnsAddress from '../../hooks/useEnsAddress';
 import useToggle from '../../hooks/useToggle';
 import { useAppSelector } from '../../redux/hooks';
 import { clearLastProvider } from '../../redux/stores/web3/web3Api';
@@ -22,6 +23,7 @@ interface PageProps {
 
 const Page: FC<PageProps> = ({ className = '', contentClassName = '', children }) => {
   const { active, account, deactivate } = useWeb3React<Web3Provider>();
+  const ensAddress = useEnsAddress(account || '');
   const { isInitialized } = useAppSelector((state) => state.web3);
   const { avatarUrl } = useAppSelector((state) => state.user);
 
@@ -49,6 +51,7 @@ const Page: FC<PageProps> = ({ className = '', contentClassName = '', children }
         showDesktopConnectButton={isInitialized && !active}
         showDesktopUserButton={isInitialized && active}
         account={account}
+        ensAddress={ensAddress}
         onConnectButtonClick={toggleShowWalletConnector}
         onDisconnectButtonClick={handleDisconnectButtonClick}
         onMobileMenuButtonClick={handleIconButtonClick}
@@ -58,6 +61,7 @@ const Page: FC<PageProps> = ({ className = '', contentClassName = '', children }
         isHidden={!mobileMenuIsVisible}
         avatarUrl={avatarUrl}
         address={account || undefined}
+        onDisconnectClick={handleDisconnectButtonClick}
         onNavLinkClick={handleIconButtonClick}
         className="page__mobile-menu"
       />

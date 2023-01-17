@@ -15,34 +15,8 @@ $component: user-popup;
         display: flex;
     }
 
-    &__address-bar {
-        display: flex;
-        justify-content: space-between;
-        align-items: center;
+    &__wallet-info {
         margin-bottom: 0.5rem;
-        border: 1px solid var(--c-dark-border);
-        border-radius: .25rem;
-        padding: 1rem;
-        color: var(--c-white);
-        z-index: 1;
-    }
-
-    &__address-primary {
-        font-weight: var(--fw-700);
-    }
-
-    &__address-secondary {
-        font-size: 0.75rem;
-        font-weight: var(--fw-400);
-    }
-
-    &__logout-button {
-        border: none;
-        color: var(--c-white);
-
-        &:focus {
-            border: none;
-        }
     }
 
     &__nav-link {

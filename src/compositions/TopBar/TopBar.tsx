@@ -18,6 +18,7 @@ interface TopBarProps {
   showDesktopConnectButton: boolean;
   showDesktopUserButton: boolean;
   account: string | null | undefined;
+  ensAddress: string | undefined;
   onConnectButtonClick: () => void;
   onDisconnectButtonClick: () => void;
   onMobileMenuButtonClick: () => void;
@@ -29,6 +30,7 @@ const TopBar: FC<TopBarProps> = ({
   showDesktopConnectButton,
   showDesktopUserButton,
   account,
+  ensAddress,
   onConnectButtonClick,
   onDisconnectButtonClick,
   onMobileMenuButtonClick,
@@ -39,7 +41,6 @@ const TopBar: FC<TopBarProps> = ({
   const containerClassName = classNames('top-bar', {
     'top-bar--mobile-menu-is-visible': mobileMenuIsVisible,
   }, className);
-  const truncatedAddress = truncateAddress(account || '');
 
   const handleDisconnectClick = () => {
     toggleIsPopupOpen();
@@ -83,14 +84,14 @@ const TopBar: FC<TopBarProps> = ({
             && (
               <IconButton
                 icon="launch"
-                text={truncatedAddress}
+                text={truncateAddress(ensAddress || account || '')}
                 className="top-bar__user-button"
                 iconClassName="top-bar__user-button-icon"
                 onClick={toggleIsPopupOpen}
               />
             )}
       </div>
-      {isPopupOpen && <UserPopup address={truncatedAddress} onDisconnectClick={handleDisconnectClick} className="top-bar__user-popup" />}
+      {isPopupOpen && <UserPopup address={account || ''} ensAddress={ensAddress} onDisconnectClick={handleDisconnectClick} className="top-bar__user-popup" />}
     </div>
   );
 };

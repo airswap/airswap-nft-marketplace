@@ -16,7 +16,13 @@ interface WalletInfoProps {
   isMobileMenu?: boolean;
 >>>>>>> 5b8fd66 (styling fixes)
   address?: string;
+<<<<<<< HEAD
   className?: string;
+=======
+  ensAddress?: string;
+  onDisconnectClick: () => void;
+  className?: string
+>>>>>>> 73f4b3c (add ens functionality)
 }
 
 const WalletInfo: FC<WalletInfoProps> = ({
@@ -28,6 +34,8 @@ const WalletInfo: FC<WalletInfoProps> = ({
 =======
   isMobileMenu = true,
   address = '',
+  ensAddress,
+  onDisconnectClick,
   className = '',
 >>>>>>> 5b8fd66 (styling fixes)
 }) => {
@@ -47,8 +55,15 @@ const WalletInfo: FC<WalletInfoProps> = ({
       <span className="wallet-info__address">{address}</span>
 =======
       {isMobileMenu && <div className="wallet-info__img" />}
+<<<<<<< HEAD
       <span className="wallet-info__address">{truncateAddress(address)}</span>
 >>>>>>> 5b8fd66 (styling fixes)
+=======
+      <div className="wallet-info__address-bar">
+        <div className="wallet-info__address">{truncateAddress(ensAddress || address)}</div>
+        {ensAddress && <div className="wallet-info__address-secondary">{truncateAddress(address)}</div>}
+      </div>
+>>>>>>> 73f4b3c (add ens functionality)
       {isBanner && (
         <IconButton
           hideLabel
@@ -62,6 +77,7 @@ const WalletInfo: FC<WalletInfoProps> = ({
         icon="logout"
         text="logout"
         iconClassName="wallet-info__icon"
+        onClick={onDisconnectClick}
       />
     </div>
   );
