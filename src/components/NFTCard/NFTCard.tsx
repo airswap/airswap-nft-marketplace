@@ -2,7 +2,7 @@ import React from 'react';
 
 import './NFTCard.scss';
 
-type NFTCardProps = {
+interface NFTCardProps {
   imageURI: string;
   name: string;
   price: number;

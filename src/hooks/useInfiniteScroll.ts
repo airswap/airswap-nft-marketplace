@@ -1,10 +1,10 @@
 import { useEffect, useRef, useState } from 'react';
 
-type UseInfiniteScrollProps = {
+interface UseInfiniteScrollProps {
   fetchCallback: () => Promise<void>;
 }
 
-type UseInfiniteScrollReturn = {
+interface UseInfiniteScrollReturn {
   isLoading: boolean;
 }
 

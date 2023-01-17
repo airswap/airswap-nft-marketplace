@@ -3,7 +3,7 @@ import { Contract, ethers } from 'ethers';
 import { getLibrary } from '../helpers/ethers';
 import { useAppSelector } from '../redux/hooks';
 
-type useContractProps = {
+interface useContractProps {
   abi: any;
   address: string;
 }
