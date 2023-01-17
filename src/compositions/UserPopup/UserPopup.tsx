@@ -1,5 +1,6 @@
 import { FC } from 'react';
 
+import { AppRoutes } from '../../routes';
 import IconButton from '../IconButton/IconButton';
 
 import './UserPopup.scss';
@@ -23,10 +24,10 @@ const UserPopup: FC<UserPopupProps> = (
       </div>
       <IconButton text="" icon="logout" className="user-popup__logout-button" onClick={onLogoutClick} />
     </div>
-    <a href="./profile" className="user-popup__nav-link">Profile</a>
-    <a href="./nfts" className="user-popup__nav-link">NFTs</a>
-    <a href="./listed" className="user-popup__nav-link">Listed</a>
-    <a href="./activity" className="user-popup__nav-link">Activity</a>
+    <a href={`./${AppRoutes.profile}`} className="user-popup__nav-link">Profile</a>
+    <a href={`./${AppRoutes.profile}`} className="user-popup__nav-link">NFTs</a>
+    <a href={`./${AppRoutes.profile}`} className="user-popup__nav-link">Listed</a>
+    <a href={`./${AppRoutes.profile}`} className="user-popup__nav-link">Activity</a>
   </div>
 );
 

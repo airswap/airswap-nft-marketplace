@@ -126,10 +126,10 @@ $component: top-bar;
 
     &__user-button-icon {
         //temp css, replace later by a generate img from address
-        color: var(--c-black);
         margin-right: 0.75rem;
         height: 90%;
         border: 1px solid gray; 
         border-radius: 100%;
+        color: var(--c-black);
     }
 }

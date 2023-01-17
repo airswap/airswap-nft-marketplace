@@ -33,6 +33,7 @@ const TopBar: FC<TopBarProps> = ({
   className = '',
 }) => {
   const [isPopupOpen, setIsPopupOpen] = useState(false);
+
   const containerClassName = classNames('top-bar', {
     'top-bar--mobile-menu-is-visible': mobileMenuIsVisible,
   }, className);
