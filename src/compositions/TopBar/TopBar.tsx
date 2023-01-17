@@ -78,9 +78,10 @@ const TopBar: FC<TopBarProps> = ({
           {showDesktopUserButton
             && (
               <IconButton
-                icon="logout"
+                icon="launch"
                 text={truncatedAddress}
                 className="top-bar__user-button"
+                iconClassName="top-bar__user-button-icon"
                 onClick={handleUserClick}
               />
             )}
