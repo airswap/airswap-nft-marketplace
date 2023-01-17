@@ -40,18 +40,19 @@ $component: user-popup;
         }
     }
 
-    &__nav-link {
+    &__profile-link {
+        border-radius: .25rem;
+        padding: 0.25rem 0 0.3rem 1.25rem;
+        background-color: var(--c-grey);
+        font-weight: var(--fw-500);
+        color: var(--c-white)
+    }
 
+    &__nav-link {
         color: var(--c-text-grey);
         font-weight: var(--fw-400);
         border-radius: .25rem;
         padding: 0.25rem 0 0.3rem 1.25rem;
         cursor: pointer;
-
-        &:hover {
-            background-color: var(--c-grey);
-            font-weight: var(--fw-500);
-            color: var(--c-white)
-        }
     }
 }

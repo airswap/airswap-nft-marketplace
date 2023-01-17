@@ -3,7 +3,7 @@ import React, { FC } from 'react';
 import classNames from 'classnames';
 
 import Button from '../../components/Button/Button';
-import { getAccountAbbrevation } from '../../helpers/strings';
+import { truncateAddress } from '../../helpers/stringUtils';
 import { AppRoutes } from '../../routes';
 import IconButton from '../IconButton/IconButton';
 import IconNavLink from '../IconNavLink/IconNavLink';
@@ -34,7 +34,7 @@ const TopBar: FC<TopBarProps> = ({
   const containerClassName = classNames('top-bar', {
     'top-bar--mobile-menu-is-visible': mobileMenuIsVisible,
   }, className);
-  const abbreviatedAccount = getAccountAbbrevation(account || '');
+  const truncatedAddress = truncateAddress(account || '');
 
   return (
     <div>
@@ -70,16 +70,10 @@ const TopBar: FC<TopBarProps> = ({
               className="top-bar__connect-button"
             />
           )}
-          {showDesktopUserButton && (
-            <Button
-              text={abbreviatedAccount}
-              onClick={() => []}
-              className="top-bar__user-button"
-            />
-          )}
+          {showDesktopUserButton && <IconButton icon="logout" text={truncatedAddress} />}
         </div>
       </div>
-      <UserPopup isENS={false} account={abbreviatedAccount} />
+      <UserPopup isENS={false} address={truncatedAddress} />
     </div>
   );
 };
