@@ -7,6 +7,7 @@ import classNames from 'classnames';
 import Button from '../../components/Button/Button';
 import useToggle from '../../hooks/useToggle';
 import { useAppSelector } from '../../redux/hooks';
+import { clearLastProvider } from '../../redux/stores/web3/web3Api';
 import WalletConnector from '../../widgets/WalletConnector/WalletConnector';
 import MobileMenu from '../MobileMenu/MobileMenu';
 import TopBar from '../TopBar/TopBar';
@@ -20,7 +21,7 @@ interface PageProps {
 }
 
 const Page: FC<PageProps> = ({ className = '', contentClassName = '', children }) => {
-  const { active, account } = useWeb3React<Web3Provider>();
+  const { active, account, deactivate } = useWeb3React<Web3Provider>();
   const { isInitialized } = useAppSelector((state) => state.web3);
   const { avatarUrl } = useAppSelector((state) => state.user);
 
@@ -35,6 +36,12 @@ const Page: FC<PageProps> = ({ className = '', contentClassName = '', children }
     setMobileMenuIsVisible(!mobileMenuIsVisible);
   };
 
+  const handleDisconnectButtonClick = (): void => {
+    deactivate();
+    // TODO: Make proper action for this.
+    clearLastProvider();
+  };
+
   return (
     <div className={pageClassName}>
       <TopBar
@@ -43,6 +50,7 @@ const Page: FC<PageProps> = ({ className = '', contentClassName = '', children }
         showDesktopUserButton={isInitialized && active}
         account={account}
         onConnectButtonClick={toggleShowWalletConnector}
+        onDisconnectButtonClick={handleDisconnectButtonClick}
         onMobileMenuButtonClick={handleIconButtonClick}
         className="page__top-bar"
       />

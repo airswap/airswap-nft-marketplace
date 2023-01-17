@@ -5,7 +5,6 @@ import classNames from 'classnames';
 import Button from '../../components/Button/Button';
 import { truncateAddress } from '../../helpers/stringUtils';
 import useToggle from '../../hooks/useToggle';
-import { clearLastProvider } from '../../redux/stores/web3/web3Api';
 import { AppRoutes } from '../../routes';
 import IconButton from '../IconButton/IconButton';
 import IconNavLink from '../IconNavLink/IconNavLink';
@@ -20,6 +19,7 @@ interface TopBarProps {
   showDesktopUserButton: boolean;
   account: string | null | undefined;
   onConnectButtonClick: () => void;
+  onDisconnectButtonClick: () => void;
   onMobileMenuButtonClick: () => void;
   className?: string;
 }
@@ -30,6 +30,7 @@ const TopBar: FC<TopBarProps> = ({
   showDesktopUserButton,
   account,
   onConnectButtonClick,
+  onDisconnectButtonClick,
   onMobileMenuButtonClick,
   className = '',
 }) => {
@@ -40,9 +41,9 @@ const TopBar: FC<TopBarProps> = ({
   }, className);
   const truncatedAddress = truncateAddress(account || '');
 
-  const handleLogoutClick = () => {
-    clearLastProvider();
-    window.location.reload();
+  const handleDisconnectClick = () => {
+    toggleIsPopupOpen();
+    onDisconnectButtonClick();
   };
 
   return (
@@ -89,7 +90,7 @@ const TopBar: FC<TopBarProps> = ({
               />
             )}
       </div>
-      {isPopupOpen && <UserPopup address={truncatedAddress} onLogoutClick={handleLogoutClick} className="top-bar__user-popup" />}
+      {isPopupOpen && <UserPopup address={truncatedAddress} onDisconnectClick={handleDisconnectClick} className="top-bar__user-popup" />}
     </div>
   );
 };
