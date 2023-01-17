@@ -4,12 +4,18 @@ $component: user-popup;
 
 .#{$component} {
     position: absolute;
-    left: 80%;
+    display: none;
+    flex-direction: column;
+    right: 2%;
     width: 274px;
     background: var(--c-dark);
     border: 1px solid var(--c-dark-border);
     border-radius: .25rem;
     padding: 0.5rem;
+
+    @include for-size(tablet-portrait-up) {
+        display: flex;
+    }
 
     &__address-bar {
         display: flex;
@@ -40,7 +46,7 @@ $component: user-popup;
         }
     }
 
-    &__profile-link {
+    &__profile {
         border-radius: .25rem;
         padding: 0.25rem 0 0.3rem 1.25rem;
         background-color: var(--c-grey);
@@ -48,11 +54,10 @@ $component: user-popup;
         color: var(--c-white)
     }
 
-    &__nav-link {
+    & > a {
         color: var(--c-text-grey);
         font-weight: var(--fw-400);
         border-radius: .25rem;
         padding: 0.25rem 0 0.3rem 1.25rem;
-        cursor: pointer;
     }
 }

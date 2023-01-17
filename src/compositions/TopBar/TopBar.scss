@@ -109,6 +109,7 @@ $component: top-bar;
 
     &__user-button {
         display: none;
+        border: none;
         margin-left: 1rem;
         height: 2.5rem;
         padding: 0 1rem;
@@ -117,6 +118,10 @@ $component: top-bar;
 
         @include for-size(tablet-portrait-up) {
             display: flex;
+        }
+
+        &:focus {
+            border: none;
         }
     }
 

@@ -1,4 +1,4 @@
-import React, { FC } from 'react';
+import React, { FC, useState } from 'react';
 
 import classNames from 'classnames';
 
@@ -31,10 +31,15 @@ const TopBar: FC<TopBarProps> = ({
   onMobileMenuButtonClick,
   className = '',
 }) => {
+  const [isPopupOpen, setIsPopupOpen] = useState(false);
   const containerClassName = classNames('top-bar', {
     'top-bar--mobile-menu-is-visible': mobileMenuIsVisible,
   }, className);
   const truncatedAddress = truncateAddress(account || '');
+
+  const handleUserClick = () => {
+    setIsPopupOpen(!isPopupOpen);
+  };
 
   return (
     <div>
@@ -70,10 +75,18 @@ const TopBar: FC<TopBarProps> = ({
               className="top-bar__connect-button"
             />
           )}
-          {showDesktopUserButton && <IconButton icon="logout" text={truncatedAddress} />}
+          {showDesktopUserButton
+            && (
+              <IconButton
+                icon="logout"
+                text={truncatedAddress}
+                className="top-bar__user-button"
+                onClick={handleUserClick}
+              />
+            )}
         </div>
       </div>
-      <UserPopup isENS={false} address={truncatedAddress} />
+      {isPopupOpen && <UserPopup address={truncatedAddress} onLogoutClick={() => console.log('hi')} />}
     </div>
   );
 };
