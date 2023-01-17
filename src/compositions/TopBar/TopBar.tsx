@@ -4,6 +4,7 @@ import classNames from 'classnames';
 
 import Button from '../../components/Button/Button';
 import { truncateAddress } from '../../helpers/stringUtils';
+import { clearLastProvider } from '../../redux/stores/web3/web3Api';
 import { AppRoutes } from '../../routes';
 import IconButton from '../IconButton/IconButton';
 import IconNavLink from '../IconNavLink/IconNavLink';
@@ -39,6 +40,11 @@ const TopBar: FC<TopBarProps> = ({
 
   const handleUserClick = () => {
     setIsPopupOpen(!isPopupOpen);
+  };
+
+  const handleLogoutClick = () => {
+    clearLastProvider();
+    window.location.reload();
   };
 
   return (
@@ -87,7 +93,7 @@ const TopBar: FC<TopBarProps> = ({
             )}
         </div>
       </div>
-      {isPopupOpen && <UserPopup address={truncatedAddress} onLogoutClick={() => console.log('hi')} />}
+      {isPopupOpen && <UserPopup address={truncatedAddress} onLogoutClick={handleLogoutClick} />}
     </div>
   );
 };
