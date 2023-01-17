@@ -23,10 +23,10 @@ const UserPopup: FC<UserPopupProps> = (
       </div>
       <IconButton text="" icon="logout" className="user-popup__logout-button" onClick={onLogoutClick} />
     </div>
-    <div className="user-popup__profile">Profile</div>
-    <a href="./#">NFTs</a>
-    <a href="./#">Listed</a>
-    <a href="./hi">Activity</a>
+    <a href="./profile" className="user-popup__nav-link">Profile</a>
+    <a href="./nfts" className="user-popup__nav-link">NFTs</a>
+    <a href="./listed" className="user-popup__nav-link">Listed</a>
+    <a href="./activity" className="user-popup__nav-link">Activity</a>
   </div>
 );
 

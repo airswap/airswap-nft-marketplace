@@ -46,18 +46,17 @@ $component: user-popup;
         }
     }
 
-    &__profile {
-        border-radius: .25rem;
-        padding: 0.25rem 0 0.3rem 1.25rem;
-        background-color: var(--c-grey);
-        font-weight: var(--fw-500);
-        color: var(--c-white)
-    }
-
-    & > a {
+    &__nav-link {
+        z-index: 1;
         color: var(--c-text-grey);
         font-weight: var(--fw-400);
-        border-radius: .25rem;
         padding: 0.25rem 0 0.3rem 1.25rem;
+
+        &:hover {
+            border-radius: .25rem;
+            background-color: var(--c-grey);
+            font-weight: var(--fw-500);
+            color: var(--c-white);
+        }
     }
 }
