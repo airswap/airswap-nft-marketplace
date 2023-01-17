@@ -4,10 +4,11 @@ import { useEffect, useState } from 'react';
 import { Web3Provider } from '@ethersproject/providers';
 import { useWeb3React } from '@web3-react/core';
 import axios from 'axios';
-import { BigNumber, ethers } from 'ethers';
+import { BigNumber, errors, ethers } from 'ethers';
 
 import erc721Abi from '../abis/erc721.json';
 import { ipfsToUrl, startsWithIPFS } from '../helpers/ethers';
+import useNftMetadata from './useNftMetadata';
 
 type TokenMetadata = {
   name: string;
@@ -21,7 +22,6 @@ const useTokenIdForAddress = (collectionURI: string, walletAddress?: string, upd
   const [metadata, setMetadata] = useState<Metadata>();
   const { library: provider, account } = useWeb3React<Web3Provider>();
 
-  console.log('ACCOUNT:', account);
   useEffect(() => {
     if (!account || walletAddress) {
       return;
@@ -31,29 +31,26 @@ const useTokenIdForAddress = (collectionURI: string, walletAddress?: string, upd
 
     contract.balanceOf(account).then((balance: BigNumber) => {
       const count = balance.toNumber();
-      console.log(count);
-      for (let index = 0; index < count; index + 1) {
-        contract.tokenOfOwnerByIndex()
+      for (let index = 0; index < count; index++) {
+        contract.tokenOfOwnerByIndex(account, index).then((bigTokenId: BigNumber) => {
+          const tokenId = bigTokenId.toString();
+          useNftMetadata(collectionURI, tokenId);
+          let tokenMetadata: TokenMetadata = {
+            name: "",
+            image: "",
+            description: ""
+          };
+          if (metadata) {
+            setMetadata([ ...metadata, tokenMetadata ])
+          } else {
+            setMetadata([ tokenMetadata ])
+          }
+        }).catch((err: errors) => {
+          // TODO: Error handling
+          console.log(err);
+        });
       }
     });
-
-
-    // contract.tokenURI(tokenId).then((tokenURI: string) => {
-    //   axios.get(ipfsToUrl(tokenURI)).then((res) => {
-    //     const { data } = res;
-    //     if (updateIpfsUrls) {
-    //       const values = Object.values(data);
-    //       const keys = Object.keys(data);
-
-    //       values.forEach((val, i) => {
-    //         if (typeof val === 'string' && startsWithIPFS(val)) {
-    //           data[keys[i]] = ipfsToUrl(val);
-    //         }
-    //       });
-    //     }
-    //     setMetadata(data);
-    //   });
-    // });
   }, [collectionURI, provider]);
 
   return metadata;
