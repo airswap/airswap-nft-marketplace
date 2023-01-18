@@ -1,6 +1,7 @@
 import React, { FC } from 'react';
 
 import Button from '../../components/Button/Button';
+import useNftMetadata from '../../hooks/useNftMetadata';
 import { useAppSelector } from '../../redux/hooks';
 import NftDetailMainInfo from './subcomponents/NftDetailMainInfo/NftDetailMainInfo';
 import NftDetailPortrait from './subcomponents/NftDetailPortrait/NftDetailPortrait';
@@ -8,7 +9,8 @@ import NftDetailPortrait from './subcomponents/NftDetailPortrait/NftDetailPortra
 import './NftDetailWidget.scss';
 
 const CollectionWidget: FC = () => {
-  const { collectionImage } = useAppSelector((state) => state.config);
+  const { collectionImage, collectionToken } = useAppSelector((state) => state.config);
+  const nftMetadata = useNftMetadata(collectionToken, '3060');
 
   return (
     <div className="nft-detail-widget">
@@ -19,7 +21,7 @@ const CollectionWidget: FC = () => {
           className="nft-detail-widget__main-info"
         />
         <NftDetailPortrait
-          backgroundImage={collectionImage}
+          backgroundImage={nftMetadata?.image || collectionImage}
           className="nft-detail-widget__portrait"
         />
       </div>
