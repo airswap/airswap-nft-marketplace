@@ -2,8 +2,8 @@ import React, { FC } from 'react';
 
 import Button from '../../components/Button/Button';
 import { useAppSelector } from '../../redux/hooks';
-import NftDetailPortrait from './subcomponents/NftDetailPortrait/NftDetailPortrait';
 import NftDetailMainInfo from './subcomponents/NftDetailMainInfo/NftDetailMainInfo';
+import NftDetailPortrait from './subcomponents/NftDetailPortrait/NftDetailPortrait';
 
 import './NftDetailWidget.scss';
 
