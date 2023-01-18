@@ -2,7 +2,7 @@ import React, { FC } from 'react';
 
 import Button from '../../components/Button/Button';
 import { useAppSelector } from '../../redux/hooks';
-import NftDetailPortrait from './subcomponents/CollectionPortrait/NftDetailPortrait';
+import NftDetailPortrait from './subcomponents/NftDetailPortrait/NftDetailPortrait';
 import NftDetailMainInfo from './subcomponents/NftDetailMainInfo/NftDetailMainInfo';
 
 import './NftDetailWidget.scss';
@@ -14,7 +14,7 @@ const CollectionWidget: FC = () => {
     <div className="nft-detail-widget">
       <div className="nft-detail-widget__top">
         <NftDetailMainInfo
-          subTitle="by sjnivo"
+          subTitle="by sjnivo12345"
           title="Nft title"
           className="nft-detail-widget__main-info"
         />
