@@ -1,25 +1,23 @@
 import { Contract, ethers } from 'ethers';
 
-import { getLibrary } from '../helpers/ethers';
-import { useAppSelector } from '../redux/hooks';
+import { store } from '../redux/store';
 
 interface useContractProps {
-  abi: any;
+  abi: ConstructorParameters<typeof ethers.utils.Interface>[0];
   address: string;
 }
 
-const useContract = ({ abi, address } : useContractProps): Contract | null => {
+const useContract = ({ abi, address }: useContractProps): Contract | null => {
   const erc721Interface = new ethers.utils.Interface(abi);
+  const { web3, library: libraryState } = store.getState();
 
-  const { chainId } = useAppSelector((state) => state.web3);
+  const { chainId } = web3;
   if (!chainId) return null;
-  const library = getLibrary(chainId);
 
-  return new Contract(
-    address,
-    erc721Interface,
-    library,
-  );
+  const { library } = libraryState;
+  if (!library) return null;
+
+  return new Contract(address, erc721Interface, library[chainId]);
 };
 
 export default useContract;

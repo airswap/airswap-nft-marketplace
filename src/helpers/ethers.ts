@@ -3,6 +3,8 @@ import { Web3Provider } from '@ethersproject/providers';
 const cachedLibrary: Record<string, Web3Provider> = {};
 
 export const setLibrary = (provider: any): Web3Provider => {
+  console.log('provider', provider);
+  console.log('chain id', provider.chainId);
   const chainId = parseInt(provider.chainId, 16);
 
   if (!cachedLibrary[chainId]) {

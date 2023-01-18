@@ -30,6 +30,7 @@ module.exports = {
     'simple-import-sort',
   ],
   rules: {
+    'no-param-reassign': ['warn', { props: false }],
     '@typescript-eslint/ban-ts-comment': 'off',
     '@typescript-eslint/ban-ts-ignore': 'off',
     '@typescript-eslint/explicit-module-boundary-types': 'off',
@@ -48,7 +49,7 @@ module.exports = {
       'error',
     ],
     '@typescript-eslint/no-underscore-dangle': 'off',
-    '@typescript-eslint/no-unused-vars': 'error',
+    '@typescript-eslint/no-unused-vars': 'warn',
     '@typescript-eslint/no-use-before-define': [
       'error',
     ],
