@@ -3,6 +3,7 @@ import React, { FC } from 'react';
 import Button from '../../components/Button/Button';
 import useNftMetadata from '../../hooks/useNftMetadata';
 import { useAppSelector } from '../../redux/hooks';
+import NftDetailAttributeCard from './subcomponents/NftDetailAttributeCard/NftDetailAttributeCard';
 import NftDetailMainInfo from './subcomponents/NftDetailMainInfo/NftDetailMainInfo';
 import NftDetailPortrait from './subcomponents/NftDetailPortrait/NftDetailPortrait';
 
@@ -30,14 +31,13 @@ const CollectionWidget: FC = () => {
       <div className="nft-detail-widget__description">
         <p>Description v</p>
         <p>{nftMetadata?.description}</p>
-        {
-          nftMetadata?.attributes.map((attribute: Record<string, string>) => (
-            <div style={{ backgroundColor: 'grey' }}>
-              <p>{attribute.trait_type}</p>
-              <p>{attribute.value}</p>
-            </div>
-          ))
-        }
+        <div className="nft-detail-widget__attributes">
+          {
+            nftMetadata?.attributes.map((attribute: Record<string, string>) => (
+              <NftDetailAttributeCard key={attribute.trait_type} label={attribute.trait_type} value={attribute.value} />
+            ))
+          }
+        </div>
       </div>
       <Button text="Proceed" className="nft-detail-widget__proceed-button" />
     </div>

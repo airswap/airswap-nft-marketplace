@@ -35,6 +35,12 @@
         }
     }
 
+    &__attributes {
+        display: grid;
+        grid-template-columns: 1fr 1fr;
+        gap: .75em;
+    }
+
     &__proceed-button {
         @extend %button--is-primary;
 
