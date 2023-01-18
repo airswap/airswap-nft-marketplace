@@ -11,13 +11,14 @@ import './NftDetailWidget.scss';
 const CollectionWidget: FC = () => {
   const { collectionImage, collectionToken } = useAppSelector((state) => state.config);
   const nftMetadata = useNftMetadata(collectionToken, '3060');
+  console.log(nftMetadata);
 
   return (
     <div className="nft-detail-widget">
       <div className="nft-detail-widget__top">
         <NftDetailMainInfo
           subTitle="by sjnivo12345"
-          title="Nft title"
+          title={nftMetadata?.name || ''}
           className="nft-detail-widget__main-info"
         />
         <NftDetailPortrait
