@@ -1,4 +1,4 @@
-import React, { FC } from 'react';
+import React, { FC, useEffect } from 'react';
 
 import classNames from 'classnames';
 
@@ -47,6 +47,14 @@ const TopBar: FC<TopBarProps> = ({
     onDisconnectButtonClick();
   };
 
+  useEffect(() => {
+    if (isPopupOpen) {
+      document.addEventListener('click', toggleIsPopupOpen);
+    } else {
+      document.removeEventListener('click', toggleIsPopupOpen);
+    }
+  }, [isPopupOpen]);
+
   return (
     <div className={containerClassName}>
       <IconNavLink
@@ -87,7 +95,7 @@ const TopBar: FC<TopBarProps> = ({
                 text={truncateAddress(ensAddress || account || '')}
                 className="top-bar__user-button"
                 iconClassName="top-bar__user-button-icon"
-                onClick={toggleIsPopupOpen}
+                onClick={!isPopupOpen && toggleIsPopupOpen}
               />
             )}
       </div>
