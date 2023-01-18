@@ -10,6 +10,7 @@ import './NftDetailWidget.scss';
 
 const CollectionWidget: FC = () => {
   const { collectionImage, collectionToken } = useAppSelector((state) => state.config);
+  // TODO: Use dynamic tokenId in place of '3060'
   const nftMetadata = useNftMetadata(collectionToken, '3060');
   console.log(nftMetadata);
 
@@ -25,6 +26,18 @@ const CollectionWidget: FC = () => {
           backgroundImage={nftMetadata?.image || collectionImage}
           className="nft-detail-widget__portrait"
         />
+      </div>
+      <div className="nft-detail-widget__description">
+        <p>Description v</p>
+        <p>{nftMetadata?.description}</p>
+        {
+          nftMetadata?.attributes.map((attribute: Record<string, string>) => (
+            <div style={{ backgroundColor: 'grey' }}>
+              <p>{attribute.trait_type}</p>
+              <p>{attribute.value}</p>
+            </div>
+          ))
+        }
       </div>
       <Button text="Proceed" className="nft-detail-widget__proceed-button" />
     </div>
