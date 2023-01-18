@@ -1,5 +1,5 @@
 import { Web3Provider } from '@ethersproject/providers';
-import { createSlice, PayloadAction } from '@reduxjs/toolkit';
+import { createSlice } from '@reduxjs/toolkit';
 
 interface LibraryState {
   library: { [key: string]: Web3Provider };
@@ -13,7 +13,7 @@ const librarySlice = createSlice({
   name: 'library',
   initialState,
   reducers: {
-    setLibrary: (state, action: PayloadAction<any>) => {
+    setLibrary: (state, action) => {
       const provider = action.payload;
       const chainId = parseInt(provider.chainId, 16);
       if (!state.library[chainId]) {

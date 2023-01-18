@@ -1,6 +1,5 @@
 import React from 'react';
 
-import { Web3Provider } from '@ethersproject/providers';
 import { Web3ReactProvider } from '@web3-react/core';
 
 import Routes from './compositions/Routes/Routes';
@@ -16,12 +15,12 @@ const ConnectedApp = () => {
   );
 };
 
-function setLib(provider : Web3Provider) {
+function getLibrary(provider: Record<string, unknown>) {
   store.dispatch(setLibrary(provider));
 }
 
 const App = () => (
-  <Web3ReactProvider getLibrary={setLib}>
+  <Web3ReactProvider getLibrary={getLibrary}>
     <ConnectedApp />
   </Web3ReactProvider>
 );
