@@ -34,7 +34,7 @@ const CollectionWidget: FC = () => {
         title={collectionName}
         className="collection-widget__portrait"
       />
-      <div className="nft-list">
+      <div className="nft-cards-container">
         {tokensData.map((t) => (
           <NFTCard
             key={t.name}
