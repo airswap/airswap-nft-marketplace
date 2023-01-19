@@ -1,27 +1,28 @@
-import { Web3Provider } from '@ethersproject/providers';
 import ERC721 from '@openzeppelin/contracts/build/contracts/ERC721.json';
 import { createAsyncThunk } from '@reduxjs/toolkit';
-import { ethers } from 'ethers';
+import { Contract, ethers } from 'ethers';
 
 import { getLibrary } from '../../../helpers/ethers';
 import { store } from '../../store';
 
-const erc721Interface = new ethers.utils.Interface(ERC721.abi);
+export const getCollectionContract = (): Contract|null => {
+  const erc721Interface = new ethers.utils.Interface(ERC721.abi);
+  const { config, web3 } = store.getState();
 
-const getContract = (address: string, provider: Web3Provider) => new ethers.Contract(address, erc721Interface, provider);
+  if (!web3.chainId) return null;
+  const library = getLibrary(web3.chainId);
+
+  return new Contract(config.collectionToken, erc721Interface, library);
+};
 
 export const fetchNFTMetadata = createAsyncThunk(
   'collection/fetchNFTMetadata',
   async () => {
-    const { collection, web3, config } = store.getState();
+    const { collection } = store.getState();
     const { tokenIds, index } = collection;
-    const { chainId } = web3;
-    const { collectionToken } = config;
 
-    if (!chainId) return;
-    console.log('fetchNFTMetadata: after chain');
-    const library = getLibrary(web3.chainId as number);
-    const collectionContract = getContract(collectionToken, library);
+    const collectionContract = getCollectionContract();
+    if (!collectionContract) return;
 
     const CHUNK_SIZE = 20;
     const tokensToFetch = tokenIds.slice(
@@ -41,8 +42,6 @@ export const fetchNFTMetadata = createAsyncThunk(
       });
 
       const newTokensData = await Promise.all(dataPromises);
-      console.log('fetchNFTMetadata: new tokens data', newTokensData);
-      // setTokensData(newTokensData as []);
       store.dispatch({ type: 'collection/setTokensData', payload: newTokensData });
     } catch (err) {
       // TODO
