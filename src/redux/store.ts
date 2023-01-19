@@ -21,9 +21,7 @@ export const store = configureStore({
 
 configureBalancesSubscriber();
 configureMetadataSubscriber();
-setTimeout(() => {
-  configureCollectionSubscriber();
-}, 2500);
+configureCollectionSubscriber();
 
 export type AppDispatch = typeof store.dispatch;
 export type RootState = ReturnType<typeof store.getState>;
