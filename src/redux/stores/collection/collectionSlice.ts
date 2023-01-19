@@ -18,10 +18,10 @@ const collectionSlice = createSlice({
   name: 'collection',
   initialState,
   reducers: {
-    incrementIndex: (state, action: PayloadAction<number>) => {
-      const amount = action.payload;
-      state.index += amount;
-    },
+    incrementIndex: (state, action: PayloadAction<number>) => ({
+      ...state,
+      index: state.index + action.payload,
+    }),
     setTokensData: (state, action: PayloadAction<any[]>) => ({
       ...state,
       tokensData: [...state.tokensData, ...action.payload],
