@@ -1,19 +1,45 @@
 import React, { FC } from 'react';
 
+import { useNavigate } from 'react-router-dom';
+
 import Button from '../../components/Button/Button';
-import useNftMetadata from '../../hooks/useNftMetadata';
+import useNftMetadata, { Metadata } from '../../hooks/useNftMetadata';
 import { useAppSelector } from '../../redux/hooks';
+import { AppRoutes } from '../../routes';
+import NftDetailAccordian from './subcomponents/NftDetailAccordian/NftDetailAccordian';
 import NftDetailAttributeCard from './subcomponents/NftDetailAttributeCard/NftDetailAttributeCard';
 import NftDetailMainInfo from './subcomponents/NftDetailMainInfo/NftDetailMainInfo';
 import NftDetailPortrait from './subcomponents/NftDetailPortrait/NftDetailPortrait';
 
 import './NftDetailWidget.scss';
 
+
+// TODO: Move NftDetailAttributes into sub-component.
+interface NftDetailAttributesProps {
+  attrs: Array<Metadata>;
+  className?: string;
+}
+
+const NftDetailAttributes: FC<NftDetailAttributesProps> = ({ attrs, className = '' }) => (
+  <div className={`nft-detail-widget__attributes ${className}`}>
+    {attrs.map((attribute: Record<string, string>) => (
+      <NftDetailAttributeCard key={attribute.trait_type} label={attribute.trait_type} value={attribute.value} />
+    ))}
+  </div>
+);
+
 const CollectionWidget: FC = () => {
   const { collectionImage, collectionToken } = useAppSelector((state) => state.config);
   // TODO: Use dynamic tokenId in place of '3060'
   const nftMetadata = useNftMetadata(collectionToken, '3060');
   console.log(nftMetadata);
+
+  const navigate = useNavigate();
+  const routeChange = () => {
+    // TODO: Update with the correct route when available.
+    const path = AppRoutes.collection;
+    navigate(path);
+  };
 
   return (
     <div className="nft-detail-widget">
@@ -29,17 +55,17 @@ const CollectionWidget: FC = () => {
         />
       </div>
       <div className="nft-detail-widget__description">
-        <p>Description v</p>
-        <p>{nftMetadata?.description}</p>
-        <div className="nft-detail-widget__attributes">
-          {
-            nftMetadata?.attributes.map((attribute: Record<string, string>) => (
-              <NftDetailAttributeCard key={attribute.trait_type} label={attribute.trait_type} value={attribute.value} />
-            ))
-          }
-        </div>
+        <NftDetailAccordian
+          label="Description"
+          content={(
+            <>
+              <p>{nftMetadata?.description}</p>
+              {nftMetadata?.attributes ? <NftDetailAttributes attrs={nftMetadata?.attributes} /> : null }
+            </>
+          )}
+        />
       </div>
-      <Button text="Proceed" className="nft-detail-widget__proceed-button" />
+      <Button text="Proceed to buy" className="nft-detail-widget__proceed-button" onClick={routeChange} />
     </div>
   );
 };

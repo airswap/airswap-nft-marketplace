@@ -12,6 +12,7 @@
     "@airswap/typescript": "3.0.2",
     "@airswap/utils": "3.0.6",
     "@ethersproject/providers": "^5.7.2",
+    "@greypixel_/nicenumbers": "^0.0.17",
     "@openzeppelin/contracts": "^4.8.1",
     "@reduxjs/toolkit": "^1.9.1",
     "@testing-library/jest-dom": "^5.14.1",
