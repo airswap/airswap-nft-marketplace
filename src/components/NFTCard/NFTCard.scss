@@ -2,12 +2,19 @@
 
 .nft-card {
     display: grid;
-    grid-template-rows: 70% 1fr 1fr 1fr 1fr;
+    grid-template-rows: 9.25rem 1fr 1fr 1fr 1fr;
     align-items: center;
-    border-radius: .5rem;
-    height: 19.5rem;
-    width: fit-content;
+    border-radius: .25rem;
+
+    width: 9.25rem;
+    height: 12.25rem;
     background-color: var(--c-grey);
+
+    @include for-size(desktop-up) {
+        grid-template-rows: 16.25rem 1fr 1fr 1fr 1fr;
+        width: 16.25rem;
+        height: 21.5rem;
+    }
 
     &__img {
         height: 100%;
@@ -17,17 +24,28 @@
     
     &__name {
         grid-row: 3;
-        margin-left: .75rem;
-        font-size: 1rem;
-        font-weight: 700;
+        margin-left: .5rem;
+        font-size: .75rem;
+        font-weight: var(--fw-700);
         color: var(--c-white);
+
+        @include for-size(desktop-up) {
+            margin-left: 1.25rem;
+            font-size: 1rem;
+        }
     }
     
     &__price {
         grid-row: 4;
-        margin-left: .75rem;
+        margin-left: .5rem;
         font-size: .75rem;
-        font-weight: 400;
+        font-weight: var(--fw-400);
         color: var(--c-light-grey);
+        font-family: var(--f-mono);
+
+        @include for-size(desktop-up) {
+            margin-left: 1.25rem;
+            font-size: 1rem;
+        }
     }
 }
