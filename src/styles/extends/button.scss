@@ -9,7 +9,6 @@
     font-size: 1rem;
     font-weight: 500;
     line-height: 1;
-    color: var(--c-primary);
     cursor: pointer;
     background: none;
 
@@ -37,16 +36,8 @@
     color: var(--c-white);
 }
 
-%icon-button {
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    position: relative;
-    padding: .25rem;
-    font-weight: 600;
-    box-sizing: border-box;
+%button-border-style {
     border: 1px solid transparent;
-    border-radius: 2px;
 
     &:hover,
     &:focus {
@@ -54,6 +45,21 @@
     }
 
     &:focus {
-        border: 1px solid var(--c-primary);
+        border-color: var(--c-light-grey);
     }
+
+    &:active {
+        border-color: var(--c-primary);
+    }
+}
+
+%icon-button {
+    @extend %button;
+    @extend %button-border-style;
+
+    position: relative;
+    padding: .25rem;
+    font-weight: 600;
+    box-sizing: border-box;
+    border-radius: 2px;
 }

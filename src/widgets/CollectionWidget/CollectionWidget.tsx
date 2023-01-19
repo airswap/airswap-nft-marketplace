@@ -1,6 +1,7 @@
 import React, { FC } from 'react';
 
 import NFTCard from '../../components/NFTCard/NFTCard';
+import SearchInput from '../../components/SearchInput/SearchInput';
 import useInfiniteScroll from '../../hooks/useInfiniteScroll';
 import { useAppDispatch, useAppSelector } from '../../redux/hooks';
 import { fetchNFTMetadata } from '../../redux/stores/collection/collectionApi';
@@ -34,6 +35,9 @@ const CollectionWidget: FC = () => {
         title={collectionName}
         className="collection-widget__portrait"
       />
+      <div className="collection-widget__content">
+        <SearchInput placeholder="Search Collection" className="collection-widget__search-input" />
+      </div>
       <div className="nft-cards-container">
         {tokensData.map((t) => (
           <NFTCard
