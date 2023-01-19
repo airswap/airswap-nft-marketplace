@@ -2,7 +2,7 @@ import { createSlice, PayloadAction } from '@reduxjs/toolkit';
 
 export interface CollectionState {
   isLoading: boolean;
-  tokenIds: any[];
+  tokenIds: string[];
   index: number;
   tokensData: any[];
 }
@@ -26,7 +26,7 @@ const collectionSlice = createSlice({
       ...state,
       tokensData: [...state.tokensData, ...action.payload],
     }),
-    setTokenIds: (state, action: PayloadAction<any[]>) => ({
+    setTokenIds: (state, action: PayloadAction<string[]>) => ({
       ...state,
       tokenIds: [...action.payload],
     }),
