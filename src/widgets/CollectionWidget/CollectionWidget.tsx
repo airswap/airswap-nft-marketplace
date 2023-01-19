@@ -40,7 +40,7 @@ const CollectionWidget: FC = () => {
             key={t.name}
             name={t.name}
             imageURI={t.image.replace('ipfs://', 'https://ipfs.io/ipfs/')}
-            price={Math.floor(Math.random() * (1000 - 100) + 100) / 100}
+            price={t.price ?? 3.333} // TODO: remove when price is saved
           />
         ))}
       </div>
