@@ -1,4 +1,4 @@
-import React, { FC } from 'react';
+import React, { FC, useState } from 'react';
 
 import NFTCard from '../../components/NFTCard/NFTCard';
 import SearchInput from '../../components/SearchInput/SearchInput';
@@ -20,6 +20,9 @@ const CollectionWidget: FC = () => {
 
   const { isLoading } = useInfiniteScroll({ fetchCallback });
 
+  const [searchInput, setSearchInput] = useState<string>('');
+  const regExp = new RegExp(searchInput, 'i');
+
   return (
     <div className="collection-widget">
       <CollectionPortrait
@@ -29,10 +32,15 @@ const CollectionWidget: FC = () => {
         className="collection-widget__portrait"
       />
       <div className="collection-widget__content">
-        <SearchInput placeholder="Search Collection" className="collection-widget__search-input" />
+        <SearchInput
+          placeholder="Search Collection"
+          className="collection-widget__search-input"
+          onChange={(e) => setSearchInput(e.target.value)}
+          value={searchInput}
+        />
       </div>
       <div className="nft-cards-container">
-        {tokensData.map((t) => (
+        {tokensData.filter((t) => regExp.test(t.name)).map((t) => (
           <NFTCard
             key={t.name}
             name={t.name}
