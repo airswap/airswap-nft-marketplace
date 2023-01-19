@@ -4,6 +4,7 @@ import { Contract, ethers } from 'ethers';
 
 import { getLibrary } from '../../../helpers/ethers';
 import { store } from '../../store';
+import { TokenData } from './collectionSlice';
 
 export const getCollectionContract = (): Contract|null => {
   const erc721Interface = new ethers.utils.Interface(ERC721.abi);
@@ -38,7 +39,7 @@ export const fetchNFTMetadata = createAsyncThunk(
         );
         const data = await res.json();
 
-        return data;
+        return data as TokenData;
       });
 
       const newTokensData = await Promise.all(dataPromises);

@@ -1,14 +1,24 @@
 import { createSlice, PayloadAction } from '@reduxjs/toolkit';
 
+export interface Attribute {
+  item: string;
+  value: number;
+}
+export interface TokenData {
+  name: string;
+  image: string;
+  description: string;
+  attributes: Attribute[];
+  price?: number;
+}
+
 export interface CollectionState {
-  isLoading: boolean;
   tokenIds: string[];
   index: number;
-  tokensData: any[];
+  tokensData: TokenData[];
 }
 
 const initialState: CollectionState = {
-  isLoading: false,
   tokenIds: [],
   index: 0,
   tokensData: [],
@@ -22,7 +32,7 @@ const collectionSlice = createSlice({
       ...state,
       index: state.index + action.payload,
     }),
-    setTokensData: (state, action: PayloadAction<any[]>) => ({
+    setTokensData: (state, action: PayloadAction<TokenData[]>) => ({
       ...state,
       tokensData: [...state.tokensData, ...action.payload],
     }),
@@ -36,5 +46,3 @@ const collectionSlice = createSlice({
 export const { incrementIndex, setTokensData, setTokenIds } = collectionSlice.actions;
 
 export default collectionSlice.reducer;
-
-// FIXME: Any
