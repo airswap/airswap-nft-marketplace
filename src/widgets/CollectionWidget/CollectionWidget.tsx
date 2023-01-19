@@ -11,7 +11,6 @@ import './CollectionWidget.scss';
 
 const CollectionWidget: FC = () => {
   const { collectionImage, collectionName } = useAppSelector((state) => state.config);
-  const { isActive } = useAppSelector((state) => state.web3);
   const { tokensData } = useAppSelector((state) => state.collection);
 
   const dispatch = useAppDispatch();
@@ -20,12 +19,6 @@ const CollectionWidget: FC = () => {
   };
 
   const { isLoading } = useInfiniteScroll({ fetchCallback });
-
-  if (!isActive) {
-    return (
-      <div className="status">Collection could not be displayed...</div>
-    );
-  }
 
   return (
     <div className="collection-widget">
