@@ -38,6 +38,8 @@ const CollectionWidget: FC = () => {
           onChange={(e) => setSearchInput(e.target.value)}
           value={searchInput}
         />
+        <div className="collection-widget__content__subtitle">NFTs for sale</div>
+        <div className="collection-widget__content__filter-button" />
         <div className="collection-widget__content__nft-container">
           {tokensData.filter((t) => regExp.test(t.name)).map((t) => (
             <NFTCard
@@ -49,9 +51,8 @@ const CollectionWidget: FC = () => {
             />
           ))}
         </div>
-        {isLoading && <div className="collection-widget__content__nft-loading">Fetching more NFTs ...</div>}
+        {isLoading && <div className="collection-widget__content__nft-container__nft-loading">Fetching more NFTs ...</div>}
       </div>
-
     </div>
   );
 };
