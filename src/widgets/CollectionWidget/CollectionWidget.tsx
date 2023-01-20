@@ -34,22 +34,24 @@ const CollectionWidget: FC = () => {
       <div className="collection-widget__content">
         <SearchInput
           placeholder="Search Collection"
-          className="collection-widget__search-input"
+          className="collection-widget__content__search-input"
           onChange={(e) => setSearchInput(e.target.value)}
           value={searchInput}
         />
+        <div className="collection-widget__content__nft-container">
+          {tokensData.filter((t) => regExp.test(t.name)).map((t) => (
+            <NFTCard
+              className="collection-widget__content__nft-container__nft-card"
+              key={t.name}
+              name={t.name}
+              imageURI={t.image.replace('ipfs://', 'https://ipfs.io/ipfs/')}
+              price={t.price ?? 0.154} // TODO: remove when price is saved
+            />
+          ))}
+        </div>
+        {isLoading && <div className="collection-widget__content__nft-loading">Fetching more NFTs ...</div>}
       </div>
-      <div className="nft-cards-container">
-        {tokensData.filter((t) => regExp.test(t.name)).map((t) => (
-          <NFTCard
-            key={t.name}
-            name={t.name}
-            imageURI={t.image.replace('ipfs://', 'https://ipfs.io/ipfs/')}
-            price={t.price ?? 3.333} // TODO: remove when price is saved
-          />
-        ))}
-      </div>
-      {isLoading && <div className="loading">Fetching more NFTs ...</div>}
+
     </div>
   );
 };
