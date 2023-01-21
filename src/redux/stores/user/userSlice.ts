@@ -2,8 +2,9 @@ import { createSlice, PayloadAction } from '@reduxjs/toolkit';
 
 import { fetchAvatarByAddress } from './userApi';
 
-interface UserState {
+export interface UserState {
   isLoading: boolean;
+  address?: string;
   avatarUrl?: string;
 }
 
@@ -18,6 +19,10 @@ const userSlice = createSlice({
     setIsLoading: (state, action: PayloadAction<boolean>) => ({
       ...state,
       isLoading: action.payload,
+    }),
+    setAddress: (state, action: PayloadAction<string>) => ({
+      ...state,
+      address: action.payload,
     }),
   },
   extraReducers: builder => {
@@ -35,7 +40,7 @@ const userSlice = createSlice({
 });
 
 export const {
-  setIsLoading,
+  setIsLoading, setAddress,
 } = userSlice.actions;
 
 export default userSlice.reducer;
