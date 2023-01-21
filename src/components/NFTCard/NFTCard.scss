@@ -1,0 +1,33 @@
+@import "src/styles/index";
+
+.nft-card {
+    display: grid;
+    grid-template-rows: 70% 1fr 1fr 1fr 1fr;
+    align-items: center;
+    border-radius: .5rem;
+    height: 19.5rem;
+    width: fit-content;
+    background-color: var(--c-grey);
+
+    &__img {
+        height: 100%;
+        width:100%;
+        object-fit: contain;
+    }
+    
+    &__name {
+        grid-row: 3;
+        margin-left: .75rem;
+        font-size: 1rem;
+        font-weight: 700;
+        color: var(--c-white);
+    }
+    
+    &__price {
+        grid-row: 4;
+        margin-left: .75rem;
+        font-size: .75rem;
+        font-weight: 400;
+        color: var(--c-light-grey);
+    }
+}
