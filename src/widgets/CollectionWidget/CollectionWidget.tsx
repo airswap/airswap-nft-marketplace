@@ -1,10 +1,13 @@
 import React, { FC, useState } from 'react';
 
+import { useNavigate } from 'react-router-dom';
+
 import NFTCard from '../../components/NFTCard/NFTCard';
 import SearchInput from '../../components/SearchInput/SearchInput';
 import useInfiniteScroll from '../../hooks/useInfiniteScroll';
 import { useAppDispatch, useAppSelector } from '../../redux/hooks';
 import { fetchNFTMetadata } from '../../redux/stores/collection/collectionApi';
+import { setSelectedToken } from '../../redux/stores/collection/collectionSlice';
 import CollectionPortrait from './subcomponents/CollectionPortrait/CollectionPortrait';
 
 import './CollectionWidget.scss';
@@ -22,6 +25,12 @@ const CollectionWidget: FC = () => {
 
   const [searchInput, setSearchInput] = useState<string>('');
   const regExp = new RegExp(searchInput, 'i');
+
+  const navigate = useNavigate();
+  const routeChange = (tokenId: number) => {
+    dispatch(setSelectedToken(tokenId));
+    navigate('/nft-detail');
+  };
 
   return (
     <div className="collection-widget">
@@ -41,13 +50,14 @@ const CollectionWidget: FC = () => {
         <div className="collection-widget__content__subtitle">NFTs for sale</div>
         <div className="collection-widget__content__filter-button" />
         <div className="collection-widget__content__nft-container">
-          {tokensData.filter((t) => regExp.test(t.name)).map((t) => (
+          {tokensData.filter((t) => regExp.test(t.name)).map((t, i) => (
             <NFTCard
               className="collection-widget__content__nft-container__nft-card"
               key={t.name}
               name={t.name}
               imageURI={t.image.replace('ipfs://', 'https://ipfs.io/ipfs/')}
               price={t.price ?? 0.154} // TODO: remove when price is saved
+              onClick={() => routeChange(i)}
             />
           ))}
         </div>
