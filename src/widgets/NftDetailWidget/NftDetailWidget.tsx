@@ -3,8 +3,9 @@ import React, { FC } from 'react';
 import { useNavigate } from 'react-router-dom';
 
 import Button from '../../components/Button/Button';
-import useNftMetadata, { Metadata } from '../../hooks/useNftMetadata';
+import useNftMetadata from '../../hooks/useNftMetadata';
 import { useAppSelector } from '../../redux/hooks';
+import { Attribute } from '../../redux/stores/collection/collectionSlice';
 import { AppRoutes } from '../../routes';
 import NftDetailAccordian from './subcomponents/NftDetailAccordian/NftDetailAccordian';
 import NftDetailAttributeCard from './subcomponents/NftDetailAttributeCard/NftDetailAttributeCard';
@@ -16,27 +17,26 @@ import './NftDetailWidget.scss';
 
 // TODO: Move NftDetailAttributes into sub-component.
 interface NftDetailAttributesProps {
-  attrs: Array<Metadata>;
+  attrs: Array<Attribute>;
   className?: string;
 }
 
 const NftDetailAttributes: FC<NftDetailAttributesProps> = ({ attrs, className = '' }) => (
   <div className={`nft-detail-widget__attributes ${className}`}>
-    {attrs.map((attribute: Record<string, string>) => (
+    {attrs.map((attribute: Attribute) => (
       <NftDetailAttributeCard key={attribute.trait_type} label={attribute.trait_type} value={attribute.value} />
     ))}
   </div>
 );
 
 const CollectionWidget: FC = () => {
-  const { collectionImage, collectionToken } = useAppSelector((state) => state.config);
-  // TODO: Use dynamic tokenId in place of '3060'
-  const nftMetadata = useNftMetadata(collectionToken, '3060');
-  console.log(nftMetadata);
+  const { config, collection } = useAppSelector((state) => state);
+  const { collectionImage } = config;
+  const { selectedTokenId } = collection;
+  const nftMetadata = useNftMetadata(`${selectedTokenId}`);
 
   const navigate = useNavigate();
   const routeChange = () => {
-    // TODO: Update with the correct route when available.
     const path = AppRoutes.collection;
     navigate(path);
   };

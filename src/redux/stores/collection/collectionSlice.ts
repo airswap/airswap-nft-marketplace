@@ -1,8 +1,8 @@
 import { createSlice, PayloadAction } from '@reduxjs/toolkit';
 
 export interface Attribute {
-  item: string;
-  value: number;
+  'trait_type': string;
+  value: string;
 }
 export interface TokenData {
   name: string;

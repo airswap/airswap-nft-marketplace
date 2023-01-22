@@ -1,12 +1,9 @@
+/* eslint-disable no-debugger */
 import { useEffect, useState } from 'react';
 
-import { Web3Provider } from '@ethersproject/providers';
-import ERC721 from '@openzeppelin/contracts/build/contracts/ERC721.json';
-import { useWeb3React } from '@web3-react/core';
-import axios from 'axios';
-import { ethers } from 'ethers';
+import { useAppSelector } from '../redux/hooks';
 
-import { ipfsToUrl, startsWithIPFS } from '../helpers/ethers';
+export const ipfsToUrl: (string: string) => string = (ipfsAddress) => `${process.env.REACT_APP_IPFS_GATEWAY_URL}${ipfsAddress.split('ipfs://')[1]}`;
 
 export type Metadata = {
   name: string;
@@ -16,35 +13,16 @@ export type Metadata = {
 };
 
 const useNftMetadata = (
-  collectionURI?: string,
-  tokenId?: string,
-  updateIpfsUrls = true,
+  tokenId: string,
 ) => {
   const [metadata, setMetadata] = useState<Metadata>();
-  const { active, library: provider } = useWeb3React<Web3Provider>();
+  const { tokenIds, tokensData } = useAppSelector((state) => state.collection);
 
   useEffect(() => {
-    if (!collectionURI || !active) {
-      return;
-    }
-    const contract = new ethers.Contract(collectionURI, ERC721.abi, provider);
-    contract.tokenURI(tokenId).then((tokenURI: string) => {
-      axios.get(ipfsToUrl(tokenURI)).then((res) => {
-        const { data } = res;
-        if (updateIpfsUrls) {
-          const values = Object.values(data);
-          const keys = Object.keys(data);
-
-          values.forEach((val, i) => {
-            if (typeof val === 'string' && startsWithIPFS(val)) {
-              data[keys[i]] = ipfsToUrl(val);
-            }
-          });
-        }
-        setMetadata(data);
-      });
-    });
-  }, [collectionURI, provider]);
+    const tokenData = { ...tokensData[parseInt(tokenId, 10)] };
+    tokenData.image = ipfsToUrl(tokenData.image);
+    setMetadata(tokenData);
+  }, [tokenIds, tokensData]);
 
   return metadata;
 };
