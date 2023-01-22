@@ -16,6 +16,7 @@ export interface CollectionState {
   tokenIds: string[];
   index: number;
   tokensData: TokenData[];
+  selectedTokenId?: number;
 }
 
 const initialState: CollectionState = {
@@ -32,6 +33,10 @@ const collectionSlice = createSlice({
       ...state,
       index: state.index + action.payload,
     }),
+    setSelectedToken: (state, action: PayloadAction<number>) => ({
+      ...state,
+      selectedTokenId: action.payload,
+    }),
     setTokensData: (state, action: PayloadAction<TokenData[]>) => ({
       ...state,
       tokensData: [...state.tokensData, ...action.payload],
@@ -43,6 +48,8 @@ const collectionSlice = createSlice({
   },
 });
 
-export const { incrementIndex, setTokensData, setTokenIds } = collectionSlice.actions;
+export const {
+  incrementIndex, setTokensData, setTokenIds, setSelectedToken,
+} = collectionSlice.actions;
 
 export default collectionSlice.reducer;
