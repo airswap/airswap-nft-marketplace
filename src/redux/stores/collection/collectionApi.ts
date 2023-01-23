@@ -4,7 +4,7 @@ import { Contract, ethers } from 'ethers';
 
 import { getLibrary } from '../../../helpers/ethers';
 import { store } from '../../store';
-import { TokenData } from './collectionSlice';
+import { incrementIndex, setTokensData, TokenData } from './collectionSlice';
 
 export const getCollectionContract = (): Contract|null => {
   const erc721Interface = new ethers.utils.Interface(ERC721.abi);
@@ -43,11 +43,11 @@ export const fetchNFTMetadata = createAsyncThunk(
       });
 
       const newTokensData = await Promise.all(dataPromises);
-      store.dispatch({ type: 'collection/setTokensData', payload: newTokensData });
+      store.dispatch(setTokensData(newTokensData));
     } catch (err) {
       // TODO
     }
 
-    store.dispatch({ type: 'collection/incrementIndex', payload: CHUNK_SIZE });
+    store.dispatch(incrementIndex(CHUNK_SIZE));
   },
 );

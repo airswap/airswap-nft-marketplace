@@ -3,6 +3,7 @@ import { BigNumber } from 'ethers';
 
 import { store } from '../../store';
 import { fetchNFTMetadata, getCollectionContract } from './collectionApi';
+import { setTokenIds } from './collectionSlice';
 
 export const configureCollectionSubscriber = async () => {
   let contractInitialized = false;
@@ -17,7 +18,7 @@ export const configureCollectionSubscriber = async () => {
     const events = await collectionContract.queryFilter(transferFilter, 0);
     const tokenIds = events.map((e) => (e.args?.at(2) as BigNumber).toString());
 
-    store.dispatch({ type: 'collection/setTokenIds', payload: tokenIds });
+    store.dispatch(setTokenIds(tokenIds));
     store.dispatch(fetchNFTMetadata());
   });
 };
