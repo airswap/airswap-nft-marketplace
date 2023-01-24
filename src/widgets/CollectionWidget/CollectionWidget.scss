@@ -84,6 +84,13 @@
         }
     }
 
-
+    &__bottom {
+        display: block;
+        position: absolute;
+        bottom: 0;
+        width: 10px;
+        aspect-ratio: 1;
+        background: red;
+    }
 }
 

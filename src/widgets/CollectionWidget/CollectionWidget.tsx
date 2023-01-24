@@ -1,36 +1,43 @@
-import React, { FC, useState } from 'react';
+import React, { FC, useEffect, useState } from 'react';
 
-import { useNavigate } from 'react-router-dom';
+import { useWeb3React } from '@web3-react/core';
 
 import NFTCard from '../../components/NFTCard/NFTCard';
 import SearchInput from '../../components/SearchInput/SearchInput';
 import useInfiniteScroll from '../../hooks/useInfiniteScroll';
 import { useAppDispatch, useAppSelector } from '../../redux/hooks';
 import { fetchNFTMetadata } from '../../redux/stores/collection/collectionApi';
-import { setSelectedToken } from '../../redux/stores/collection/collectionSlice';
 import CollectionPortrait from './subcomponents/CollectionPortrait/CollectionPortrait';
 
 import './CollectionWidget.scss';
 
 const CollectionWidget: FC = () => {
-  const { collectionImage, collectionName } = useAppSelector((state) => state.config);
-  const { tokensData } = useAppSelector((state) => state.collection);
-
   const dispatch = useAppDispatch();
-  const fetchCallback = async (): Promise<void> => {
-    await dispatch(fetchNFTMetadata());
-  };
+  const { library } = useWeb3React();
+  const { collectionImage, collectionName, collectionToken } = useAppSelector((state) => state.config);
+  const { isLoading, tokensData, lastTokenIndex } = useAppSelector((state) => state.collection);
 
-  const { isLoading } = useInfiniteScroll({ fetchCallback });
+  const hasScrolledToBottom = useInfiniteScroll();
 
   const [searchInput, setSearchInput] = useState<string>('');
-  const regExp = new RegExp(searchInput, 'i');
 
-  const navigate = useNavigate();
-  const routeChange = (tokenId: number) => {
-    dispatch(setSelectedToken(tokenId));
-    navigate('/nft-detail');
+  const getData = (): void => {
+    if (!library) {
+      return;
+    }
+
+    dispatch(fetchNFTMetadata({ library, collectionToken, startIndex: lastTokenIndex }));
   };
+
+  useEffect(() => {
+    getData();
+  }, [library]);
+
+  useEffect(() => {
+    if (hasScrolledToBottom && !isLoading) {
+      getData();
+    }
+  }, [hasScrolledToBottom]);
 
   return (
     <div className="collection-widget">
@@ -50,14 +57,13 @@ const CollectionWidget: FC = () => {
         <div className="collection-widget__content__subtitle">NFTs for sale</div>
         <div className="collection-widget__content__filter-button" />
         <div className="collection-widget__content__nft-container">
-          {tokensData.filter((t) => regExp.test(t.name)).map((t, i) => (
+          {tokensData.map((token) => (
             <NFTCard
+              key={token.id}
+              name={token.name}
+              imageURI={token.image}
+              price={token.price}
               className="collection-widget__content__nft-container__nft-card"
-              key={t.name}
-              name={t.name}
-              imageURI={t.image.replace('ipfs://', 'https://ipfs.io/ipfs/')}
-              price={t.price ?? 0.154} // TODO: remove when price is saved
-              onClick={() => routeChange(i)}
             />
           ))}
         </div>
