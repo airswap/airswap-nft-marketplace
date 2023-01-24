@@ -2,6 +2,7 @@ import { Action, configureStore, ThunkAction } from '@reduxjs/toolkit';
 
 import balancesReducer from './stores/balances/balancesSlice';
 import { configureBalancesSubscriber } from './stores/balances/balancesSubscriber';
+import collectionReducer from './stores/collection/collectionSlice';
 import configReducer from './stores/config/configSlice';
 import metadataReducer from './stores/metadata/metadataSlice';
 import { configureMetadataSubscriber } from './stores/metadata/metadataSubscriber';
@@ -13,6 +14,7 @@ export const store = configureStore({
     config: configReducer,
     metadata: metadataReducer,
     web3: web3Reducer,
+    collection: collectionReducer,
   },
 });
 
