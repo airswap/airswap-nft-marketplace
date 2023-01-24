@@ -2,11 +2,12 @@ import React, { FC, useEffect, useState } from 'react';
 
 import { useWeb3React } from '@web3-react/core';
 
-import NFTCard from '../../components/NFTCard/NFTCard';
+import NftCard from '../../components/NftCard/NftCard';
 import SearchInput from '../../components/SearchInput/SearchInput';
 import useInfiniteScroll from '../../hooks/useInfiniteScroll';
 import { useAppDispatch, useAppSelector } from '../../redux/hooks';
 import { fetchNFTMetadata } from '../../redux/stores/collection/collectionApi';
+import { AppRoutes } from '../../routes';
 import CollectionPortrait from './subcomponents/CollectionPortrait/CollectionPortrait';
 
 import './CollectionWidget.scss';
@@ -50,24 +51,25 @@ const CollectionWidget: FC = () => {
       <div className="collection-widget__content">
         <SearchInput
           placeholder="Search Collection"
-          className="collection-widget__content__search-input"
+          className="collection-widget__search-input"
           onChange={(e) => setSearchInput(e.target.value)}
           value={searchInput}
         />
-        <div className="collection-widget__content__subtitle">NFTs for sale</div>
-        <div className="collection-widget__content__filter-button" />
-        <div className="collection-widget__content__nft-container">
+        <div className="collection-widget__subtitle">NFTs for sale</div>
+        <div className="collection-widget__filter-button" />
+        <div className="collection-widget__nfts-container">
           {tokensData.map((token) => (
-            <NFTCard
+            <NftCard
               key={token.id}
-              name={token.name}
               imageURI={token.image}
+              name={token.name}
               price={token.price}
-              className="collection-widget__content__nft-container__nft-card"
+              to={`${AppRoutes.nftDetail}/${token.id}`}
+              className="collection-widget__nft-card"
             />
           ))}
         </div>
-        {isLoading && <div className="collection-widget__content__nft-container__nft-loading">Fetching more NFTs ...</div>}
+        {isLoading && <div className="collection-widget__nft-loader">Fetching more NFTs ...</div>}
       </div>
     </div>
   );
