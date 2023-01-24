@@ -1,33 +1,36 @@
 @import "src/styles/index";
 
-.nft-detail-attribute-card {
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    padding: 1em;
-    background: #1A1E25;
-    border-radius: 4px;
+.nft-detail-accordian {
 
-    @include for-size(tablet-landscape-up) {
-        padding: var(--page-padding);
-    }
-
-    &__label {
-        color: #9EA3AC;
-        font-size: .75rem;
-        font-weight: var(--fw-400);
-
-        @include for-size(tablet-portrait-up) {
-            font-size: 1rem;
-        }
-    }
-
-    &__value {
+    &__header {
+        display: flex;
         font-size: .75rem;
         font-weight: var(--fw-700);
+        padding: 1rem 0 .5rem;
 
-        @include for-size(tablet-portrait-up) {
-            font-size: 1rem;
+        p {
+            color: #9EA3AC;
+        }
+    }
+    
+    &__header-label {
+        padding-right: .5rem;
+    }
+    
+    &__state-indicator {
+        transition: transform .3s ease-out;
+        line-height: 2rem;
+        margin-top: -0.5rem;
+    }
+
+    &__content {
+        height: 0;
+        transition: height .3s;
+        overflow: hidden;
+        will-change: auto;
+
+        &--is-open {
+            height: 100%;
         }
     }
 }

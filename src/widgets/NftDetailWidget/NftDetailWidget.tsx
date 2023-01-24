@@ -45,7 +45,7 @@ const CollectionWidget: FC = () => {
     <div className="nft-detail-widget">
       <div className="nft-detail-widget__top">
         <NftDetailMainInfo
-          subTitle="by sjnivo12345"
+          subTitle="Owned by sjnivo12345"
           title={nftMetadata?.name || ''}
           className="nft-detail-widget__main-info"
         />
@@ -63,6 +63,7 @@ const CollectionWidget: FC = () => {
               {nftMetadata?.attributes ? <NftDetailAttributes attrs={nftMetadata?.attributes} /> : null }
             </>
           )}
+          defaultOpen
         />
       </div>
       <Button text="Proceed to buy" className="nft-detail-widget__proceed-button" onClick={routeChange} />
