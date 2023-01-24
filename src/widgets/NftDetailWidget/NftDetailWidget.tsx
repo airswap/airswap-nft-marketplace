@@ -66,6 +66,22 @@ const CollectionWidget: FC = () => {
           defaultOpen
         />
       </div>
+      <div className="nft-detail-widget__activity">
+        <NftDetailAccordian
+          label="Item Activity"
+          content={(
+            <p>{nftMetadata?.description}</p>
+          )}
+        />
+      </div>
+      <div className="nft-detail-widget__description">
+        <NftDetailAccordian
+          label="Details"
+          content={(
+            <p>{nftMetadata?.description}</p>
+          )}
+        />
+      </div>
       <Button text="Proceed to buy" className="nft-detail-widget__proceed-button" onClick={routeChange} />
     </div>
   );
