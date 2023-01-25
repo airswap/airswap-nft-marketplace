@@ -125,12 +125,11 @@ $component: top-bar;
     }
 
     &__user-button-icon {
-        //temp css, replace later by a generate img from address
+        width: 2.5rem;
+        height: 2.5rem;
         margin-right: 0.75rem;
-        height: 90%;
-        border: 1px solid gray; 
+        border: 1px solid var(--c-dark-border);
         border-radius: 100%;
-        color: var(--c-black);
     }
 
     &__user-popup {

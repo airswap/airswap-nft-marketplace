@@ -1,10 +1,12 @@
-import React, { FC, useEffect } from 'react';
+import React, {
+  FC, useEffect, useRef, useState,
+} from 'react';
 
 import classNames from 'classnames';
 
+import Avatar from '../../components/Avatar/Avatar';
 import Button from '../../components/Button/Button';
 import { truncateAddress } from '../../helpers/stringUtils';
-import useToggle from '../../hooks/useToggle';
 import { AppRoutes } from '../../routes';
 import IconButton from '../IconButton/IconButton';
 import IconNavLink from '../IconNavLink/IconNavLink';
@@ -17,6 +19,7 @@ interface TopBarProps {
   mobileMenuIsVisible: boolean;
   showDesktopConnectButton: boolean;
   showDesktopUserButton: boolean;
+  avatarUrl?: string;
   account: string | null | undefined;
   ensAddress: string | undefined;
   onConnectButtonClick: () => void;
@@ -29,6 +32,7 @@ const TopBar: FC<TopBarProps> = ({
   mobileMenuIsVisible,
   showDesktopConnectButton,
   showDesktopUserButton,
+  avatarUrl,
   account,
   ensAddress,
   onConnectButtonClick,
@@ -36,22 +40,29 @@ const TopBar: FC<TopBarProps> = ({
   onMobileMenuButtonClick,
   className = '',
 }) => {
-  const [isPopupOpen, toggleIsPopupOpen] = useToggle(false);
+  const popupRef = useRef<HTMLDivElement>(null);
+  const [isPopupOpen, setIsPopupOpen] = useState(false);
 
   const containerClassName = classNames('top-bar', {
     'top-bar--mobile-menu-is-visible': mobileMenuIsVisible,
   }, className);
 
   const handleDisconnectClick = () => {
-    toggleIsPopupOpen();
+    setIsPopupOpen(false);
     onDisconnectButtonClick();
   };
 
+  const handleOutsideClick = (target: any) => {
+    if (target !== popupRef.current && !popupRef.current?.contains(target)) { setIsPopupOpen(false); }
+  };
+
+  console.log(isPopupOpen);
+
   useEffect(() => {
     if (isPopupOpen) {
-      document.addEventListener('click', toggleIsPopupOpen);
+      document.addEventListener('mousedown', (event) => handleOutsideClick(event.target));
     } else {
-      document.removeEventListener('click', toggleIsPopupOpen);
+      document.removeEventListener('mousedown', (event) => handleOutsideClick(event.target));
     }
   }, [isPopupOpen]);
 
@@ -89,17 +100,22 @@ const TopBar: FC<TopBarProps> = ({
           />
         )}
         {showDesktopUserButton
-            && (
-              <IconButton
-                icon="launch"
-                text={truncateAddress(ensAddress || account || '')}
-                className="top-bar__user-button"
-                iconClassName="top-bar__user-button-icon"
-                onClick={!isPopupOpen && toggleIsPopupOpen}
-              />
-            )}
+          && (
+            <Button
+              text={truncateAddress(ensAddress || account || '')}
+              className="top-bar__user-button"
+              onClick={() => setIsPopupOpen(true)}
+            >
+              <Avatar avatarUrl={avatarUrl} className="top-bar__user-button-icon" />
+              {truncateAddress(ensAddress || account || '')}
+            </Button>
+          )}
       </div>
-      {isPopupOpen && <UserPopup address={account || ''} ensAddress={ensAddress} onDisconnectClick={handleDisconnectClick} className="top-bar__user-popup" />}
+      {isPopupOpen && (
+        <div className="top-bar__user-popup" ref={popupRef}>
+          <UserPopup address={account || ''} ensAddress={ensAddress} onDisconnectClick={handleDisconnectClick} />
+        </div>
+      )}
     </div>
   );
 };

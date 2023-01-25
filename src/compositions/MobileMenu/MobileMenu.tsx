@@ -13,6 +13,7 @@ interface MobileMenuProp {
   avatarUrl?: string;
   address?: string;
   ensAddress?: string | undefined;
+  onDisconnectClick: () => void;
   onNavLinkClick: () => void;
   className?: string;
 }
@@ -23,6 +24,7 @@ const MobileMenu: FC<MobileMenuProp> = ({
   address,
   ensAddress,
   onNavLinkClick,
+  onDisconnectClick,
   className = '',
 }) => {
   const mobileMenuClassName = classNames(
@@ -36,7 +38,7 @@ const MobileMenu: FC<MobileMenuProp> = ({
   return (
     <div className={mobileMenuClassName}>
       {address && (
-        <WalletInfo avatarUrl={avatarUrl} address={ensAddress || address} />
+        <WalletInfo isMobileMenu avatarUrl={avatarUrl} address={address} ensAddress={ensAddress} onDisconnectClick={onDisconnectClick} />
       )}
       <div className="mobile-menu__nav-links">
         <NavLink
