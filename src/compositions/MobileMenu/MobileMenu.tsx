@@ -18,7 +18,11 @@ interface MobileMenuProp {
 }
 
 const MobileMenu: FC<MobileMenuProp> = ({
-  avatarUrl, isHidden, address, onNavLinkClick, className = '',
+  avatarUrl,
+  isHidden,
+  address,
+  onNavLinkClick,
+  className = '',
 }) => {
   const mobileMenuClassName = classNames('mobile-menu', {
     'mobile-menu--is-hidden': isHidden,

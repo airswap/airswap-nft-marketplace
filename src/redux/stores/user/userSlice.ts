@@ -1,5 +1,6 @@
-import { createSlice, PayloadAction } from '@reduxjs/toolkit';
+import { createSlice } from '@reduxjs/toolkit';
 
+import { setWeb3Data } from '../web3/web3Slice';
 import { fetchAvatarByAddress } from './userApi';
 
 export interface UserState {
@@ -14,12 +15,7 @@ const initialState: UserState = {
 const userSlice = createSlice({
   name: 'user',
   initialState,
-  reducers: {
-    setAvatarUrl: (state, action: PayloadAction<string>) => ({
-      ...state,
-      avatarUrl: action.payload,
-    }),
-  },
+  reducers: {},
   extraReducers: builder => {
     builder.addCase(fetchAvatarByAddress.pending, (state) => ({
       ...state,
@@ -31,10 +27,13 @@ const userSlice = createSlice({
       isLoading: false,
       avatarUrl: action.payload,
     }));
+
+    builder.addCase(setWeb3Data, (state, action) => ({
+      ...state,
+      avatarUrl: action.payload.account ? state.avatarUrl : undefined,
+    }));
   },
 });
-
-export const { setAvatarUrl } = userSlice.actions;
 
 export default userSlice.reducer;
 

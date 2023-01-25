@@ -8,6 +8,10 @@ export const configureUserSubscriber = () => {
   store.subscribe(async () => {
     const { web3 } = store.getState();
 
+    if (!web3.account) {
+      userAccount = '';
+    }
+
     if (
       web3.account
       && userAccount !== web3.account
