@@ -18,7 +18,6 @@ export const fetchAvatarByAddress = createAsyncThunk<
 string, { address: string }>(
   'user/fetchAvatarByAddress',
   async ({ address }) => {
-    console.log(address);
     const avatarUrl = localStorage.getItem(`airswap/avatarUrl/${address}`);
     if (avatarUrl) {
       const blob = await convertBase64ToBlob(avatarUrl);
