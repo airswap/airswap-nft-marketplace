@@ -10,17 +10,17 @@ import './UserPopup.scss';
 interface UserPopupProps {
   address: string;
   ensAddress?: string;
-  onDisconnectClick: () => void;
+  onLogoutButtonClick: () => void;
   className?: string;
 }
 
 const UserPopup: FC<UserPopupProps> = (
   {
-    address, ensAddress, onDisconnectClick, className,
+    address, ensAddress, onLogoutButtonClick, className,
   },
 ) => (
   <div className={`${className} user-popup`}>
-    <WalletInfo address={address} ensAddress={ensAddress} isMobileMenu={false} onDisconnectClick={onDisconnectClick} className="user-popup__wallet-info" />
+    <WalletInfo address={address} ensAddress={ensAddress} isMobileMenu={false} onLogoutButtonClick={onLogoutButtonClick} className="user-popup__wallet-info" />
     <NavLink to={`/${AppRoutes.profile}`} className="user-popup__nav-link">Profile</NavLink>
     <NavLink to={`/${AppRoutes.profile}`} className="user-popup__nav-link">NFTs</NavLink>
     <NavLink to={`/${AppRoutes.profile}`} className="user-popup__nav-link">Listed</NavLink>

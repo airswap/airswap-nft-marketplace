@@ -41,6 +41,7 @@ const TopBar: FC<TopBarProps> = ({
   className = '',
 }) => {
   const popupRef = useRef<HTMLDivElement>(null);
+  const buttonRef = useRef<HTMLDivElement>(null);
   const [isPopupOpen, setIsPopupOpen] = useState(false);
 
   const containerClassName = classNames('top-bar', {
@@ -53,7 +54,11 @@ const TopBar: FC<TopBarProps> = ({
   };
 
   const handleOutsideClick = (target: any) => {
-    if (target !== popupRef.current && !popupRef.current?.contains(target)) { setIsPopupOpen(false); }
+    if (target === popupRef.current
+      || popupRef.current?.contains(target)
+      || target === buttonRef
+      || buttonRef.current?.contains(target)) { return; }
+    setIsPopupOpen(false);
   };
 
   console.log(isPopupOpen);
@@ -101,19 +106,21 @@ const TopBar: FC<TopBarProps> = ({
         )}
         {showDesktopUserButton
           && (
-            <Button
-              text={truncateAddress(ensAddress || account || '')}
-              className="top-bar__user-button"
-              onClick={() => setIsPopupOpen(true)}
-            >
-              <Avatar avatarUrl={avatarUrl} className="top-bar__user-button-icon" />
-              {truncateAddress(ensAddress || account || '')}
-            </Button>
+            <div ref={buttonRef}>
+              <Button
+                text={truncateAddress(ensAddress || account || '')}
+                className="top-bar__user-button"
+                onClick={() => setIsPopupOpen(!isPopupOpen)}
+              >
+                <Avatar avatarUrl={avatarUrl} className="top-bar__user-button-icon" />
+                {truncateAddress(ensAddress || account || '')}
+              </Button>
+            </div>
           )}
       </div>
       {isPopupOpen && (
         <div className="top-bar__user-popup" ref={popupRef}>
-          <UserPopup address={account || ''} ensAddress={ensAddress} onDisconnectClick={handleDisconnectClick} />
+          <UserPopup address={account || ''} ensAddress={ensAddress} onLogoutButtonClick={handleDisconnectClick} />
         </div>
       )}
     </div>

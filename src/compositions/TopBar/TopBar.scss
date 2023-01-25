@@ -108,19 +108,17 @@ $component: top-bar;
     }
 
     &__user-button {
+        @extend %button;
+        @extend %button-border-style;
+
         display: none;
-        border: none;
         height: 2.5rem;
         padding: 0 1rem;
-        font-weight: var(--fw-700);
+        font-weight: var(--fw-500);
         color: var(--c-white);
 
         @include for-size(tablet-portrait-up) {
             display: flex;
-        }
-
-        &:focus {
-            border: none;
         }
     }
 

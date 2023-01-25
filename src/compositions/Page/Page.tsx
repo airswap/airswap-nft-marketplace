@@ -50,6 +50,7 @@ const Page: FC<PageProps> = ({ className = '', contentClassName = '', children }
         mobileMenuIsVisible={mobileMenuIsVisible}
         showDesktopConnectButton={isInitialized && !active}
         showDesktopUserButton={isInitialized && active}
+        avatarUrl={avatarUrl}
         account={account}
         ensAddress={ensAddress}
         onConnectButtonClick={toggleShowWalletConnector}
@@ -61,7 +62,7 @@ const Page: FC<PageProps> = ({ className = '', contentClassName = '', children }
         isHidden={!mobileMenuIsVisible}
         avatarUrl={avatarUrl}
         address={account || undefined}
-        onDisconnectClick={handleDisconnectButtonClick}
+        onLogoutButtonClick={handleDisconnectButtonClick}
         onNavLinkClick={handleIconButtonClick}
         className="page__mobile-menu"
       />

@@ -14,7 +14,7 @@ interface WalletInfoProps {
   avatarUrl?: string;
   address?: string;
   ensAddress?: string;
-  onDisconnectClick: () => void;
+  onLogoutButtonClick: () => void;
   className?: string;
 }
 
@@ -24,7 +24,7 @@ const WalletInfo: FC<WalletInfoProps> = ({
   avatarUrl = '',
   address = '',
   ensAddress = '',
-  onDisconnectClick,
+  onLogoutButtonClick,
   className = '',
 }) => {
   const walletInfoClassName = classNames(
@@ -56,7 +56,7 @@ const WalletInfo: FC<WalletInfoProps> = ({
         icon="logout"
         text="logout"
         iconClassName="wallet-info__icon"
-        onClick={onDisconnectClick}
+        onClick={onLogoutButtonClick}
       />
     </div>
   );
