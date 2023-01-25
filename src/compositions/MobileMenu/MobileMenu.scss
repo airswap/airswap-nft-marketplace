@@ -20,15 +20,12 @@
 
     &__nav-link {
         @extend %button;
+        @extend %button-border-style;
 
         justify-content: flex-start;
         border: 1px solid transparent;
         font-weight: 700;
         color: var(--c-white);
-
-        &:focus {
-            border-color: var(--c-primary);
-        }
 
         & + & {
             margin-top: .5rem;

@@ -1,0 +1,55 @@
+@import "src/styles/index";
+
+.nft-card {
+    @extend %button;
+    @extend %button-border-style;
+
+    flex-direction: column;
+    border-radius: .25rem;
+    padding: 0;
+    text-align: left;
+    overflow: hidden;
+
+    @include for-size(tablet-landscape-up) {
+        border-radius: .5rem;
+    }
+
+    &__img {
+        width: 100%;
+        aspect-ratio: 1;
+        object-fit: contain;
+    }
+
+    &__info-wrapper {
+        width: 100%;
+        padding: .5rem .75rem .75rem;
+        font-size: .875rem;
+        background-color: var(--c-grey);
+
+        @include for-size(desktop-up) {
+            padding: .75rem 1.25rem 1rem;
+            font-size: 1rem;
+        }
+    }
+
+    &__name,
+    &__price {
+        @extend %text-ellipsis;
+    }
+    
+    &__name {
+        font-weight: var(--fw-700);
+        color: var(--c-white);
+    }
+    
+    &__price {
+        margin-top: .5rem;
+        font-weight: var(--fw-400);
+        font-family: var(--f-mono);
+        color: var(--c-light-grey);
+
+        @include for-size(desktop-up) {
+            margin-top: .75rem;
+        }
+    }
+}

@@ -50,6 +50,18 @@ $component: top-bar;
     &__menu-button {
         position: absolute;
         left: calc(50% - 1rem);
+
+        @include for-size(tablet-portrait-up) {
+            display: none;
+        }
+    }
+
+    &__desktop-nav {
+        display: none;
+
+        @include for-size(tablet-portrait-up) {
+            display: flex;
+        }
     }
 
     &__list-button-and-wallet-button-wrapper {
@@ -70,6 +82,10 @@ $component: top-bar;
 
         &:focus {
             border: 1px solid var(--c-primary);
+        }
+
+        @include for-size(tablet-portrait-up) {
+            padding: 0 1.25rem;
         }
     }
 

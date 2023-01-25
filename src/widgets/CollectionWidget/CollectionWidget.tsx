@@ -1,23 +1,20 @@
 import React, { FC } from 'react';
 
-import { useAppSelector } from '../../redux/hooks';
-import CollectionPortrait from './subcomponents/CollectionPortrait/CollectionPortrait';
+import { useWeb3React } from '@web3-react/core';
+
+import ConnectedCollectionWidget from './subcomponents/ConnectedCollectionWidget/ConnectedCollectionWidget';
+import DisconnectedCollectionWidget from './subcomponents/DisconnectedCollectionWidget/DisconnectedCollectionWidget';
 
 import './CollectionWidget.scss';
 
 const CollectionWidget: FC = () => {
-  const { collectionImage, collectionName } = useAppSelector((state) => state.config);
+  const { library } = useWeb3React();
 
-  return (
-    <div className="collection-widget">
-      <CollectionPortrait
-        backgroundImage={collectionImage}
-        subTitle="By Sjnivo"
-        title={collectionName}
-        className="collection-widget__portrait"
-      />
-    </div>
-  );
+  if (library) {
+    return <ConnectedCollectionWidget library={library} />;
+  }
+
+  return <DisconnectedCollectionWidget />;
 };
 
 export default CollectionWidget;

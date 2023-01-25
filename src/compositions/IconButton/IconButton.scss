@@ -22,13 +22,4 @@
         margin-right: .5rem;
         aspect-ratio: 1;
     }
-
-    &:focus {
-        outline: 0;
-        border-color: var(--c-grey);
-    }
-
-    &:active {
-        border-color: var(--c-primary);
-    }
 }

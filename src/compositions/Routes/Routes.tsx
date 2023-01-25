@@ -22,7 +22,7 @@ const Routes: FC = () => {
       element: <ListNftPage />,
     },
     {
-      path: `/${AppRoutes.nftDetail}`,
+      path: `/${AppRoutes.nftDetail}/:id`,
       element: <NftDetailPage />,
     },
     {
