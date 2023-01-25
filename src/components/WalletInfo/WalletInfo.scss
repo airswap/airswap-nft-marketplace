@@ -15,10 +15,9 @@
     background-color: var(--c-grey);
   }
    
-  &__img { 
+  &__avatar { 
     min-width: 2.5rem;
     height: 2.5rem;
-    border: 1px solid gray; //temp css, replace later by a generate img from address
   }
 
   &__address {

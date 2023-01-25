@@ -22,6 +22,7 @@ interface PageProps {
 const Page: FC<PageProps> = ({ className = '', contentClassName = '', children }) => {
   const { active, account } = useWeb3React<Web3Provider>();
   const { isInitialized } = useAppSelector((state) => state.web3);
+  const { avatarUrl } = useAppSelector((state) => state.user);
 
   const [mobileMenuIsVisible, setMobileMenuIsVisible] = useState<boolean>(false);
   const [showWalletConnector, toggleShowWalletConnector] = useToggle(!active);
@@ -46,6 +47,7 @@ const Page: FC<PageProps> = ({ className = '', contentClassName = '', children }
 
       <MobileMenu
         isHidden={!mobileMenuIsVisible}
+        avatarUrl={avatarUrl}
         address={account || undefined}
         onNavLinkClick={handleIconButtonClick}
         className="page__mobile-menu"

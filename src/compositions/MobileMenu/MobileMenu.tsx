@@ -11,13 +11,18 @@ import './MobileMenu.scss';
 
 interface MobileMenuProp {
   isHidden: boolean;
+  avatarUrl?: string;
   address?: string;
   onNavLinkClick: () => void;
   className?: string;
 }
 
 const MobileMenu: FC<MobileMenuProp> = ({
-  isHidden, address, onNavLinkClick, className = '',
+  avatarUrl,
+  isHidden,
+  address,
+  onNavLinkClick,
+  className = '',
 }) => {
   const mobileMenuClassName = classNames('mobile-menu', {
     'mobile-menu--is-hidden': isHidden,
@@ -27,7 +32,7 @@ const MobileMenu: FC<MobileMenuProp> = ({
 
   return (
     <div className={mobileMenuClassName}>
-      {address && <WalletInfo address={ensAddress || address} />}
+      {address && <WalletInfo avatarUrl={avatarUrl} address={ensAddress || address} />}
       <div className="mobile-menu__nav-links">
         <NavLink className="mobile-menu__nav-link" to="" onClick={onNavLinkClick}>My NFTs</NavLink>
         <NavLink className="mobile-menu__nav-link" to="" onClick={onNavLinkClick}>My Activity</NavLink>
