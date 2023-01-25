@@ -9,13 +9,15 @@ import './WalletInfo.scss';
 
 
 interface WalletInfoProps {
-  isBanner?: boolean
+  isBanner?: boolean;
+  avatarUrl?: string;
   address?: string;
   className?: string
 }
 
 const WalletInfo: FC<WalletInfoProps> = ({
   isBanner = false,
+  avatarUrl = '',
   address = '',
   className = '',
 }) => {
@@ -26,7 +28,7 @@ const WalletInfo: FC<WalletInfoProps> = ({
 
   return (
     <div className={walletInfoClassName}>
-      <Avatar className="wallet-info__avatar" address={address} />
+      <Avatar className="wallet-info__avatar" avatarUrl={avatarUrl} />
       <span className="wallet-info__address">{address}</span>
       {isBanner && (
         <IconButton
