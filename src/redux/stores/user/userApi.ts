@@ -1,8 +1,9 @@
 import { createAsyncThunk } from '@reduxjs/toolkit';
 
-export const fetchAvatarByAddress = createAsyncThunk(
+export const fetchAvatarByAddress = createAsyncThunk<
+string, { address: string }>(
   'user/fetchAvatarByAddress',
-  async (address: string) => {
+  async ({ address }) => {
     const response = await fetch(
       `https://api.dicebear.com/5.x/identicon/svg?seed=${address}`,
     );

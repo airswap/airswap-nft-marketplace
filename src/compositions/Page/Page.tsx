@@ -1,6 +1,4 @@
-import React, {
-  FC, ReactNode, useEffect, useState,
-} from 'react';
+import React, { FC, ReactNode, useState } from 'react';
 
 import { Web3Provider } from '@ethersproject/providers';
 import { useWeb3React } from '@web3-react/core';
@@ -8,8 +6,7 @@ import classNames from 'classnames';
 
 import Button from '../../components/Button/Button';
 import useToggle from '../../hooks/useToggle';
-import { useAppDispatch, useAppSelector } from '../../redux/hooks';
-import { setAddress } from '../../redux/stores/user/userSlice';
+import { useAppSelector } from '../../redux/hooks';
 import WalletConnector from '../../widgets/WalletConnector/WalletConnector';
 import MobileMenu from '../MobileMenu/MobileMenu';
 import TopBar from '../TopBar/TopBar';
@@ -36,13 +33,6 @@ const Page: FC<PageProps> = ({ className = '', contentClassName = '', children }
   const handleIconButtonClick = (): void => {
     setMobileMenuIsVisible(!mobileMenuIsVisible);
   };
-
-  const dispatch = useAppDispatch();
-  useEffect(() => {
-    if (account) {
-      dispatch(setAddress(account));
-    }
-  }, [account]);
 
   return (
     <div className={pageClassName}>

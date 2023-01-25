@@ -1,26 +1,23 @@
-import { Web3Provider } from '@ethersproject/providers';
-
 import { getLibrary } from '../../../helpers/ethers';
 import { store } from '../../store';
-
-export const getLib = (): Web3Provider | null => {
-  const { web3 } = store.getState();
-  if (!web3.chainId) return null;
-  const library = getLibrary(web3.chainId);
-  return library;
-};
+import { fetchAvatarByAddress } from './userApi';
 
 export const configureUserSubscriber = () => {
-  // dispatch here ?
-  // how to give the address to the createAsyncChunk parameter exaclty ?
+  let userAccount = '';
+
   store.subscribe(async () => {
-    const state = store.getState();
-    if (!state.user) return;
-    const { address } = state.user;
-    const library = getLib();
-    if (!library || !address) return;
-    const ensAddress = await library.lookupAddress(address);
-    console.log('configureUserSubscriber:: ensAddress', ensAddress);
-    store.dispatch({ type: 'user/fetchAvatarByAddress', payload: ensAddress });
+    const { web3 } = store.getState();
+
+    if (
+      web3.account
+      && userAccount !== web3.account
+      && web3.chainId
+    ) {
+      userAccount = web3.account;
+      const library = getLibrary(web3.chainId);
+      const ensAddress = await library.lookupAddress(web3.account);
+
+      store.dispatch(fetchAvatarByAddress({ address: ensAddress || web3.account }));
+    }
   });
 };

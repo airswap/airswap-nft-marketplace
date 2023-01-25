@@ -4,7 +4,6 @@ import { fetchAvatarByAddress } from './userApi';
 
 export interface UserState {
   isLoading: boolean;
-  address?: string;
   avatarUrl?: string;
 }
 
@@ -16,13 +15,9 @@ const userSlice = createSlice({
   name: 'user',
   initialState,
   reducers: {
-    setIsLoading: (state, action: PayloadAction<boolean>) => ({
+    setAvatarUrl: (state, action: PayloadAction<string>) => ({
       ...state,
-      isLoading: action.payload,
-    }),
-    setAddress: (state, action: PayloadAction<string>) => ({
-      ...state,
-      address: action.payload,
+      avatarUrl: action.payload,
     }),
   },
   extraReducers: builder => {
@@ -39,9 +34,7 @@ const userSlice = createSlice({
   },
 });
 
-export const {
-  setIsLoading, setAddress,
-} = userSlice.actions;
+export const { setAvatarUrl } = userSlice.actions;
 
 export default userSlice.reducer;
 
