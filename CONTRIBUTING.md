@@ -15,7 +15,7 @@ While we use GitHub for issue tracking and project management, development is ge
 
 ## Code Style
 
-When multiple people are working on the same body of code, it is important that everyone conforms to a style. We use eslint for formatting our code.
+When multiple people are working on the same body of code, it is important that everyone conforms to a style. We use eslint for formatting our code. Prettier is not a project dependency, however, a .prettierrc config file is included in the project to reduce setup friction with ESLint.
 
 ## BEM
 
@@ -37,7 +37,7 @@ On top you have @extend and @include. Then the component styles. After that the 
 @import "src/styles/index";
 
 .some-component {
-    @extend %flex-align-center;   
+    @extend %flex-align-center;
 
     border: 1px solid var(--c-light-grey);
     width: 100%;
@@ -45,7 +45,7 @@ On top you have @extend and @include. Then the component styles. After that the 
     padding: 0.5rem;
     background: var(--c-grey);
     z-index: 1;
-    
+
     &--is-primary {
         background: var(--c-red);
     }
@@ -109,7 +109,7 @@ const TopBar: FC<TopBarProps> = ({ hideLabel, className = '' }) => {
   useEffect(() => {
     // Some effect here
   }, [mobileMenuIsVisible]);
-  
+
   const handleMobileToggleButtonClick = () => {
     setMobileMenuIsVisible(!mobileMenuIsVisible);
   }
@@ -123,9 +123,13 @@ const TopBar: FC<TopBarProps> = ({ hideLabel, className = '' }) => {
 If you have dynamic modifiers for your BEM classes use `classNames` preferable at the top of your component.
 
 ```typescript
-const checkboxClassNames = classNames('checkbox', {
+const checkboxClassNames = classNames(
+  'checkbox',
+  {
     'checkbox--is-checked': checked,
-}, className);
+  },
+  className,
+);
 ```
 
 ### Component types
@@ -147,15 +151,15 @@ We use [redux toolkit](https://redux-toolkit.js.org) for store management. Use [
 
 ```typescript
 const UsersComponent = () => {
-  const { user, isLoading, error } = useSelector((state) => state.users)
-  const dispatch = useDispatch()
+  const { user, isLoading, error } = useSelector((state) => state.users);
+  const dispatch = useDispatch();
 
   const fetchUser = (userId) => {
     dispatch(fetchUserById(userId));
-  }
+  };
 
   // render UI here
-}
+};
 ```
 
 // TODO: some more explanation about error handling
