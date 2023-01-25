@@ -1,12 +1,12 @@
-import React, { FC } from "react";
+import React, { FC } from 'react';
 
-import classNames from "classnames";
-import { NavLink } from "react-router-dom";
+import classNames from 'classnames';
+import { NavLink } from 'react-router-dom';
 
-import WalletInfo from "../../components/WalletInfo/WalletInfo";
-import { AppRoutes } from "../../routes";
+import WalletInfo from '../../components/WalletInfo/WalletInfo';
+import { AppRoutes } from '../../routes';
 
-import "./MobileMenu.scss";
+import './MobileMenu.scss';
 
 interface MobileMenuProp {
   isHidden: boolean;
@@ -23,14 +23,14 @@ const MobileMenu: FC<MobileMenuProp> = ({
   address,
   ensAddress,
   onNavLinkClick,
-  className = "",
+  className = '',
 }) => {
   const mobileMenuClassName = classNames(
-    "mobile-menu",
+    'mobile-menu',
     {
-      "mobile-menu--is-hidden": isHidden,
+      'mobile-menu--is-hidden': isHidden,
     },
-    className
+    className,
   );
 
   return (
