@@ -54,7 +54,7 @@ const TopBar: FC<TopBarProps> = ({
     onDisconnectButtonClick();
   };
 
-  const handleOutsideClick = (target: any) => {
+  const handleOutsideClick = (target: HTMLDivElement) => {
     if (target === popupRef.current
       || popupRef.current?.contains(target)
       || target === buttonRef.current
@@ -64,9 +64,9 @@ const TopBar: FC<TopBarProps> = ({
 
   useEffect(() => {
     if (isPopupOpen) {
-      document.addEventListener('mousedown', (event) => handleOutsideClick(event.target));
+      document.addEventListener('mousedown', (event) => handleOutsideClick(event.target as HTMLDivElement));
     } else {
-      document.removeEventListener('mousedown', (event) => handleOutsideClick(event.target));
+      document.removeEventListener('mousedown', (event) => handleOutsideClick(event.target as HTMLDivElement));
     }
   }, [isPopupOpen]);
 
