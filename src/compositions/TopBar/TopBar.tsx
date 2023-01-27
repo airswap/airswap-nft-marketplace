@@ -6,6 +6,7 @@ import classNames from 'classnames';
 
 import Avatar from '../../components/Avatar/Avatar';
 import Button from '../../components/Button/Button';
+import Icon from '../../components/Icon/Icon';
 import { truncateAddress } from '../../helpers/stringUtils';
 import { AppRoutes } from '../../routes';
 import IconButton from '../IconButton/IconButton';
@@ -56,12 +57,10 @@ const TopBar: FC<TopBarProps> = ({
   const handleOutsideClick = (target: any) => {
     if (target === popupRef.current
       || popupRef.current?.contains(target)
-      || target === buttonRef
+      || target === buttonRef.current
       || buttonRef.current?.contains(target)) { return; }
     setIsPopupOpen(false);
   };
-
-  console.log(isPopupOpen);
 
   useEffect(() => {
     if (isPopupOpen) {
@@ -112,7 +111,9 @@ const TopBar: FC<TopBarProps> = ({
                 className="top-bar__user-button"
                 onClick={() => setIsPopupOpen(!isPopupOpen)}
               >
-                <Avatar avatarUrl={avatarUrl} className="top-bar__user-button-icon" />
+                {avatarUrl
+                ? <Avatar avatarUrl={avatarUrl} className="top-bar__user-button-icon" />
+                : <Icon name="logout" className="top-bar__user-button-icon" />}
                 {truncateAddress(ensAddress || account || '')}
               </Button>
             </div>
