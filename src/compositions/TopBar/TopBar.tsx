@@ -1,5 +1,6 @@
 import React, {
-  FC, useEffect, useRef, useState,
+  FC, useCallback,
+  useEffect, useRef, useState,
 } from 'react';
 
 import classNames from 'classnames';
@@ -54,19 +55,24 @@ const TopBar: FC<TopBarProps> = ({
     onDisconnectButtonClick();
   };
 
-  const handleOutsideClick = (target: HTMLDivElement) => {
-    if (target === popupRef.current
-      || popupRef.current?.contains(target)
-      || target === buttonRef.current
-      || buttonRef.current?.contains(target)) { return; }
-    setIsPopupOpen(false);
-  };
+  const handleOutsideClick = useCallback(
+    (e) => {
+      if (
+        (buttonRef.current === e.target || buttonRef.current?.contains(e.target))
+        || (popupRef.current === e.target || popupRef.current?.contains(e.target))
+      ) {
+        return;
+      }
+      setIsPopupOpen(false);
+    },
+    [setIsPopupOpen],
+  );
 
   useEffect(() => {
     if (isPopupOpen) {
-      document.addEventListener('mousedown', (event) => handleOutsideClick(event.target as HTMLDivElement));
+      document.addEventListener('mousedown', handleOutsideClick);
     } else {
-      document.removeEventListener('mousedown', (event) => handleOutsideClick(event.target as HTMLDivElement));
+      document.removeEventListener('mousedown', handleOutsideClick);
     }
   }, [isPopupOpen]);
 
