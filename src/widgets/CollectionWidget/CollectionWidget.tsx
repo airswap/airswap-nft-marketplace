@@ -7,7 +7,7 @@ import SearchInput from '../../components/SearchInput/SearchInput';
 import useInfiniteScroll from '../../hooks/useInfiniteScroll';
 import { useAppDispatch, useAppSelector } from '../../redux/hooks';
 import { fetchNFTMetadata } from '../../redux/stores/collection/collectionApi';
-import { setSelectedToken } from '../../redux/stores/collection/collectionSlice';
+import { setSelectedTokenId } from '../../redux/stores/token/tokenSlice';
 import CollectionPortrait from './subcomponents/CollectionPortrait/CollectionPortrait';
 
 import './CollectionWidget.scss';
@@ -28,7 +28,7 @@ const CollectionWidget: FC = () => {
 
   const navigate = useNavigate();
   const routeChange = (tokenId: number) => {
-    dispatch(setSelectedToken(tokenId));
+    dispatch(setSelectedTokenId(tokenId));
     navigate('/nft-detail');
   };
 
@@ -57,7 +57,7 @@ const CollectionWidget: FC = () => {
               name={t.name}
               imageURI={t.image.replace('ipfs://', 'https://ipfs.io/ipfs/')}
               price={t.price ?? 0.154} // TODO: remove when price is saved
-              onClick={() => routeChange(i)}
+              onClick={() => routeChange(i + 1)}
             />
           ))}
         </div>

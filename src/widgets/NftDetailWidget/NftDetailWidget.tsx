@@ -1,11 +1,12 @@
-import React, { FC } from 'react';
+import React, { FC, useEffect } from 'react';
 
 import { useNavigate } from 'react-router-dom';
 
 import Button from '../../components/Button/Button';
 import useNftMetadata from '../../hooks/useNftMetadata';
-import { useAppSelector } from '../../redux/hooks';
+import { useAppDispatch, useAppSelector } from '../../redux/hooks';
 import { Attribute } from '../../redux/stores/collection/collectionSlice';
+import { fetchNFTActivity } from '../../redux/stores/token/tokenApi';
 import { AppRoutes } from '../../routes';
 import NftDetailAccordian from './subcomponents/NftDetailAccordian/NftDetailAccordian';
 import NftDetailAttributeCard from './subcomponents/NftDetailAttributeCard/NftDetailAttributeCard';
@@ -29,11 +30,17 @@ const NftDetailAttributes: FC<NftDetailAttributesProps> = ({ attrs, className = 
   </div>
 );
 
-const CollectionWidget: FC = () => {
-  const { config, collection } = useAppSelector((state) => state);
+const NftDetailWidget: FC = () => {
+  const dispatch = useAppDispatch();
+  useEffect(() => {
+    dispatch(fetchNFTActivity());
+  }, []);
+
+  const { config, token } = useAppSelector((state) => state);
   const { collectionImage } = config;
-  const { selectedTokenId } = collection;
+  const { selectedTokenId, eventLogs } = token;
   const nftMetadata = useNftMetadata(`${selectedTokenId}`);
+  console.log(eventLogs);
 
   const navigate = useNavigate();
   const routeChange = () => {
@@ -87,4 +94,4 @@ const CollectionWidget: FC = () => {
   );
 };
 
-export default CollectionWidget;
+export default NftDetailWidget;

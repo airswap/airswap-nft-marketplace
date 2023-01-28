@@ -7,6 +7,7 @@ import { configureCollectionSubscriber } from './stores/collection/collectionSub
 import configReducer from './stores/config/configSlice';
 import metadataReducer from './stores/metadata/metadataSlice';
 import { configureMetadataSubscriber } from './stores/metadata/metadataSubscriber';
+import tokenReducer from './stores/token/tokenSlice';
 import web3Reducer from './stores/web3/web3Slice';
 
 export const store = configureStore({
@@ -16,6 +17,7 @@ export const store = configureStore({
     metadata: metadataReducer,
     web3: web3Reducer,
     collection: collectionReducer,
+    token: tokenReducer,
   },
 });
 
