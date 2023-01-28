@@ -10,35 +10,31 @@ import './WalletInfo.scss';
 
 interface WalletInfoProps {
   isBanner?: boolean;
-  isMobileMenu?: boolean;
   avatarUrl?: string;
   address?: string;
   ensAddress?: string;
   onLogoutButtonClick: () => void;
   className?: string;
+  avatarClassName?: string;
 }
 
 const WalletInfo: FC<WalletInfoProps> = ({
   isBanner = false,
-  isMobileMenu = false,
   avatarUrl = '',
   address = '',
   ensAddress = '',
   onLogoutButtonClick,
   className = '',
+  avatarClassName = '',
 }) => {
-  const walletInfoClassName = classNames(
-    'wallet-info',
-    {
-      'wallet-info--is-banner': isBanner,
-      'wallet-info--is-menu': !isBanner,
-    },
-    className,
-  );
+  const walletInfoClassName = classNames('wallet-info', {
+    'wallet-info--is-banner': isBanner,
+    'wallet-info--is-menu': !isBanner,
+  }, className);
 
   return (
     <div className={walletInfoClassName}>
-      {isMobileMenu && <Avatar className="wallet-info__avatar" avatarUrl={avatarUrl} />}
+      <Avatar className={`wallet-info__avatar ${avatarClassName}`} avatarUrl={avatarUrl} />
       <div className="wallet-info__address-bar">
         <span className="wallet-info__address">{truncateAddress(ensAddress || address)}</span>
         {ensAddress && <span className="wallet-info__address-secondary">{truncateAddress(address)}</span>}

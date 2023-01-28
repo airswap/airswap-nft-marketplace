@@ -27,18 +27,19 @@ const MobileMenu: FC<MobileMenuProp> = ({
   onLogoutButtonClick,
   className = '',
 }) => {
-  const mobileMenuClassName = classNames(
-    'mobile-menu',
-    {
-      'mobile-menu--is-hidden': isHidden,
-    },
-    className,
-  );
+  const mobileMenuClassName = classNames('mobile-menu', {
+    'mobile-menu--is-hidden': isHidden,
+  }, className);
 
   return (
     <div className={mobileMenuClassName}>
       {address && (
-        <WalletInfo isMobileMenu avatarUrl={avatarUrl} address={address} ensAddress={ensAddress} onLogoutButtonClick={onLogoutButtonClick} />
+        <WalletInfo
+          avatarUrl={avatarUrl}
+          address={address}
+          ensAddress={ensAddress}
+          onLogoutButtonClick={onLogoutButtonClick}
+        />
       )}
       <div className="mobile-menu__nav-links">
         <NavLink

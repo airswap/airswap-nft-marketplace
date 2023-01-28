@@ -19,6 +19,10 @@ $component: user-popup;
         margin-bottom: 0.5rem;
     }
 
+    &__wallet-info-avatar {
+        display: none;
+    }
+
     &__nav-link {
         @extend %button;
         @extend %button-border-style;
