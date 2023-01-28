@@ -8,26 +8,35 @@
   &--is-menu {
     background-color: var(--c-dark);
     border: 1px solid var(--c-dark-border);
-    border-radius: .3125rem;
+    border-radius: 0.3125rem;
   }
 
   &--is-banner {
     background-color: var(--c-grey);
   }
-   
-  &__avatar { 
+
+  &__avatar {
     min-width: 2.5rem;
     height: 2.5rem;
+    margin-right: 0.875rem;
+  }
+
+  &__address-bar {
+    display: flex;
+    flex-direction: column;
+    flex-grow: 1;
   }
 
   &__address {
     @extend %text-ellipsis;
-
-    margin-left: 0.875rem;
-    flex-grow: 1;
     font-weight: var(--fw-700);
   }
-  
+
+  &__address-secondary {
+    font-size: 0.75rem;
+    font-weight: var(--fw-400);
+  }
+
   &__icon {
     color: var(--c-white);
     width: 1.25rem;

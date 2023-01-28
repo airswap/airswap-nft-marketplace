@@ -4,6 +4,7 @@ $c-black: #000;
 $c-kuroi-black: #101217;
 $c-river-styx: #1A1E25;
 $c-light-grey: #6E7686;
+$c-text-grey: #9EA3AC;
 
 @mixin light-mode-variables {
     --c-primary:        #{$c-primary};
@@ -21,6 +22,7 @@ $c-light-grey: #6E7686;
     --c-dark-border: #{$c-river-styx};
     --c-grey: #{$c-river-styx};
     --c-light-grey: #{$c-light-grey};
+    --c-text-grey: #{$c-text-grey};
 
     --f-primary: "loos-normal", sans-serif;
     --f-mono: "DM Mono", monospace;

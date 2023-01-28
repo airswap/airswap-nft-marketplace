@@ -1,11 +1,19 @@
-import React, { FC } from 'react';
+import React, {
+  FC,
+  useEffect,
+  useRef,
+  useState,
+} from 'react';
 
 import classNames from 'classnames';
 
+import Avatar from '../../components/Avatar/Avatar';
 import Button from '../../components/Button/Button';
+import { truncateAddress } from '../../helpers/stringUtils';
 import { AppRoutes } from '../../routes';
 import IconButton from '../IconButton/IconButton';
 import IconNavLink from '../IconNavLink/IconNavLink';
+import UserPopup from '../UserPopup/UserPopup';
 import DesktopNav from './subcomponents/DesktopNav/DesktopNav';
 
 import './TopBar.scss';
@@ -13,7 +21,12 @@ import './TopBar.scss';
 interface TopBarProps {
   mobileMenuIsVisible: boolean;
   showDesktopConnectButton: boolean;
+  showDesktopUserButton: boolean;
+  avatarUrl?: string;
+  account: string | null | undefined;
+  ensAddress: string | undefined;
   onConnectButtonClick: () => void;
+  onDisconnectButtonClick: () => void;
   onMobileMenuButtonClick: () => void;
   className?: string;
 }
@@ -21,13 +34,45 @@ interface TopBarProps {
 const TopBar: FC<TopBarProps> = ({
   mobileMenuIsVisible,
   showDesktopConnectButton,
+  showDesktopUserButton,
+  avatarUrl,
+  account,
+  ensAddress,
   onConnectButtonClick,
+  onDisconnectButtonClick,
   onMobileMenuButtonClick,
   className = '',
 }) => {
+  const userPopupRef = useRef<HTMLDivElement>(null);
+  const userButtonRef = useRef<HTMLButtonElement>(null);
+  const [isPopupOpen, setIsPopupOpen] = useState(false);
+
   const containerClassName = classNames('top-bar', {
     'top-bar--mobile-menu-is-visible': mobileMenuIsVisible,
   }, className);
+
+  const handleDisconnectClick = () => {
+    setIsPopupOpen(false);
+    onDisconnectButtonClick();
+  };
+
+  const handleDocumentClick = (e: MouseEvent) => {
+    if (e.target instanceof Node && (userPopupRef.current?.contains(e.target))) {
+      return;
+    }
+
+    if (e.target === userButtonRef.current) {
+      return;
+    }
+
+    setIsPopupOpen(false);
+  };
+
+  useEffect(() => {
+    document.addEventListener('mousedown', handleDocumentClick);
+
+    return () => document.removeEventListener('mousedown', handleDocumentClick);
+  }, [isPopupOpen]);
 
   return (
     <div className={containerClassName}>
@@ -62,9 +107,31 @@ const TopBar: FC<TopBarProps> = ({
             className="top-bar__connect-button"
           />
         )}
+        {showDesktopUserButton
+          && (
+            <Button
+              ref={userButtonRef}
+              text={truncateAddress(ensAddress || account || '')}
+              onClick={() => setIsPopupOpen(!isPopupOpen)}
+              className="top-bar__user-button"
+            >
+              <Avatar avatarUrl={avatarUrl} className="top-bar__user-button-icon" />
+              {truncateAddress(ensAddress || account || '')}
+            </Button>
+          )}
       </div>
+      {isPopupOpen && (
+        <UserPopup
+          address={account || undefined}
+          ensAddress={ensAddress}
+          ref={userPopupRef}
+          onLogoutButtonClick={handleDisconnectClick}
+          className="top-bar__user-popup"
+        />
+      )}
     </div>
   );
 };
+
 
 export default TopBar;

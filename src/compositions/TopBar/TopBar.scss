@@ -14,7 +14,6 @@ $component: top-bar;
 
     @include for-size(tablet-portrait-up) {
         height: var(--desktop-top-bar-height);
-        padding: 0 1rem;
         background: none;
 
         &__menu-button {
@@ -30,6 +29,10 @@ $component: top-bar;
             height: 2.5rem;
             font-size: .9375rem;
         }
+    }
+
+    @include for-size(desktop-up) {
+        padding: 0 0 0 .5rem;
     }
 
     &--mobile-menu-is-visible {
@@ -61,6 +64,18 @@ $component: top-bar;
 
         @include for-size(tablet-portrait-up) {
             display: flex;
+            margin-right: -5%;
+        }
+
+        @include for-size(tablet-landscape-up) {
+            margin-right: -10%;
+        }
+
+        @include for-size(desktop-up) {
+            position: absolute;
+            left: 50%;
+            margin: 0;
+            transform: translateX(-50%);
         }
     }
 
@@ -104,6 +119,40 @@ $component: top-bar;
 
         @include for-size(tablet-portrait-up) {
             display: flex;
+        }
+    }
+
+    &__user-button {
+        @extend %button;
+        @extend %button-border-style;
+
+        display: none;
+        height: 2.5rem;
+        padding: 0 .5rem;
+        font-weight: var(--fw-500);
+        color: var(--c-white);
+
+        @include for-size(tablet-portrait-up) {
+            display: flex;
+        }
+    }
+
+    &__user-button-icon {
+        width: 2.5rem;
+        height: 2.5rem;
+        margin-right: 0.75rem;
+        border: 1px solid var(--c-dark-border);
+        border-radius: 100%;
+        color: var(--c-black);
+    }
+
+    &__user-popup {
+        position: absolute;
+        right: 1rem;
+        top: calc(var(--desktop-top-bar-height) - .5rem);
+
+        @include for-size(desktop-up) {
+            right: -2rem;
         }
     }
 }
