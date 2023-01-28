@@ -9,6 +9,7 @@ import { Attribute } from '../../redux/stores/collection/collectionSlice';
 import { fetchNFTActivity } from '../../redux/stores/token/tokenApi';
 import { AppRoutes } from '../../routes';
 import NftDetailAccordian from './subcomponents/NftDetailAccordian/NftDetailAccordian';
+import NftDetailActivity from './subcomponents/NftDetailActivity/NftDetailActivity';
 import NftDetailAttributeCard from './subcomponents/NftDetailAttributeCard/NftDetailAttributeCard';
 import NftDetailMainInfo from './subcomponents/NftDetailMainInfo/NftDetailMainInfo';
 import NftDetailPortrait from './subcomponents/NftDetailPortrait/NftDetailPortrait';
@@ -73,11 +74,11 @@ const NftDetailWidget: FC = () => {
           defaultOpen
         />
       </div>
-      <div className="nft-detail-widget__activity">
+      <div className="nft-detail-widget__activities">
         <NftDetailAccordian
           label="Item Activity"
           content={(
-            <p>{nftMetadata?.description}</p>
+            <NftDetailActivity logs={eventLogs} />
           )}
         />
       </div>
