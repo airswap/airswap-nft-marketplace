@@ -1,55 +1,49 @@
-import { createSlice, PayloadAction } from '@reduxjs/toolkit';
+import { createSlice } from '@reduxjs/toolkit';
 
-export interface Attribute {
-  'trait_type': string;
-  value: string;
-}
-export interface TokenData {
-  name: string;
-  image: string;
-  description: string;
-  attributes: Attribute[];
-  price?: number;
-}
+import { CollectionToken } from '../../../entities/CollectionToken/CollectionToken';
+import { getUniqueArrayChildren } from '../../../helpers/array';
+import { fetchNFTMetadata } from './collectionApi';
 
 export interface CollectionState {
-  tokenIds: string[];
-  index: number;
-  tokensData: TokenData[];
-  selectedTokenId?: number;
+  isLoading: boolean;
+  lastTokenIndex: number;
+  tokensData: CollectionToken[];
 }
 
 const initialState: CollectionState = {
-  tokenIds: [],
-  index: 0,
+  isLoading: false,
+  lastTokenIndex: 1,
   tokensData: [],
 };
 
 const collectionSlice = createSlice({
   name: 'collection',
   initialState,
-  reducers: {
-    incrementIndex: (state, action: PayloadAction<number>) => ({
+  reducers: {},
+  extraReducers: builder => {
+    builder.addCase(fetchNFTMetadata.pending, state => ({
       ...state,
-      index: state.index + action.payload,
-    }),
-    setSelectedToken: (state, action: PayloadAction<number>) => ({
-      ...state,
-      selectedTokenId: action.payload,
-    }),
-    setTokensData: (state, action: PayloadAction<TokenData[]>) => ({
-      ...state,
-      tokensData: [...state.tokensData, ...action.payload],
-    }),
-    setTokenIds: (state, action: PayloadAction<string[]>) => ({
-      ...state,
-      tokenIds: [...action.payload],
-    }),
+      isLoading: true,
+    }));
+
+    builder.addCase(fetchNFTMetadata.fulfilled, (state, action) => {
+      const newTokensData = getUniqueArrayChildren([
+        ...state.tokensData,
+        ...action.payload,
+      ].sort((a, b) => a.id - b.id), 'id') as CollectionToken[];
+      const lastToken = newTokensData[newTokensData.length - 1];
+
+      return {
+        ...state,
+        isLoading: false,
+        tokensData: newTokensData,
+        lastTokenIndex: lastToken ? lastToken.id : 1,
+      };
+    });
+
+    // TODO: Add error handling
+    // builder.addCase(fetchNFTMetadata.rejected, (state, action) => {
   },
 });
-
-export const {
-  incrementIndex, setTokensData, setTokenIds, setSelectedToken,
-} = collectionSlice.actions;
 
 export default collectionSlice.reducer;

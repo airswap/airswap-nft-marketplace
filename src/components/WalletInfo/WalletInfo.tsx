@@ -1,22 +1,31 @@
-import { FC } from 'react';
+import React, { FC } from 'react';
 
 import classNames from 'classnames';
 
 import IconButton from '../../compositions/IconButton/IconButton';
+import { truncateAddress } from '../../helpers/stringUtils';
+import Avatar from '../Avatar/Avatar';
 
 import './WalletInfo.scss';
 
-
 interface WalletInfoProps {
-  isBanner?: boolean
+  isBanner?: boolean;
+  avatarUrl?: string;
   address?: string;
-  className?: string
+  ensAddress?: string;
+  onLogoutButtonClick: () => void;
+  className?: string;
+  avatarClassName?: string;
 }
 
 const WalletInfo: FC<WalletInfoProps> = ({
   isBanner = false,
+  avatarUrl = '',
   address = '',
+  ensAddress = '',
+  onLogoutButtonClick,
   className = '',
+  avatarClassName = '',
 }) => {
   const walletInfoClassName = classNames('wallet-info', {
     'wallet-info--is-banner': isBanner,
@@ -25,8 +34,11 @@ const WalletInfo: FC<WalletInfoProps> = ({
 
   return (
     <div className={walletInfoClassName}>
-      <div className="wallet-info__img" />
-      <span className="wallet-info__address">{address}</span>
+      <Avatar className={`wallet-info__avatar ${avatarClassName}`} avatarUrl={avatarUrl} />
+      <div className="wallet-info__address-bar">
+        <span className="wallet-info__address">{truncateAddress(ensAddress || address)}</span>
+        {ensAddress && <span className="wallet-info__address-secondary">{truncateAddress(address)}</span>}
+      </div>
       {isBanner && (
         <IconButton
           hideLabel
@@ -40,6 +52,7 @@ const WalletInfo: FC<WalletInfoProps> = ({
         icon="logout"
         text="logout"
         iconClassName="wallet-info__icon"
+        onClick={onLogoutButtonClick}
       />
     </div>
   );

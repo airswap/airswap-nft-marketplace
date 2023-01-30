@@ -1,0 +1,44 @@
+@import "src/styles/index";
+
+$component: user-popup;
+
+.#{$component} {
+    display: none;
+    flex-direction: column;
+    border: 1px solid var(--c-dark-border);
+    border-radius: .25rem;
+    width: 17.125rem;
+    padding: 0.5rem;
+    background: var(--c-dark);
+
+    @include for-size(tablet-portrait-up) {
+        display: flex;
+    }
+
+    &__wallet-info {
+        margin-bottom: 0.5rem;
+    }
+
+    &__wallet-info-avatar {
+        display: none;
+    }
+
+    &__nav-link {
+        @extend %button;
+        @extend %button-border-style;
+
+        justify-content: flex-start;
+        border-radius: .25rem;
+        height: 2rem;
+        padding: 0 1.125rem;
+        color: var(--c-text-grey);
+        font-weight: var(--fw-400);
+        font-size: .875rem;
+        
+        &:hover, &:focus {
+            font-weight: var(--fw-500);
+            color: var(--c-white);
+            background-color: var(--c-grey);
+        }
+    }
+}

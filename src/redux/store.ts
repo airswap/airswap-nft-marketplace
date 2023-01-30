@@ -3,11 +3,12 @@ import { Action, configureStore, ThunkAction } from '@reduxjs/toolkit';
 import balancesReducer from './stores/balances/balancesSlice';
 import { configureBalancesSubscriber } from './stores/balances/balancesSubscriber';
 import collectionReducer from './stores/collection/collectionSlice';
-import { configureCollectionSubscriber } from './stores/collection/collectionSubscriber';
 import configReducer from './stores/config/configSlice';
 import metadataReducer from './stores/metadata/metadataSlice';
 import { configureMetadataSubscriber } from './stores/metadata/metadataSubscriber';
 import tokenReducer from './stores/token/tokenSlice';
+import userReducer from './stores/user/userSlice';
+import { configureUserSubscriber } from './stores/user/userSubscriber';
 import web3Reducer from './stores/web3/web3Slice';
 
 export const store = configureStore({
@@ -16,6 +17,7 @@ export const store = configureStore({
     config: configReducer,
     metadata: metadataReducer,
     web3: web3Reducer,
+    user: userReducer,
     collection: collectionReducer,
     token: tokenReducer,
   },
@@ -23,7 +25,7 @@ export const store = configureStore({
 
 configureBalancesSubscriber();
 configureMetadataSubscriber();
-configureCollectionSubscriber();
+configureUserSubscriber();
 
 export type AppDispatch = typeof store.dispatch;
 export type RootState = ReturnType<typeof store.getState>;
@@ -33,3 +35,4 @@ RootState,
 unknown,
 Action<string>
 >;
+

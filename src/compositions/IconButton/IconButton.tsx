@@ -1,4 +1,10 @@
-import React, { FC } from 'react';
+import React, {
+  forwardRef,
+  ForwardRefExoticComponent,
+  ReactElement,
+  Ref,
+  RefAttributes,
+} from 'react';
 
 import classNames from 'classnames';
 
@@ -15,7 +21,9 @@ interface IconButtonProps extends ButtonProps {
   className?: string;
 }
 
-const IconButton: FC<IconButtonProps> = ({
+export type IconButtonWithRefProps = IconButtonProps & RefAttributes<HTMLButtonElement>;
+
+const IconButton: ForwardRefExoticComponent<IconButtonWithRefProps> = forwardRef(({
   hideLabel,
   icon,
   iconAlign = 'left',
@@ -23,7 +31,7 @@ const IconButton: FC<IconButtonProps> = ({
   iconClassName,
   className = '',
   ...restProps
-}) => {
+}, ref: Ref<HTMLButtonElement>): ReactElement => {
   const iconButtonClassName = classNames('icon-button', {
     'icon-button--hidden-label': hideLabel,
     [`icon-button--icon-align-${iconAlign}`]: iconAlign,
@@ -32,6 +40,7 @@ const IconButton: FC<IconButtonProps> = ({
   return (
     <Button
       {...restProps}
+      ref={ref}
       text={text}
       className={iconButtonClassName}
     >
@@ -39,6 +48,6 @@ const IconButton: FC<IconButtonProps> = ({
       {!hideLabel && text}
     </Button>
   );
-};
+});
 
 export default IconButton;
