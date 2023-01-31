@@ -8,7 +8,7 @@ interface NftDetailAccordianProps {
   label: string;
   content: string | JSX.Element;
   defaultOpen?: boolean;
-  className?: string;
+  className: string;
 }
 
 const NftDetailAccordian: FC<NftDetailAccordianProps> = ({
@@ -30,7 +30,7 @@ const NftDetailAccordian: FC<NftDetailAccordianProps> = ({
   return (
     <div className={`nft-detail-accordian ${className}`}>
       <div className="nft-detail-accordian__header" ref={headerRef}>
-        <p className="nft-detail-accordian__header-label">{label}</p>
+        <p className="nft-detail-accordian__label">{label}</p>
         <p className="nft-detail-accordian__state-indicator" style={{ transform: `rotate(${stateIndicator}deg)` }}>V</p>
       </div>
       <div className={`nft-detail-accordian__content ${isOpen ? 'nft-detail-accordian__content--is-open' : ''}`}>

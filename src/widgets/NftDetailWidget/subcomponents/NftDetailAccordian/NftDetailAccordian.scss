@@ -4,30 +4,30 @@
 
     &__header {
         display: flex;
-        font-size: .75rem;
+        font-size: .9rem;
         font-weight: var(--fw-700);
-        padding-bottom: .5rem
+        padding-bottom: .75rem
 
-        p {
-            color: #9EA3AC;
-        }
+    }
+
+    &__label, &__state-indicator{
+        color: var(--c-light-grey);
     }
     
-    &__header-label {
+    &__label {
         padding-right: .5rem;
     }
     
     &__state-indicator {
         transition: transform .3s ease-out;
-        line-height: 2rem;
-        margin-top: -0.5rem;
+        transform-origin: center;
     }
 
     &__content {
         height: 0;
         transition: height .3s;
         overflow: hidden;
-        will-change: auto;
+        will-change: transform;
 
         &--is-open {
             height: 100%;

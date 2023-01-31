@@ -3,24 +3,6 @@
 .nft-detail-widget {
     position: relative;
 
-    &__top {
-
-        @include for-size(tablet-landscape-up) {
-            display: flex;
-            justify-content: space-between;
-            flex-direction: row-reverse;
-        }
-    }
-
-    &__portrait,
-    &__main-info {
-        width: 100%;
-
-        @include for-size(tablet-landscape-up) {
-            width: calc(50% - 1rem);
-        }
-    }
-
     &__portrait {
         aspect-ratio: 1.5;
         max-height: 25rem;
@@ -48,7 +30,41 @@
         width: calc(100% - var(--page-padding) * 2);
 
         @include for-size(tablet-landscape-up) {
-            display: none;
+            position: relative;
+            width: 75%;
+            bottom: auto;
         }
+    }
+
+    @include for-size(tablet-landscape-up) {
+        display: grid;
+        grid-template-columns: [col1-start] 1fr [col1-end col2-start] 1fr [col2-end];
+        grid-template-rows: [row1-start] 1fr [row1-end row2-start] 1fr [row2-end row3-start] 1fr [row3-end];
+
+        grid-template-areas:
+            "image header"
+            "image accordians"
+            "details accordians";
+
+        &__main-info {
+            grid-area: header;
+        }
+
+        &__portrait {
+            grid-area: image;
+        }
+
+        &__sales-meta {
+            grid-area: accordians;
+            display: flex;
+            flex-direction: column-reverse;
+            padding: var(--page-padding);
+            justify-content: flex-end;
+        }
+
+        &__details {
+            grid-area: details;
+        }
+
     }
 }

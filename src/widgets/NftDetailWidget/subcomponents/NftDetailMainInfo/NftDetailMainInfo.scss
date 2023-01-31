@@ -4,20 +4,10 @@
     &__owner {
         color: var(--c-text-grey);
         font-size: .8rem;
-        margin-bottom: 1rem;
+        margin-bottom: 1.5rem;
     }
 
     @include for-size(tablet-landscape-up) {
         padding: var(--page-padding);
-    }
-
-    &__sub-title {
-        margin-top: .5rem;
-        font-size: .75rem;
-        font-weight: var(--fw-400);
-
-        @include for-size(tablet-portrait-up) {
-            font-size: 1rem;
-        }
     }
 }
