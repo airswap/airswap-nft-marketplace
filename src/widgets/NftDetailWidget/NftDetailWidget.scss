@@ -16,6 +16,16 @@
         }
     }
 
+    &__main-info {
+        &--tablet-only {
+            display: none;
+
+            p {
+                margin-bottom: 0;
+            }
+        }
+    }
+
     &__attributes {
         display: grid;
         grid-template-columns: 1fr 1fr;
@@ -42,29 +52,53 @@
         grid-template-rows: [row1-start] 1fr [row1-end row2-start] 1fr [row2-end row3-start] 1fr [row3-end];
 
         grid-template-areas:
-            "image header"
-            "image accordians"
-            "details accordians";
-
-        &__main-info {
-            grid-area: header;
-        }
+            "image meta"
+            "image meta"
+            "details meta";
 
         &__portrait {
             grid-area: image;
         }
 
         &__sales-meta {
-            grid-area: accordians;
-            display: flex;
-            flex-direction: column-reverse;
+            grid-area: meta;
+            display: grid;
+            grid-template-rows: [heading-start] min-content [heading-end accordians-start] min-content [accordians-end price-start] min-content [price-end button-start] min-content [button-end];
+            grid-template-areas:
+                "heading"
+                "accordians"
+                "price"
+                "button";
             padding: var(--page-padding);
-            justify-content: flex-end;
+        }
+
+        &__main-info {
+            display: none;
+            padding: 0 0 var(--page-padding);
+            &--tablet-only {
+                grid-area: heading;
+                display: block;
+            }
         }
 
         &__details {
             grid-area: details;
         }
 
+        &__accordians {
+            grid-area: accordians;
+        }
+
+        &__price {
+            grid-area: price;
+        }
+
+        &__proceed-button {
+            grid-area: button;
+        }
+
+        &__description {
+            margin-bottom: 3rem;
+        }
     }
 }

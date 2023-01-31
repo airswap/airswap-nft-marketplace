@@ -34,7 +34,6 @@ const NftDetailWidget: FC = () => {
   // const { eventLogs } = token;
   const { id: selectedTokenId } = useParams();
   const nftMetadata: CollectionToken = useNftMetadata(`${selectedTokenId}`) as CollectionToken;
-  console.log(nftMetadata);
   const [nftPrice, setNftPrice] = useState<BigNumber>();
 
   useEffect(() => {
@@ -63,6 +62,11 @@ const NftDetailWidget: FC = () => {
         className="nft-detail-widget__portrait"
       />
       <div className="nft-detail-widget__sales-meta">
+        <NftDetailMainInfo
+          owner="sjnivo12345"
+          title={nftMetadata?.name || ''}
+          className="nft-detail-widget__main-info nft-detail-widget__main-info--tablet-only"
+        />
         <NftDetailSaleInfo price={nftPrice} className="nft-detail-widget__price" />
         <div className="nft-detail-widget__accordians">
           <div className="nft-detail-widget__description">

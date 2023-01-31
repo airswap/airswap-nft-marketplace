@@ -33,4 +33,13 @@
             height: 100%;
         }
     }
+    @include for-size(tablet-landscape-up) {
+        &__state-indicator {
+            display: none;
+        }
+
+        &__content {
+            height: 100%;
+        }
+    }
 }
