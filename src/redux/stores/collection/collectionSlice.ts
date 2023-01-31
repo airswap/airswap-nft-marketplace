@@ -42,7 +42,9 @@ const collectionSlice = createSlice({
     });
 
     // TODO: Add error handling
-    // builder.addCase(fetchNFTMetadata.rejected, (state, action) => {
+    builder.addCase(fetchNFTMetadata.rejected, (state, action) => {
+      console.log('fetchNFTMetadata.rejected', action);
+    });
   },
 });
 

@@ -25,7 +25,7 @@ CollectionToken[], fetchNFTMetadataParams>(
   async ({ library, collectionToken, startIndex }) => {
     // TODO: Add support for ERC-1155
     const collectionContract = getCollectionErc721Contract(library, collectionToken);
-
+    console.log('fetchNFTMetadata');
     if (!collectionContract) {
       throw new Error('No collection contract found');
     }

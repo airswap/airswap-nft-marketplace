@@ -20,7 +20,8 @@ const useNftMetadata = (
 
   useEffect(() => {
     const tokenData = { ...tokensData[parseInt(tokenId, 10)] };
-    tokenData.image = ipfsToUrl(tokenData.image);
+    // if (!tokenData.image) return;
+    // tokenData.image = ipfsToUrl(tokenData.image);
     setMetadata(tokenData);
   }, [tokensData]);
 

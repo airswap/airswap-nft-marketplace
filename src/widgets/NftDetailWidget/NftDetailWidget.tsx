@@ -1,21 +1,24 @@
 import React, { FC, useEffect } from 'react';
 
-import { useNavigate } from 'react-router-dom';
+import { useNavigate, useParams } from 'react-router-dom';
 
 import Button from '../../components/Button/Button';
 import useNftMetadata from '../../hooks/useNftMetadata';
 import { useAppDispatch, useAppSelector } from '../../redux/hooks';
-import { Attribute } from '../../redux/stores/collection/collectionSlice';
 import { fetchNFTActivity } from '../../redux/stores/token/tokenApi';
 import { AppRoutes } from '../../routes';
 import NftDetailAccordian from './subcomponents/NftDetailAccordian/NftDetailAccordian';
-import NftDetailActivity from './subcomponents/NftDetailActivity/NftDetailActivity';
+// import NftDetailActivity from './subcomponents/NftDetailActivity/NftDetailActivity';
 import NftDetailAttributeCard from './subcomponents/NftDetailAttributeCard/NftDetailAttributeCard';
 import NftDetailMainInfo from './subcomponents/NftDetailMainInfo/NftDetailMainInfo';
 import NftDetailPortrait from './subcomponents/NftDetailPortrait/NftDetailPortrait';
 
 import './NftDetailWidget.scss';
 
+export interface Attribute {
+  'trait_type': string;
+  value: string;
+}
 
 // TODO: Move NftDetailAttributes into sub-component.
 interface NftDetailAttributesProps {
@@ -37,11 +40,11 @@ const NftDetailWidget: FC = () => {
     dispatch(fetchNFTActivity());
   }, []);
 
-  const { config, token } = useAppSelector((state) => state);
+  const { config } = useAppSelector((state) => state);
   const { collectionImage } = config;
-  const { selectedTokenId, eventLogs } = token;
+  // const { eventLogs } = token;
+  const { id: selectedTokenId } = useParams();
   const nftMetadata = useNftMetadata(`${selectedTokenId}`);
-  console.log(eventLogs);
 
   const navigate = useNavigate();
   const routeChange = () => {
@@ -74,7 +77,7 @@ const NftDetailWidget: FC = () => {
           defaultOpen
         />
       </div>
-      <div className="nft-detail-widget__activities">
+      {/* <div className="nft-detail-widget__activities">
         <NftDetailAccordian
           label="Item Activity"
           content={(
@@ -89,7 +92,7 @@ const NftDetailWidget: FC = () => {
             <p>{nftMetadata?.description}</p>
           )}
         />
-      </div>
+      </div> */}
       <Button text="Proceed to buy" className="nft-detail-widget__proceed-button" onClick={routeChange} />
     </div>
   );

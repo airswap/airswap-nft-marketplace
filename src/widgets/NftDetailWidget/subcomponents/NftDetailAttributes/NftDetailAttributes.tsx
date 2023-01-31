@@ -1,6 +1,6 @@
 import React, { FC } from 'react';
 
-import { Attribute } from '../../../../redux/stores/collection/collectionSlice';
+import { Attribute } from '../../NftDetailWidget';
 import NftDetailAttributeCard from '../NftDetailAttributeCard/NftDetailAttributeCard';
 
 interface NftDetailAttributesProps {
