@@ -71,7 +71,7 @@ const NftDetailWidget: FC = () => {
     <div className="nft-detail-widget">
       <div className="nft-detail-widget__top">
         <NftDetailMainInfo
-          subTitle="Owned by sjnivo12345"
+          owner="Owned by sjnivo12345"
           title={nftMetadata?.name || ''}
           className="nft-detail-widget__main-info"
         />

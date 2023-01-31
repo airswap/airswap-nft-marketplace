@@ -1,6 +1,11 @@
 @import "src/styles/index";
 
 .nft-detail-main-info {
+    &__owner {
+        color: var(--c-text-grey);
+        font-size: .8rem;
+        margin-bottom: 1rem;
+    }
 
     @include for-size(tablet-landscape-up) {
         padding: var(--page-padding);
