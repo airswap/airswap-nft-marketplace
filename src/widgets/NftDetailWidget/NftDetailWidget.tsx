@@ -33,7 +33,7 @@ const NftDetailWidget: FC = () => {
   const { collectionImage } = config;
   // const { eventLogs } = token;
   const { id: selectedTokenId } = useParams();
-  const nftMetadata: CollectionToken = useNftMetadata(`${selectedTokenId}`) as CollectionToken;
+  const nftMetadata: CollectionToken = useNftMetadata(`${parseInt(selectedTokenId as string, 10) - 1}`) as CollectionToken;
   const [nftPrice, setNftPrice] = useState<BigNumber>();
 
   useEffect(() => {
