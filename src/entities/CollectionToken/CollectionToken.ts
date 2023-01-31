@@ -3,5 +3,5 @@ export interface CollectionToken {
   name: string;
   image: string;
   description: string;
-  price: number;
+  price: string;
 }

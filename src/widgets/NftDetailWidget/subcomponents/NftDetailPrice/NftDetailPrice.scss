@@ -1,6 +1,7 @@
 @import "src/styles/index";
 
-.nft-detail-main-info {
+.nft-detail-price {
+    margin-bottom: 1rem;
 
     @include for-size(tablet-landscape-up) {
         padding: var(--page-padding);

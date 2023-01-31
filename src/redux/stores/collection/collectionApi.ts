@@ -25,7 +25,7 @@ CollectionToken[], fetchNFTMetadataParams>(
   async ({ library, collectionToken, startIndex }) => {
     // TODO: Add support for ERC-1155
     const collectionContract = getCollectionErc721Contract(library, collectionToken);
-    console.log('fetchNFTMetadata');
+
     if (!collectionContract) {
       throw new Error('No collection contract found');
     }
@@ -41,11 +41,12 @@ CollectionToken[], fetchNFTMetadataParams>(
         tokenURI.replace('ipfs://', 'https://ipfs.io/ipfs/'),
       );
       const token = await res.json() as Erc721Token;
+      const price = '0154541201556702705';
 
       return transformErc721TokenToCollectionToken(
         token,
         tokenId,
-        0.154,
+        price,
       );
     });
 
