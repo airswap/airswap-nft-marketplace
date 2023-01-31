@@ -13,4 +13,3 @@ export const setLibrary = (provider: any): Web3Provider => {
 };
 
 export const getLibrary = (chainId: number): Web3Provider => cachedLibrary[chainId];
-

@@ -33,64 +33,6 @@
         @media (min-width: 1160px) {
             padding: 0;
         }
-
-        display: grid;
-        grid-template-columns: 1fr 1fr;
-        row-gap: 1rem;
-        column-gap: 0.25rem;
-
-        &__search-input {
-            grid-column: 1 / 3;
-            max-width: 23.5rem;
-
-            @include for-size(phone-only) {
-                max-width: 100%;
-            }
-        }
-
-        &__subtitle {
-            justify-self: start;
-            font-weight: var(--fw-700);
-            font-size: 1rem;
-
-            @include for-size(desktop-up) {
-                font-size: 1.25rem;
-            }
-        }
-
-        &__filter-button {
-            justify-self: end;
-        }
-
-        &__nft-container{
-            display: grid;
-            grid-column: 1 / 3;
-            grid-template-columns: repeat(auto-fill, minmax(9.25rem, 1fr));
-            gap: 1rem;
-
-            @include for-size(phone-only) {
-                grid-template-columns: 1fr 1fr;
-                
-                row-gap: 1rem;
-                column-gap: 0.5rem;
-    
-                &__nft-card {
-                    justify-self: center;
-                }
-            }
-
-            @include for-size(desktop-up) {
-                grid-template-columns: repeat(auto-fill, minmax(16.25rem, 1fr));
-            }
-
-            &__nft-loading {
-                grid-column: 1 / -1;
-                text-align: center;
-                font-size: 1rem;
-                font-weight: 700;
-                color: var(--c-white);
-            }
-        }
     }
 
     &__search-input {
