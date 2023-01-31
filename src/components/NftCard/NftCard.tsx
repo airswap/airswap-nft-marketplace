@@ -1,30 +1,35 @@
-import React from 'react';
+import React, { useRef } from 'react';
 
-import { NavLink, NavLinkProps } from 'react-router-dom';
+import { useEventListener } from 'usehooks-ts';
 
 import './NftCard.scss';
 
-interface NftCardProps extends NavLinkProps {
+interface NftCardProps {
   imageURI: string;
   name: string;
   price: number;
+  onClick?: (e: MouseEvent) => void;
   className?: string;
 }
 
 const NftCard = ({
-  imageURI,
-  name,
-  price,
-  to,
-  className = '',
-}: NftCardProps) => (
-  <NavLink to={to} className={`nft-card ${className}`}>
-    <img className="nft-card__img" src={imageURI} alt={name} />
-    <div className="nft-card__info-wrapper">
-      <h3 className="nft-card__name">{name}</h3>
-      <h4 className="nft-card__price">{`${price} ETH`}</h4>
+  imageURI, name, price, className, onClick,
+}: NftCardProps) => {
+  const containerRef = useRef(null);
+  const click = (e: MouseEvent) => {
+    if (onClick) {
+      onClick(e);
+    }
+  };
+  useEventListener('click', click, containerRef);
+
+  return (
+    <div className={`nft-card ${className}`} ref={containerRef}>
+      <img className="nft-card__img" src={imageURI} alt={name} />
+      <div className="nft-card__name">{name}</div>
+      <div className="nft-card__price">{`${price} ETH`}</div>
     </div>
-  </NavLink>
-);
+  );
+};
 
 export default NftCard;

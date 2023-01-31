@@ -16,13 +16,13 @@ const useNftMetadata = (
   tokenId: string,
 ) => {
   const [metadata, setMetadata] = useState<Metadata>();
-  const { tokenIds, tokensData } = useAppSelector((state) => state.collection);
+  const { tokensData } = useAppSelector((state) => state.collection);
 
   useEffect(() => {
     const tokenData = { ...tokensData[parseInt(tokenId, 10)] };
     tokenData.image = ipfsToUrl(tokenData.image);
     setMetadata(tokenData);
-  }, [tokenIds, tokensData]);
+  }, [tokensData]);
 
   return metadata;
 };

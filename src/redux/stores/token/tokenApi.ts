@@ -2,8 +2,9 @@ import ERC721 from '@openzeppelin/contracts/build/contracts/ERC721.json';
 import { createAsyncThunk } from '@reduxjs/toolkit';
 import { ethers } from 'ethers';
 
+import { getLibrary } from '../../../helpers/ethers';
 import { store } from '../../store';
-import { getCollectionContract } from '../collection/collectionApi';
+import { getCollectionErc721Contract } from '../collection/collectionApi';
 import { addEventLog, EventLog } from './tokenSlice';
 
 const tokenInterface: ethers.utils.Interface = new ethers.utils.Interface(
@@ -14,8 +15,10 @@ const tokenInterface: ethers.utils.Interface = new ethers.utils.Interface(
 export const fetchNFTActivity = createAsyncThunk(
   'token/fetchNFTActivity',
   async () => {
-    const { token } = store.getState();
-    const contract = getCollectionContract();
+    const { token, web3, config } = store.getState();
+    if (!web3.chainId) return;
+    const library = getLibrary(web3.chainId);
+    const contract = getCollectionErc721Contract(library, config.collectionToken);
     if (!contract) return;
     try {
       const events = await contract.queryFilter('Transfer');
