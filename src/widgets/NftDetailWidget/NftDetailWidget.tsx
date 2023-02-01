@@ -2,7 +2,7 @@ import React, { FC, useEffect, useState } from 'react';
 
 import { useWeb3React } from '@web3-react/core';
 import { BigNumber } from 'ethers';
-import { useNavigate, useParams } from 'react-router-dom';
+import { Link, useParams } from 'react-router-dom';
 
 import Button from '../../components/Button/Button';
 import { CollectionToken } from '../../entities/CollectionToken/CollectionToken';
@@ -64,12 +64,6 @@ const NftDetailWidget: FC = () => {
     }
   }, [selectedTokenId, library, tokensData.length]);
 
-  const navigate = useNavigate();
-  const routeChange = () => {
-    const path = AppRoutes.collection;
-    navigate(path);
-  };
-
   return (
     isLoading
     ? <p>Loading</p>
@@ -122,7 +116,9 @@ const NftDetailWidget: FC = () => {
               />
             </div> */}
           </div>
-          <Button text="Proceed to buy" className="nft-detail-widget__proceed-button" onClick={routeChange} />
+          <Link to={`/${AppRoutes.swap}/${selectedTokenId}`}>
+            <Button text="Proceed to buy" className="nft-detail-widget__proceed-button" />
+          </Link>
         </div>
       </div>
     )
