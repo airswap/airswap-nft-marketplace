@@ -27,7 +27,6 @@ export const fetchNFTActivity = createAsyncThunk(
         if (!logDescription) return;
         const tokenId: number = logDescription.args[2].toNumber();
         if (token.selectedTokenId === tokenId) {
-          console.log('Foind a match!!', logDescription, tokenId);
           const transfer: EventLog = {
             to: logDescription.args.to,
             from: logDescription.args.from,

@@ -13,16 +13,19 @@ export const getCollectionErc721Contract = (library: Web3Provider, token: string
   return new Contract(token, erc721Interface, library);
 };
 
-interface fetchNFTMetadataParams {
+export interface fetchNFTMetadataParams {
   library: Web3Provider,
   collectionToken: string,
   startIndex: number,
+  tokenId?: number,
 }
 
 export const fetchNFTMetadata = createAsyncThunk<
 CollectionToken[], fetchNFTMetadataParams>(
   'collection/fetchNFTMetadata',
-  async ({ library, collectionToken, startIndex }) => {
+  async ({
+    library, collectionToken, startIndex, tokenId: tokenIndex,
+  }) => {
     // TODO: Add support for ERC-1155
     const collectionContract = getCollectionErc721Contract(library, collectionToken);
 
@@ -30,10 +33,10 @@ CollectionToken[], fetchNFTMetadataParams>(
       throw new Error('No collection contract found');
     }
 
-    const CHUNK_SIZE = 20;
+    const CHUNK_SIZE = tokenIndex ? 1 : 20;
     const tokensToFetch = new Array(CHUNK_SIZE)
       .fill(null)
-      .map((value, index) => startIndex + index);
+      .map((value, index) => (tokenIndex || startIndex) + index);
 
     const dataPromises = tokensToFetch.map(async (tokenId) => {
       const tokenURI = await collectionContract.tokenURI(tokenId);

@@ -14,7 +14,8 @@ const useNftMetadata = (
   const { tokensData } = useAppSelector((state) => state.collection);
 
   useEffect(() => {
-    const tokenData = { ...tokensData[parseInt(tokenId, 10)] };
+    const tokenIndex = tokensData.findIndex((token) => token.id === parseInt(tokenId, 10));
+    const tokenData = { ...tokensData[tokenIndex] };
     setMetadata(tokenData);
   }, [tokensData]);
 
