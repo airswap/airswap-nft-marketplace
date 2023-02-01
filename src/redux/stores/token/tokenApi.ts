@@ -41,7 +41,7 @@ export const fetchNFTActivity = createAsyncThunk(
       console.log('contract.filters.Transfer CATCH', err);
     }
 
-
+    // TODO: Continue working on getting recent NFT activity
     // try {
     //   const contract = getCollectionContract();
     //   if (!contract) return;
