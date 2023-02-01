@@ -4,7 +4,7 @@ import './NftDetailPortrait.scss';
 
 interface CollectionPortraitProps {
   backgroundImage: string;
-  className: string;
+  className?: string;
 }
 
 const NftDetailPortrait: FC<CollectionPortraitProps> = ({

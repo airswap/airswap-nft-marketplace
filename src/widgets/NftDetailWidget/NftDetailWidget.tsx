@@ -9,21 +9,13 @@ import { CollectionToken } from '../../entities/CollectionToken/CollectionToken'
 import useNftMetadata from '../../hooks/useNftMetadata';
 import { useAppDispatch, useAppSelector } from '../../redux/hooks';
 import { fetchNFTMetadata, fetchNFTMetadataParams } from '../../redux/stores/collection/collectionApi';
-// import { fetchNFTActivity } from '../../redux/stores/token/tokenApi';
 import { AppRoutes } from '../../routes';
 import NftDetailAccordian from './subcomponents/NftDetailAccordian/NftDetailAccordian';
-// import NftDetailActivity from './subcomponents/NftDetailActivity/NftDetailActivity';
-// import NftDetailAttributeCard from './subcomponents/NftDetailAttributeCard/NftDetailAttributeCard';
 import NftDetailMainInfo from './subcomponents/NftDetailMainInfo/NftDetailMainInfo';
 import NftDetailPortrait from './subcomponents/NftDetailPortrait/NftDetailPortrait';
 import NftDetailSaleInfo from './subcomponents/NftDetailSaleInfo/NftDetailSaleInfo';
 
 import './NftDetailWidget.scss';
-
-export interface Attribute {
-  'trait_type': string;
-  value: string;
-}
 
 const NftDetailWidget: FC = () => {
   const [isLoading, setIsLoading] = useState<boolean>(true);
@@ -38,7 +30,6 @@ const NftDetailWidget: FC = () => {
 
   const { collectionImage, collectionToken } = config;
   const { tokensData } = collection;
-  // const { eventLogs } = token;
 
   const loadingComplete = () => {
     setIsLoading(false);
@@ -90,31 +81,12 @@ const NftDetailWidget: FC = () => {
               <NftDetailAccordian
                 label="Description"
                 content={(
-                  <>
-                    <p>{nftMetadata?.description}</p>
-                    {/* {nftMetadata?.attributes ? <NftDetailAttributes attrs={nftMetadata?.attributes} /> : null } */}
-                  </>
+                  <p>{nftMetadata?.description}</p>
                 )}
                 className="nft-detail-widget__description-accordian"
                 defaultOpen
               />
             </div>
-            {/* <div className="nft-detail-widget__activities">
-              <NftDetailAccordian
-                label="Item Activity"
-                content={(
-                  <NftDetailActivity logs={eventLogs} />
-                )}
-              />
-            </div>
-            <div className="nft-detail-widget__details">
-              <NftDetailAccordian
-                label="Details"
-                content={(
-                  <p>{nftMetadata?.description}</p>
-                )}
-              />
-            </div> */}
           </div>
           <Link to={`/${AppRoutes.swap}/${selectedTokenId}`}>
             <Button text="Proceed to buy" className="nft-detail-widget__proceed-button" />

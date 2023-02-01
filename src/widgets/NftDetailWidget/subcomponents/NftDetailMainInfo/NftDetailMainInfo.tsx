@@ -5,7 +5,7 @@ import './NftDetailMainInfo.scss';
 export interface INftDetailMainInfoProps {
   title: string;
   owner: string;
-  className: string;
+  className?: string;
 }
 
 const NftDetailMainInfo: FC<INftDetailMainInfoProps> = ({ title, owner, className = '' }) => (

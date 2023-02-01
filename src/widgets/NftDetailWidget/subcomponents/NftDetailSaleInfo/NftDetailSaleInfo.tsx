@@ -7,7 +7,7 @@ import './NftDetailSaleInfo.scss';
 
 interface NftDetailSaleInfoProps {
   price?: BigNumber;
-  className: string;
+  className?: string;
 }
 
 const NftDetailSaleInfo: FC<NftDetailSaleInfoProps> = ({ price, className = '' }) => (

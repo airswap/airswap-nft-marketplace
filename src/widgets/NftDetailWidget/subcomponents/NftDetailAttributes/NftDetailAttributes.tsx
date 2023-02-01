@@ -1,7 +1,11 @@
 import React, { FC } from 'react';
 
-import { Attribute } from '../../NftDetailWidget';
 import NftDetailAttributeCard from '../NftDetailAttributeCard/NftDetailAttributeCard';
+
+export interface Attribute {
+  'trait_type': string;
+  value: string;
+}
 
 interface NftDetailAttributesProps {
   attrs: Array<Attribute>;

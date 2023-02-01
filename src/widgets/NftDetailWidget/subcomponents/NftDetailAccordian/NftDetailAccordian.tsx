@@ -8,7 +8,7 @@ interface NftDetailAccordianProps {
   label: string;
   content: string | JSX.Element;
   defaultOpen?: boolean;
-  className: string;
+  className?: string;
 }
 
 const NftDetailAccordian: FC<NftDetailAccordianProps> = ({
