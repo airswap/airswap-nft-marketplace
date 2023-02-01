@@ -24,6 +24,11 @@
   resolved "https://registry.yarnpkg.com/@airswap/constants/-/constants-3.0.4.tgz#e2ef03da8b33373588f8eaa6e47e23b3350bb743"
   integrity sha512-Fe2jCua48rEDvsNQZfYTSVgLLA/cXb+qwLzVUDAZDou3Uwd9BHt2OOrb01qEnPEtbtvk68IeGAfujyJh3H5ONA==
 
+"@airswap/constants@3.0.6":
+  version "3.0.6"
+  resolved "https://registry.yarnpkg.com/@airswap/constants/-/constants-3.0.6.tgz#26e516a7db617483647658208927df1bc5608692"
+  integrity sha512-4n/+X3FMwC1vt2HV+k/5mBWoiVGxg3WWYB0Xa48R3lqW5BfB/8QaWXbnO0OGa3PvzUUD53yqSItXhYO7rnFDYw==
+
 "@airswap/indexer-registry@3.1.2":
   version "3.1.2"
   resolved "https://registry.yarnpkg.com/@airswap/indexer-registry/-/indexer-registry-3.1.2.tgz#233fa604f315f180b7590cfd17798f9bbae0c461"
@@ -65,13 +70,13 @@
   dependencies:
     "@openzeppelin/contracts" "^4.3.1"
 
-"@airswap/metadata@3.0.8":
-  version "3.0.8"
-  resolved "https://registry.yarnpkg.com/@airswap/metadata/-/metadata-3.0.8.tgz#c522ab651405d956da627195ba7279727b51b483"
-  integrity sha512-WH1dc+W5FxH59OtNWQHoBiNNo8+0TObCc0R1WPIv+SwyHw+5EgZlNGneMZPk5tVYOt7zmXXBAjTSMm0GgyyC5A==
+"@airswap/metadata@^3.0.9":
+  version "3.0.9"
+  resolved "https://registry.yarnpkg.com/@airswap/metadata/-/metadata-3.0.9.tgz#6a737721495e29dbe8fb982490d930ab3593c356"
+  integrity sha512-QZYPEocIQfIsPZVtWenKS3mMVh0F+30ziOxvdK2CySoh1RzsrvtPVb2aGP3Y899M69hTYCEbTW/AE73jMwkZWQ==
   dependencies:
-    "@airswap/constants" "3.0.4"
-    "@airswap/typescript" "3.0.2"
+    "@airswap/constants" "3.0.6"
+    "@airswap/typescript" "3.0.3"
     "@uniswap/token-lists" "^1.0.0-beta.24"
     axios "^0.21.3"
     eth-contract-metadata "^1.12.1"
@@ -91,6 +96,14 @@
   integrity sha512-oWXo9nrAUmVCTfaVuqGTv5JUzbYdrtnfaJjXJkQQmVj9G4FayBlvhosbSBr03a/UGHH4NXA94qMK56IDDFzdEg==
   dependencies:
     "@airswap/constants" "3.0.3"
+    "@uniswap/token-lists" "^1.0.0-beta.26"
+
+"@airswap/typescript@3.0.3":
+  version "3.0.3"
+  resolved "https://registry.yarnpkg.com/@airswap/typescript/-/typescript-3.0.3.tgz#3a52d4e436a23a4324340581f2a6c544e4f92387"
+  integrity sha512-nih426Y4HJYPw7ZFcXhJUdVH0EijU8rwnfqa+iElN1L2+87/FKxpt+DCdGDgKQz6ben8xIJ37G+3YyeGu/GzCA==
+  dependencies:
+    "@airswap/constants" "3.0.6"
     "@uniswap/token-lists" "^1.0.0-beta.26"
 
 "@airswap/utils@3.0.6":
@@ -9739,7 +9752,12 @@ node-forge@^0.10.0:
   resolved "https://registry.yarnpkg.com/node-forge/-/node-forge-0.10.0.tgz#32dea2afb3e9926f02ee5ce8794902691a676bf3"
   integrity sha512-PPmu8eEeG9saEUvI97fm4OYxXVB6bFvyNTyiUOBichBpFG8A1Ljw3bY62+5oOjDEMHRnd0Y7HQ+x7uzxOzC6JA==
 
-node-gyp-build@^4.2.0, node-gyp-build@^4.3.0:
+node-gyp-build@^4.2.0:
+  version "4.6.0"
+  resolved "https://registry.yarnpkg.com/node-gyp-build/-/node-gyp-build-4.6.0.tgz#0c52e4cbf54bbd28b709820ef7b6a3c2d6209055"
+  integrity sha512-NTZVKn9IylLwUzaKjkas1e4u2DLNcV4rdYagA4PWdPwW87Bi7z+BznyKSRwS/761tV/lzCGXplWsiaMjLqP2zQ==
+
+node-gyp-build@^4.3.0:
   version "4.5.0"
   resolved "https://registry.yarnpkg.com/node-gyp-build/-/node-gyp-build-4.5.0.tgz#7a64eefa0b21112f89f58379da128ac177f20e40"
   integrity sha512-2iGbaQBV+ITgCz76ZEjmhUKAKVf7xfY1sRl4UiKQspfZMH2h06SyhNsnSVy50cwkFQDGLyif6m/6uFXHkOZ6rg==
