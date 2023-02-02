@@ -1,7 +1,6 @@
 import { Web3Provider } from '@ethersproject/providers';
 import { createAsyncThunk } from '@reduxjs/toolkit';
 
-import { CollectionToken } from '../../../entities/CollectionToken/CollectionToken';
 import { getCollectionErc721Contract } from '../collection/collectionApi';
 import { TokenMeta } from './nftDetailSlice';
 
@@ -12,7 +11,7 @@ interface fetchNftMetaParams {
 }
 
 export const fetchNftMeta = createAsyncThunk<
-CollectionToken, fetchNftMetaParams>(
+TokenMeta, fetchNftMetaParams>(
   'nftDetail/fetchNftMeta',
   async ({
     library, collectionToken, tokenId,

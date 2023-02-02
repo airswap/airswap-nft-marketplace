@@ -70,14 +70,11 @@ const nftDetailSlice = createSlice({
       isLoading: true,
     }));
 
-    builder.addCase(fetchNftMeta.fulfilled, (state, action) => {
-      console.log('fetchNftMeta.fulfilled', state, action);
-      return {
-        ...state,
-        isLoading: false,
-        tokenMeta: action.payload,
-      };
-    });
+    builder.addCase(fetchNftMeta.fulfilled, (state, action) => ({
+      ...state,
+      isLoading: false,
+      tokenMeta: action.payload,
+    }));
 
     builder.addCase(fetchNftMeta.rejected, (_state, action) => {
       console.log('fetchNftMeta.rejected', action);
