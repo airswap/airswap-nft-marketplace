@@ -1,7 +1,7 @@
 import React, { FC } from 'react';
 
 import Icon from '../../../../components/Icon/Icon';
-import { EventLog } from '../../../../redux/stores/token/tokenSlice';
+import { EventLog } from '../../../../redux/stores/nftDetail/nftDetailSlice';
 
 import './NftDetailActivity.scss';
 

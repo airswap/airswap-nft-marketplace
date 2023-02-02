@@ -1,11 +1,7 @@
 import React, { FC } from 'react';
 
+import { Attribute } from '../../../../redux/stores/nftDetail/nftDetailSlice';
 import NftDetailAttributeCard from '../NftDetailAttributeCard/NftDetailAttributeCard';
-
-export interface Attribute {
-  'trait_type': string;
-  value: string;
-}
 
 interface NftDetailAttributesProps {
   attrs: Array<Attribute>;

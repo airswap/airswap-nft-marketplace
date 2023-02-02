@@ -6,7 +6,7 @@ import collectionReducer from './stores/collection/collectionSlice';
 import configReducer from './stores/config/configSlice';
 import metadataReducer from './stores/metadata/metadataSlice';
 import { configureMetadataSubscriber } from './stores/metadata/metadataSubscriber';
-import tokenReducer from './stores/token/tokenSlice';
+import nftDetailReducer from './stores/nftDetail/nftDetailSlice';
 import userReducer from './stores/user/userSlice';
 import { configureUserSubscriber } from './stores/user/userSubscriber';
 import web3Reducer from './stores/web3/web3Slice';
@@ -19,7 +19,7 @@ export const store = configureStore({
     web3: web3Reducer,
     user: userReducer,
     collection: collectionReducer,
-    token: tokenReducer,
+    nftDetail: nftDetailReducer,
   },
 });
 
