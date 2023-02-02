@@ -3,7 +3,6 @@ import React, { FC, useEffect } from 'react';
 import { Web3Provider } from '@ethersproject/providers';
 import { Link, useParams } from 'react-router-dom';
 
-import Button from '../../../../components/Button/Button';
 import { useAppDispatch, useAppSelector } from '../../../../redux/hooks';
 import { fetchNftMeta } from '../../../../redux/stores/nftDetail/nftDetailApi';
 import { setError, setSelectedTokenId } from '../../../../redux/stores/nftDetail/nftDetailSlice';
@@ -76,8 +75,8 @@ const ConnectedNftDetailWidget: FC<IConnectedNftDetailWidgetProps> = ({ library 
               />
             </div>
           </div>
-          <Link to={`/${AppRoutes.swap}/${selectedTokenId}`}>
-            <Button text="Proceed to buy" className="nft-detail-widget__proceed-button" />
+          <Link to={`/${AppRoutes.swap}/${selectedTokenId}`} className="nft-detail-widget__proceed-button">
+            Proceed to buy
           </Link>
         </div>
       </div>
