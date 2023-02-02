@@ -12,6 +12,11 @@
         background: var(--c-dark);
     }
 
+    &--has-confirm-state &__trade-details-container {
+        flex-grow: 1;
+        margin-bottom: 4rem;
+    }
+
     &__header {
         display: flex;
         justify-content: space-between;
@@ -34,6 +39,7 @@
     &__trade-details-container {
         display: flex;
         flex-direction: column;
+        justify-content: center;
         align-items: center;
         margin: 1.75rem 0 1.25rem;
 
@@ -60,9 +66,7 @@
         margin-top: -.5rem;
     }
 
-    &__action-button {
-        @extend %button--is-primary;
-
+    &__action-buttons {
         justify-self: flex-end;
         margin-top: auto;
         width: 100%;
