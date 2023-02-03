@@ -12,7 +12,7 @@ interface NftDetailActivityTransferProps {
 const NftDetailActivityTransfer: FC<NftDetailActivityTransferProps> = ({ log }) => (
   <div className="nft-detail-widget__activity">
     <Icon name="swap-horizontal" />
-    <p>{`Transfered to ${log.to}`}</p>
+    <p className="nft-detail-widget__activity-label">{`Transfered to ${log.to}`}</p>
   </div>
 );
 

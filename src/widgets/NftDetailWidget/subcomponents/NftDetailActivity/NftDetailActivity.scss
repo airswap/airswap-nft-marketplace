@@ -9,8 +9,9 @@
 		&:last-child {
 			margin-bottom: 0;
 		}
-		p {
-			margin-left: 1rem;
-		}
+	}
+
+	&__activity-label {
+		margin-left: 1rem;
 	}
 }
