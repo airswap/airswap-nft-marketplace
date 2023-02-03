@@ -1,4 +1,4 @@
-import { getERC1155FromContract } from '@airswap/metadata';
+import { getTokenFromContract } from '@airswap/metadata';
 import { TokenInfo } from '@airswap/typescript';
 import { Web3Provider } from '@ethersproject/providers';
 import { createAsyncThunk } from '@reduxjs/toolkit';
@@ -25,7 +25,7 @@ CollectionToken[], fetchNFTMetadataParams>(
       let tokenInfo: TokenInfo;
 
       try {
-        tokenInfo = await getERC1155FromContract(library, collectionToken, tokenId.toString());
+        tokenInfo = await getTokenFromContract(library, collectionToken, tokenId.toString());
       } catch (e) {
         throw new Error(`Unable to fetch data for ${collectionToken} with id ${tokenId}`);
       }
