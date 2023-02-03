@@ -9,6 +9,7 @@
     height: 4.5rem;
     padding: 0 1rem;
     background: var(--c-dark);
+    overflow: hidden;
 
     @include for-size(tiny-phone-only) {
         padding: 0 .75rem;
@@ -16,10 +17,13 @@
 
     &__icon {
         flex-shrink: 100;
+        border-radius: 50%;
         width: 2.375rem;
         min-width: 1.5rem;
         aspect-ratio: 1;
         background-position: center center;
+        background-size: cover;
+        overflow: hidden;
     }
 
     &__title-and-name {

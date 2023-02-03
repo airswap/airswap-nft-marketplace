@@ -32,7 +32,7 @@ const BuyActionButtons: FC<ActionButtonsProps> = ({ state, onActionButtonClick, 
           to="/"
           className="buy-action-buttons__action-button"
         >
-          Return to collection
+          Back to collection
         </NavLink>
       );
     }
@@ -44,6 +44,17 @@ const BuyActionButtons: FC<ActionButtonsProps> = ({ state, onActionButtonClick, 
           className="buy-action-buttons__action-button"
         >
           View in my profile
+        </NavLink>
+      );
+    }
+
+    if (state === BuyNftState.failed) {
+      return (
+        <NavLink
+          to={`/${AppRoutes.nftDetail}/1`}
+          className="buy-action-buttons__action-button"
+        >
+          Go back
         </NavLink>
       );
     }

@@ -1,7 +1,6 @@
 import React, { FC } from 'react';
 
 import Page from '../../compositions/Page/Page';
-import BuyNftWidget from '../../widgets/BuyNftWidget/BuyNftWidget';
 import NftDetailWidget from '../../widgets/NftDetailWidget/NftDetailWidget';
 
 const NftDetailPage: FC = () => (
@@ -10,7 +9,6 @@ const NftDetailPage: FC = () => (
   // Else go to widget
   <Page>
     <NftDetailWidget />
-    <BuyNftWidget />
   </Page>
 );
 

@@ -1,6 +1,8 @@
 @import "src/styles/index";
 
-.buy-nft-widget {
+$component: buy-nft-widget;
+
+.#{$component} {
     display: flex;
     flex-direction: column;
     height: 100%;
@@ -12,9 +14,38 @@
         background: var(--c-dark);
     }
 
-    &--has-confirm-state &__trade-details-container {
-        flex-grow: 1;
-        margin-bottom: 4rem;
+    &--has-details-state {
+
+        .#{$component}__trade-details-container {
+            flex-direction: column;
+        }
+
+        .#{$component}__loading-spinner {
+            display: none;
+        }
+    }
+
+    &--has-pending-state {
+
+        .#{$component}__loading-spinner {
+            visibility: visible;
+        }
+
+        .#{$component}__transaction-link {
+            display: flex;
+        }
+    }
+
+    &--has-success-state,
+    &--has-failed-state {
+
+        .#{$component}__loading-spinner {
+            display: none;
+        }
+
+        .#{$component}__transaction-link {
+            display: flex;
+        }
     }
 
     &__header {
@@ -36,34 +67,43 @@
         color: var(--c-light-grey);
     }
 
+    &__loading-spinner {
+        margin: 1.75rem auto 0;
+        visibility: hidden;
+    }
+
     &__trade-details-container {
         display: flex;
-        flex-direction: column;
+        flex-direction: column-reverse;
         justify-content: center;
         align-items: center;
         margin: 1.75rem 0 1.25rem;
 
         @include for-size(tablet-portrait-up) {
-            margin-top: 1.25rem;
             font-size: 1.25rem;
         }
     }
 
-    &__swap-icon {
+    &__swap-icon-container {
         position: relative;
+        margin-top: -.5rem;
+        height: 1rem;
+        z-index: 1;
+    }
+
+    &__swap-icon {
         border: 1px solid var(--c-dark-border);
         border-radius: 50%;
-        margin-top: -.5rem;
         width: 1.5rem;
         height: 1.5rem;
         padding: .3125rem;
         color: var(--c-light-grey);
         background: var(--c-black);
-        z-index: 1;
     }
 
-    &__trade-details:last-child {
-        margin-top: -.5rem;
+    &__transaction-link {
+        display: none;
+        margin-bottom: 1.25rem;
     }
 
     &__action-buttons {

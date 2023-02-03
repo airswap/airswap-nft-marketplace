@@ -1,15 +1,18 @@
-import React, { FC, useState } from 'react';
+import React, { FC, useMemo, useState } from 'react';
 
 import { BigNumber } from 'bignumber.js';
 import classNames from 'classnames';
 
 import Icon from '../../components/Icon/Icon';
+import LoadingSpinner from '../../components/LoadingSpinner/LoadingSpinner';
 import TradeDetails from '../../components/TradeDetails/TradeDetails';
-import TradeNftDetails from '../../components/TradeNftDetails/TradeNftDetails';
+import TradeNftDetails, { TradeNftDetailsProps } from '../../components/TradeNftDetails/TradeNftDetails';
 import IconNavLink from '../../compositions/IconNavLink/IconNavLink';
+import TransactionLink from '../../compositions/TransactionLink/TransactionLink';
 import { useAppSelector } from '../../redux/hooks';
 import { selectCollectionTokenInfo, selectCurrencyTokenInfo } from '../../redux/stores/metadata/metadataSlice';
 import { AppRoutes } from '../../routes';
+import { getNftDetailsIcon } from './helpers';
 import BuyActionButtons from './subcomponents/BuyActionButtons/BuyActionButtons';
 
 import './BuyNftWidget.scss';
@@ -19,6 +22,7 @@ export enum BuyNftState {
   confirm = 'confirm',
   pending = 'pending',
   success = 'success',
+  failed = 'failed',
 }
 
 interface BuyNftWidgetProps {
@@ -32,23 +36,17 @@ const BuyNftWidget: FC<BuyNftWidgetProps> = ({ className = '' }) => {
   const currencyToken = useAppSelector(selectCurrencyTokenInfo);
   console.log(isLoadingMetadata, tokens, collectionToken, currencyToken);
 
-  const [state, setState] = useState<BuyNftState>(BuyNftState.details);
+  const [state, setState] = useState<BuyNftState>(BuyNftState.success);
 
   const widgetClassName = classNames('buy-nft-widget', {
     [`buy-nft-widget--has-${state}-state`]: state,
   }, className);
 
+  const nftDetailsIcon: TradeNftDetailsProps['icon'] = useMemo(() => getNftDetailsIcon(state), [state]);
+
   const handleActionButtonClick = () => {
     if (state === BuyNftState.details) {
       setState(BuyNftState.confirm);
-    }
-
-    if (state === BuyNftState.confirm) {
-      setState(BuyNftState.pending);
-    }
-
-    if (state === BuyNftState.pending) {
-      setState(BuyNftState.success);
     }
   };
 
@@ -65,10 +63,13 @@ const BuyNftWidget: FC<BuyNftWidgetProps> = ({ className = '' }) => {
         />
       </div>
 
+      <LoadingSpinner className="buy-nft-widget__loading-spinner" />
+
       {(collectionToken && currencyToken) && (
         <div className="buy-nft-widget__trade-details-container">
-          {state === BuyNftState.details ? (
+          {state === BuyNftState.details || state === BuyNftState.success || state === BuyNftState.failed ? (
             <TradeNftDetails
+              icon={nftDetailsIcon}
               collectionImage={collectionImage}
               collectionName={collectionName}
               collectionToken={collectionToken}
@@ -76,20 +77,27 @@ const BuyNftWidget: FC<BuyNftWidgetProps> = ({ className = '' }) => {
             />
           ) : (
             <TradeDetails
-              amount={new BigNumber('1')}
               title="Buy"
               tokenInfo={collectionToken}
             />
           )}
-          <Icon className="buy-nft-widget__swap-icon" name="swap" />
-          <TradeDetails
-            amount={new BigNumber('2345000000000000000')}
-            title="For"
-            tokenInfo={currencyToken}
-            className="buy-nft-widget__trade-details"
-          />
+
+          {!(state === BuyNftState.success || state === BuyNftState.failed) && (
+            <>
+              <div className="buy-nft-widget__swap-icon-container">
+                <Icon className="buy-nft-widget__swap-icon" name="swap" />
+              </div>
+              <TradeDetails
+                amount={new BigNumber('2345000000000000000')}
+                title="For"
+                tokenInfo={currencyToken}
+                className="buy-nft-widget__trade-details"
+              />
+            </>
+          )}
         </div>
       )}
+      <TransactionLink to="test" className="buy-nft-widget__transaction-link" />
       <BuyActionButtons
         state={state}
         onActionButtonClick={handleActionButtonClick}

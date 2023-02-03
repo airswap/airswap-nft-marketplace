@@ -1,30 +1,65 @@
 @import "src/styles";
 
 .trade-nft-details {
-    display: flex;
-    flex-direction: column;
-    justify-content: flex-end;
     position: relative;
-    border: 1px solid var(--c-dark-border);
-    border-radius: .25rem;
     width: 100%;
-    aspect-ratio: 1.09;
-    padding: 1rem;
-    background-size: cover;
 
-    @include for-size(tiny-phone-only) {
-        padding: .75rem;
+    &--has-failed-icon &__check-icon {
+        width: 1.125rem;
+        height: 1.125rem;
+        color: var(--c-red);
     }
 
-    &:after {
-        @extend %after-block;
-
-        left: 0;
-        bottom: 0;
-        width: 100%;
-        height: 35%;
-        background: linear-gradient(0deg, rgba(0,0,0,0.5) 0%, rgba(0,0,0,0) 100%);
+    &__check-icon-container {
+        position: relative;
+        height: 1.5rem;
         z-index: 1;
+    }
+
+    &__check-icon-circle {
+        @extend %flex-align-center;
+
+        border: 1px solid var(--c-dark-border);
+        border-radius: 50%;
+        margin: 0 auto;
+        width: 3rem;
+        aspect-ratio: 1;
+        background: var(--c-black);
+    }
+
+    &__check-icon {
+        width: 1.75rem;
+        height: 1.75rem;
+        color: var(--c-green);
+    }
+
+    &__inner {
+        display: flex;
+        flex-direction: column;
+        justify-content: flex-end;
+        position: relative;
+        border: 1px solid var(--c-dark-border);
+        border-radius: .25rem;
+        width: 100%;
+        aspect-ratio: 1.09;
+        padding: 1rem;
+        background-size: cover;
+        overflow: hidden;
+
+        @include for-size(tiny-phone-only) {
+            padding: .75rem;
+        }
+
+        &:after {
+            @extend %after-block;
+
+            left: 0;
+            bottom: 0;
+            width: 100%;
+            height: 35%;
+            background: linear-gradient(0deg, rgba(0, 0, 0, 0.5) 0%, rgba(0, 0, 0, 0) 100%);
+            z-index: 1;
+        }
     }
 
     &__token-name {
@@ -79,5 +114,9 @@
         width: 100%;
         font-size: .75rem;
         font-weight: var(--fw-400);
+    }
+
+    &__check-icon {
+
     }
 }

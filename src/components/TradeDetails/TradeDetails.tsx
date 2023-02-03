@@ -7,7 +7,7 @@ import { BigNumber } from 'bignumber.js';
 import './TradeDetails.scss';
 
 interface TradeDetailsProps {
-  amount: BigNumber;
+  amount?: BigNumber;
   title: string;
   tokenInfo: TokenInfo;
   className?: string;
@@ -19,10 +19,16 @@ const TradeDetails: FC<TradeDetailsProps> = ({
   tokenInfo,
   className = '',
 }) => {
-  const readableAmount = useMemo(() => format(amount, {
-    tokenDecimals: tokenInfo.decimals,
-    significantFigures: 6,
-  }), [amount, tokenInfo]);
+  const readableAmount = useMemo(() => {
+    if (!amount) {
+      return undefined;
+    }
+
+    return format(amount, {
+      tokenDecimals: tokenInfo.decimals,
+      significantFigures: 6,
+    });
+  }, [amount, tokenInfo]);
 
   return (
     <div className={`trade-details ${className}`}>
@@ -31,7 +37,7 @@ const TradeDetails: FC<TradeDetailsProps> = ({
         <h3 className="trade-details__title">{title}</h3>
         <h4 className="trade-details__name">{tokenInfo.symbol}</h4>
       </div>
-      <div className="trade-details__amount">{readableAmount}</div>
+      {readableAmount && <div className="trade-details__amount">{readableAmount}</div>}
     </div>
   );
 };
