@@ -23,7 +23,4 @@
         font-weight: var(--fw-700);
     }
 
-    @include for-size(tablet-portrait-up) {
-        font-size: 1rem;
-    }
 }
