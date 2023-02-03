@@ -1,17 +1,10 @@
-import { getTokenFromContract } from '@airswap/metadata';
+import { getERC1155FromContract } from '@airswap/metadata';
+import { TokenInfo } from '@airswap/typescript';
 import { Web3Provider } from '@ethersproject/providers';
-import ERC721 from '@openzeppelin/contracts/build/contracts/ERC721.json';
 import { createAsyncThunk } from '@reduxjs/toolkit';
-import { TokenInfo } from '@uniswap/token-lists';
-import { Contract, ethers } from 'ethers';
 
 import { CollectionToken } from '../../../entities/CollectionToken/CollectionToken';
-
-export const getCollectionErc721Contract = (library: Web3Provider, token: string): Contract => {
-  const erc721Interface = new ethers.utils.Interface(ERC721.abi);
-
-  return new Contract(token, erc721Interface, library);
-};
+import { transformNFTTokenToCollectionToken } from '../../../entities/CollectionToken/CollectionTokenTransformers';
 
 interface fetchNFTMetadataParams {
   library: Web3Provider,
@@ -23,23 +16,25 @@ export const fetchNFTMetadata = createAsyncThunk<
 CollectionToken[], fetchNFTMetadataParams>(
   'collection/fetchNFTMetadata',
   async ({ library, collectionToken, startIndex }) => {
-    // TODO: Add support for ERC-1155
-
     const CHUNK_SIZE = 20;
     const tokensToFetch = new Array(CHUNK_SIZE)
       .fill(null)
       .map((value, index) => startIndex + index);
 
     const dataPromises = tokensToFetch.map(async (tokenId) => {
-      const tokenInfo: TokenInfo = await getTokenFromContract(library, collectionToken, tokenId.toString());
+      let tokenInfo: TokenInfo;
 
-      const token: CollectionToken = {
-        id: tokenId,
-        name: (tokenInfo.extensions?.metadata as any).name,
-        image: (tokenInfo.extensions?.metadata as any).image.replace('ipfs://', 'https://ipfs.io/ipfs/'),
-        description: (tokenInfo.extensions?.metadata as any).description,
-        price: 0.154,
-      };
+      try {
+        tokenInfo = await getERC1155FromContract(library, collectionToken, tokenId.toString());
+      } catch (e) {
+        throw new Error(`Unable to fetch data for ${collectionToken} with id ${tokenId}`);
+      }
+
+      console.log(tokenInfo);
+
+      const token = transformNFTTokenToCollectionToken(tokenInfo, tokenId, 0.154);
+
+      if (!token) throw new Error(`Unable to parse data for ${collectionToken} with id ${tokenId}`);
 
       return token;
     });
