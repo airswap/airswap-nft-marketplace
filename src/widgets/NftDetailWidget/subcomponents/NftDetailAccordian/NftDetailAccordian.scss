@@ -21,6 +21,10 @@
     &__state-indicator {
         transition: transform .3s ease-out;
         transform-origin: center;
+        
+         @include for-size(tablet-landscape-up) {
+              display: none;
+         }
     }
 
     &__content {
@@ -28,17 +32,12 @@
         transition: height .3s;
         overflow: hidden;
         will-change: transform;
+        
+        @include for-size(tablet-landscape-up) {
+            height: 100%;
+         }
 
         &--is-open {
-            height: 100%;
-        }
-    }
-    @include for-size(tablet-landscape-up) {
-        &__state-indicator {
-            display: none;
-        }
-
-        &__content {
             height: 100%;
         }
     }
