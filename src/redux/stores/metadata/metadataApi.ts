@@ -7,7 +7,7 @@ import { wait } from '../../../helpers/tools';
 
 interface ScrapeTokensParams {
   tokens: string[];
-  library: ethers.providers.BaseProvider | null;
+  library: ethers.providers.BaseProvider;
   chainId?: number;
 }
 
@@ -17,7 +17,7 @@ TokenInfo | undefined)[], ScrapeTokensParams>(
   async ({ tokens, library, chainId }) => Promise.all(tokens.map((token, index) => {
     // On testnet we need to throttle calls or else we risk getting 429;
     const delay = (chainId !== 1 && index > 0) ? 1000 : 0;
-    return wait(delay).then(async () => scrapeToken(token, library, chainId));
+    return wait(delay).then(async () => scrapeToken(token, library));
   })),
   );
 
