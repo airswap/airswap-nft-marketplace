@@ -3,6 +3,7 @@
 /* eslint-disable  */
 
 const fs = require('fs');
+const path = require('path');
 const cracoEnvPlugin = require('craco-plugin-env');
 
 module.exports = {
@@ -42,5 +43,26 @@ module.exports = {
   ],
   typescript: {
     enableTypeChecking: true,
+  },
+  webpack: {
+    configure: webpackConfig => {
+      const scopePluginIndex = webpackConfig.resolve.plugins.findIndex(
+        ({ constructor }) => constructor && constructor.name === 'ModuleScopePlugin'
+      );
+
+      webpackConfig.resolve.plugins.splice(scopePluginIndex, 1);
+      webpackConfig.resolve.fallback = {
+        url: require.resolve("url"),
+        assert: require.resolve("assert"),
+        stream: require.resolve("stream-browserify"),
+        http: require.resolve("stream-http"),
+        util: require.resolve("util"),
+        https: require.resolve("https-browserify"),
+        events: require.resolve("events"),
+      };
+      webpackConfig.resolve.modules = [path.resolve(__dirname, '/node_modules')];
+      webpackConfig.resolve.extensions = ['.ts', '.tsx'];
+      return webpackConfig;
+    },
   },
 };
