@@ -1,0 +1,39 @@
+@import "src/styles";
+
+.dropdown-button {
+    @extend %button;
+    @extend %button-border-style;
+
+
+    justify-content: flex-start;
+    position: relative;
+    border-color: transparent;
+    padding: 0 1rem;
+    text-transform: uppercase;
+    font-size: .75rem;
+    font-weight: 700;
+    background: none;
+    z-index: 1;
+
+    &:hover,
+    &:focus {
+        z-index: 3;
+    }
+
+    &:hover:not(:focus) {
+        border-color: transparent;
+    }
+
+    &:not(:first-child) {
+        margin-top: -1px;
+    }
+
+    &:last-child {
+        border-bottom-right-radius: 1rem;
+        border-bottom-left-radius: 1rem;
+    }
+
+    &--is-active {
+        z-index: 2;
+    }
+}

@@ -1,0 +1,53 @@
+@import "src/styles";
+
+$component: select-expiry;
+
+.#{$component} {
+    --select-expiry-border-radius: .25rem;
+
+    display: flex;
+    width: 100%;
+    height: 2.5rem;
+
+    &__label {
+        @extend %text-ellipsis;
+
+        border: 1px solid var(--c-dark-border);
+        border-right: 0;
+        border-top-left-radius: var(--select-expiry-border-radius);
+        border-bottom-left-radius: var(--select-expiry-border-radius);
+        line-height: 1;
+        padding: 0.8125rem 1.25rem;
+        text-transform: uppercase;
+        font-size: .75rem;
+        font-weight: 700;
+        color: var(--c-text-grey);
+        background: var(--c-dark);
+        overflow: hidden;
+    }
+
+    &__input-amount {
+        position: relative;
+        border-radius: 0;
+        width: 4rem;
+        flex-grow: 1;
+
+        &:focus,
+        &:active,
+        &:hover {
+            z-index: 2;
+        }
+    }
+
+    &__dropdown {
+        position: relative;
+        margin-left: -1px;
+        height: 100%;
+        z-index: 1;
+    }
+
+    .#{$component}__dropdown-button {
+        border-top-left-radius: 0;
+        border-bottom-left-radius: 0;
+    }
+}

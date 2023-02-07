@@ -6,34 +6,13 @@ $component: search-input;
     position: relative;
     height: 3rem;
 
-    &__input {
-        border: 1px solid var(--c-dark-border);
-        border-radius: 4px;
+    .#{$component}__input {
         width: 100%;
         height: 100%;
         padding: 0 1rem .125rem 2.875rem;
-        color: var(--c-white);
-        background: var(--c-dark);
 
-        &::placeholder {
-            color: var(--c-light-grey);
-        }
-
-        &:hover,
-        &:focus {
-            outline: none;
-        }
-
-        &:focus {
-            border-color: var(--c-grey);
-
-            & + .#{$component}__icon {
-                color: var(--c-white);
-            }
-        }
-
-        &:active {
-            border-color: var(--c-primary);
+        &:focus .#{$component}__icon {
+            color: var(--c-white);
         }
     }
 

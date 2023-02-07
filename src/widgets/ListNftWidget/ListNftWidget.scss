@@ -1,9 +1,14 @@
 @import "src/styles";
 
 .list-nft-widget {
+    max-width: 20rem;
 
     &__search-input {
         margin-top: 1rem;
         max-width: 23.5rem;
+    }
+
+    &__select-expiry {
+        margin-top: 1rem;
     }
 }
