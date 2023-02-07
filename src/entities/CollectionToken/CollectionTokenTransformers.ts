@@ -22,6 +22,7 @@ export const transformErc1155TokenToCollectionToken = (token: Erc1155Token, toke
   name: token.name,
   atributes: token.attributes,
   createdBy: token.created_by,
+  externalUrl: token.external_url,
 });
 
 export const transformNFTTokenToCollectionToken = (tokenInfo: TokenInfo, tokenId: number, price: number):CollectionToken | null => {

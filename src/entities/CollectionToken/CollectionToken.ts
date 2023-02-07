@@ -9,4 +9,5 @@ export interface CollectionToken {
   price: number;
   atributes: Erc721Attribute[] | Erc1155Attribute[];
   createdBy?: string;
+  externalUrl?: string;
 }
