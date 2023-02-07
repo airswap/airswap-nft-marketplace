@@ -4,7 +4,7 @@
   "private": true,
   "dependencies": {
     "@airswap/balances": "2.0.2",
-    "@airswap/constants": "3.0.4",
+    "@airswap/constants": "^3.0.7",
     "@airswap/libraries": "3.3.5",
     "@airswap/maker-registry": "3.1.4",
     "@airswap/metadata": "^3.0.9",
