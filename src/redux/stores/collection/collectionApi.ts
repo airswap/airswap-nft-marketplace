@@ -30,8 +30,6 @@ CollectionToken[], fetchNFTMetadataParams>(
         throw new Error(`Unable to fetch data for ${collectionToken} with id ${tokenId}`);
       }
 
-      console.log(tokenInfo);
-
       const token = transformNFTTokenToCollectionToken(tokenInfo, tokenId, 0.154);
 
       if (!token) throw new Error(`Unable to parse data for ${collectionToken} with id ${tokenId}`);
