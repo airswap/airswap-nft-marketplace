@@ -8,7 +8,7 @@ export interface Erc1155Token {
   name: string;
   image_url: string;
   description: string;
-  attributes: Erc1155Attribute[];
-  created_by: string;
-  external_url: string;
+  attributes?: Erc1155Attribute[];
+  created_by?: string;
+  external_url?: string;
 }

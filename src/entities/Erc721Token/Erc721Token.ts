@@ -7,5 +7,5 @@ export interface Erc721Token {
   name: string;
   image: string;
   description: string;
-  attributes: Erc721Attribute[];
+  attributes?: Erc721Attribute[];
 }

@@ -7,7 +7,7 @@ export interface CollectionToken {
   image: string;
   description: string;
   price: number;
-  atributes: Erc721Attribute[] | Erc1155Attribute[];
+  atributes?: Erc721Attribute[] | Erc1155Attribute[];
   createdBy?: string;
   externalUrl?: string;
 }
