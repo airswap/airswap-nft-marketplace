@@ -7,7 +7,7 @@
   resolved "https://registry.yarnpkg.com/@adobe/css-tools/-/css-tools-4.0.1.tgz#b38b444ad3aa5fedbb15f2f746dcd934226a12dd"
   integrity sha512-+u76oB43nOHrF4DDWRLWDCtci7f3QJoEBigemIdIeTi1ODqjx6Tad9NCVnPRwewWlKkVab5PlK8DCtPTyX7S8g==
 
-"@airswap/balances@^2.0.2":
+"@airswap/balances@2.0.2":
   version "2.0.2"
   resolved "https://registry.yarnpkg.com/@airswap/balances/-/balances-2.0.2.tgz#7b7ea05a2a6998fa1d1c475aa5278592a4853fa2"
   integrity sha512-V5XOaDZajIES9Q4CZToAoebj5PpMYrtEdZ6Tj3MfE3Q27uxCkOarFAY5tPucHdzILizNJlTMwHi8N2N6oDH+5w==
@@ -24,7 +24,7 @@
   resolved "https://registry.yarnpkg.com/@airswap/constants/-/constants-3.0.6.tgz#26e516a7db617483647658208927df1bc5608692"
   integrity sha512-4n/+X3FMwC1vt2HV+k/5mBWoiVGxg3WWYB0Xa48R3lqW5BfB/8QaWXbnO0OGa3PvzUUD53yqSItXhYO7rnFDYw==
 
-"@airswap/constants@3.0.7", "@airswap/constants@^3.0.7":
+"@airswap/constants@3.0.7":
   version "3.0.7"
   resolved "https://registry.yarnpkg.com/@airswap/constants/-/constants-3.0.7.tgz#045ad0484c27b56eec50984eae06d71dc1d829ee"
   integrity sha512-4/Dz+lxtPzvW5auivLMnucNOta2K4p5MG53q52pTCUurZmjk/7KTVT71JOOhCA4HqaNReYHnUC8FhwZ+rTNhvA==
@@ -43,7 +43,7 @@
   dependencies:
     get-parameter-names "^0.3.0"
 
-"@airswap/libraries@^3.5.0":
+"@airswap/libraries@3.5.0":
   version "3.5.0"
   resolved "https://registry.yarnpkg.com/@airswap/libraries/-/libraries-3.5.0.tgz#cf6404b76c0161135b62bb368f39a71b04a6f47f"
   integrity sha512-qitsls7o0AwLschCpVkxLtELWcZtdjrqzbbsbIZJJC/6stSuZdVqHs2S21X7riTAs8wSw8HSEHCPLycB5n1F/w==
@@ -64,14 +64,14 @@
     tiny-typed-emitter "^2.1.0"
     websocket "^1.0.34"
 
-"@airswap/maker-registry@^3.1.5":
+"@airswap/maker-registry@3.1.5":
   version "3.1.5"
   resolved "https://registry.yarnpkg.com/@airswap/maker-registry/-/maker-registry-3.1.5.tgz#89d5308401a302892d81bf6ed488f519fc0c2967"
   integrity sha512-m/gLUMX1KJsHfD3dAm5/9uzPj84/ASVEFgHalwlAIJwQ1fXVDsus+QO8h7sD3ZFFUOEWms5EsMIlsVSm3CXTQA==
   dependencies:
     "@openzeppelin/contracts" "^4.8.1"
 
-"@airswap/metadata@^3.0.9":
+"@airswap/metadata@3.0.9":
   version "3.0.9"
   resolved "https://registry.yarnpkg.com/@airswap/metadata/-/metadata-3.0.9.tgz#6a737721495e29dbe8fb982490d930ab3593c356"
   integrity sha512-QZYPEocIQfIsPZVtWenKS3mMVh0F+30ziOxvdK2CySoh1RzsrvtPVb2aGP3Y899M69hTYCEbTW/AE73jMwkZWQ==
@@ -91,7 +91,7 @@
   dependencies:
     "@openzeppelin/contracts" "^4.3.1"
 
-"@airswap/swap-erc20@^3.0.2":
+"@airswap/swap-erc20@3.0.2":
   version "3.0.2"
   resolved "https://registry.yarnpkg.com/@airswap/swap-erc20/-/swap-erc20-3.0.2.tgz#9571180d19ca98137780f5fd3905ad541e9ae4b3"
   integrity sha512-F9orcteYFp69a2pk1cMCBfI2cB3IFxBFmQDZVUejL3deRrO7lXDq86u7R1FtUlI07tdZ/Op8p77tKknelwgWMg==
@@ -113,7 +113,7 @@
     "@airswap/constants" "3.0.1"
     "@uniswap/token-lists" "^1.0.0-beta.26"
 
-"@airswap/typescript@3.0.3", "@airswap/typescript@^3.0.3":
+"@airswap/typescript@3.0.3":
   version "3.0.3"
   resolved "https://registry.yarnpkg.com/@airswap/typescript/-/typescript-3.0.3.tgz#3a52d4e436a23a4324340581f2a6c544e4f92387"
   integrity sha512-nih426Y4HJYPw7ZFcXhJUdVH0EijU8rwnfqa+iElN1L2+87/FKxpt+DCdGDgKQz6ben8xIJ37G+3YyeGu/GzCA==
@@ -135,7 +135,7 @@
     ethers "^5.6.9"
     lz-string "^1.4.4"
 
-"@airswap/utils@^3.0.8":
+"@airswap/utils@3.0.8":
   version "3.0.8"
   resolved "https://registry.yarnpkg.com/@airswap/utils/-/utils-3.0.8.tgz#0548d7b2c2ea47f5a11abbaaca0dc6f66e77c617"
   integrity sha512-6AUBd2LlskzgusRrSaX/yyLUgky/R3aS1xb8KIvWE0bB2aimm1FfoY3YlC/JkbcLU/KUPHHbsXyi7tPgjWNVHw==
