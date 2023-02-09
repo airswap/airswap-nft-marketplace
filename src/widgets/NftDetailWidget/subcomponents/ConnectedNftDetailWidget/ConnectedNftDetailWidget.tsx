@@ -44,45 +44,49 @@ const ConnectedNftDetailWidget: FC<IConnectedNftDetailWidgetProps> = ({ library 
     getDataForSelectedId();
   }, [selectedTokenId]);
 
-  return (
-    isLoading
-    ? <p>Loading</p>
-    : (
+  if (isLoading) {
+    return (
       <div className="nft-detail-widget">
+        <p>Loading</p>
+      </div>
+    );
+  }
+
+  return (
+    <div className="nft-detail-widget">
+      <NftDetailMainInfo
+        owner="sjnivo12345"
+        title={tokenMeta?.name || ''}
+        className="nft-detail-widget__main-info"
+      />
+      <NftDetailPortrait
+        backgroundImage={tokenMeta?.image || collectionImage}
+        className="nft-detail-widget__portrait"
+      />
+      <div className="nft-detail-widget__sales-meta">
         <NftDetailMainInfo
           owner="sjnivo12345"
           title={tokenMeta?.name || ''}
-          className="nft-detail-widget__main-info"
+          className="nft-detail-widget__main-info nft-detail-widget__main-info--tablet-only"
         />
-        <NftDetailPortrait
-          backgroundImage={tokenMeta?.image || collectionImage}
-          className="nft-detail-widget__portrait"
-        />
-        <div className="nft-detail-widget__sales-meta">
-          <NftDetailMainInfo
-            owner="sjnivo12345"
-            title={tokenMeta?.name || ''}
-            className="nft-detail-widget__main-info nft-detail-widget__main-info--tablet-only"
-          />
-          {/* <NftDetailSaleInfo price={nftPrice} className="nft-detail-widget__price" /> */}
-          <div className="nft-detail-widget__accordians">
-            <div className="nft-detail-widget__description">
-              <Accordian
-                label="Description"
-                content={(
-                  <p>{tokenMeta?.description}</p>
-                )}
-                className="nft-detail-widget__description-accordian"
-                isDefaultOpen
-              />
-            </div>
+        {/* <NftDetailSaleInfo price={nftPrice} className="nft-detail-widget__price" /> */}
+        <div className="nft-detail-widget__accordians">
+          <div className="nft-detail-widget__description">
+            <Accordian
+              label="Description"
+              content={(
+                <p>{tokenMeta?.description}</p>
+              )}
+              className="nft-detail-widget__description-accordian"
+              isDefaultOpen
+            />
           </div>
-          <Link to={`/${AppRoutes.swap}/${selectedTokenId}`} className="nft-detail-widget__proceed-button">
-            Proceed to buy
-          </Link>
         </div>
+        <Link to={`/${AppRoutes.swap}/${selectedTokenId}`} className="nft-detail-widget__proceed-button">
+          Proceed to buy
+        </Link>
       </div>
-    )
+    </div>
   );
 };
 
