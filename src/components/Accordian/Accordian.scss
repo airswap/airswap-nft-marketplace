@@ -18,6 +18,8 @@
     }
 
     &__state-indicator {
+        display: flex;
+        align-items: center;
         transition: transform .3s ease-out;
         transform-origin: center;
 
