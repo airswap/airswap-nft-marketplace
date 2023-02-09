@@ -5,17 +5,20 @@ import { useEventListener } from 'usehooks-ts';
 import './Accordian.scss';
 
 interface AccordianProps {
-  label: string;
-  content: string | JSX.Element;
   isDefaultOpen?: boolean;
+  content: string | JSX.Element;
+  label: string;
   className?: string;
 }
 
 const Accordian: FC<AccordianProps> = ({
-  label, content, isDefaultOpen: defaultOpen = false, className = '',
+  isDefaultOpen = false,
+  content,
+  label,
+  className = '',
 }) => {
-  const [isOpen, setIsOpen] = useState<boolean>(defaultOpen);
-  const [stateIndicator, setStateIndicator] = useState<number>(defaultOpen ? 180 : 0);
+  const [isOpen, setIsOpen] = useState<boolean>(isDefaultOpen);
+  const [stateIndicator, setStateIndicator] = useState<number>(isDefaultOpen ? 180 : 0);
   const headerRef = useRef(null);
   const onClick = () => {
     if (isOpen) {
