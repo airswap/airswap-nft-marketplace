@@ -18,14 +18,8 @@ const Accordian: FC<AccordianProps> = ({
   className = '',
 }) => {
   const [isOpen, setIsOpen] = useState<boolean>(isDefaultOpen);
-  const [stateIndicator, setStateIndicator] = useState<number>(isDefaultOpen ? 180 : 0);
   const headerRef = useRef(null);
   const onClick = () => {
-    if (isOpen) {
-      setStateIndicator(0);
-    } else {
-      setStateIndicator(180);
-    }
     setIsOpen(!isOpen);
   };
 
@@ -34,7 +28,7 @@ const Accordian: FC<AccordianProps> = ({
     <div className={`accordian ${className}`}>
       <div className="accordian__header" ref={headerRef}>
         <p className="accordian__label">{label}</p>
-        <p className="accordian__state-indicator" style={{ transform: `rotate(${stateIndicator}deg)` }}>V</p>
+        <p className="accordian__state-indicator" style={{ transform: `rotate(${isOpen ? 0 : 180}deg)` }}>V</p>
       </div>
       <div className={`accordian__content ${isOpen ? 'accordian__content--is-open' : ''}`}>
         {typeof content === 'string' ? <p>{content}</p> : content}
