@@ -1,8 +1,9 @@
+import { getTokenFromContract } from '@airswap/metadata';
+import { TokenInfo } from '@airswap/typescript';
 import { Web3Provider } from '@ethersproject/providers';
 import { createAsyncThunk } from '@reduxjs/toolkit';
 
-import { getCollectionErc721Contract } from '../collection/collectionApi';
-import { TokenMeta } from './nftDetailSlice';
+// import { TokenMeta } from './nftDetailSlice';
 
 interface fetchNftMetaParams {
   library: Web3Provider;
@@ -11,27 +12,26 @@ interface fetchNftMetaParams {
 }
 
 export const fetchNftMeta = createAsyncThunk<
-TokenMeta, fetchNftMetaParams>(
+TokenInfo, fetchNftMetaParams>(
   'nftDetail/fetchNftMeta',
   async ({
     library, collectionToken, tokenId,
   }) => {
-    // TODO: Add support for ERC-1155
-    const collectionContract = getCollectionErc721Contract(library, collectionToken);
-    if (!collectionContract) {
-      throw new Error('No collection contract found');
+    let tokenInfo: TokenInfo;
+    try {
+      tokenInfo = await getTokenFromContract(library, collectionToken, tokenId.toString());
+    } catch (e) {
+      throw new Error(`Unable to fetch data for ${collectionToken} with id ${tokenId}`);
     }
 
-    const tokenURI = await collectionContract.tokenURI(tokenId);
-    const res = await fetch(
-      tokenURI.replace('ipfs://', process.env.REACT_APP_IPFS_GATEWAY_URL),
-    );
-    const token = await res.json() as TokenMeta;
+    console.log(tokenInfo);
 
-    token.price = '0154541201556702705';
-    token.image = token.image.replace('ipfs://', process.env.REACT_APP_IPFS_GATEWAY_URL as string);
+    return tokenInfo;
 
-    return token as TokenMeta;
+    // token.price = '0154541201556702705';
+    // token.image = token.image.replace('ipfs://', process.env.REACT_APP_IPFS_GATEWAY_URL as string);
+
+    // return token as TokenMeta;
   },
 );
 
