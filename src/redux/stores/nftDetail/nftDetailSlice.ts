@@ -19,6 +19,14 @@ export interface Attribute {
   value: string;
 }
 
+export interface TokenInfoMetadata {
+  attributes: Array<Attribute>
+  description: string
+  edition: number
+  image: string
+  name: string
+}
+
 export interface TokenMeta {
   id: number;
   name: string;

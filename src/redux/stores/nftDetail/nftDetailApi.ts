@@ -3,7 +3,8 @@ import { TokenInfo } from '@airswap/typescript';
 import { Web3Provider } from '@ethersproject/providers';
 import { createAsyncThunk } from '@reduxjs/toolkit';
 
-// import { TokenMeta } from './nftDetailSlice';
+import { createError } from '../../../helpers/tools';
+import { TokenInfoMetadata, TokenMeta } from './nftDetailSlice';
 
 interface fetchNftMetaParams {
   library: Web3Provider;
@@ -11,8 +12,40 @@ interface fetchNftMetaParams {
   tokenId: string;
 }
 
+const convertTokenInfoToTokenMeta: (tokenInfo: TokenInfo) => TokenMeta = (tokenInfo) => {
+  const { chainId, extensions } = tokenInfo;
+  if (!extensions) {
+    throw createError(
+      'No Extensions',
+      '`convertTokenInfoToTokenMeta` could not obtain `extensions` from the provided `tokenInfo`',
+    );
+  }
+
+  const metadata = extensions.metadata as TokenInfoMetadata | undefined;
+  if (!metadata) {
+    throw createError(
+      'No Metadata',
+      '`convertTokenInfoToTokenMeta` could not obtain `metadate` from the provided `extensions`',
+    );
+  }
+  const {
+    name, image, description, attributes,
+  } = metadata;
+
+  const tokenMeta: TokenMeta = {
+    id: chainId,
+    name,
+    image: image.replace('ipfs://', process.env.REACT_APP_IPFS_GATEWAY_URL as string),
+    description,
+    attributes,
+    price: '0154541201556702705',
+  };
+
+  return tokenMeta;
+};
+
 export const fetchNftMeta = createAsyncThunk<
-TokenInfo, fetchNftMetaParams>(
+TokenMeta, fetchNftMetaParams>(
   'nftDetail/fetchNftMeta',
   async ({
     library, collectionToken, tokenId,
@@ -24,14 +57,7 @@ TokenInfo, fetchNftMetaParams>(
       throw new Error(`Unable to fetch data for ${collectionToken} with id ${tokenId}`);
     }
 
-    console.log(tokenInfo);
-
-    return tokenInfo;
-
-    // token.price = '0154541201556702705';
-    // token.image = token.image.replace('ipfs://', process.env.REACT_APP_IPFS_GATEWAY_URL as string);
-
-    // return token as TokenMeta;
+    return convertTokenInfoToTokenMeta(tokenInfo);
   },
 );
 
