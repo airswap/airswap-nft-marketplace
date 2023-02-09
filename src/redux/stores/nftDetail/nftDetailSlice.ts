@@ -32,8 +32,9 @@ export interface TokenMeta {
   name: string;
   image: string;
   description: string;
+  attributes: Array<Attribute>;
   price: string;
-  attributes: Array<Attribute>
+  symbol: string;
 }
 
 export interface TokenState {

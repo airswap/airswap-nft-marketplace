@@ -10,6 +10,7 @@ interface NftCardProps extends NavLinkProps {
   imageURI: string;
   name: string;
   price: string;
+  symbol: string;
   className?: string;
 }
 
@@ -17,6 +18,7 @@ const NftCard = ({
   imageURI,
   name,
   price,
+  symbol,
   to,
   className = '',
 }: NftCardProps) => (
@@ -24,7 +26,7 @@ const NftCard = ({
     <img className="nft-card__img" src={imageURI} alt={name} />
     <div className="nft-card__info-wrapper">
       <h3 className="nft-card__name">{name}</h3>
-      <h4 className="nft-card__price">{`${format(BigNumber.from(price))} ${process.env.REACT_APP_PAYMENT_TOKEN}`}</h4>
+      <h4 className="nft-card__price">{`${format(BigNumber.from(price))} ${symbol}`}</h4>
     </div>
   </NavLink>
 );

@@ -3,11 +3,11 @@ import React, { FC, useEffect } from 'react';
 import { Web3Provider } from '@ethersproject/providers';
 import { Link, useParams } from 'react-router-dom';
 
+import Accordian from '../../../../components/Accordian/Accordian';
 import { useAppDispatch, useAppSelector } from '../../../../redux/hooks';
 import { fetchNftMeta } from '../../../../redux/stores/nftDetail/nftDetailApi';
 import { setError, setSelectedTokenId } from '../../../../redux/stores/nftDetail/nftDetailSlice';
 import { AppRoutes } from '../../../../routes';
-import NftDetailAccordian from '../NftDetailAccordian/NftDetailAccordian';
 import NftDetailMainInfo from '../NftDetailMainInfo/NftDetailMainInfo';
 import NftDetailPortrait from '../NftDetailPortrait/NftDetailPortrait';
 // import NftDetailSaleInfo from '../NftDetailSaleInfo/NftDetailSaleInfo';
@@ -21,9 +21,11 @@ interface IConnectedNftDetailWidgetProps {
 const ConnectedNftDetailWidget: FC<IConnectedNftDetailWidgetProps> = ({ library }) => {
   const dispatch = useAppDispatch();
   const { id } = useParams();
-  const { config, nftDetail } = useAppSelector((state: any) => state);
+  const { config, nftDetail, metadata } = useAppSelector((state) => state);
   const { collectionToken, collectionImage } = config;
   const { isLoading, selectedTokenId, tokenMeta } = nftDetail;
+
+  console.log(metadata);
 
   const getDataForSelectedId = (): void => {
     if (!selectedTokenId || isLoading) return;
@@ -65,13 +67,13 @@ const ConnectedNftDetailWidget: FC<IConnectedNftDetailWidgetProps> = ({ library 
           {/* <NftDetailSaleInfo price={nftPrice} className="nft-detail-widget__price" /> */}
           <div className="nft-detail-widget__accordians">
             <div className="nft-detail-widget__description">
-              <NftDetailAccordian
+              <Accordian
                 label="Description"
                 content={(
                   <p>{tokenMeta?.description}</p>
                 )}
                 className="nft-detail-widget__description-accordian"
-                defaultOpen
+                isDefaultOpen
               />
             </div>
           </div>

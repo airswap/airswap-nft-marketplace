@@ -2,17 +2,17 @@ import React, { FC, useRef, useState } from 'react';
 
 import { useEventListener } from 'usehooks-ts';
 
-import './NftDetailAccordian.scss';
+import './Accordian.scss';
 
-interface NftDetailAccordianProps {
+interface AccordianProps {
   label: string;
   content: string | JSX.Element;
-  defaultOpen?: boolean;
+  isDefaultOpen?: boolean;
   className?: string;
 }
 
-const NftDetailAccordian: FC<NftDetailAccordianProps> = ({
-  label, content, defaultOpen = false, className = '',
+const Accordian: FC<AccordianProps> = ({
+  label, content, isDefaultOpen: defaultOpen = false, className = '',
 }) => {
   const [isOpen, setIsOpen] = useState<boolean>(defaultOpen);
   const [stateIndicator, setStateIndicator] = useState<number>(defaultOpen ? 180 : 0);
@@ -28,16 +28,16 @@ const NftDetailAccordian: FC<NftDetailAccordianProps> = ({
 
   useEventListener('click', onClick, headerRef);
   return (
-    <div className={`nft-detail-accordian ${className}`}>
-      <div className="nft-detail-accordian__header" ref={headerRef}>
-        <p className="nft-detail-accordian__label">{label}</p>
-        <p className="nft-detail-accordian__state-indicator" style={{ transform: `rotate(${stateIndicator}deg)` }}>V</p>
+    <div className={`accordian ${className}`}>
+      <div className="accordian__header" ref={headerRef}>
+        <p className="accordian__label">{label}</p>
+        <p className="accordian__state-indicator" style={{ transform: `rotate(${stateIndicator}deg)` }}>V</p>
       </div>
-      <div className={`nft-detail-accordian__content ${isOpen ? 'nft-detail-accordian__content--is-open' : ''}`}>
+      <div className={`accordian__content ${isOpen ? 'accordian__content--is-open' : ''}`}>
         {typeof content === 'string' ? <p>{content}</p> : content}
       </div>
     </div>
   );
 };
 
-export default NftDetailAccordian;
+export default Accordian;

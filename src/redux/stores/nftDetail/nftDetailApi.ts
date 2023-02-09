@@ -13,7 +13,7 @@ interface fetchNftMetaParams {
 }
 
 const convertTokenInfoToTokenMeta: (tokenInfo: TokenInfo) => TokenMeta = (tokenInfo) => {
-  const { chainId, extensions } = tokenInfo;
+  const { chainId, extensions, symbol } = tokenInfo;
   if (!extensions) {
     throw createError(
       'No Extensions',
@@ -39,6 +39,7 @@ const convertTokenInfoToTokenMeta: (tokenInfo: TokenInfo) => TokenMeta = (tokenI
     description,
     attributes,
     price: '0154541201556702705',
+    symbol,
   };
 
   return tokenMeta;

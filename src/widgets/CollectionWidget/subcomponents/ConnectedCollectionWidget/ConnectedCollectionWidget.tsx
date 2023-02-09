@@ -18,11 +18,13 @@ interface ConnectedCollectionWidgetProps {
 const ConnectedCollectionWidget: FC<ConnectedCollectionWidgetProps> = ({ library, className = '' }) => {
   const dispatch = useAppDispatch();
   const { collectionImage, collectionName, collectionToken } = useAppSelector((state) => state.config);
+  const { tokens } = useAppSelector((state) => state.metadata);
   const { isLoading, tokensData, lastTokenIndex } = useAppSelector((state) => state.collection);
 
   const hasScrolledToBottom = useInfiniteScroll();
 
   const [searchInput, setSearchInput] = useState<string>('');
+  console.log(collectionToken);
 
   const getData = (): void => {
     dispatch(fetchNFTMetadata({ library, collectionToken, startIndex: lastTokenIndex }));
@@ -62,6 +64,7 @@ const ConnectedCollectionWidget: FC<ConnectedCollectionWidgetProps> = ({ library
               imageURI={token.image}
               name={token.name}
               price={token.price}
+              symbol={tokens[collectionToken]?.symbol || '???'}
               to={`${AppRoutes.nftDetail}/${token.id}`}
               className="collection-widget__nft-card"
             />
