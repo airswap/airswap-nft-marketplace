@@ -3,6 +3,17 @@
 .nft-detail-widget {
     display: grid;
 
+    @include for-size(tablet-landscape-up) {
+        display: grid;
+        grid-template-columns: [col1-start] 1fr [col1-end col2-start] 1fr [col2-end];
+        grid-template-rows: [row1-start] 1fr [row1-end row2-start] 1fr [row2-end row3-start] 1fr [row3-end];
+        grid-template-areas:
+            "image meta"
+            "image meta"
+            "details meta";
+
+    }
+
     &__portrait {
         max-height: 25rem;
         aspect-ratio: 1.5;
@@ -13,6 +24,7 @@
 
         @include for-size(tablet-landscape-up) {
             aspect-ratio: 1;
+            grid-area: image;
         }
     }
 
@@ -23,8 +35,18 @@
     }
 
     &__main-info {
+        @include for-size(tablet-landscape-up) {
+            display: none;
+            padding: 0 0 var(--page-padding);
+        }
+    
         &--tablet-only {
             display: none;
+
+            @include for-size(tablet-landscape-up) {
+                grid-area: heading;
+                display: block;
+            }
 
             p {
                 margin-bottom: 0;
@@ -42,23 +64,12 @@
             position: relative;
             width: 75%;
             bottom: auto;
+            grid-area: button;
         }
     }
 
-    @include for-size(tablet-landscape-up) {
-        display: grid;
-        grid-template-columns: [col1-start] 1fr [col1-end col2-start] 1fr [col2-end];
-        grid-template-rows: [row1-start] 1fr [row1-end row2-start] 1fr [row2-end row3-start] 1fr [row3-end];
-        grid-template-areas:
-            "image meta"
-            "image meta"
-            "details meta";
-
-        &__portrait {
-            grid-area: image;
-        }
-
-        &__sales-meta {
+    &__sales-meta {
+        @include for-size(tablet-landscape-up) {
             display: grid;
             gap: .75em;
             grid-template-rows: [heading-start] min-content [heading-end accordians-start] min-content [accordians-end price-start] min-content [price-end button-start] min-content [button-end];
@@ -70,34 +81,28 @@
             grid-area: meta;
             padding: var(--page-padding);
         }
+    }
 
-        &__main-info {
-            display: none;
-            padding: 0 0 var(--page-padding);
-
-            &--tablet-only {
-                grid-area: heading;
-                display: block;
-            }
-        }
-
-        &__details {
+    &__details {
+        @include for-size(tablet-landscape-up) {
             grid-area: details;
         }
+    }
 
-        &__accordians {
+    &__accordians {
+        @include for-size(tablet-landscape-up) {
             grid-area: accordians;
         }
+    }
 
-        &__price {
+    &__price {
+        @include for-size(tablet-landscape-up) {
             grid-area: price;
         }
+    }
 
-        &__proceed-button {
-            grid-area: button;
-        }
-
-        &__description {
+    &__description {
+        @include for-size(tablet-landscape-up) {
             margin-bottom: 3rem;
         }
     }
