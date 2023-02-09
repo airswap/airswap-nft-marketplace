@@ -1,6 +1,6 @@
 import { createSlice, PayloadAction } from '@reduxjs/toolkit';
 
-import { scrapeTokens } from './metadataApi';
+import { getCurrencyAndCollectionTokenInfo } from './metadataApi';
 
 export interface MetadataState {
   isLoading: boolean;
@@ -24,12 +24,12 @@ const metadataSlice = createSlice({
     }),
   },
   extraReducers: builder => {
-    builder.addCase(scrapeTokens.pending, (state) => ({
+    builder.addCase(getCurrencyAndCollectionTokenInfo.pending, (state) => ({
       ...state,
       isLoading: true,
     }));
 
-    builder.addCase(scrapeTokens.fulfilled, (state, action) => {
+    builder.addCase(getCurrencyAndCollectionTokenInfo.fulfilled, (state, action) => {
       const tokens = action.payload.reduce((total, token) => ({
         ...total,
         ...(token ? { [token.address]: token } : {}),
@@ -42,7 +42,7 @@ const metadataSlice = createSlice({
       };
     });
 
-    builder.addCase(scrapeTokens.rejected, (state, action) => {
+    builder.addCase(getCurrencyAndCollectionTokenInfo.rejected, (state, action) => {
       console.error(action.error);
 
       return {
