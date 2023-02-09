@@ -1,11 +1,11 @@
 @import "src/styles/index";
 
 .nft-detail-widget {
-    position: relative;
+    display: grid;
 
     &__portrait {
-        aspect-ratio: 1.5;
         max-height: 25rem;
+        aspect-ratio: 1.5;
 
         @include for-size(phone-only) {
             aspect-ratio: 1;
@@ -14,6 +14,12 @@
         @include for-size(tablet-landscape-up) {
             aspect-ratio: 1;
         }
+    }
+
+    &__attributes {
+        display: grid;
+        gap: .75em;
+        grid-template-columns: 1fr 1fr;
     }
 
     &__main-info {
@@ -26,18 +32,11 @@
         }
     }
 
-    &__attributes {
-        display: grid;
-        grid-template-columns: 1fr 1fr;
-        gap: .75em;
-    }
-
     &__proceed-button {
         @extend %button--is-primary;
-
         position: fixed;
-        bottom: calc(env(safe-area-inset-bottom) + var(--page-padding));
         width: calc(100% - var(--page-padding) * 2);
+        bottom: calc(env(safe-area-inset-bottom) + var(--page-padding));
 
         @include for-size(tablet-landscape-up) {
             position: relative;
@@ -50,7 +49,6 @@
         display: grid;
         grid-template-columns: [col1-start] 1fr [col1-end col2-start] 1fr [col2-end];
         grid-template-rows: [row1-start] 1fr [row1-end row2-start] 1fr [row2-end row3-start] 1fr [row3-end];
-
         grid-template-areas:
             "image meta"
             "image meta"
@@ -61,20 +59,22 @@
         }
 
         &__sales-meta {
-            grid-area: meta;
             display: grid;
+            gap: .75em;
             grid-template-rows: [heading-start] min-content [heading-end accordians-start] min-content [accordians-end price-start] min-content [price-end button-start] min-content [button-end];
             grid-template-areas:
                 "heading"
                 "accordians"
                 "price"
                 "button";
+            grid-area: meta;
             padding: var(--page-padding);
         }
 
         &__main-info {
             display: none;
             padding: 0 0 var(--page-padding);
+
             &--tablet-only {
                 grid-area: heading;
                 display: block;

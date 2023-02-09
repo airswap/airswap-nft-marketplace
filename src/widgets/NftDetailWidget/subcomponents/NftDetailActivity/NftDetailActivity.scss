@@ -2,10 +2,11 @@
 
 .nft-detail-activity {
 	&__activity {
-		border: .1rem var(--c-grey) solid;
-		padding: 1rem;
 		display: flex;
 		margin-bottom: 1rem;
+		border: .1rem var(--c-grey) solid;
+		padding: 1rem;
+
 		&:last-child {
 			margin-bottom: 0;
 		}
