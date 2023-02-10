@@ -7,12 +7,13 @@ import './NftDetailSaleInfo.scss';
 
 interface NftDetailSaleInfoProps {
   price?: BigNumber;
+  symbol?: string;
   className?: string;
 }
 
-const NftDetailSaleInfo: FC<NftDetailSaleInfoProps> = ({ price, className = '' }) => (
+const NftDetailSaleInfo: FC<NftDetailSaleInfoProps> = ({ price, symbol = 'undefined', className = '' }) => (
   <div className={`nft-detail-sale-info ${className}`}>
-    <h3 className="nft-detail-sale-info__price">{price ? `${format(price)} ${process.env.REACT_APP_PAYMENT_TOKEN}` : null}</h3>
+    <h3 className="nft-detail-sale-info__price">{price ? `${format(price)} ${symbol}` : null}</h3>
   </div>
 );
 

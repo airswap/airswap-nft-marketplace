@@ -1,6 +1,7 @@
 import React, { FC, useEffect } from 'react';
 
 import { Web3Provider } from '@ethersproject/providers';
+import { BigNumber } from 'ethers';
 import { Link, useParams } from 'react-router-dom';
 
 import Accordian from '../../../../components/Accordian/Accordian';
@@ -8,11 +9,10 @@ import { useAppDispatch, useAppSelector } from '../../../../redux/hooks';
 import { fetchNftMeta } from '../../../../redux/stores/nftDetail/nftDetailApi';
 import { setError, setSelectedTokenId } from '../../../../redux/stores/nftDetail/nftDetailSlice';
 import { AppRoutes } from '../../../../routes';
+import NftDetailAttributes from '../NftDetailAttributes/NftDetailAttributes';
 import NftDetailMainInfo from '../NftDetailMainInfo/NftDetailMainInfo';
 import NftDetailPortrait from '../NftDetailPortrait/NftDetailPortrait';
-// import NftDetailSaleInfo from '../NftDetailSaleInfo/NftDetailSaleInfo';
-
-// import './NftDetailWidget.scss';
+import NftDetailSaleInfo from '../NftDetailSaleInfo/NftDetailSaleInfo';
 
 interface IConnectedNftDetailWidgetProps {
   library: Web3Provider;
@@ -25,7 +25,7 @@ const ConnectedNftDetailWidget: FC<IConnectedNftDetailWidgetProps> = ({ library 
   const { collectionToken, collectionImage } = config;
   const { isLoading, selectedTokenId, tokenMeta } = nftDetail;
 
-  console.log(metadata);
+  console.log(metadata, tokenMeta);
 
   const getDataForSelectedId = (): void => {
     if (!selectedTokenId || isLoading) return;
@@ -52,40 +52,51 @@ const ConnectedNftDetailWidget: FC<IConnectedNftDetailWidgetProps> = ({ library 
     );
   }
 
-  return (
-    <div className="nft-detail-widget">
-      <NftDetailMainInfo
-        owner="sjnivo12345"
-        title={tokenMeta?.name || ''}
-        className="nft-detail-widget__main-info"
-      />
-      <NftDetailPortrait
-        backgroundImage={tokenMeta?.image || collectionImage}
-        className="nft-detail-widget__portrait"
-      />
-      <div className="nft-detail-widget__sales-meta">
+  if (tokenMeta) {
+    return (
+      <div className="nft-detail-widget">
         <NftDetailMainInfo
           owner="sjnivo12345"
-          title={tokenMeta?.name || ''}
-          className="nft-detail-widget__main-info nft-detail-widget__main-info--tablet-only"
+          title={tokenMeta.name}
+          className="nft-detail-widget__main-info"
         />
-        {/* <NftDetailSaleInfo price={nftPrice} className="nft-detail-widget__price" /> */}
-        <div className="nft-detail-widget__accordians">
-          <div className="nft-detail-widget__description">
-            <Accordian
-              label="Description"
-              content={(
-                <p>{tokenMeta?.description}</p>
-              )}
-              className="nft-detail-widget__description-accordian"
-              isDefaultOpen
-            />
+        <NftDetailPortrait
+          backgroundImage={tokenMeta.image || collectionImage}
+          className="nft-detail-widget__portrait"
+        />
+        <div className="nft-detail-widget__sales-meta">
+          <NftDetailMainInfo
+            owner="sjnivo12345"
+            title={tokenMeta.name}
+            className="nft-detail-widget__main-info nft-detail-widget__main-info--tablet-only"
+          />
+          <NftDetailSaleInfo price={BigNumber.from(tokenMeta.price)} symbol={tokenMeta.symbol} className="nft-detail-widget__price" />
+          <div className="nft-detail-widget__accordians">
+            <div className="nft-detail-widget__description">
+              <Accordian
+                label="Description"
+                content={(
+                  <>
+                    <p>{tokenMeta?.description}</p>
+                    <NftDetailAttributes attrs={tokenMeta.attributes} />
+                  </>
+                )}
+                className="nft-detail-widget__description-accordian"
+                isDefaultOpen
+              />
+            </div>
           </div>
+          <Link to={`/${AppRoutes.swap}/${selectedTokenId}`} className="nft-detail-widget__proceed-button">
+            Proceed to buy
+          </Link>
         </div>
-        <Link to={`/${AppRoutes.swap}/${selectedTokenId}`} className="nft-detail-widget__proceed-button">
-          Proceed to buy
-        </Link>
       </div>
+    );
+  }
+
+  return (
+    <div className="nft-detail-widget">
+      <p>Error</p>
     </div>
   );
 };
