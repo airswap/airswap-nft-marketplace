@@ -1,0 +1,12 @@
+@import "src/styles/index";
+
+.nft-detail-list {
+    margin-bottom: 1.2rem;
+    display: flex;
+    flex-direction: column;
+
+    &__item {
+        display: flex;
+        justify-content: space-between;
+    }
+}

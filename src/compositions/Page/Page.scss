@@ -47,15 +47,6 @@ $component: page;
         overflow-y: auto;
         visibility: hidden;
         pointer-events: none;
-
-        @include for-size(tablet-portrait-up) {
-            position: fixed;
-            top: 0;
-            height: calc(100svh - var(--top-bar-height));
-            padding-top: var(--top-bar-height);
-            z-index: 3;
-            backdrop-filter: blur(3px);
-        }
     }
 
     &__connect-wallet-button {

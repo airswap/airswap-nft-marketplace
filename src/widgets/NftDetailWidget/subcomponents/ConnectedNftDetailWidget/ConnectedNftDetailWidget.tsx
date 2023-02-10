@@ -10,6 +10,7 @@ import { fetchNftMeta } from '../../../../redux/stores/nftDetail/nftDetailApi';
 import { setError, setSelectedTokenId } from '../../../../redux/stores/nftDetail/nftDetailSlice';
 import { AppRoutes } from '../../../../routes';
 import NftDetailAttributes from '../NftDetailAttributes/NftDetailAttributes';
+import NftDetailList from '../NftDetailList/NftDetailList';
 import NftDetailMainInfo from '../NftDetailMainInfo/NftDetailMainInfo';
 import NftDetailPortrait from '../NftDetailPortrait/NftDetailPortrait';
 import NftDetailSaleInfo from '../NftDetailSaleInfo/NftDetailSaleInfo';
@@ -21,11 +22,9 @@ interface IConnectedNftDetailWidgetProps {
 const ConnectedNftDetailWidget: FC<IConnectedNftDetailWidgetProps> = ({ library }) => {
   const dispatch = useAppDispatch();
   const { id } = useParams();
-  const { config, nftDetail, metadata } = useAppSelector((state) => state);
+  const { config, nftDetail } = useAppSelector((state) => state);
   const { collectionToken, collectionImage } = config;
   const { isLoading, selectedTokenId, tokenMeta } = nftDetail;
-
-  console.log(metadata, tokenMeta);
 
   const getDataForSelectedId = (): void => {
     if (!selectedTokenId || isLoading) return;
@@ -89,6 +88,15 @@ const ConnectedNftDetailWidget: FC<IConnectedNftDetailWidgetProps> = ({ library 
           <Link to={`/${AppRoutes.swap}/${selectedTokenId}`} className="nft-detail-widget__proceed-button">
             Proceed to buy
           </Link>
+        </div>
+        <div className="nft-detail-widget__details">
+          <Accordian
+            label="Details"
+            content={(
+              <NftDetailList address={collectionToken} id={tokenMeta.id.toString()} chain="Unknown" standard="Unknown" fee="0.07" />
+            )}
+            className="nft-detail-widget__description-accordian"
+          />
         </div>
       </div>
     );
