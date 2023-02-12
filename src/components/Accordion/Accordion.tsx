@@ -4,16 +4,16 @@ import { useEventListener } from 'usehooks-ts';
 
 import Icon from '../Icon/Icon';
 
-import './Accordian.scss';
+import './Accordion.scss';
 
-interface AccordianProps {
+interface AccordionProps {
   isDefaultOpen?: boolean;
   content: string | JSX.Element;
   label: string;
   className?: string;
 }
 
-const Accordian: FC<AccordianProps> = ({
+const Accordion: FC<AccordionProps> = ({
   isDefaultOpen = false,
   content,
   label,
@@ -27,16 +27,16 @@ const Accordian: FC<AccordianProps> = ({
 
   useEventListener('click', onClick, headerRef);
   return (
-    <div className={`accordian ${className}`}>
-      <div className="accordian__header" ref={headerRef}>
-        <p className="accordian__label">{label}</p>
-        <span className="accordian__state-indicator" style={{ transform: `rotate(${isOpen ? 0 : 180}deg)` }}><Icon className="accordian__state-indicator" name="chevron-down" /></span>
+    <div className={`accordion ${className}`}>
+      <div className="accordion__header" ref={headerRef}>
+        <p className="accordion__label">{label}</p>
+        <span className="accordion__state-indicator" style={{ transform: `rotate(${isOpen ? 0 : 180}deg)` }}><Icon className="accordion__state-indicator" name="chevron-down" /></span>
       </div>
-      <div className={`accordian__content ${isOpen ? 'accordian__content--is-open' : ''}`}>
+      <div className={`accordion__content ${isOpen ? 'accordion__content--is-open' : ''}`}>
         {typeof content === 'string' ? <p>{content}</p> : content}
       </div>
     </div>
   );
 };
 
-export default Accordian;
+export default Accordion;

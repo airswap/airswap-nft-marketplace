@@ -4,7 +4,7 @@ import { Web3Provider } from '@ethersproject/providers';
 import { BigNumber } from 'ethers';
 import { Link, useParams } from 'react-router-dom';
 
-import Accordian from '../../../../components/Accordian/Accordian';
+import Accordion from '../../../../components/Accordion/Accordion';
 import { useAppDispatch, useAppSelector } from '../../../../redux/hooks';
 import { fetchNftMeta } from '../../../../redux/stores/nftDetail/nftDetailApi';
 import { setError, setSelectedTokenId } from '../../../../redux/stores/nftDetail/nftDetailSlice';
@@ -70,9 +70,9 @@ const ConnectedNftDetailWidget: FC<IConnectedNftDetailWidgetProps> = ({ library 
             className="nft-detail-widget__main-info nft-detail-widget__main-info--tablet-only"
           />
           <NftDetailSaleInfo price={BigNumber.from(tokenMeta.price)} symbol={tokenMeta.symbol} className="nft-detail-widget__price" />
-          <div className="nft-detail-widget__accordians">
+          <div className="nft-detail-widget__accordions">
             <div className="nft-detail-widget__description">
-              <Accordian
+              <Accordion
                 label="Description"
                 content={(
                   <>
@@ -80,7 +80,7 @@ const ConnectedNftDetailWidget: FC<IConnectedNftDetailWidgetProps> = ({ library 
                     <NftDetailAttributes attrs={tokenMeta.attributes} />
                   </>
                 )}
-                className="nft-detail-widget__description-accordian"
+                className="nft-detail-widget__description-accordion"
                 isDefaultOpen
               />
             </div>
@@ -90,12 +90,12 @@ const ConnectedNftDetailWidget: FC<IConnectedNftDetailWidgetProps> = ({ library 
           </Link>
         </div>
         <div className="nft-detail-widget__details">
-          <Accordian
+          <Accordion
             label="Details"
             content={(
               <NftDetailList address={collectionToken} id={tokenMeta.id.toString()} chain="Unknown" standard="Unknown" fee="0.07" />
             )}
-            className="nft-detail-widget__description-accordian"
+            className="nft-detail-widget__description-accordion"
           />
         </div>
       </div>

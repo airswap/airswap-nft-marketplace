@@ -72,10 +72,10 @@
         @include for-size(tablet-landscape-up) {
             display: grid;
             gap: .75em;
-            grid-template-rows: [heading-start] min-content [heading-end accordians-start] min-content [accordians-end price-start] min-content [price-end button-start] min-content [button-end];
+            grid-template-rows: [heading-start] min-content [heading-end accordions-start] min-content [accordions-end price-start] min-content [price-end button-start] min-content [button-end];
             grid-template-areas:
                 "heading"
-                "accordians"
+                "accordions"
                 "price"
                 "button";
             grid-area: meta;
@@ -89,9 +89,9 @@
         }
     }
 
-    &__accordians {
+    &__accordions {
         @include for-size(tablet-landscape-up) {
-            grid-area: accordians;
+            grid-area: accordions;
         }
     }
 
