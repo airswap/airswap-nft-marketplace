@@ -12,8 +12,8 @@ interface fetchNFTMetadataParams {
   startIndex: number,
 }
 
-export const fetchNFTMetadata = createAsyncThunk<
-CollectionToken[], fetchNFTMetadataParams>(
+export const fetchCollectionTokens = createAsyncThunk<(
+CollectionToken | undefined)[], fetchNFTMetadataParams>(
   'collection/fetchNFTMetadata',
   async ({ library, collectionToken, startIndex }) => {
     const CHUNK_SIZE = 20;
@@ -27,16 +27,20 @@ CollectionToken[], fetchNFTMetadataParams>(
       try {
         tokenInfo = await getTokenFromContract(library, collectionToken, tokenId.toString());
       } catch (e) {
-        throw new Error(`Unable to fetch data for ${collectionToken} with id ${tokenId}`);
+        console.error(new Error(`Unable to fetch data for ${collectionToken} with id ${tokenId}`));
+
+        return undefined;
       }
 
       const token = transformNFTTokenToCollectionToken(tokenInfo, tokenId, 0.154);
 
-      if (!token) throw new Error(`Unable to parse data for ${collectionToken} with id ${tokenId}`);
+      if (!token) {
+        console.error(new Error(`Unable to parse data for ${collectionToken} with id ${tokenId}`));
+      }
 
       return token;
     });
 
     return Promise.all(dataPromises);
   },
-);
+  );

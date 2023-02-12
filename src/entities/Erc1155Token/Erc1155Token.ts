@@ -1,14 +1,45 @@
 /* eslint-disable camelcase */
-export interface Erc1155Attribute {
+import { TokenInfo } from '@airswap/typescript';
+
+export interface Erc1155TokenAttribute {
   trait_type: string;
   value: number;
 }
 
-export interface Erc1155Token {
-  name: string;
-  image_url: string;
-  description: string;
-  attributes?: Erc1155Attribute[];
-  created_by?: string;
-  external_url?: string;
+interface ImageDetails {
+  bytes: number;
+  format: string;
+  sha256: string;
+  width: number;
+  height: number;
+}
+
+interface AnimationDetails {
+  bytes: number;
+  codecs: string[];
+  duration: number;
+  format: string;
+  sha256: string;
+  width: number;
+  height: number;
+}
+
+// This seems to be the standard, if there's more standards then we need to add an entity for each one.
+export interface Erc1155Token extends Omit<TokenInfo, 'extensions'> {
+  extensions: {
+    id: string;
+    kind: '0xd9b67a26';
+    metadata: {
+      animation?: string;
+      animation_details?: AnimationDetails;
+      attributes?: Erc1155TokenAttribute[]
+      created_by?: string;
+      description: string;
+      external_url?: string;
+      image: string;
+      image_details?: ImageDetails;
+      image_url?: string;
+      name: string;
+    }
+  }
 }

@@ -1,5 +1,7 @@
-import { Erc721Attribute } from '../Erc721Token/Erc721Token';
-import { Erc1155Attribute } from '../Erc1155Token/Erc1155Token';
+export interface CollectionTokenAttribute {
+  label: string;
+  value: string | number;
+}
 
 export interface CollectionToken {
   id: number;
@@ -7,7 +9,7 @@ export interface CollectionToken {
   image: string;
   description: string;
   price: number;
-  atributes?: Erc721Attribute[] | Erc1155Attribute[];
+  attributes: CollectionTokenAttribute[];
   createdBy?: string;
   externalUrl?: string;
 }

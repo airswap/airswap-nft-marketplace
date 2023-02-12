@@ -1,11 +1,19 @@
-export interface Erc721Attribute {
-  item: string;
-  value: number;
+/* eslint-disable camelcase */
+import { TokenInfo } from '@airswap/typescript';
+
+export interface Erc721TokenAttribute {
+  item?: string;
+  trait_type?: string;
+  value: string | number;
 }
 
-export interface Erc721Token {
-  name: string;
-  image: string;
-  description: string;
-  attributes?: Erc721Attribute[];
+export interface Erc721Token extends Omit<TokenInfo, 'extensions'> {
+  extensions: {
+    metadata: {
+      name: string;
+      image: string;
+      description: string;
+      attributes?: Erc721TokenAttribute[];
+    }
+  }
 }
