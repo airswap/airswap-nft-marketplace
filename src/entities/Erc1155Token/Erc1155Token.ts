@@ -1,4 +1,5 @@
 /* eslint-disable camelcase */
+import { TokenKinds } from '@airswap/constants';
 import { TokenInfo } from '@airswap/typescript';
 
 export interface Erc1155TokenAttribute {
@@ -28,7 +29,7 @@ interface AnimationDetails {
 export interface Erc1155Token extends Omit<TokenInfo, 'extensions'> {
   extensions: {
     id: string;
-    kind: '0xd9b67a26';
+    kind: TokenKinds.ERC1155;
     metadata: {
       animation?: string;
       animation_details?: AnimationDetails;
