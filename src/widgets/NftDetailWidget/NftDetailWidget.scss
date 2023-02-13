@@ -6,10 +6,10 @@
     @include for-size(tablet-landscape-up) {
         display: grid;
         grid-template-columns: [col1-start] 1fr [col1-end col2-start] 1fr [col2-end];
-        grid-template-rows: [row1-start] 1fr [row1-end row2-start] 1fr [row2-end row3-start] 1fr [row3-end];
+        grid-template-rows: [row1-start] 25rem [row1-end row2-start] 1fr [row2-end row3-start] 1fr [row3-end];
         grid-template-areas:
             "image meta"
-            "image meta"
+            "details meta"
             "details meta";
 
     }
@@ -86,6 +86,7 @@
     &__details {
         @include for-size(tablet-landscape-up) {
             grid-area: details;
+            padding-top: .75rem;
         }
     }
 
@@ -103,7 +104,7 @@
 
     &__description {
         @include for-size(tablet-landscape-up) {
-            margin-bottom: 3rem;
+            margin-bottom: 1rem;
         }
     }
 }
