@@ -1,4 +1,5 @@
 /* eslint-disable camelcase */
+// Camel case is not forced here because data comes from external token metadata
 import { TokenInfo } from '@airswap/typescript';
 
 export interface Erc721TokenAttribute {

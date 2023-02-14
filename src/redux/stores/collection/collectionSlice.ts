@@ -50,7 +50,9 @@ const collectionSlice = createSlice({
     });
 
     // TODO: Add error handling https://github.com/airswap/airswap-marketplace/issues/48
-    // builder.addCase(fetchNFTMetadata.rejected, (state, action) => {
+    builder.addCase(fetchCollectionTokens.rejected, (state, action) => {
+      console.error('fetchCollectionTokens.rejected', action.error);
+    });
   },
 });
 

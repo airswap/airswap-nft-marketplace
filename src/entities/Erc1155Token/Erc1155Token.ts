@@ -1,4 +1,5 @@
 /* eslint-disable camelcase */
+// Camelcase is not forced here because data comes from external token metadata
 import { TokenKinds } from '@airswap/constants';
 import { TokenInfo } from '@airswap/typescript';
 
