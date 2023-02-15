@@ -8,18 +8,18 @@ import Icon from '../Icon/Icon';
 import './TradeNftDetails.scss';
 
 export interface TradeNftDetailsProps {
-  icon?: 'success' | 'failed';
   collectionImage: string;
   collectionName: string;
-  collectionToken: TokenInfo; // should be CollectionToken
+  collectionToken: TokenInfo; // TODO: should be CollectionToken
+  icon?: 'success' | 'failed';
   className?: string;
 }
 
 const TradeNftDetails: FC<TradeNftDetailsProps> = ({
-  icon,
   collectionImage,
   collectionName,
   collectionToken,
+  icon,
   className = '',
 }) => {
   const wrapperClassName = classNames('trade-nft-details', {

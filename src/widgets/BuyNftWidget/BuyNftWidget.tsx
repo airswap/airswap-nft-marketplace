@@ -1,4 +1,8 @@
-import React, { FC, useMemo, useState } from 'react';
+import React, {
+  FC,
+  useMemo,
+  useState,
+} from 'react';
 
 import { BigNumber } from 'bignumber.js';
 import classNames from 'classnames';
@@ -7,16 +11,16 @@ import Icon from '../../components/Icon/Icon';
 import LoadingSpinner from '../../components/LoadingSpinner/LoadingSpinner';
 import TradeDetails from '../../components/TradeDetails/TradeDetails';
 import TradeNftDetails, { TradeNftDetailsProps } from '../../components/TradeNftDetails/TradeNftDetails';
-import IconNavLink from '../../compositions/IconNavLink/IconNavLink';
 import TransactionLink from '../../compositions/TransactionLink/TransactionLink';
 import { useAppSelector } from '../../redux/hooks';
 import { selectCollectionTokenInfo, selectCurrencyTokenInfo } from '../../redux/stores/metadata/metadataSlice';
-import { AppRoutes } from '../../routes';
-import { getNftDetailsIcon } from './helpers';
+import { getNftDetailsIcon, getTitle } from './helpers';
 import BuyActionButtons from './subcomponents/BuyActionButtons/BuyActionButtons';
+import BuyNftWidgetHeader from './subcomponents/BuyNftWidgetHeader/BuyNftWidgetHeader';
 
 import './BuyNftWidget.scss';
 
+// TODO: Move BuyNftState to store when it's made
 export enum BuyNftState {
   details = 'details',
   confirm = 'confirm',
@@ -30,19 +34,19 @@ interface BuyNftWidgetProps {
 }
 
 const BuyNftWidget: FC<BuyNftWidgetProps> = ({ className = '' }) => {
-  const { isLoading: isLoadingMetadata, tokens } = useAppSelector(state => state.metadata);
+  const { isLoading: isLoadingMetadata } = useAppSelector(state => state.metadata);
   const { collectionImage, collectionName } = useAppSelector(state => state.config);
   const collectionToken = useAppSelector(selectCollectionTokenInfo);
   const currencyToken = useAppSelector(selectCurrencyTokenInfo);
-  console.log(isLoadingMetadata, tokens, collectionToken, currencyToken);
 
-  const [state, setState] = useState<BuyNftState>(BuyNftState.success);
+  const [state, setState] = useState<BuyNftState>(BuyNftState.details);
 
   const widgetClassName = classNames('buy-nft-widget', {
     [`buy-nft-widget--has-${state}-state`]: state,
   }, className);
 
   const nftDetailsIcon: TradeNftDetailsProps['icon'] = useMemo(() => getNftDetailsIcon(state), [state]);
+  const title = useMemo(() => getTitle(state), [state]);
 
   const handleActionButtonClick = () => {
     if (state === BuyNftState.details) {
@@ -50,19 +54,24 @@ const BuyNftWidget: FC<BuyNftWidgetProps> = ({ className = '' }) => {
     }
   };
 
+  if (isLoadingMetadata) {
+    return (
+      <div className={`buy-nft-widget ${className}`}>
+        <BuyNftWidgetHeader
+          title={title}
+          className="buy-nft-widget__header"
+        />
+        <LoadingSpinner className="buy-nft-widget__loading-spinner" />
+      </div>
+    );
+  }
+
   return (
     <div className={widgetClassName}>
-      <div className="buy-nft-widget__header">
-        <h1 className="buy-nft-widget__title">Buy NFT</h1>
-        <IconNavLink
-          hideLabel
-          icon="close"
-          text="Back"
-          to={`${AppRoutes.nftDetail}`}
-          className="buy-nft-widget__back-button"
-        />
-      </div>
-
+      <BuyNftWidgetHeader
+        title={title}
+        className="buy-nft-widget__header"
+      />
       <LoadingSpinner className="buy-nft-widget__loading-spinner" />
 
       {(collectionToken && currencyToken) && (

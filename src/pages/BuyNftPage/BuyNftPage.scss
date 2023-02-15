@@ -3,12 +3,32 @@
 $page-width: 19.5rem;
 
 .buy-nft-page {
+    position: relative;
+
+    &__nft-detail-widget {
+        display: none;
+
+        @include for-size(tablet-portrait-up) {
+            display: block;
+            position: absolute;
+            width: calc(100% - var(--page-padding) * 2);
+            overflow: hidden;
+        }
+    }
+
+    &__buy-nft-widget-cover {
+        position: relative;
+        width: 100%;
+        background: rgba(0, 0, 0, 0.7);
+    }
 
     &__buy-nft-widget-container {
         margin: 0 auto;
         width: 100%;
         max-width: #{$page-width};
         height: 100%;
+        z-index: 3;
+        background: var(--c-black);
 
         @include for-size(tablet-portrait-up) {
             display: flex;
@@ -16,6 +36,7 @@ $page-width: 19.5rem;
             justify-content: center;
             max-width: calc(#{$page-width} + var(--page-padding) * 2);
             min-height: calc(100svh - var(--desktop-top-bar-height) - var(--page-padding) * 2);
+            background: none;
         }
     }
 
@@ -24,7 +45,7 @@ $page-width: 19.5rem;
         min-height: calc(100svh - var(--top-bar-height) - var(--page-padding) * 2);
 
         @include for-size(tablet-portrait-up) {
-            min-height: 33.625rem;
+            min-height: 34.125rem;
         }
     }
 }

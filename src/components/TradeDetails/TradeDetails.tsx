@@ -8,6 +8,7 @@ import './TradeDetails.scss';
 
 interface TradeDetailsProps {
   amount?: BigNumber;
+  amountSubtext?: string;
   title: string;
   tokenInfo: TokenInfo;
   className?: string;
@@ -15,6 +16,7 @@ interface TradeDetailsProps {
 
 const TradeDetails: FC<TradeDetailsProps> = ({
   amount,
+  amountSubtext,
   title,
   tokenInfo,
   className = '',
@@ -37,7 +39,12 @@ const TradeDetails: FC<TradeDetailsProps> = ({
         <h3 className="trade-details__title">{title}</h3>
         <h4 className="trade-details__name">{tokenInfo.symbol}</h4>
       </div>
-      {readableAmount && <div className="trade-details__amount">{readableAmount}</div>}
+      <div className="trade-details__amount-container">
+        <div className="trade-details__amount-container-content">
+          {readableAmount && <span className="trade-details__amount">{readableAmount}</span>}
+          {amountSubtext && <span className="trade-details__amount-subtext">{amountSubtext}</span>}
+        </div>
+      </div>
     </div>
   );
 };

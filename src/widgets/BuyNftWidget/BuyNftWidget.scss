@@ -1,4 +1,4 @@
-@import "src/styles/index";
+@import "src/styles";
 
 $component: buy-nft-widget;
 
@@ -25,11 +25,14 @@ $component: buy-nft-widget;
         }
     }
 
-    &--has-pending-state {
+    &--has-confirm-state {
 
         .#{$component}__loading-spinner {
-            visibility: visible;
+            visibility: hidden;
         }
+    }
+
+    &--has-pending-state {
 
         .#{$component}__transaction-link {
             display: flex;
@@ -48,28 +51,8 @@ $component: buy-nft-widget;
         }
     }
 
-    &__header {
-        display: flex;
-        justify-content: space-between;
-    }
-
-    &__title {
-        font-size: 1.125rem;
-
-        @include for-size(tablet-portrait-up) {
-            font-size: 1.25rem;
-        }
-    }
-
-    &__back-button {
-        width: 1.375rem;
-        height: 1.375rem;
-        color: var(--c-light-grey);
-    }
-
     &__loading-spinner {
         margin: 1.75rem auto 0;
-        visibility: hidden;
     }
 
     &__trade-details-container {
