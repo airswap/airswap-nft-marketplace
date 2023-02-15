@@ -1,0 +1,70 @@
+@import "src/styles/index";
+
+.buy-nft-widget {
+    display: flex;
+    flex-direction: column;
+    height: 100%;
+
+    @include for-size(tablet-portrait-up) {
+        border: 1px solid var(--c-dark-border);
+        border-radius: .5rem;
+        padding: 2rem var(--page-padding) var(--page-padding);
+        background: var(--c-dark);
+    }
+
+    &__header {
+        display: flex;
+        justify-content: space-between;
+    }
+
+    &__title {
+        font-size: 1.125rem;
+
+        @include for-size(tablet-portrait-up) {
+            font-size: 1.25rem;
+        }
+    }
+
+    &__back-button {
+        width: 1.375rem;
+        height: 1.375rem;
+        color: var(--c-light-grey);
+    }
+
+    &__trade-details-container {
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        margin: 1.75rem 0 1.25rem;
+
+        @include for-size(tablet-portrait-up) {
+            margin-top: 1.25rem;
+            font-size: 1.25rem;
+        }
+    }
+
+    &__swap-icon {
+        position: relative;
+        border: 1px solid var(--c-dark-border);
+        border-radius: 50%;
+        margin-top: -.5rem;
+        width: 1.5rem;
+        height: 1.5rem;
+        padding: .3125rem;
+        color: var(--c-light-grey);
+        background: var(--c-black);
+        z-index: 1;
+    }
+
+    &__trade-details:last-child {
+        margin-top: -.5rem;
+    }
+
+    &__action-button {
+        @extend %button--is-primary;
+
+        justify-self: flex-end;
+        margin-top: auto;
+        width: 100%;
+    }
+}

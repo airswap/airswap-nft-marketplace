@@ -1,4 +1,5 @@
 $c-primary: #2B71FF;
+$c-primary-dark: #0752EB;
 $c-white: #FFF;
 $c-black: #000;
 $c-kuroi-black: #101217;
@@ -14,6 +15,7 @@ $c-text-grey: #9EA3AC;
 
 :root {
     --c-primary: #{$c-primary};
+    --c-primary-dark: #{$c-primary-dark};
     --c-white: #{$c-white};
     --c-white-always: #{$c-white};
     --c-black: #{$c-black};

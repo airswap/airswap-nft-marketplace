@@ -1,11 +1,13 @@
+import { TokenInfo } from '@airswap/typescript';
 import { createSlice, PayloadAction } from '@reduxjs/toolkit';
 
+import { RootState } from '../../store';
 import { getCurrencyAndCollectionTokenInfo } from './metadataApi';
 
 export interface MetadataState {
   isLoading: boolean;
   tokens: {
-    [address: string]: any;
+    [address: string]: TokenInfo;
   },
 }
 
@@ -30,7 +32,7 @@ const metadataSlice = createSlice({
     }));
 
     builder.addCase(getCurrencyAndCollectionTokenInfo.fulfilled, (state, action) => {
-      const tokens = action.payload.reduce((total, token) => ({
+      const tokens: { [address: string]: TokenInfo } = action.payload.reduce((total, token) => ({
         ...total,
         ...(token ? { [token.address]: token } : {}),
       }), {});
@@ -55,5 +57,8 @@ const metadataSlice = createSlice({
 export const {
   setIsLoading,
 } = metadataSlice.actions;
+
+export const selectCollectionTokenInfo = (state: RootState): TokenInfo | undefined => state.metadata.tokens[state.config.collectionToken];
+export const selectCurrencyTokenInfo = (state: RootState): TokenInfo | undefined => state.metadata.tokens[state.config.currencyToken];
 
 export default metadataSlice.reducer;
