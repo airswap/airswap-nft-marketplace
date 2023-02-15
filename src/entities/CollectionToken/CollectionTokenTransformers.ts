@@ -24,20 +24,16 @@ const transformErc1155TokenAttributeToCollectionTokenAttribute = (attribute: Erc
   value: `${attribute.value}`,
 });
 
-export const transformErc1155TokenToCollectionToken = (token: Erc1155Token, tokenId: number, price: number): CollectionToken => {
-  console.log(token);
-
-  return {
-    id: tokenId,
-    image: (token.extensions.metadata.image_url || token.extensions.metadata.image).replace('ipfs://', 'https://ipfs.io/ipfs/'),
-    description: token.extensions.metadata.description,
-    price,
-    name: token.extensions.metadata.name,
-    attributes: (token.extensions.metadata.attributes || []).map(transformErc1155TokenAttributeToCollectionTokenAttribute),
-    createdBy: token.extensions.metadata.created_by,
-    externalUrl: token.extensions.metadata.external_url,
-  };
-};
+export const transformErc1155TokenToCollectionToken = (token: Erc1155Token, tokenId: number, price: number): CollectionToken => ({
+  id: tokenId,
+  image: (token.extensions.metadata.image_url || token.extensions.metadata.image).replace('ipfs://', 'https://ipfs.io/ipfs/'),
+  description: token.extensions.metadata.description,
+  price,
+  name: token.extensions.metadata.name,
+  attributes: (token.extensions.metadata.attributes || []).map(transformErc1155TokenAttributeToCollectionTokenAttribute),
+  createdBy: token.extensions.metadata.created_by,
+  externalUrl: token.extensions.metadata.external_url,
+});
 
 export const transformNFTTokenToCollectionToken = (tokenInfo: TokenInfo, tokenId: number, price: number): CollectionToken | undefined => {
   switch (tokenInfo.extensions?.kind) {
