@@ -6,7 +6,7 @@ import NftCard from '../../../../components/NftCard/NftCard';
 import SearchInput from '../../../../components/SearchInput/SearchInput';
 import useInfiniteScroll from '../../../../hooks/useInfiniteScroll';
 import { useAppDispatch, useAppSelector } from '../../../../redux/hooks';
-import { fetchNFTMetadata } from '../../../../redux/stores/collection/collectionApi';
+import { fetchCollectionTokens } from '../../../../redux/stores/collection/collectionApi';
 import { AppRoutes } from '../../../../routes';
 import CollectionPortrait from '../CollectionPortrait/CollectionPortrait';
 
@@ -18,14 +18,19 @@ interface ConnectedCollectionWidgetProps {
 const ConnectedCollectionWidget: FC<ConnectedCollectionWidgetProps> = ({ library, className = '' }) => {
   const dispatch = useAppDispatch();
   const { collectionImage, collectionName, collectionToken } = useAppSelector((state) => state.config);
-  const { isLoading, tokensData, lastTokenIndex } = useAppSelector((state) => state.collection);
+  const {
+    allTokensAreLoaded,
+    isLoading,
+    tokensData,
+    lastTokenIndex,
+  } = useAppSelector((state) => state.collection);
 
   const hasScrolledToBottom = useInfiniteScroll();
 
   const [searchInput, setSearchInput] = useState<string>('');
 
   const getData = (): void => {
-    dispatch(fetchNFTMetadata({ library, collectionToken, startIndex: lastTokenIndex }));
+    dispatch(fetchCollectionTokens({ library, collectionToken, startIndex: lastTokenIndex }));
   };
 
   useEffect(() => {
@@ -33,7 +38,7 @@ const ConnectedCollectionWidget: FC<ConnectedCollectionWidgetProps> = ({ library
   }, []);
 
   useEffect(() => {
-    if (hasScrolledToBottom && !isLoading) {
+    if (hasScrolledToBottom && !isLoading && !allTokensAreLoaded) {
       getData();
     }
   }, [hasScrolledToBottom]);

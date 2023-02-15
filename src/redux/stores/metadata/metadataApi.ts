@@ -1,23 +1,32 @@
+import { getTokenFromContract } from '@airswap/metadata';
 import { TokenInfo } from '@airswap/typescript';
 import { createAsyncThunk } from '@reduxjs/toolkit';
 import { ethers } from 'ethers';
 
-import { scrapeToken } from '../../../helpers/airswap';
 import { wait } from '../../../helpers/tools';
 
 interface ScrapeTokensParams {
-  tokens: string[];
-  library: ethers.providers.BaseProvider | null;
+  currencyToken: string;
+  collectionToken: string;
+  library: ethers.providers.BaseProvider;
   chainId?: number;
 }
 
-export const scrapeTokens = createAsyncThunk<(
+export const getCurrencyAndCollectionTokenInfo = createAsyncThunk<(
 TokenInfo | undefined)[], ScrapeTokensParams>(
-  'metadata/scrapeTokens',
-  async ({ tokens, library, chainId }) => Promise.all(tokens.map((token, index) => {
+  'metadata/getTokenFromContract',
+  async ({
+    currencyToken,
+    collectionToken,
+    library,
+    chainId,
+  }) => Promise.all([currencyToken, collectionToken].map((token, index) => {
     // On testnet we need to throttle calls or else we risk getting 429;
     const delay = (chainId !== 1 && index > 0) ? 1000 : 0;
-    return wait(delay).then(async () => scrapeToken(token, library, chainId));
+    // TODO: Check if irregular token id's (https://github.com/airswap/airswap-marketplace/issues/49)
+    const tokenId = token === collectionToken ? '1' : undefined;
+
+    return wait(delay).then(async () => getTokenFromContract(library, token, tokenId));
   })),
   );
 
