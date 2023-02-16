@@ -1,8 +1,8 @@
+import { getTokenFromContract } from '@airswap/metadata';
 import { TokenInfo } from '@airswap/typescript';
 import { createAsyncThunk } from '@reduxjs/toolkit';
 import { ethers } from 'ethers';
 
-import { getTokenFromContract } from '../../../helpers/airswap';
 import { wait } from '../../../helpers/tools';
 
 interface ScrapeTokensParams {
@@ -26,6 +26,6 @@ TokenInfo | undefined)[], ScrapeTokensParams>(
     // TODO: Check if irregular token id's (https://github.com/airswap/airswap-marketplace/issues/49)
     const tokenId = token === collectionToken ? '1' : undefined;
 
-    return wait(delay).then(async () => getTokenFromContract(token, library, tokenId));
+    return wait(delay).then(async () => getTokenFromContract(library, token, tokenId));
   })),
   );

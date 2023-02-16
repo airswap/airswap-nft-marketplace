@@ -1,58 +1,46 @@
+import { getTokenFromContract } from '@airswap/metadata';
+import { TokenInfo } from '@airswap/typescript';
 import { Web3Provider } from '@ethersproject/providers';
-import ERC721 from '@openzeppelin/contracts/build/contracts/ERC721.json';
 import { createAsyncThunk } from '@reduxjs/toolkit';
-import { Contract, ethers } from 'ethers';
 
 import { CollectionToken } from '../../../entities/CollectionToken/CollectionToken';
-import { transformErc721TokenToCollectionToken } from '../../../entities/CollectionToken/CollectionTokenTransformers';
-import { Erc721Token } from '../../../entities/Erc721Token/Erc721Token';
+import { transformNFTTokenToCollectionToken } from '../../../entities/CollectionToken/CollectionTokenTransformers';
 
-export const getCollectionErc721Contract = (library: Web3Provider, token: string): Contract => {
-  const erc721Interface = new ethers.utils.Interface(ERC721.abi);
-
-  return new Contract(token, erc721Interface, library);
-};
-
-export interface fetchNFTMetadataParams {
+interface fetchNFTMetadataParams {
   library: Web3Provider,
   collectionToken: string,
   startIndex: number,
-  tokenId?: number,
 }
 
-export const fetchNFTMetadata = createAsyncThunk<
-CollectionToken[], fetchNFTMetadataParams>(
+export const fetchCollectionTokens = createAsyncThunk<(
+CollectionToken | undefined)[], fetchNFTMetadataParams>(
   'collection/fetchNFTMetadata',
-  async ({
-    library, collectionToken, startIndex, tokenId: tokenIndex,
-  }) => {
-    // TODO: Add support for ERC-1155
-    const collectionContract = getCollectionErc721Contract(library, collectionToken);
-
-    if (!collectionContract) {
-      throw new Error('No collection contract found');
-    }
-
-    const CHUNK_SIZE = tokenIndex ? 1 : 20;
+  async ({ library, collectionToken, startIndex }) => {
+    const CHUNK_SIZE = 20;
     const tokensToFetch = new Array(CHUNK_SIZE)
       .fill(null)
-      .map((value, index) => (tokenIndex || startIndex) + index);
+      .map((value, index) => startIndex + index);
 
     const dataPromises = tokensToFetch.map(async (tokenId) => {
-      const tokenURI = await collectionContract.tokenURI(tokenId);
-      const res = await fetch(
-        tokenURI.replace('ipfs://', 'https://ipfs.io/ipfs/'),
-      );
-      const token = await res.json() as Erc721Token;
-      const price = '0154541201556702705';
+      let tokenInfo: TokenInfo;
 
-      return transformErc721TokenToCollectionToken(
-        token,
-        tokenId,
-        price,
-      );
+      try {
+        tokenInfo = await getTokenFromContract(library, collectionToken, tokenId.toString());
+      } catch (e) {
+        console.error(new Error(`Unable to fetch data for ${collectionToken} with id ${tokenId}`));
+
+        return undefined;
+      }
+
+      const token = transformNFTTokenToCollectionToken(tokenInfo, tokenId, 0.154);
+
+      if (!token) {
+        console.error(new Error(`Unable to parse data for ${collectionToken} with id ${tokenId}`));
+      }
+
+      return token;
     });
 
     return Promise.all(dataPromises);
   },
-);
+  );
