@@ -35,12 +35,12 @@ export const transformErc1155TokenToCollectionToken = (token: Erc1155Token, toke
   externalUrl: token.extensions.metadata.external_url,
 });
 
-export const transformNFTTokenToCollectionToken = (tokenInfo: TokenInfo, tokenId: number, price: number): CollectionToken | undefined => {
+export const transformNFTTokenToCollectionToken = (tokenInfo: TokenInfo, tokenId: number, price: string): CollectionToken | undefined => {
   switch (tokenInfo.extensions?.kind) {
     case tokenKinds.ERC721:
-      return transformErc721TokenToCollectionToken(tokenInfo as unknown as Erc721Token, tokenId, price);
+      return transformErc721TokenToCollectionToken(tokenInfo as unknown as Erc721Token, tokenId, parseInt(price, 10));
     case tokenKinds.ERC1155:
-      return transformErc1155TokenToCollectionToken(tokenInfo as unknown as Erc1155Token, tokenId, price);
+      return transformErc1155TokenToCollectionToken(tokenInfo as unknown as Erc1155Token, tokenId, parseInt(price, 10));
     default:
       return undefined;
   }

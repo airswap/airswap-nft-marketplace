@@ -19,7 +19,9 @@ interface ConnectedCollectionWidgetProps {
 
 const ConnectedCollectionWidget: FC<ConnectedCollectionWidgetProps> = ({ library, className = '' }) => {
   const dispatch = useAppDispatch();
-  const { collectionImage, collectionName, collectionToken } = useAppSelector((state) => state.config);
+  const {
+    collectionImage, collectionName, collectionToken, currencyToken,
+  } = useAppSelector((state) => state.config);
   const {
     allTokensAreLoaded,
     isLoading,
@@ -71,6 +73,7 @@ const ConnectedCollectionWidget: FC<ConnectedCollectionWidgetProps> = ({ library
               price={token.price.toString()}
               to={`${AppRoutes.nftDetail}/${token.id}`}
               className="collection-widget__nft-card"
+              symbol="AST" //TODO: Update with the real value.
             />
           ))}
         </div>
