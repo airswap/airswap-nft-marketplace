@@ -1,6 +1,6 @@
 @import "src/styles";
 
-$page-width: 19.5rem;
+$widget-width: 19.5rem;
 
 .buy-nft-page {
     position: relative;
@@ -25,7 +25,7 @@ $page-width: 19.5rem;
     &__buy-nft-widget-container {
         margin: 0 auto;
         width: 100%;
-        max-width: #{$page-width};
+        max-width: #{$widget-width};
         height: 100%;
         z-index: 3;
         background: var(--c-black);
@@ -34,7 +34,7 @@ $page-width: 19.5rem;
             display: flex;
             align-items: center;
             justify-content: center;
-            max-width: calc(#{$page-width} + var(--page-padding) * 2);
+            max-width: calc(#{$widget-width} + var(--page-padding) * 2);
             min-height: calc(100svh - var(--desktop-top-bar-height) - var(--page-padding) * 2);
             background: none;
         }

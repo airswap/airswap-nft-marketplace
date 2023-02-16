@@ -7,15 +7,11 @@ import NftDetailMainInfo from './subcomponents/NftDetailMainInfo/NftDetailMainIn
 
 import './NftDetailWidget.scss';
 
-interface CollectionWidgetProps {
-  className?: string;
-}
-
-const CollectionWidget: FC<CollectionWidgetProps> = ({ className = '' }) => {
+const CollectionWidget: FC = () => {
   const { collectionImage } = useAppSelector((state) => state.config);
 
   return (
-    <div className={`nft-detail-widget ${className}`}>
+    <div className="nft-detail-widget">
       <div className="nft-detail-widget__top">
         <NftDetailMainInfo
           subTitle="by sjnivo"
