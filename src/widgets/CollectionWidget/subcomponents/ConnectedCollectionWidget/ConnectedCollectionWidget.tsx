@@ -20,7 +20,7 @@ interface ConnectedCollectionWidgetProps {
 const ConnectedCollectionWidget: FC<ConnectedCollectionWidgetProps> = ({ library, className = '' }) => {
   const dispatch = useAppDispatch();
   const {
-    collectionImage, collectionName, collectionToken, currencyToken,
+    collectionImage, collectionName, collectionToken,
   } = useAppSelector((state) => state.config);
   const {
     allTokensAreLoaded,
