@@ -28,10 +28,10 @@ const Accordion: FC<AccordionProps> = ({
   useEventListener('click', onClick, headerRef);
   return (
     <div className={`accordion ${className}`}>
-      <div className="accordion__header" ref={headerRef}>
+      <button className="accordion__header focus:outline-none" ref={headerRef} type="button">
         <p className="accordion__label">{label}</p>
         <span className="accordion__state-indicator" style={{ transform: `rotate(${isOpen ? 0 : 180}deg)` }}><Icon className="accordion__state-indicator" name="chevron-down" /></span>
-      </div>
+      </button>
       <div className={`accordion__content ${isOpen ? 'accordion__content--is-open' : ''}`}>
         {typeof content === 'string' ? <p>{content}</p> : content}
       </div>
