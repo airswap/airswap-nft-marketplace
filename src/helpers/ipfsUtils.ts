@@ -12,6 +12,21 @@ const defaultGateways: Array<IGateway> = [
     maxRequestsPerSecond: 10,
   },
   {
+    key: 'ipfsgateway',
+    url: 'https://gateway.ipfs.io/ipfs/',
+    maxRequestsPerSecond: 10,
+  },
+  {
+    key: 'pinata',
+    url: 'https://https://gateway.pinata.cloud/ipfs/',
+    maxRequestsPerSecond: 10,
+  },
+  {
+    key: 'aragon',
+    url: 'https://ipfs.eth.aragon.network/ipfs/',
+    maxRequestsPerSecond: 10,
+  },
+  {
     key: 'cloudflare',
     url: 'https://cloudflare-ipfs.com/ipfs/',
     maxRequestsPerSecond: 1,
@@ -27,12 +42,12 @@ const makeIpfsRequest: (ipfsAddress: string, gatewayIndex: number) => Promise<st
   const gateway = defaultGateways[gatewayIndex];
   const url = ipfsAddress.replace('ipfs://', gateway.url);
 
-  if (ipfsRequests[ipfsAddress]) {
-    if (process.env.NODE_ENV === 'development') console.log('using cached ipfs request');
+  if (await ipfsRequests[ipfsAddress]) {
+    if (process.env.NODE_ENV === 'development') console.log('using cached ipfs request', url);
     return ipfsRequests[ipfsAddress];
   }
 
-  if (process.env.NODE_ENV === 'development') console.log('making new ipfs request', ipfsAddress);
+  if (process.env.NODE_ENV === 'development') console.log('making new ipfs request', url);
   ipfsRequests[ipfsAddress] = new Promise<string>((resolve, reject) => {
     axios.get(url, { responseType: 'arraybuffer' }).then((response) => {
       const { data } = response;
@@ -57,22 +72,23 @@ const resetGatewayAndRequests: () => void = () => {
 
 const useNextGateway: () => void = () => {
   currentGatewayIndex += 1;
-  if (currentGatewayIndex >= defaultGateways.length) {
-    resetGatewayAndRequests();
-  } else {
-    requestsThisSecond = 0;
-  }
+  requestsThisSecond = 0;
 };
 
-export const makeRateLimitedIpfsRequest: (ipfsAddress: string) => Promise<string> = (ipfsAddress: string) => {
+export const makeRateLimitedIpfsRequest: (ipfsAddress: string) => Promise<string> = async (ipfsAddress: string) => {
   const currentSecond = new Date().getSeconds();
   if (currentSecond !== thisSecond) {
     resetGatewayAndRequests();
     thisSecond = currentSecond;
   }
-
   if (requestsThisSecond >= defaultGateways[currentGatewayIndex].maxRequestsPerSecond) {
     useNextGateway();
+  }
+
+  if (currentGatewayIndex >= defaultGateways.length - 1) {
+    // We've maxed out all gateways so we'll need to wait for a second then reset.
+    await new Promise<boolean>((resolve) => { setTimeout(() => { resolve(true); }, 1000); });
+    resetGatewayAndRequests();
   }
 
   requestsThisSecond += 1;

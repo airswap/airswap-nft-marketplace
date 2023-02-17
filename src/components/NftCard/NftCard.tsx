@@ -28,7 +28,6 @@ const NftCard = ({
     imagePromise = makeRateLimitedIpfsRequest(imageURI);
     imagePromise.then((base64String) => {
       setImageData(`data:image/png;base64,${base64String}`);
-      console.log('image url', base64String);
     });
   }, []);
 
