@@ -1,5 +1,6 @@
 import { createSlice, PayloadAction } from '@reduxjs/toolkit';
 
+import { CollectionToken, CollectionTokenAttribute } from '../../../entities/CollectionToken/CollectionToken';
 import { fetchNftMeta } from './nftDetailApi';
 
 export interface EventLog {
@@ -14,34 +15,21 @@ export interface Error {
   message?: string;
 }
 
-export interface Attribute {
-  'trait_type': string;
-  value: string;
-}
 
 export interface TokenInfoMetadata {
-  attributes: Array<Attribute>
+  attributes: Array<CollectionTokenAttribute>
   description: string
   edition: number
   image: string
   name: string
 }
 
-export interface TokenMeta {
-  id: number;
-  name: string;
-  image: string;
-  description: string;
-  attributes: Array<Attribute>;
-  price: string;
-  symbol: string;
-}
 
 export interface TokenState {
   isLoading: boolean;
   error: Error;
   selectedTokenId?: string;
-  tokenMeta?: TokenMeta
+  tokenMeta?: CollectionToken
   eventLogs: EventLog[];
 }
 

@@ -4,7 +4,7 @@ import './NftDetailAttributeCard.scss';
 
 interface NftDetailAttributeCardProps {
   label: string;
-  value: string;
+  value: string | number;
   className?: string;
 }
 

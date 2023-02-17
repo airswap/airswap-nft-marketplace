@@ -3,8 +3,10 @@ import { TokenInfo } from '@airswap/typescript';
 import { Web3Provider } from '@ethersproject/providers';
 import { createAsyncThunk } from '@reduxjs/toolkit';
 
+import { CollectionToken } from '../../../entities/CollectionToken/CollectionToken';
+import { transformErc721TokenAttributesToCollectionTokenAttributes } from '../../../entities/CollectionToken/CollectionTokenTransformers';
 import { createError } from '../../../helpers/tools';
-import { TokenInfoMetadata, TokenMeta } from './nftDetailSlice';
+import { TokenInfoMetadata } from './nftDetailSlice';
 
 interface fetchNftMetaParams {
   library: Web3Provider;
@@ -12,7 +14,7 @@ interface fetchNftMetaParams {
   tokenId: string;
 }
 
-const convertTokenInfoToTokenMeta: (tokenInfo: TokenInfo) => TokenMeta = (tokenInfo) => {
+const convertTokenInfoToTokenMeta: (tokenInfo: TokenInfo) => CollectionToken = (tokenInfo) => {
   const { chainId, extensions, symbol } = tokenInfo;
   if (!extensions) {
     throw createError(
@@ -20,7 +22,7 @@ const convertTokenInfoToTokenMeta: (tokenInfo: TokenInfo) => TokenMeta = (tokenI
       '`convertTokenInfoToTokenMeta` could not obtain `extensions` from the provided `tokenInfo`',
     );
   }
-
+  console.log('extensions', extensions);
   const metadata = extensions.metadata as TokenInfoMetadata | undefined;
   if (!metadata) {
     throw createError(
@@ -32,12 +34,14 @@ const convertTokenInfoToTokenMeta: (tokenInfo: TokenInfo) => TokenMeta = (tokenI
     name, image, description, attributes,
   } = metadata;
 
-  const tokenMeta: TokenMeta = {
+  const collectionTokenAttributes = transformErc721TokenAttributesToCollectionTokenAttributes(attributes);
+
+  const tokenMeta: CollectionToken = {
     id: chainId,
     name,
     image: image.replace('ipfs://', process.env.REACT_APP_IPFS_GATEWAY_URL as string),
     description,
-    attributes,
+    attributes: collectionTokenAttributes,
     price: '0154541201556702705',
     symbol,
   };
@@ -46,7 +50,7 @@ const convertTokenInfoToTokenMeta: (tokenInfo: TokenInfo) => TokenMeta = (tokenI
 };
 
 export const fetchNftMeta = createAsyncThunk<
-TokenMeta, fetchNftMetaParams>(
+CollectionToken, fetchNftMetaParams>(
   'nftDetail/fetchNftMeta',
   async ({
     library, collectionToken, tokenId,

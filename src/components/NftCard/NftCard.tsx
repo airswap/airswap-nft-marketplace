@@ -1,10 +1,12 @@
 import React from 'react';
 
 import { format } from '@greypixel_/nicenumbers';
-import { BigNumber } from 'ethers';
+import { utils } from 'ethers';
 import { NavLink, NavLinkProps } from 'react-router-dom';
 
 import './NftCard.scss';
+
+const { parseEther } = utils;
 
 interface NftCardProps extends NavLinkProps {
   imageURI: string;
@@ -26,7 +28,7 @@ const NftCard = ({
     <img className="nft-card__img" src={imageURI} alt={name} />
     <div className="nft-card__info-wrapper">
       <h3 className="nft-card__name">{name}</h3>
-      {price && symbol ? <h4 className="nft-card__price">{`${format(BigNumber.from(price))} ${symbol}`}</h4> : null}
+      {price && symbol ? <h4 className="nft-card__price">{`${format(parseEther(price))} ${symbol}`}</h4> : null}
     </div>
   </NavLink>
 );
