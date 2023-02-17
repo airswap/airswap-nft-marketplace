@@ -12,7 +12,7 @@ const transformErc721TokenAttributeToCollectionTokenAttribute = (attribute: Erc7
 
 export const transformErc721TokenToCollectionToken = (token: Erc721Token, tokenId: number, price: number): CollectionToken => ({
   id: tokenId,
-  image: token.extensions.metadata.image.replace('ipfs://', 'https://ipfs.io/ipfs/'),
+  image: token.extensions.metadata.image,
   description: token.extensions.metadata.description,
   price,
   attributes: (token.extensions.metadata.attributes || []).map(transformErc721TokenAttributeToCollectionTokenAttribute),
@@ -26,7 +26,7 @@ const transformErc1155TokenAttributeToCollectionTokenAttribute = (attribute: Erc
 
 export const transformErc1155TokenToCollectionToken = (token: Erc1155Token, tokenId: number, price: number): CollectionToken => ({
   id: tokenId,
-  image: (token.extensions.metadata.image_url || token.extensions.metadata.image).replace('ipfs://', 'https://ipfs.io/ipfs/'),
+  image: (token.extensions.metadata.image_url || token.extensions.metadata.image),
   description: token.extensions.metadata.description,
   price,
   name: token.extensions.metadata.name,

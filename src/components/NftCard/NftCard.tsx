@@ -1,6 +1,8 @@
-import React from 'react';
+import React, { useEffect } from 'react';
 
 import { NavLink, NavLinkProps } from 'react-router-dom';
+
+import { makeRateLimitedIpfsRequest } from '../../helpers/ipfsUtils';
 
 import './NftCard.scss';
 
@@ -17,14 +19,28 @@ const NftCard = ({
   price,
   to,
   className = '',
-}: NftCardProps) => (
-  <NavLink to={to} className={`nft-card ${className}`}>
-    <img className="nft-card__img" src={imageURI} alt={name} />
-    <div className="nft-card__info-wrapper">
-      <h3 className="nft-card__name">{name}</h3>
-      <h4 className="nft-card__price">{`${price} ETH`}</h4>
-    </div>
-  </NavLink>
-);
+}: NftCardProps) => {
+  let imagePromise: Promise<any>;
+  // TODO: Use a default image or do something for loading.
+  const [imageData, setImageData] = React.useState<string>();
+
+  useEffect(() => {
+    imagePromise = makeRateLimitedIpfsRequest(imageURI);
+    imagePromise.then((base64String) => {
+      setImageData(`data:image/png;base64,${base64String}`);
+      console.log('image url', base64String);
+    });
+  }, []);
+
+  return (
+    <NavLink to={to} className={`nft-card ${className}`}>
+      <img className="nft-card__img" src={imageData} alt={name} />
+      <div className="nft-card__info-wrapper">
+        <h3 className="nft-card__name">{name}</h3>
+        <h4 className="nft-card__price">{`${price} ETH`}</h4>
+      </div>
+    </NavLink>
+  );
+};
 
 export default NftCard;
