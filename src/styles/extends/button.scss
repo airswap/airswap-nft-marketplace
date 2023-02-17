@@ -34,6 +34,11 @@
     text-transform: uppercase;
     background: var(--c-primary);
     color: var(--c-white);
+
+    &:hover,
+    &:focus {
+        background: var(--c-primary-dark);
+    }
 }
 
 %button-border-style {
