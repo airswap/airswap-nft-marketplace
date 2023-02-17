@@ -19,7 +19,7 @@ const defaultGateways: Array<IGateway> = [
   {
     key: 'pinata',
     url: 'https://https://gateway.pinata.cloud/ipfs/',
-    maxRequestsPerSecond: 10,
+    maxRequestsPerSecond: 1,
   },
   {
     key: 'aragon',
