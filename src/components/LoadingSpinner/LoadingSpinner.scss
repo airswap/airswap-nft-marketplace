@@ -1,0 +1,19 @@
+@import "src/styles/index";
+
+.loading-spinner {
+    @extend %flex-align-center;
+
+    border: 1px solid var(--c-dark-border);
+    border-radius: 50%;
+    width: 3rem;
+    aspect-ratio: 1;
+
+    &__svg {
+        width: 1.625rem;
+        aspect-ratio: 1;
+        stroke: var(--c-white);
+        animation: spin 1s infinite linear;
+        stroke-dasharray: 60;
+        stroke-width: 2;
+    }
+}

@@ -42,7 +42,6 @@ $component: page;
         left: 0;
         width: 100%;
         height: calc(100svh - var(--top-bar-height));
-        min-height: 100%;
         z-index: 2;
         overflow-y: auto;
         visibility: hidden;

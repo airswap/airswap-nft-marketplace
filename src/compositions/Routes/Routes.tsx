@@ -9,6 +9,7 @@ import {
   ProfilePage,
   SwapPage,
 } from '../../pages';
+import BuyNftPage from '../../pages/BuyNftPage/BuyNftPage';
 import { AppRoutes } from '../../routes';
 
 const Routes: FC = () => {
@@ -24,6 +25,10 @@ const Routes: FC = () => {
     {
       path: `/${AppRoutes.nftDetail}/:id`,
       element: <NftDetailPage />,
+    },
+    {
+      path: `/${AppRoutes.nftDetail}/:id/buy`,
+      element: <BuyNftPage />,
     },
     {
       path: `/${AppRoutes.profile}`,

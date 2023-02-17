@@ -22,6 +22,7 @@
     "@web3-react/core": "^6.1.9",
     "@web3-react/injected-connector": "^6.0.7",
     "@web3-react/walletconnect-connector": "6.2.13",
+    "bignumber.js": "^9.1.1",
     "classnames": "^2.3.2",
     "craco-plugin-env": "^1.0.5",
     "erc-20-abi": "^1.0.0",
