@@ -73,7 +73,7 @@ const ConnectedCollectionWidget: FC<ConnectedCollectionWidgetProps> = ({ library
               price={token.price.toString()}
               to={`${AppRoutes.nftDetail}/${token.id}`}
               className="collection-widget__nft-card"
-              symbol={token.symbol}
+              symbol={token.symbol || 'AST'} // TODO: remove the backup symbol
             />
           ))}
         </div>
