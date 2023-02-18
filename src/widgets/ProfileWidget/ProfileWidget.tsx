@@ -3,6 +3,7 @@ import React, { FC } from 'react';
 import { Web3Provider } from '@ethersproject/providers';
 import { useWeb3React } from '@web3-react/core';
 
+import Button from '../../components/Button/Button';
 import useEnsAddress from '../../hooks/useEnsAddress';
 import { useAppSelector } from '../../redux/hooks';
 import ProfileHeader from './subcomponents/ProfileHeader/ProfileHeader';
@@ -29,6 +30,13 @@ const ProfileWidget: FC = () => {
         address={account || ''}
         onLogoutButtonClick={handleDisconnectClick}
       />
+      <div className="profile-widget__button-group-container">
+        <div className="profile-widget__button-group">
+          <Button text="NFTs" className="profile-widget__button-group__button profile-widget__button-group__button--active" />
+          <Button text="ACTIVITY" className="profile-widget__button-group__button" />
+          <Button text="LISTED" className="profile-widget__button-group__button" />
+        </div>
+      </div>
     </div>
   );
 };

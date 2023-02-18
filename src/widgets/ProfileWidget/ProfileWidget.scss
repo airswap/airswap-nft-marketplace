@@ -1,5 +1,42 @@
+@import "src/styles/index";
+
 .profile-widget {
     display: grid;
     grid-template-columns: 1fr;
-    grid-gap: 1rem;
+    grid-gap: 1.625rem;
+
+    &__button-group-container {
+        display: block;
+
+        @include for-size(desktop-up) {
+            display: flex;
+            justify-content: center;
+        }
+    }
+
+    &__button-group {
+        border: solid 1px var(--c-grey);
+        border-radius: 4px;
+        display: flex;
+
+        @include for-size(desktop-up) {
+            width: 19.5rem;
+            transform: translateY(-2.56rem);
+        }
+
+        &__button {
+            width: -webkit-fill-available;
+            height: 2rem;
+            font-weight: 700;
+            font-size: .75rem;
+            line-height: 1.5rem;
+            color: var(--c-light-grey);
+            background: var(--c-dark);
+
+            &--active {
+                background-color: var(--c-grey);
+                color: #fff;
+            }
+        }
+    }
 }
