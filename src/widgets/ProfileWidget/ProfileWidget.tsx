@@ -10,13 +10,25 @@ import ProfileHeader from './subcomponents/ProfileHeader/ProfileHeader';
 import './ProfileWidget.scss';
 
 const ProfileWidget: FC = () => {
-  const { account } = useWeb3React<Web3Provider>();
+  const { collectionImage } = useAppSelector((state) => state.config);
+  const { account, deactivate } = useWeb3React<Web3Provider>();
   const ensAddress = useEnsAddress(account || '');
   const { avatarUrl } = useAppSelector((state) => state.user);
 
+  const handleDisconnectClick = () => {
+    deactivate();
+  };
+
   return (
     <div className="profile-widget">
-      <ProfileHeader avatarUrl={avatarUrl} ensAddress={ensAddress} address={account || ''} />
+      <ProfileHeader
+      // must remove the hardcoded value before to raise the pr
+        backgroundImage={collectionImage || 'collection/collection-example-image.png'}
+        avatarUrl={avatarUrl}
+        ensAddress={ensAddress}
+        address={account || ''}
+        onLogoutButtonClick={handleDisconnectClick}
+      />
     </div>
   );
 };

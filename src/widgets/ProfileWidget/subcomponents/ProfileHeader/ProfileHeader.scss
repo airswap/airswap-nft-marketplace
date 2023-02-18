@@ -1,3 +1,22 @@
-h1 {
-    color: red;
+@import "src/styles/index";
+
+.profile-header {
+  height: 9rem;
+  width: 100%;
+  position: absolute;
+  display: flex;
+  flex-direction: column;
+  justify-content: end;
+  left: 0;
+  top: 0;
+  background-size: cover;
+  background-repeat: no-repeat;
+
+  @include for-size(desktop-up) {
+    height: 27.5rem;
+  }
+
+  &__wallet-info {
+    padding: 1.625rem;
+  }
 }
