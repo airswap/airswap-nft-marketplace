@@ -1,110 +1,24 @@
 @import "src/styles/index";
 
 .nft-detail-widget {
-    display: grid;
 
-    @include for-size(tablet-landscape-up) {
-        display: grid;
-        grid-template-columns: [col1-start] 1fr [col1-end col2-start] 1fr [col2-end];
-        grid-template-rows: [row1-start] 25rem [row1-end row2-start] 1fr [row2-end row3-start] 1fr [row3-end];
-        grid-template-areas:
-            "image meta"
-            "details meta"
-            "details meta";
-
-    }
-
-    &__portrait {
-        max-height: 25rem;
-        aspect-ratio: 1.5;
-
-        @include for-size(phone-only) {
-            aspect-ratio: 1;
-        }
-
-        @include for-size(tablet-landscape-up) {
-            aspect-ratio: 1;
-            grid-area: image;
+    &__desktop-view {
+        display: none;
+        @include for-size(desktop-up) {
+            display: flex;
+            justify-content: space-between;
         }
     }
 
-    &__attributes {
-        display: grid;
-        gap: .75em;
-        grid-template-columns: 1fr 1fr;
-    }
-
-    &__main-info {
-        @include for-size(tablet-landscape-up) {
+    &__mobile-view {
+        @include for-size(desktop-up) {
             display: none;
-            padding: 0 0 var(--page-padding);
-        }
-    
-        &--tablet-only {
-            display: none;
-
-            @include for-size(tablet-landscape-up) {
-                grid-area: heading;
-                display: block;
-            }
-
-            p {
-                margin-bottom: 0;
-            }
         }
     }
 
-    &__proceed-button {
-        @extend %button--is-primary;
-        position: fixed;
-        width: calc(100% - var(--page-padding) * 2);
-        bottom: calc(env(safe-area-inset-bottom) + var(--page-padding));
-
-        @include for-size(tablet-landscape-up) {
-            position: relative;
-            width: 75%;
-            bottom: auto;
-            grid-area: button;
-        }
-    }
-
-    &__sales-meta {
-        @include for-size(tablet-landscape-up) {
-            display: grid;
-            gap: .75em;
-            grid-template-rows: [heading-start] min-content [heading-end accordions-start] min-content [accordions-end price-start] min-content [price-end button-start] min-content [button-end];
-            grid-template-areas:
-                "heading"
-                "accordions"
-                "price"
-                "button";
-            grid-area: meta;
-            padding: var(--page-padding);
-        }
-    }
-
-    &__details {
-        @include for-size(tablet-landscape-up) {
-            grid-area: details;
-            padding-top: .75rem;
-        }
-    }
-
-    &__accordions {
-        @include for-size(tablet-landscape-up) {
-            grid-area: accordions;
-        }
-    }
-
-    &__price {
-        @include for-size(tablet-landscape-up) {
-            grid-area: price;
-        }
-    }
-
-    &__description {
-        @include for-size(tablet-landscape-up) {
-            margin-bottom: 1rem;
-        }
+    &__column {
+        display: flex;
+        flex-direction: column;
+        flex: 0 0 47.5%;
     }
 }

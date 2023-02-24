@@ -2,17 +2,18 @@ import React, { FC, useEffect } from 'react';
 
 import { Web3Provider } from '@ethersproject/providers';
 import { BigNumber } from 'ethers';
-import { Link, useParams } from 'react-router-dom';
+import { useParams } from 'react-router-dom';
 
 import Accordion from '../../../../components/Accordion/Accordion';
 import { useAppDispatch, useAppSelector } from '../../../../redux/hooks';
 import { fetchNftMeta } from '../../../../redux/stores/nftDetail/nftDetailApi';
 import { setError, setSelectedTokenId } from '../../../../redux/stores/nftDetail/nftDetailSlice';
-import { AppRoutes } from '../../../../routes';
 import NftDetailAttributes from '../NftDetailAttributes/NftDetailAttributes';
+import NftDetailContentContainer from '../NftDetailContentContainer/NftDetailContentContainer';
 import NftDetailList from '../NftDetailList/NftDetailList';
 import NftDetailMainInfo from '../NftDetailMainInfo/NftDetailMainInfo';
 import NftDetailPortrait from '../NftDetailPortrait/NftDetailPortrait';
+import NftDetailProceedButton from '../NftDetailProceedButton/NftDetailProceedButton';
 import NftDetailSaleInfo from '../NftDetailSaleInfo/NftDetailSaleInfo';
 
 interface IConnectedNftDetailWidgetProps {
@@ -26,22 +27,15 @@ const ConnectedNftDetailWidget: FC<IConnectedNftDetailWidgetProps> = ({ library 
   const { collectionToken, collectionImage } = config;
   const { isLoading, selectedTokenId, tokenMeta } = nftDetail;
 
-  const getDataForSelectedId = (): void => {
-    if (!selectedTokenId || isLoading) return;
-    dispatch(fetchNftMeta({ library, collectionToken, tokenId: selectedTokenId }));
-  };
-
   useEffect(() => {
     if (!id) {
       dispatch(setError('No ID provided in URL params.'));
     } else {
       dispatch(setSelectedTokenId(id));
+      if (isLoading) return;
+      dispatch(fetchNftMeta({ library, collectionToken, tokenId: id }));
     }
   }, [id]);
-
-  useEffect(() => {
-    getDataForSelectedId();
-  }, [selectedTokenId]);
 
   if (isLoading) {
     return (
@@ -54,50 +48,88 @@ const ConnectedNftDetailWidget: FC<IConnectedNftDetailWidgetProps> = ({ library 
   if (tokenMeta) {
     return (
       <div className="nft-detail-widget">
-        <NftDetailMainInfo
-          owner="sjnivo12345"
-          title={tokenMeta.name}
-          className="nft-detail-widget__main-info"
-        />
-        <NftDetailPortrait
-          backgroundImage={tokenMeta.image || collectionImage}
-          className="nft-detail-widget__portrait"
-        />
-        <div className="nft-detail-widget__sales-meta">
+        <NftDetailContentContainer className="nft-detail-widget__mobile-view">
           <NftDetailMainInfo
             owner="sjnivo12345"
             title={tokenMeta.name}
-            className="nft-detail-widget__main-info nft-detail-widget__main-info--tablet-only"
+            className="nft-detail-widget__main-info"
+          />
+          <NftDetailPortrait
+            backgroundImage={tokenMeta.image || collectionImage}
+            className="nft-detail-widget__portrait"
           />
           <NftDetailSaleInfo price={BigNumber.from(tokenMeta.price)} symbol={tokenMeta.symbol} className="nft-detail-widget__price" />
-          <div className="nft-detail-widget__accordions">
-            <div className="nft-detail-widget__description">
-              <Accordion
-                label="Description"
-                content={(
-                  <>
-                    <p>{tokenMeta?.description}</p>
-                    <NftDetailAttributes attrs={tokenMeta.attributes} />
-                  </>
-                )}
-                className="nft-detail-widget__description-accordion"
-                isDefaultOpen
-              />
-            </div>
-          </div>
-          <Link to={`/${AppRoutes.swap}/${selectedTokenId}`} className="nft-detail-widget__proceed-button">
-            Proceed to buy
-          </Link>
-        </div>
-        <div className="nft-detail-widget__details">
+          <Accordion
+            label="Description"
+            content={(
+              <p>{tokenMeta?.description}</p>
+            )}
+            className="nft-detail-widget__description-accordion"
+            isDefaultOpen
+          />
+          <NftDetailProceedButton id={selectedTokenId} />
+          <Accordion
+            label="Properties"
+            content={(
+              <NftDetailAttributes attrs={tokenMeta.attributes} />
+            )}
+            className="nft-detail-widget__properties-accordion"
+            isDefaultOpen
+          />
           <Accordion
             label="Details"
             content={(
-              <NftDetailList address={collectionToken} id={tokenMeta.id.toString()} chain="Unknown" standard="Unknown" fee="0.07" />
+              <NftDetailList address={collectionToken} id={tokenMeta.id.toString()} chain="Unknown" standard="Unknown" fee="Unknown" />
             )}
             className="nft-detail-widget__description-accordion"
           />
-        </div>
+        </NftDetailContentContainer>
+        <NftDetailContentContainer className="nft-detail-widget__desktop-view">
+          <div className="nft-detail-widget__column">
+            <NftDetailPortrait
+              backgroundImage={tokenMeta.image || collectionImage}
+              className="nft-detail-widget__portrait"
+            />
+            <Accordion
+              label="Details"
+              content={(
+                <NftDetailList address={collectionToken} id={tokenMeta.id.toString()} chain="Unknown" standard="Unknown" fee="Unknown" />
+              )}
+              className="nft-detail-widget__description-accordion"
+              isDefaultOpen
+              isHeadingDisabled
+              hasBorder
+            />
+            <Accordion
+              label="Properties"
+              content={(
+                <NftDetailAttributes attrs={tokenMeta.attributes} />
+              )}
+              className="nft-detail-widget__properties-accordion"
+              isDefaultOpen
+              isHeadingDisabled
+              isHeadingVisible={false}
+            />
+          </div>
+          <div className="nft-detail-widget__column">
+            <NftDetailMainInfo
+              owner="sjnivo12345"
+              title={tokenMeta.name}
+              className="nft-detail-widget__main-info"
+            />
+            <Accordion
+              label="Description"
+              content={(
+                <p>{tokenMeta?.description}</p>
+              )}
+              className="nft-detail-widget__description-accordion"
+              isDefaultOpen
+              isHeadingDisabled
+            />
+            <NftDetailSaleInfo price={BigNumber.from(tokenMeta.price)} symbol={tokenMeta.symbol} className="nft-detail-widget__price" />
+            <NftDetailProceedButton id={selectedTokenId} />
+          </div>
+        </NftDetailContentContainer>
       </div>
     );
   }

@@ -19,7 +19,8 @@ const NftDetailList: FC<NftDetailListProps> = ({
   <div className={`nft-detail-list ${className}`}>
     <div className="nft-detail-list__item">
       <p className="nft-detail-list__item-heading">Contract Address:</p>
-      <p className="nft-detail-list__item-value">{truncateEthAddress(address)}</p>
+      <p className="nft-detail-list__item-value nft-detail-list__item-address">{address}</p>
+      <p className="nft-detail-list__item-value nft-detail-list__item-address--is-truncated">{truncateEthAddress(address)}</p>
     </div>
     <div className="nft-detail-list__item">
       <p className="nft-detail-list__item-heading">Token ID:</p>

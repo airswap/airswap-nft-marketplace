@@ -1,11 +1,35 @@
 @import "src/styles/index";
 
 .accordion {
+    margin-bottom: var(--page-padding);
+
     &__header {
         display: flex;
-        font-size: .9rem;
+        font-size: .75rem; // Target size: 12px
         font-weight: var(--fw-700);
-        padding-bottom: .75rem;
+        transition: margin-bottom 0;
+        transition-delay: .3s; // TODO: Set this in the JS
+        
+        @include for-size(desktop-up) {
+            font-size: 1rem; // Target size: 16px
+            margin-bottom: var(--page-padding);
+        }
+
+        &:focus {
+            outline: none;
+        }
+
+        &:disabled {
+            cursor: unset;
+        }
+
+        &--is-not-visible {
+            display: none;
+        }
+
+        &--is-open {
+            margin-bottom: .75rem;
+        }
     }
 
     &__label,
@@ -14,7 +38,7 @@
     }
 
     &__label {
-        padding-right: .5rem;
+        padding-right: .25rem;
     }
 
     &__state-indicator {
@@ -23,23 +47,25 @@
         transition: transform .3s ease-out;
         transform-origin: center;
 
-        @include for-size(tablet-landscape-up) {
+        @include for-size(desktop-up) {
             display: none;
         }
     }
 
     &__content {
-        height: 0;
-        transition: height .3s;
+        transition-property: height;
         overflow: hidden;
-        will-change: transform;
+        will-change: height;
+        font-size: .75rem; // Target 12px
 
-        @include for-size(tablet-landscape-up) {
-            height: 100%;
+        @include for-size(desktop-up) {
+            font-size: 1rem; // Target 16px
         }
 
-        &--is-open {
-            height: 100%;
+        &--has-border {
+            border: 1px solid var(--c-grey);
+            border-radius: .25rem; // Target 4px
+            padding: var(--page-padding);
         }
     }
 }

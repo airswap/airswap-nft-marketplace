@@ -22,7 +22,6 @@ const convertTokenInfoToTokenMeta: (tokenInfo: TokenInfo) => CollectionToken = (
       '`convertTokenInfoToTokenMeta` could not obtain `extensions` from the provided `tokenInfo`',
     );
   }
-  console.log('extensions', extensions);
   const metadata = extensions.metadata as TokenInfoMetadata | undefined;
   if (!metadata) {
     throw createError(

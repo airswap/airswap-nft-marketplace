@@ -1,0 +1,24 @@
+@import "src/styles/index";
+
+.nft-detail-proceed-button {
+	position: fixed;
+	bottom: 0;
+	left: 0;
+	width: calc(100svw - var(--scrollbar-width));
+	height: calc(3rem + var(--page-padding) * 2);
+	background-color: var(--c-grey);
+	padding: var(--page-padding);
+
+	@include for-size(desktop-up) {
+		position: relative;
+		bottom: auto;
+		left: auto;
+		background-color: transparent;
+		padding: 0;
+		width: 12.1875rem; // Target 195px
+	}
+
+	&__link {
+		@extend %button--is-primary;
+	}
+}

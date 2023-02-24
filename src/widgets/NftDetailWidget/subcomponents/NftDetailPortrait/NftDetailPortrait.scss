@@ -5,6 +5,11 @@
     background-size: cover;
     background-position: 50% 50%;
     filter: drop-shadow(0px 1px 2px rgba(0, 0, 0, 0.25));
-    margin-bottom: 1.5rem;
+    margin-bottom: var(--page-padding);
     width: 100%;
+    aspect-ratio: 1;
+
+    @include for-size(desktop-up) {
+        margin-bottom: 2.5rem;
+    }
 }

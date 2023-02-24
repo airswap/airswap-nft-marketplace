@@ -10,7 +10,7 @@ export interface EventLog {
   type: string;
 }
 
-export interface Error {
+export interface NftDetailError {
   hasError: boolean;
   message?: string;
 }
@@ -27,7 +27,7 @@ export interface TokenInfoMetadata {
 
 export interface TokenState {
   isLoading: boolean;
-  error: Error;
+  error: NftDetailError;
   selectedTokenId?: string;
   tokenMeta?: CollectionToken
   eventLogs: EventLog[];
@@ -74,7 +74,7 @@ const nftDetailSlice = createSlice({
     }));
 
     builder.addCase(fetchNftMeta.rejected, (_state, action) => {
-      console.log('fetchNftMeta.rejected', action);
+      console.error('fetchNftMeta.rejected', action);
     });
   },
 });

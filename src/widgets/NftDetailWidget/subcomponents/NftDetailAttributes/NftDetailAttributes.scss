@@ -2,7 +2,7 @@
 
 .nft-detail-attributes {
 	display: grid;
-	margin: .75rem 0;
+	margin: .25rem 0; // Compensate for font vs colourful block
 	gap: .75rem;
 	grid-template-columns: 1fr 1fr;
 }
