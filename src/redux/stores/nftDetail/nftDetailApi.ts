@@ -4,64 +4,28 @@ import { Web3Provider } from '@ethersproject/providers';
 import { createAsyncThunk } from '@reduxjs/toolkit';
 
 import { CollectionToken } from '../../../entities/CollectionToken/CollectionToken';
-import { transformErc721TokenAttributesToCollectionTokenAttributes } from '../../../entities/CollectionToken/CollectionTokenTransformers';
-import { createError } from '../../../helpers/tools';
-import { TokenInfoMetadata } from './nftDetailSlice';
+import { transformNFTTokenToCollectionToken } from '../../../entities/CollectionToken/CollectionTokenTransformers';
 
-interface fetchNftMetaParams {
+interface FetchNftMetaParams {
   library: Web3Provider;
   collectionToken: string;
   tokenId: string;
 }
-
-const convertTokenInfoToTokenMeta: (tokenInfo: TokenInfo) => CollectionToken = (tokenInfo) => {
-  const { chainId, extensions, symbol } = tokenInfo;
-  if (!extensions) {
-    throw createError(
-      'No Extensions',
-      '`convertTokenInfoToTokenMeta` could not obtain `extensions` from the provided `tokenInfo`',
-    );
-  }
-  const metadata = extensions.metadata as TokenInfoMetadata | undefined;
-  if (!metadata) {
-    throw createError(
-      'No Metadata',
-      '`convertTokenInfoToTokenMeta` could not obtain `metadate` from the provided `extensions`',
-    );
-  }
-  const {
-    name, image, description, attributes,
-  } = metadata;
-
-  const collectionTokenAttributes = transformErc721TokenAttributesToCollectionTokenAttributes(attributes);
-
-  const tokenMeta: CollectionToken = {
-    id: chainId,
-    name,
-    image: image.replace('ipfs://', process.env.REACT_APP_IPFS_GATEWAY_URL as string),
-    description,
-    attributes: collectionTokenAttributes,
-    price: '0154541201556702705',
-    symbol,
-  };
-
-  return tokenMeta;
-};
-
 export const fetchNftMeta = createAsyncThunk<
-CollectionToken, fetchNftMetaParams>(
+CollectionToken, FetchNftMetaParams>(
   'nftDetail/fetchNftMeta',
-  async ({
-    library, collectionToken, tokenId,
-  }) => {
+  async ({ library, collectionToken, tokenId }) => {
     let tokenInfo: TokenInfo;
     try {
-      tokenInfo = await getTokenFromContract(library, collectionToken, tokenId.toString());
+      tokenInfo = await getTokenFromContract(library, collectionToken, tokenId);
     } catch (e) {
       throw new Error(`Unable to fetch data for ${collectionToken} with id ${tokenId}`);
     }
-
-    return convertTokenInfoToTokenMeta(tokenInfo);
+    const data = transformNFTTokenToCollectionToken(tokenInfo, parseInt(tokenId, 10), '9999999999');
+    if (!data) {
+      throw new Error(`Unable to transform ${collectionToken} to CollectionToken`);
+    }
+    return data;
   },
 );
 

@@ -1,6 +1,6 @@
 import { createSlice, PayloadAction } from '@reduxjs/toolkit';
 
-import { CollectionToken, CollectionTokenAttribute } from '../../../entities/CollectionToken/CollectionToken';
+import { CollectionToken } from '../../../entities/CollectionToken/CollectionToken';
 import { fetchNftMeta } from './nftDetailApi';
 
 export interface EventLog {
@@ -14,16 +14,6 @@ export interface NftDetailError {
   hasError: boolean;
   message?: string;
 }
-
-
-export interface TokenInfoMetadata {
-  attributes: Array<CollectionTokenAttribute>
-  description: string
-  edition: number
-  image: string
-  name: string
-}
-
 
 export interface TokenState {
   isLoading: boolean;

@@ -2,8 +2,6 @@ import React, {
   FC, useEffect, useRef, useState,
 } from 'react';
 
-import { useEventListener } from 'usehooks-ts';
-
 import Icon from '../Icon/Icon';
 
 import './Accordion.scss';
@@ -29,7 +27,6 @@ const Accordion: FC<AccordionProps> = ({
 }) => {
   const [isOpen, setIsOpen] = useState<boolean>(true);
   const [contentHeight, setContentHeight] = useState<number>();
-  const headerRef = useRef<HTMLButtonElement>(null);
   const contentRef = useRef<HTMLDivElement>(null);
 
   // Initialise accordion
@@ -44,7 +41,16 @@ const Accordion: FC<AccordionProps> = ({
         contentRef.current.style.transitionDuration = `${height / 300}s`;
       }
     }
-  }, [contentRef.current]);
+  }, [contentRef.current, contentHeight]);
+
+  window.addEventListener('resize', () => {
+    if (contentRef.current) {
+      contentRef.current.style.height = 'auto';
+      const { height } = contentRef.current.getBoundingClientRect();
+      setContentHeight(height);
+      contentRef.current.style.height = isOpen ? `${height}px` : '0px';
+    }
+  });
 
   useEffect(() => {
     if (contentRef.current) {
@@ -58,14 +64,13 @@ const Accordion: FC<AccordionProps> = ({
     setIsOpen(!isOpen);
   };
 
-  useEventListener('click', onClick, headerRef);
   return (
     <div className={`accordion ${className}`}>
       <button
         className={`accordion__header focus:outline-none ${isHeadingVisible ? '' : 'accordion__header--is-not-visible'} ${isOpen ? 'accordion__header--is-open' : ''}`}
-        ref={headerRef}
         type="button"
         disabled={isHeadingDisabled}
+        onClick={onClick}
       >
         <p className="accordion__label">{label}</p>
         <span className="accordion__state-indicator" style={{ transform: `rotate(${isOpen ? 0 : 180}deg)` }}><Icon className="accordion__state-indicator" name="chevron-down" /></span>
