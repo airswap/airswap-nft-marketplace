@@ -1,10 +1,13 @@
 $c-primary: #2B71FF;
+$c-primary-dark: #0752EB;
 $c-white: #FFF;
 $c-black: #000;
 $c-kuroi-black: #101217;
 $c-river-styx: #1A1E25;
 $c-light-grey: #6E7686;
-$c-text-grey: #9EA3AC;
+$c-quick-silver: #9EA3AC;
+$c-green: #0ED48D;
+$c-red: #FF0000;
 
 @mixin light-mode-variables {
     --c-primary:        #{$c-primary};
@@ -14,6 +17,7 @@ $c-text-grey: #9EA3AC;
 
 :root {
     --c-primary: #{$c-primary};
+    --c-primary-dark: #{$c-primary-dark};
     --c-white: #{$c-white};
     --c-white-always: #{$c-white};
     --c-black: #{$c-black};
@@ -22,7 +26,9 @@ $c-text-grey: #9EA3AC;
     --c-dark-border: #{$c-river-styx};
     --c-grey: #{$c-river-styx};
     --c-light-grey: #{$c-light-grey};
-    --c-text-grey: #{$c-text-grey};
+    --c-text-grey: #{$c-quick-silver};
+    --c-green: #{$c-green};
+    --c-red: #{$c-red};
 
     --f-primary: "loos-normal", sans-serif;
     --f-mono: "DM Mono", monospace;

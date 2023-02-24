@@ -6,3 +6,9 @@
     white-space: nowrap;
     overflow: hidden;
 }
+
+%after-block {
+    content: '';
+    display: block;
+    position: absolute;
+}
