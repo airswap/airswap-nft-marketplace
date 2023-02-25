@@ -24,6 +24,7 @@ import {
   IconEdit,
   IconForbidden,
   IconGithub,
+  IconInformationCircleOutline,
   IconLaunch,
   IconLibrary,
   IconLink,
@@ -54,7 +55,6 @@ export type IconSet = {
 };
 
 export const icons: IconSet = {
-  learn: IconLibrary,
   airswap: IconAirswap,
   'arrow-down': IconArrowDown,
   'arrow-right': IconArrowRight,
@@ -82,7 +82,8 @@ export const icons: IconSet = {
   // 'exit-modal': HiX,
   forbidden: IconForbidden,
   github: IconGithub,
-  // 'information-circle-outline': IoMdInformationCircleOutline,
+  'information-circle-outline': IconInformationCircleOutline,
+  learn: IconLibrary,
   menu: IconMenu,
   medium: IconMedium,
   plus: IconPlus,

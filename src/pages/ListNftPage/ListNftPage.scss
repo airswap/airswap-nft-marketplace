@@ -1,21 +1,21 @@
 @import "src/styles";
 
-.buy-nft-page {
+.list-nft-page {
     position: relative;
 
-    &__nft-detail-widget {
+    &__profile-widget {
         @extend %widget-under-widget;
     }
 
-    &__buy-nft-widget-cover {
+    &__list-nft-widget-cover {
         @extend %widget-over-widget-cover;
     }
 
-    &__buy-nft-widget-container {
+    &__list-nft-widget-container {
         @extend %widget-over-widget-container;
     }
 
-    &__buy-nft-widget {
+    &__list-nft-widget {
         @extend %widget-over-widget;
     }
 }

@@ -4,4 +4,8 @@
     font-size: .875rem;
     font-weight: var(--fw-400);
     color: var(--c-text-grey);
+
+    &:hover {
+        color: var(--c-white);
+    }
 }

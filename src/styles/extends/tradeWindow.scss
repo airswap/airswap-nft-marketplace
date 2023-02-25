@@ -1,0 +1,73 @@
+@import "../mixins";
+@import "./misc";
+
+%trade-window {
+    display: flex;
+    align-items: center;
+    justify-content: flex-end;
+    border: 1px solid var(--c-dark-border);
+    border-radius: .25rem;
+    width: 100%;
+    padding: 0 1rem;
+    background: var(--c-dark);
+    overflow: hidden;
+
+    @include for-size(tiny-phone-only) {
+        padding: 0 .75rem;
+    }
+}
+
+%trade-window-title {
+    line-height: 1;
+    font-size: .75rem;
+    font-weight: var(--fw-700);
+    white-space: nowrap;
+    text-transform: uppercase;
+    color: var(--c-light-grey);
+}
+
+%trade-window-name {
+    line-height: 1;
+    font-size: 1.125rem;
+    font-weight: var(--fw-700);
+    color: var(--c-white);
+
+    @include for-size(tiny-phone-only) {
+        font-size: 1.0625rem;
+    }
+}
+
+%trade-window-amount {
+    @extend %text-ellipsis;
+
+    display: block;
+    width: 100%;
+    line-height: 1;
+    text-align: right;
+    font-size: 1.25rem;
+    font-family: var(--f-mono);
+    font-weight: var(--fw-500);
+
+    @include for-size(tiny-phone-only) {
+        font-size: 1rem;
+    }
+}
+
+%trade-window-sub-text {
+    @extend %text-ellipsis;
+
+    display: block;
+    width: 100%;
+    text-align: right;
+    font-size: 0.75rem;
+    color: var(--c-text-grey);
+}
+
+%trade-window-icon {
+    border-radius: 50%;
+    min-width: 2rem;
+    aspect-ratio: 1;
+    background-position: center center;
+    background-size: cover;
+    overflow: hidden;
+}

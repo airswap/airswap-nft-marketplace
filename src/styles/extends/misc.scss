@@ -1,0 +1,11 @@
+%text-ellipsis {
+    text-overflow: ellipsis;
+    white-space: nowrap;
+    overflow: hidden;
+}
+
+%after-block {
+    content: '';
+    display: block;
+    position: absolute;
+}

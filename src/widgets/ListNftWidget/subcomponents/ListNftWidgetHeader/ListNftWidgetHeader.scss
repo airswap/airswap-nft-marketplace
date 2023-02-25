@@ -1,0 +1,26 @@
+@import "src/styles";
+
+.list-nft-widget-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+
+    &__title {
+        font-size: 1.125rem;
+
+        @include for-size(tablet-portrait-up) {
+            font-size: 1.25rem;
+        }
+    }
+
+    &__back-button {
+        display: none;
+
+        @include for-size(tablet-portrait-up) {
+            display: flex;
+            width: 1.375rem;
+            height: 1.375rem;
+            color: var(--c-light-grey);
+        }
+    }
+}
