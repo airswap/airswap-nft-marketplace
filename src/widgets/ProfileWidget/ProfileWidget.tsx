@@ -32,7 +32,7 @@ const ProfileWidget: FC = () => {
       />
       <div className="profile-widget__button-group-container">
         <div className="profile-widget__button-group">
-          <Button text="NFTs" className="profile-widget__button-group__button profile-widget__button-group__button--active" />
+          <Button text="NFTs" className="profile-widget__button-group__button profile-widget__button-group__button--is-active" />
           <Button text="ACTIVITY" className="profile-widget__button-group__button" />
           <Button text="LISTED" className="profile-widget__button-group__button" />
         </div>
