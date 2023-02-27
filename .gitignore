@@ -28,3 +28,6 @@ yarn-error.log*
 
 # pem files used for local https
 *.pem
+
+# generated file when react app starts
+src/constants/tokenIds.json
