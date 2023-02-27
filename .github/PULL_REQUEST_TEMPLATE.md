@@ -1,6 +1,6 @@
 # Description
 
-Description of the pull request.
+Description of the pull request. Don't forget to include the ticket number.
 
 # Demo - OPTIONAL
 
