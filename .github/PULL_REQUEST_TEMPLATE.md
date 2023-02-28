@@ -24,7 +24,7 @@ Example:
 
 # Checklist:
 
-- [ ] I have read and understood CONTRIBUTING.MD
+- [ ] I have read and understood [CONTRIBUTING.MD](CONTRIBUTING.md)
 - [ ] I have included the ticket number in my PR
 - [ ] I have performed a self-review of my own code
 - [ ] I have commented the parts where my code is hard to understand
