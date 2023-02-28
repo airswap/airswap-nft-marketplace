@@ -17,7 +17,7 @@ Help the reviewer test what you implemented/changed. Include all the steps neede
 Example:
 
 1. Add environment variable `REACT_APP_VAR_X=value` in .env file
-2. Run yarn dev
+2. Run `yarn start`
 3. Go to home page
 4. Click on an NFT
 5. Check component XYZ
