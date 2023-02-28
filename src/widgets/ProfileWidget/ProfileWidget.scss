@@ -14,13 +14,14 @@
         }
     }
 
-&__button-group {
+    &__button-group {
         display: flex;
         border: solid 1px var(--c-grey);
         border-radius: 4px;
-@include for-size(tablet-portrait-up) {
-    height: 17.5rem;
-  }
+
+        @include for-size(tablet-portrait-up) {
+            height: 17.5rem;
+        }
 
         @include for-size(desktop-up) {
             width: 19.5rem;
