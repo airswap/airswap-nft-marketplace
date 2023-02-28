@@ -1,6 +1,7 @@
 import React, { FC } from 'react';
 
 import Icon from '../Icon/Icon';
+import Input from '../Input/Input';
 
 import './SearchInput.scss';
 
@@ -12,10 +13,10 @@ interface SearchInputProps extends HTMLInputProps {
 
 const SearchInput: FC<SearchInputProps> = ({ className = '', ...props }) => (
   <div className={`search-input ${className}`}>
-    <input
+    <Input
+      {...props}
       type="text"
       className="search-input__input"
-      {...props}
     />
     <Icon name="search" className="search-input__icon" />
   </div>

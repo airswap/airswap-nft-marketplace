@@ -1,0 +1,41 @@
+@import "src/styles/index";
+
+.input {
+    border: 1px solid var(--c-dark-border);
+    border-radius: .25rem;
+    padding: 0 1rem;
+    color: var(--c-white);
+    background: var(--c-dark);
+
+    &::placeholder {
+        color: var(--c-light-grey);
+    }
+
+    &:hover,
+    &:focus {
+        outline: none;
+    }
+
+    &:focus {
+        border-color: var(--c-light-grey);
+    }
+
+    &:active {
+        border-color: var(--c-primary);
+    }
+
+    &[type=number] {
+        font-weight: var(--fw-400);
+        font-family: var(--f-mono);
+
+        /* Chrome, Safari, Edge, Opera */
+        &::-webkit-outer-spin-button,
+        &::-webkit-inner-spin-button {
+            -webkit-appearance: none;
+            margin: 0;
+        }
+
+        /* Firefox */
+        -moz-appearance: textfield;
+    }
+}

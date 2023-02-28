@@ -1,0 +1,99 @@
+@import "src/styles";
+
+$component: dropdown;
+
+.#{$component} {
+    position:  relative;
+
+    @include for-size(tablet-portrait-up) {
+
+        .#{$component}__select {
+            display: none;
+        }
+
+        .#{$component}__button {
+            visibility: visible;
+        }
+    }
+
+    &__select,
+    &__button {
+        @extend %button;
+        @extend %button-border-style;
+
+        border: 1px solid var(--c-dark-border);
+        border-radius: .25rem;
+        height: 100%;
+        text-transform: uppercase;
+        font-size: .75rem;
+        font-weight: 700;
+        background: var(--c-dark);
+
+        &:focus + .#{$component}__options-container {
+            display: block;
+        }
+    }
+
+    &__select {
+        position: absolute;
+        width: 100%;
+        height: 100%;
+        top: 0;
+        padding-top: 0;
+        padding-bottom: 0;
+        appearance: none;
+    }
+
+    &__button {
+        visibility: hidden;
+    }
+
+    &__select-icon {
+        position: absolute;
+        top: .75rem;
+        right: 1rem;
+        pointer-events: none;
+
+        @include for-size(tablet-portrait-up) {
+            display: none;
+        }
+    }
+
+    &__options-container {
+        display: none;
+        position: absolute;
+        top: 0;
+        width: 100%;
+
+        &:before {
+            @extend %after-block;
+
+            top: -.5rem;
+            left: -.5rem;
+            border: 1px solid var(--c-dark-border);
+            border-radius: .25rem;
+            width: calc(100% + 1rem);
+            height: calc(100% + 1rem);
+            background: var(--c-dark);
+        }
+    }
+
+    &__dropdown-button {
+        width: 100%;
+        height: 2.5rem;
+    }
+
+    &__dropdown-button-background {
+        transition: transform 0.2s ease-out;
+        position: absolute;
+        top: 0;
+        width: 100%;
+        height: 2.5rem;
+        pointer-events: none;
+        background: var(--c-grey);
+
+        @media (prefers-reduced-motion: reduce) {
+            transition: none;
+        }
+    }
+}

@@ -1,6 +1,7 @@
 import React, { FC } from 'react';
 
 import SearchInput from '../../components/SearchInput/SearchInput';
+import SelectExpiry from '../../compositions/SelectExpiry/SelectExpiry';
 
 import './ListNftWidget.scss';
 
@@ -11,6 +12,7 @@ const ListNftWidget: FC = () => (
       placeholder="Search for NFT"
       className="list-nft-widget__search-input"
     />
+    <SelectExpiry className="list-nft-widget__select-expiry" />
   </div>
 );
 
