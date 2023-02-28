@@ -37,8 +37,14 @@ contract.supportsInterface(tokenKinds.ERC721).then((isERC721) => {
     /* get unique values */
     const uniqueTokenIds = tokenIds.filter((element, index) => tokenIds.indexOf(element) === index);
 
+    const objToWrite = {
+      address,
+      tokenIds: uniqueTokenIds,
+      length: uniqueTokenIds.length,
+    };
+
     /* write token ids in a json file */
-    fs.writeFileSync('src/constants/tokenIds.json', JSON.stringify(uniqueTokenIds));
+    fs.writeFileSync('src/constants/tokenIds.json', JSON.stringify(objToWrite, null, 2));
 
     process.exit(0);
   });
@@ -58,8 +64,14 @@ contract.supportsInterface(tokenKinds.ERC1155).then((isERC1155) => {
     /* get unique values */
     const uniqueTokenIds = tokenIds.filter((element, index) => tokenIds.indexOf(element) === index);
 
+    const objToWrite = {
+      address,
+      tokenIds: uniqueTokenIds,
+      length: uniqueTokenIds.length,
+    };
+
     /* write token ids in a json file */
-    fs.writeFileSync('src/constants/tokenIds.json', JSON.stringify(uniqueTokenIds));
+    fs.writeFileSync('src/constants/tokenIds.json', JSON.stringify(objToWrite, null, 2));
 
     process.exit(0);
   });
