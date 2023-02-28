@@ -39,7 +39,7 @@ contract.supportsInterface(tokenKinds.ERC721).then((isERC721) => {
 
     const objToWrite = {
       address,
-      tokenIds: uniqueTokenIds,
+      ids: uniqueTokenIds,
       length: uniqueTokenIds.length,
     };
 
@@ -66,7 +66,7 @@ contract.supportsInterface(tokenKinds.ERC1155).then((isERC1155) => {
 
     const objToWrite = {
       address,
-      tokenIds: uniqueTokenIds,
+      ids: uniqueTokenIds,
       length: uniqueTokenIds.length,
     };
 

@@ -1,7 +1,8 @@
 import { createSlice } from '@reduxjs/toolkit';
 
+import { CHUNK_SIZE } from '../../../constants/collection';
+import { length } from '../../../constants/tokenIds.json';
 import { CollectionToken } from '../../../entities/CollectionToken/CollectionToken';
-import { getUniqueArrayChildren } from '../../../helpers/array';
 import { fetchCollectionTokens } from './collectionApi';
 
 export interface CollectionState {
@@ -14,7 +15,7 @@ export interface CollectionState {
 const initialState: CollectionState = {
   allTokensAreLoaded: false,
   isLoading: false,
-  lastTokenIndex: 1,
+  lastTokenIndex: 0,
   tokensData: [],
 };
 
@@ -29,23 +30,22 @@ const collectionSlice = createSlice({
     }));
 
     builder.addCase(fetchCollectionTokens.fulfilled, (state, action) => {
-      // When fetchNFTMetadata returns undefined for a token we assume that's the end of the token list
-      // TODO: We might want to revise this when we add support for irregular token id's. https://github.com/airswap/airswap-marketplace/issues/49
-      const allTokensAreLoaded = action.payload.includes(undefined);
+      // TODO: handle error; undefined means there was an error fetching data for an nft
       const filteredTokens = action.payload.filter(token => token !== undefined) as CollectionToken[];
 
-      const newTokensData = getUniqueArrayChildren([
+      const newTokensData = [
         ...state.tokensData,
         ...filteredTokens,
-      ].sort((a, b) => a.id - b.id), 'id') as CollectionToken[];
-      const lastToken = newTokensData[newTokensData.length - 1];
+      ].sort((a, b) => a.id - b.id);
+
+      const newLastTokenIndex = state.lastTokenIndex + CHUNK_SIZE;
 
       return {
         ...state,
-        allTokensAreLoaded,
+        allTokensAreLoaded: newLastTokenIndex >= length,
         isLoading: false,
         tokensData: newTokensData,
-        lastTokenIndex: lastToken ? lastToken.id : 1,
+        lastTokenIndex: newLastTokenIndex,
       };
     });
 
