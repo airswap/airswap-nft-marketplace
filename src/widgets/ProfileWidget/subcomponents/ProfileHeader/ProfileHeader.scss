@@ -9,12 +9,6 @@
 	background-size: cover;
 	background-repeat: no-repeat;
 
-	@include for-size(phone-only) {
-		position: absolute;
-		top: 0;
-		left: 0;
-	}
-
 	@include for-size(desktop-up) {
 		height: 27.5rem;
 		border-radius: .5rem;

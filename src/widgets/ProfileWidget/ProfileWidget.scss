@@ -6,7 +6,8 @@
         margin-top: 1.625rem;
 
         @include for-size(phone-only) {
-            margin-top: 9.125rem;
+            margin-left: 1.5rem;
+            margin-right: 1.5rem;
         }
 
         @include for-size(desktop-up) {
