@@ -3,7 +3,6 @@
 .profile-widget {
 
     &__button-group-container {
-        display: block;
         margin-top: 1.625rem;
 
         @include for-size(phone-only) {
