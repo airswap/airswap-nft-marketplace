@@ -23,8 +23,7 @@ const ProfileWidget: FC = () => {
   return (
     <div className="profile-widget">
       <ProfileHeader
-      // must remove the hardcoded value before to raise the pr
-        backgroundImage={collectionImage || 'collection/collection-example-image.png'}
+        backgroundImage={collectionImage}
         avatarUrl={avatarUrl}
         ensAddress={ensAddress}
         address={account || ''}
