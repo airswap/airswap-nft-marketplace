@@ -13,7 +13,12 @@ interface NftDetailAttributesProps {
 const NftDetailAttributes: FC<NftDetailAttributesProps> = ({ attrs, className = '' }) => (
   <div className={`nft-detail-attributes ${className}`}>
     {attrs.map((attribute: CollectionTokenAttribute) => (
-      <NftDetailAttributeCard className="nft-detail-attributes__card" key={attribute.label} label={attribute.label} value={attribute.value} />
+      <NftDetailAttributeCard
+        className="nft-detail-attributes__card"
+        key={attribute.label}
+        label={attribute.label}
+        value={attribute.value}
+      />
     ))}
   </div>
 );

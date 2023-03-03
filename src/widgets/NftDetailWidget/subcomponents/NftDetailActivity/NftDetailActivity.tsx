@@ -24,7 +24,10 @@ interface NftDetailActivityProps {
 const NftDetailActivity: FC<NftDetailActivityProps> = ({ logs, className = '' }) => (
   <div className={`nft-detail-widget__activities-container ${className}`}>
     {logs.map((log: EventLog) => (
-      <NftDetailActivityTransfer key={`${log.type}:${log.tokenId}:${log.from}:${log.to}`} log={log} />
+      <NftDetailActivityTransfer
+        key={`${log.type}:${log.tokenId}:${log.from}:${log.to}`}
+        log={log}
+      />
     ))}
   </div>
 );

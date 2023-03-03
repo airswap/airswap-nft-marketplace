@@ -16,7 +16,10 @@ const NftDetailProceedButton: React.FC<NftDetailProceedButtonProps> = ({
   className = '',
 }) => (
   <div className={`nft-detail-proceed-button ${className}`}>
-    <Link to={`/${AppRoutes.swap}/${id}`} className={`nft-detail-proceed-button__link ${className}__link ${id ? '' : 'disabled'}`}>
+    <Link
+      to={`/${AppRoutes.swap}/${id}`}
+      className={`nft-detail-proceed-button__link ${className}__link ${id ? '' : 'disabled'}`}
+    >
       Proceed to buy
     </Link>
   </div>

@@ -58,7 +58,11 @@ const ConnectedNftDetailWidget: FC<IConnectedNftDetailWidgetProps> = ({ library 
             backgroundImage={tokenMeta.image || collectionImage}
             className="nft-detail-widget__portrait"
           />
-          <NftDetailSaleInfo price={BigNumber.from(tokenMeta.price)} symbol={tokenMeta.symbol} className="nft-detail-widget__price" />
+          <NftDetailSaleInfo
+            price={BigNumber.from(tokenMeta.price)}
+            symbol={tokenMeta.symbol}
+            className="nft-detail-widget__price"
+          />
           <Accordion
             label="Description"
             content={(
@@ -79,7 +83,13 @@ const ConnectedNftDetailWidget: FC<IConnectedNftDetailWidgetProps> = ({ library 
           <Accordion
             label="Details"
             content={(
-              <NftDetailList address={collectionToken} id={tokenMeta.id.toString()} chain="Unknown" standard="Unknown" fee="Unknown" />
+              <NftDetailList
+                address={collectionToken}
+                id={tokenMeta.id.toString()}
+                chain="Unknown"
+                standard="Unknown"
+                fee="Unknown"
+              />
             )}
             className="nft-detail-widget__description-accordion"
           />
@@ -93,7 +103,13 @@ const ConnectedNftDetailWidget: FC<IConnectedNftDetailWidgetProps> = ({ library 
             <div className="nft-detail-widget__meta-container">
               <p className="nft-detail-widget__meta-container-label">Details</p>
               <div className="accordion__content accordion__content--has-border">
-                <NftDetailList address={collectionToken} id={tokenMeta.id.toString()} chain="Unknown" standard="Unknown" fee="Unknown" />
+                <NftDetailList
+                  address={collectionToken}
+                  id={tokenMeta.id.toString()}
+                  chain="Unknown"
+                  standard="Unknown"
+                  fee="Unknown"
+                />
               </div>
             </div>
             <div className="nft-detail-widget__meta-container">
@@ -110,7 +126,11 @@ const ConnectedNftDetailWidget: FC<IConnectedNftDetailWidgetProps> = ({ library 
               <p className="nft-detail-widget__meta-container-label">Description</p>
               <p>{tokenMeta?.description}</p>
             </div>
-            <NftDetailSaleInfo price={BigNumber.from(tokenMeta.price)} symbol={tokenMeta.symbol} className="nft-detail-widget__price" />
+            <NftDetailSaleInfo
+              price={BigNumber.from(tokenMeta.price)}
+              symbol={tokenMeta.symbol}
+              className="nft-detail-widget__price"
+            />
             <NftDetailProceedButton id={selectedTokenId} />
           </div>
         </NftDetailContentContainer>

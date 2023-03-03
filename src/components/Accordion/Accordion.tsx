@@ -68,9 +68,17 @@ const Accordion: FC<AccordionProps> = ({
         onClick={onClick}
       >
         <p className="accordion__label">{label}</p>
-        <span className="accordion__state-indicator" style={{ transform: `rotate(${isOpen ? 0 : 180}deg)` }}><Icon className="accordion__state-indicator" name="chevron-down" /></span>
+        <span
+          className="accordion__state-indicator"
+          style={{ transform: `rotate(${isOpen ? 0 : 180}deg)` }}
+        >
+          <Icon className="accordion__state-indicator" name="chevron-down" />
+        </span>
       </button>
-      <div className={`accordion__content ${hasBorder ? 'accordion__content--has-border' : ''}`} ref={contentRef}>
+      <div
+        className={`accordion__content ${hasBorder ? 'accordion__content--has-border' : ''}`}
+        ref={contentRef}
+      >
         {typeof content === 'string' ? <p>{content}</p> : content}
       </div>
     </div>

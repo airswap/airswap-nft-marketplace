@@ -8,7 +8,11 @@ interface NftDetailAttributeCardProps {
   className?: string;
 }
 
-const NftDetailAttributeCard: FC<NftDetailAttributeCardProps> = ({ label, value, className = '' }) => (
+const NftDetailAttributeCard: FC<NftDetailAttributeCardProps> = ({
+  label,
+  value,
+  className = '',
+}) => (
   <div key={label} className={`nft-detail-attribute-card ${className}`}>
     <p className="nft-detail-attribute-card__label">{label}</p>
     <p className="nft-detail-attribute-card__value">{value}</p>

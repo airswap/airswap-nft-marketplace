@@ -8,7 +8,11 @@ export interface INftDetailMainInfoProps {
   className?: string;
 }
 
-const NftDetailMainInfo: FC<INftDetailMainInfoProps> = ({ title, owner, className = '' }) => (
+const NftDetailMainInfo: FC<INftDetailMainInfoProps> = ({
+  title,
+  owner,
+  className = '',
+}) => (
   <div className={`nft-detail-main-info ${className}`}>
     <h1 className="nft-detail-main-info__title">{title}</h1>
     <span className="nft-detail-main-info__owner">
