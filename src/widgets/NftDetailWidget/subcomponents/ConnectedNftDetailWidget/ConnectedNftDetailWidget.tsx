@@ -101,7 +101,7 @@ const ConnectedNftDetailWidget: FC<IConnectedNftDetailWidgetProps> = ({ library 
               className="nft-detail-widget__portrait"
             />
             <div className="nft-detail-widget__meta-container">
-              <p className="nft-detail-widget__meta-container-label">Details</p>
+              <h2 className="nft-detail-widget__meta-container-label">Details</h2>
               <div className="accordion__content accordion__content--has-border">
                 <NftDetailList
                   address={collectionToken}
@@ -123,7 +123,7 @@ const ConnectedNftDetailWidget: FC<IConnectedNftDetailWidgetProps> = ({ library 
               className="nft-detail-widget__main-info"
             />
             <div className="nft-detail-widget__meta-container">
-              <p className="nft-detail-widget__meta-container-label">Description</p>
+              <h2 className="nft-detail-widget__meta-container-label">Description</h2>
               <p>{tokenMeta?.description}</p>
             </div>
             <NftDetailSaleInfo
