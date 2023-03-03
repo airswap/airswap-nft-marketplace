@@ -9,7 +9,7 @@
     &__owner {
         display: flex;
         font-size: .75rem; // Target 12px
-        margin-bottom: var(--page-padding);
+        margin-bottom: 2em;
 
         @include for-size(desktop-up) {
             font-size: 1rem; // Target 16px

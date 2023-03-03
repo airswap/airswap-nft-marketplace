@@ -8,8 +8,6 @@ import './Accordion.scss';
 
 interface AccordionProps {
   isDefaultOpen?: boolean;
-  isHeadingDisabled?: boolean;
-  isHeadingVisible?: boolean;
   hasBorder?: boolean;
   content: string | JSX.Element;
   label: string;
@@ -18,8 +16,6 @@ interface AccordionProps {
 
 const Accordion: FC<AccordionProps> = ({
   isDefaultOpen = false,
-  isHeadingDisabled = false,
-  isHeadingVisible = true,
   hasBorder = false,
   content,
   label,
@@ -67,9 +63,8 @@ const Accordion: FC<AccordionProps> = ({
   return (
     <div className={`accordion ${className}`}>
       <button
-        className={`accordion__header focus:outline-none ${isHeadingVisible ? '' : 'accordion__header--is-not-visible'} ${isOpen ? 'accordion__header--is-open' : ''}`}
+        className={`accordion__header focus:outline-none ${isOpen ? 'accordion__header--is-open' : ''}`}
         type="button"
-        disabled={isHeadingDisabled}
         onClick={onClick}
       >
         <p className="accordion__label">{label}</p>

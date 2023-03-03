@@ -21,4 +21,14 @@
         flex-direction: column;
         flex: 0 0 47.5%;
     }
+
+    &__meta-container {
+        margin-bottom: 2rem;
+    }
+
+    &__meta-container-label {
+        color: var(--c-light-grey);
+        margin-bottom: .75rem;
+        font-weight: var(--fw-700);
+    }
 }

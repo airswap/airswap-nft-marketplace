@@ -90,26 +90,15 @@ const ConnectedNftDetailWidget: FC<IConnectedNftDetailWidgetProps> = ({ library 
               backgroundImage={tokenMeta.image || collectionImage}
               className="nft-detail-widget__portrait"
             />
-            <Accordion
-              label="Details"
-              content={(
+            <div className="nft-detail-widget__meta-container">
+              <p className="nft-detail-widget__meta-container-label">Details</p>
+              <div className="accordion__content accordion__content--has-border">
                 <NftDetailList address={collectionToken} id={tokenMeta.id.toString()} chain="Unknown" standard="Unknown" fee="Unknown" />
-              )}
-              className="nft-detail-widget__description-accordion"
-              isDefaultOpen
-              isHeadingDisabled
-              hasBorder
-            />
-            <Accordion
-              label="Properties"
-              content={(
-                <NftDetailAttributes attrs={tokenMeta.attributes} />
-              )}
-              className="nft-detail-widget__properties-accordion"
-              isDefaultOpen
-              isHeadingDisabled
-              isHeadingVisible={false}
-            />
+              </div>
+            </div>
+            <div className="nft-detail-widget__meta-container">
+              <NftDetailAttributes attrs={tokenMeta.attributes} />
+            </div>
           </div>
           <div className="nft-detail-widget__column">
             <NftDetailMainInfo
@@ -117,15 +106,10 @@ const ConnectedNftDetailWidget: FC<IConnectedNftDetailWidgetProps> = ({ library 
               title={tokenMeta.name}
               className="nft-detail-widget__main-info"
             />
-            <Accordion
-              label="Description"
-              content={(
-                <p>{tokenMeta?.description}</p>
-              )}
-              className="nft-detail-widget__description-accordion"
-              isDefaultOpen
-              isHeadingDisabled
-            />
+            <div className="nft-detail-widget__meta-container">
+              <p className="nft-detail-widget__meta-container-label">Description</p>
+              <p>{tokenMeta?.description}</p>
+            </div>
             <NftDetailSaleInfo price={BigNumber.from(tokenMeta.price)} symbol={tokenMeta.symbol} className="nft-detail-widget__price" />
             <NftDetailProceedButton id={selectedTokenId} />
           </div>
