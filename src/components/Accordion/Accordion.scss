@@ -7,20 +7,9 @@
         display: flex;
         font-size: .75rem; // Target size: 12px
         font-weight: var(--fw-700);
-        transition: margin-bottom 0;
-        transition-delay: .3s; // TODO: Set this in the JS
-        
-        @include for-size(desktop-up) {
-            font-size: 1rem; // Target size: 16px
-            margin-bottom: var(--page-padding);
-        }
 
         &:focus {
             outline: none;
-        }
-
-        &:disabled {
-            cursor: unset;
         }
 
         &--is-open {
@@ -42,10 +31,6 @@
         align-items: center;
         transition: transform .3s ease-out;
         transform-origin: center;
-
-        @include for-size(desktop-up) {
-            display: none;
-        }
     }
 
     &__content {
@@ -53,10 +38,6 @@
         overflow: hidden;
         will-change: height;
         font-size: .75rem; // Target 12px
-
-        @include for-size(desktop-up) {
-            font-size: 1rem; // Target 16px
-        }
 
         &--has-border {
             border: 1px solid var(--c-grey);
