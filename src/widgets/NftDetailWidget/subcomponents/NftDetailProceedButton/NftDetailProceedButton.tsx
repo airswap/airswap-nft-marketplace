@@ -1,6 +1,6 @@
 import React from 'react';
 
-import { Link } from 'react-router-dom';
+import { NavLink } from 'react-router-dom';
 
 import { AppRoutes } from '../../../../routes';
 
@@ -16,12 +16,12 @@ const NftDetailProceedButton: React.FC<NftDetailProceedButtonProps> = ({
   className = '',
 }) => (
   <div className={`nft-detail-proceed-button ${className}`}>
-    <Link
+    <NavLink
       to={`/${AppRoutes.swap}/${id}`}
-      className={`nft-detail-proceed-button__link ${className}__link ${id ? '' : 'disabled'}`}
+      className={`nft-detail-proceed-button__link ${className}__link`}
     >
       Proceed to buy
-    </Link>
+    </NavLink>
   </div>
 );
 

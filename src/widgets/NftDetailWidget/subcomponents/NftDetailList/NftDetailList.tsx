@@ -14,7 +14,12 @@ interface NftDetailListProps {
 }
 
 const NftDetailList: FC<NftDetailListProps> = ({
-  address, id, chain, standard, fee, className = '',
+  address,
+  id,
+  chain,
+  standard,
+  fee,
+  className = '',
 }) => (
   <div className={`nft-detail-list ${className}`}>
     <div className="nft-detail-list__item">
