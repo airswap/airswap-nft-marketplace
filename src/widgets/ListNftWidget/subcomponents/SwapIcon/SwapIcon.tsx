@@ -1,6 +1,6 @@
 import React, { FC } from 'react';
 
-import Icon from '../Icon/Icon';
+import Icon from '../../../../components/Icon/Icon';
 
 import './SwapIcon.scss';
 

@@ -8,7 +8,6 @@ import Icon from '../../components/Icon/Icon';
 import LoadingSpinner from '../../components/LoadingSpinner/LoadingSpinner';
 import ReviewNftDetails from '../../components/ReviewNftDetails/ReviewNftDetails';
 import ReviewTokenDetails from '../../components/ReviewTokenDetails/ReviewTokenDetails';
-import SwapIcon from '../../components/SwapIcon/SwapIcon';
 import TradeDetails from '../../components/TradeDetails/TradeDetails';
 import CopyLinkButton from '../../compositions/CopyLinkButton/CopyLinkButton';
 import SelectExpiry from '../../compositions/SelectExpiry/SelectExpiry';
@@ -19,6 +18,7 @@ import { selectCurrencyTokenInfo } from '../../redux/stores/metadata/metadataSli
 import { getTitle } from './helpers';
 import ListActionButtons from './subcomponents/ListActionButtons/ListActionButtons';
 import ListNftWidgetHeader from './subcomponents/ListNftWidgetHeader/ListNftWidgetHeader';
+import SwapIcon from './subcomponents/SwapIcon/SwapIcon';
 
 import './ListNftWidget.scss';
 

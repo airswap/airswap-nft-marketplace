@@ -10,7 +10,7 @@ import './ReviewTokenDetails.scss';
 
 interface ReviewTokenDetailsProps {
   amount: BigNumber;
-  amountSubtext?: string;
+  amountSubtext: string;
   projectFeePercent: number;
   protocolFeePercent: number;
   title: string;
