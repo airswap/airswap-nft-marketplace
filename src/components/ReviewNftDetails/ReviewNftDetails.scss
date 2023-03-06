@@ -1,0 +1,27 @@
+@import "src/styles";
+
+.review-nft-details {
+    @extend %trade-window;
+
+    height: 4.5rem;
+    background: var(--c-black);
+
+    &__title {
+        @extend %trade-window-title;
+
+        margin-right: auto;
+    }
+
+    &__name {
+        @extend %text-ellipsis;
+        @extend %trade-window-name;
+
+        margin-left: 1rem;
+    }
+
+    &__icon {
+        @extend %trade-window-icon;
+
+        margin-left: 1rem;
+    }
+}

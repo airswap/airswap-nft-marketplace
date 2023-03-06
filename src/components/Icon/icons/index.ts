@@ -21,6 +21,7 @@ import IconDiscord from './IconDiscord';
 import IconEdit from './IconEdit';
 import IconForbidden from './IconForbidden';
 import IconGithub from './IconGithub';
+import IconInformationCircleOutline from './IconInformationCircleOutline';
 import IconLaunch from './IconLaunch';
 import IconLibrary from './IconLibrary';
 import IconLink from './IconLink';
@@ -63,6 +64,7 @@ export {
   IconEdit,
   IconForbidden,
   IconGithub,
+  IconInformationCircleOutline,
   IconLaunch,
   IconLibrary,
   IconLink,

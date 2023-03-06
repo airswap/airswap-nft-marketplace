@@ -87,7 +87,7 @@ const BuyNftWidget: FC<BuyNftWidgetProps> = ({ className = '' }) => {
           ) : (
             <TradeDetails
               title="Buy"
-              tokenInfo={collectionToken}
+              token={collectionToken}
             />
           )}
 
@@ -99,7 +99,7 @@ const BuyNftWidget: FC<BuyNftWidgetProps> = ({ className = '' }) => {
               <TradeDetails
                 amount={new BigNumber('2345000000000000000')}
                 title="For"
-                tokenInfo={currencyToken}
+                token={currencyToken}
                 className="buy-nft-widget__trade-details"
               />
             </>

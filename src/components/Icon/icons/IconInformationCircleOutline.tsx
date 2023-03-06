@@ -1,0 +1,12 @@
+import React, { FC, ReactElement } from 'react';
+
+import { SvgIconProps } from '../Icon';
+
+const IconInformationCircleOutline: FC<SvgIconProps> = ({ className = '' }): ReactElement => (
+  <svg fill="none" viewBox="0 0 14 14" className={className}>
+    {/* eslint-disable max-len */}
+    <path d="M6.3335 3.66634H7.66683V4.99967H6.3335V3.66634ZM6.3335 6.33301H7.66683V10.333H6.3335V6.33301ZM7.00016 0.333008C3.32016 0.333008 0.333496 3.31967 0.333496 6.99967C0.333496 10.6797 3.32016 13.6663 7.00016 13.6663C10.6802 13.6663 13.6668 10.6797 13.6668 6.99967C13.6668 3.31967 10.6802 0.333008 7.00016 0.333008ZM7.00016 12.333C4.06016 12.333 1.66683 9.93967 1.66683 6.99967C1.66683 4.05967 4.06016 1.66634 7.00016 1.66634C9.94016 1.66634 12.3335 4.05967 12.3335 6.99967C12.3335 9.93967 9.94016 12.333 7.00016 12.333Z" />
+  </svg>
+);
+
+export default IconInformationCircleOutline;

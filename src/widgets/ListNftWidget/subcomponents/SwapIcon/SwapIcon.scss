@@ -1,0 +1,18 @@
+@import "../../../../styles/index";
+
+.swap-icon {
+    position: relative;
+    margin-top: -.5rem;
+    height: 1rem;
+    z-index: 1;
+
+    &__icon {
+        border: 1px solid var(--c-dark-border);
+        border-radius: 50%;
+        width: 1.5rem;
+        height: 1.5rem;
+        padding: .3125rem;
+        color: var(--c-light-grey);
+        background: var(--c-black);
+    }
+}

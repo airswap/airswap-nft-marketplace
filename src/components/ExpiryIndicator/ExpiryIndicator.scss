@@ -1,0 +1,43 @@
+@import "src/styles/index";
+
+.expiry-indicator {
+    @extend %trade-window;
+
+    height: 2.5rem;
+    background: var(--c-black);
+
+    &__title {
+        @extend %trade-window-title;
+
+        justify-self: flex-start;
+        margin-right: auto;
+        width: inherit;
+    }
+
+    &__amount {
+        @extend %trade-window-amount;
+
+        margin-left: 1rem;
+        width: inherit;
+        min-width: 1.5rem;
+        font-size: 1rem;
+    }
+
+    &__unit {
+        @extend %trade-window-title;
+
+        margin-left: .75rem;
+        color: var(--c-white);
+    }
+
+    &__title,
+    &__unit {
+
+        @include for-size(tiny-phone-only) {
+            min-width: 2.5rem;
+            text-overflow: ellipsis;
+            white-space: nowrap;
+            overflow: hidden;
+        }
+    }
+}
