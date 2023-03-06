@@ -1,0 +1,48 @@
+@import "src/styles/index";
+
+.accordion {
+    margin-bottom: var(--page-padding);
+
+    &__header {
+        display: flex;
+        font-size: .75rem; // Target size: 12px
+        font-weight: var(--fw-700);
+
+        &:focus {
+            outline: none;
+        }
+
+        &--is-open {
+            margin-bottom: .75rem;
+        }
+    }
+
+    &__label,
+    &__state-indicator {
+        color: var(--c-light-grey);
+    }
+
+    &__label {
+        padding-right: .25rem;
+    }
+
+    &__state-indicator {
+        display: flex;
+        align-items: center;
+        transition: transform .3s ease-out;
+        transform-origin: center;
+    }
+
+    &__content {
+        transition-property: height;
+        overflow: hidden;
+        will-change: height;
+        font-size: .75rem; // Target 12px
+
+        &--has-border {
+            border: 1px solid var(--c-grey);
+            border-radius: .25rem; // Target 4px
+            padding: var(--page-padding);
+        }
+    }
+}

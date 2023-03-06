@@ -36,12 +36,12 @@
     &__price {
         @extend %text-ellipsis;
     }
-    
+
     &__name {
         font-weight: var(--fw-700);
         color: var(--c-white);
     }
-    
+
     &__price {
         margin-top: .5rem;
         font-weight: var(--fw-400);

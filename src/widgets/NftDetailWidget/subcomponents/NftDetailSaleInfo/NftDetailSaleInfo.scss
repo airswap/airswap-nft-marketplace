@@ -1,0 +1,19 @@
+@import "src/styles/index";
+
+.nft-detail-sale-info {
+    margin-bottom: 1.5rem;
+
+    @include for-size(tablet-portrait-up) {
+        margin-bottom: 2rem;
+        margin-top: 1rem;
+    }
+
+    &__price {
+        font-size: 1rem;
+        font-weight: var(--fw-400);
+
+        @include for-size(tablet-portrait-up) {
+            font-size: 2rem;
+        }
+    }
+}

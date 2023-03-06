@@ -1,0 +1,22 @@
+@import "src/styles/index";
+
+.nft-detail-content-container {
+	position: fixed;
+	left: 0;
+	top: var(--top-bar-height);
+	width: calc(100svw - var(--scrollbar-width));
+	height: calc(100svh - (var(--top-bar-height) + 3rem + var(--page-padding) * 2));
+	padding: var(--page-padding);
+	padding-bottom: 0;
+	overflow-y: auto;
+
+	@include for-size(desktop-up) {
+		position: relative;
+		top: auto;
+		left: auto;
+		padding: 0;
+		overflow-y: initial;
+		display: flex;
+		flex-wrap: wrap;
+	}
+}

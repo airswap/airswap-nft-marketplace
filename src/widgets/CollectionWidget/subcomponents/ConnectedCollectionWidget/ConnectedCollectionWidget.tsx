@@ -1,3 +1,5 @@
+
+
 import React, { FC, useEffect, useState } from 'react';
 
 import { Web3Provider } from '@ethersproject/providers';
@@ -17,7 +19,9 @@ interface ConnectedCollectionWidgetProps {
 
 const ConnectedCollectionWidget: FC<ConnectedCollectionWidgetProps> = ({ library, className = '' }) => {
   const dispatch = useAppDispatch();
-  const { collectionImage, collectionName, collectionToken } = useAppSelector((state) => state.config);
+  const {
+    collectionImage, collectionName, collectionToken,
+  } = useAppSelector((state) => state.config);
   const {
     allTokensAreLoaded,
     isLoading,
@@ -66,9 +70,10 @@ const ConnectedCollectionWidget: FC<ConnectedCollectionWidgetProps> = ({ library
               key={token.id}
               imageURI={token.image}
               name={token.name}
-              price={token.price}
+              price={token.price.toString()}
               to={`${AppRoutes.nftDetail}/${token.id}`}
               className="collection-widget__nft-card"
+              symbol={token.symbol || 'AST'} // TODO: remove the backup symbol
             />
           ))}
         </div>

@@ -6,6 +6,7 @@ export interface ConfigState {
   collectionToken: string;
   collectionName: string;
   collectionImage: string;
+  ipfcGatewayURL: string;
 }
 
 const initialState: ConfigState = {
@@ -14,6 +15,7 @@ const initialState: ConfigState = {
   collectionToken: (process.env.REACT_APP_COLLECTION_TOKEN || '').toLowerCase(),
   collectionName: process.env.REACT_APP_COLLECTION_NAME || '',
   collectionImage: process.env.REACT_APP_COLLECTION_IMAGE || '',
+  ipfcGatewayURL: process.env.REACT_APP_IPFC_GATEWAY_URL || 'https://ipfs.io/ipfs/',
 };
 
 const configSlice = createSlice({

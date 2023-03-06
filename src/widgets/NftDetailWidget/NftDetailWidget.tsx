@@ -1,31 +1,17 @@
 import React, { FC } from 'react';
 
-import Button from '../../components/Button/Button';
-import { useAppSelector } from '../../redux/hooks';
-import NftDetailPortrait from './subcomponents/CollectionPortrait/NftDetailPortrait';
-import NftDetailMainInfo from './subcomponents/NftDetailMainInfo/NftDetailMainInfo';
+import { useWeb3React } from '@web3-react/core';
+
+import ConnectedNftDetailWidget from './subcomponents/ConnectedNftDetailWidget/ConnectedNftDetailWidget';
+import DisconnectedNftDetailWidget from './subcomponents/DisconnectedNftDetailWidget/DisconnectedNftDetailWidget';
 
 import './NftDetailWidget.scss';
 
-const CollectionWidget: FC = () => {
-  const { collectionImage } = useAppSelector((state) => state.config);
+const NftDetailWidget: FC = () => {
+  const { library } = useWeb3React();
 
-  return (
-    <div className="nft-detail-widget">
-      <div className="nft-detail-widget__top">
-        <NftDetailMainInfo
-          subTitle="by sjnivo"
-          title="Nft title"
-          className="nft-detail-widget__main-info"
-        />
-        <NftDetailPortrait
-          backgroundImage={collectionImage}
-          className="nft-detail-widget__portrait"
-        />
-      </div>
-      <Button text="Proceed" className="nft-detail-widget__proceed-button" />
-    </div>
-  );
+  if (library) return <ConnectedNftDetailWidget library={library} />;
+  return <DisconnectedNftDetailWidget />;
 };
 
-export default CollectionWidget;
+export default NftDetailWidget;

@@ -32,7 +32,7 @@ CollectionToken | undefined)[], fetchNFTMetadataParams>(
         return undefined;
       }
 
-      const token = transformNFTTokenToCollectionToken(tokenInfo, tokenId, 0.154);
+      const token = transformNFTTokenToCollectionToken(tokenInfo, tokenId, '0.154000000000000000');
 
       if (!token) {
         console.error(new Error(`Unable to parse data for ${collectionToken} with id ${tokenId}`));

@@ -29,4 +29,3 @@ TokenInfo | undefined)[], ScrapeTokensParams>(
     return wait(delay).then(async () => getTokenFromContract(library, token, tokenId));
   })),
   );
-

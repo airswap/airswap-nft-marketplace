@@ -8,8 +8,9 @@ export interface CollectionToken {
   name: string;
   image: string;
   description: string;
-  price: number;
   attributes: CollectionTokenAttribute[];
+  price: string;
+  symbol: string;
   createdBy?: string;
   externalUrl?: string;
 }

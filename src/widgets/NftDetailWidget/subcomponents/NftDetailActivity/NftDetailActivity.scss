@@ -1,0 +1,18 @@
+@import "src/styles/index";
+
+.nft-detail-activity {
+	&__activity {
+		display: flex;
+		margin-bottom: 1rem;
+		border: .1rem var(--c-grey) solid;
+		padding: 1rem;
+
+		&:last-child {
+			margin-bottom: 0;
+		}
+	}
+
+	&__activity-label {
+		margin-left: 1rem;
+	}
+}

@@ -1,0 +1,8 @@
+@import "src/styles/index";
+
+.nft-detail-attributes {
+	display: grid;
+	margin: .25rem 0; // Compensate for font vs colourful block
+	gap: .75rem;
+	grid-template-columns: 1fr 1fr;
+}

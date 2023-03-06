@@ -2,16 +2,23 @@ import React, { FC } from 'react';
 
 import './NftDetailMainInfo.scss';
 
-interface NftDetailMainInfoProps {
-  subTitle: string;
+export interface INftDetailMainInfoProps {
   title: string;
+  owner: string;
   className?: string;
 }
 
-const NftDetailMainInfo: FC<NftDetailMainInfoProps> = ({ subTitle, title, className = '' }) => (
+const NftDetailMainInfo: FC<INftDetailMainInfoProps> = ({
+  title,
+  owner,
+  className = '',
+}) => (
   <div className={`nft-detail-main-info ${className}`}>
-    <h1>{title}</h1>
-    <h2 className="collection-portrait__sub-title">{subTitle}</h2>
+    <h1 className="nft-detail-main-info__title">{title}</h1>
+    <span className="nft-detail-main-info__owner">
+      <p className="nft-detail-main-info__owner-label">Onwed by&nbsp;</p>
+      <p className="nft-detail-main-info__owner-name">{owner}</p>
+    </span>
   </div>
 );
 

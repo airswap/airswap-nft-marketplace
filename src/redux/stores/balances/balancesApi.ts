@@ -73,4 +73,3 @@ export const fetchBalances = createAsyncThunk<{ [address: string]: string }, Wal
     }), {});
   },
 );
-
