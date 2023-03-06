@@ -28,9 +28,10 @@ const TradeDetails: FC<TradeDetailsProps> = ({
   const symbol = 'symbol' in token && token.symbol;
   const name = 'name' in token && token.name;
   const id = 'id' in token && token.id;
+  const decimals = 'decimals' in token;
 
   const readableAmount = useMemo(() => {
-    if (!amount || !('decimals' in token)) {
+    if (!amount || !(decimals)) {
       return undefined;
     }
 
@@ -38,7 +39,7 @@ const TradeDetails: FC<TradeDetailsProps> = ({
       tokenDecimals: token.decimals,
       significantFigures: 6,
     });
-  }, [amount, token]);
+  }, [amount, decimals, token]);
 
   return (
     <div className={`trade-details ${className}`}>

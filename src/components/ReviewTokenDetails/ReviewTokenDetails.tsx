@@ -44,7 +44,7 @@ const ReviewTokenDetails: FC<ReviewTokenDetailsProps> = ({
         <h3 className="review-token-details__title">{title}</h3>
         <div className="review-token-details__amount-wrapper">
           <h4 className="review-token-details__amount-sub-text">{amountSubtext}</h4>
-          <h4 className="review-token-details__amount">{`${readableAmount} ${token.symbol}`}</h4>
+          {readableAmount && <h4 className="review-token-details__amount">{`${readableAmount} ${token.symbol}`}</h4>}
         </div>
         <div className="review-token-details__logo-icon" style={{ backgroundImage: `url("${token.logoURI}")` }} />
       </div>

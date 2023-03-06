@@ -27,8 +27,9 @@ const collectionToken: CollectionToken = {
   name: 'Dummy Snavie Hop',
   image: 'collection/collection-example-image.png',
   description: 'Heh',
-  price: 1,
+  price: '1',
   attributes: [],
+  symbol: 'AST',
   createdBy: 'Sjnivo',
   externalUrl: 'www.snavie.com',
 };
@@ -176,6 +177,7 @@ const ListNftWidget: FC<ListNftWidgetProps> = ({ className = '' }) => {
           <Icon name="close" className="list-nft-widget__failed-icon" />
           <p className="list-nft-widget__message">
             Failed for the following reason:
+            {/* TODO: Use store value when implemented */}
           </p>
         </>
       )}
