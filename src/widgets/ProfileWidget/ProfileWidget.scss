@@ -18,8 +18,6 @@
 
     &__button-group {
         display: flex;
-        border: solid 1px var(--c-grey);
-        border-radius: 4px;
 
         @include for-size(desktop-up) {
             width: 19.5rem;
@@ -28,6 +26,10 @@
     }
 
     &__button-group__button {
+        @extend %button-border-style;
+
+        border: solid 1px var(--c-grey);
+        margin-left: -1px;
         width: -webkit-fill-available;
         height: 2rem;
         font-weight: 700;
@@ -35,6 +37,21 @@
         line-height: 1.5rem;
         color: var(--c-light-grey);
         background: var(--c-dark);
+        z-index: 1;
+
+        &:focus {
+            z-index: 2;
+        }
+
+        &:first-child {
+            border-top-left-radius: .25rem;
+            border-bottom-left-radius: .25rem;
+        }
+
+        &:last-child {
+            border-top-right-radius: .25rem;
+            border-bottom-right-radius: .25rem;
+        }
 
         &--is-active {
             background-color: var(--c-grey);
