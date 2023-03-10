@@ -1,0 +1,61 @@
+@import "src/styles/index";
+
+.profile-widget {
+
+    &__button-group-container {
+        margin-top: 1.625rem;
+
+        @include for-size(phone-only) {
+            margin-left: 1.5rem;
+            margin-right: 1.5rem;
+        }
+
+        @include for-size(desktop-up) {
+            display: flex;
+            justify-content: center;
+        }
+    }
+
+    &__button-group {
+        display: flex;
+
+        @include for-size(desktop-up) {
+            width: 19.5rem;
+            transform: translateY(-2.56rem);
+        }
+    }
+
+    &__button-group__button {
+        @extend %button-border-style;
+
+        border: solid 1px var(--c-grey);
+        margin-left: -1px;
+        width: -webkit-fill-available;
+        height: 2rem;
+        font-weight: 700;
+        font-size: .75rem;
+        line-height: 1.5rem;
+        color: var(--c-light-grey);
+        background: var(--c-dark);
+        z-index: 1;
+
+        &:focus {
+            z-index: 2;
+        }
+
+        &:first-child {
+            border-top-left-radius: .25rem;
+            border-bottom-left-radius: .25rem;
+        }
+
+        &:last-child {
+            border-top-right-radius: .25rem;
+            border-bottom-right-radius: .25rem;
+        }
+
+        &--is-active {
+            background-color: var(--c-grey);
+            color: #fff;
+        }
+    }
+}

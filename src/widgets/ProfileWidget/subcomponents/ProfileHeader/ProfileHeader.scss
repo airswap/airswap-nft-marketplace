@@ -1,0 +1,21 @@
+@import "src/styles/index";
+
+.profile-header {
+	display: flex;
+	flex-direction: column;
+	justify-content: flex-end;
+	height: 9rem;
+	width: 100%;
+	background-size: cover;
+	background-repeat: no-repeat;
+
+	@include for-size(desktop-up) {
+		height: 27.5rem;
+		border-radius: .5rem;
+		box-shadow: 0 4px 45px -32px rgba(0, 0, 0, 0.99);
+	}
+
+	&__wallet-info {
+		padding: 1.625rem;
+	}
+}
