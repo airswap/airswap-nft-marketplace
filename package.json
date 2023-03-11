@@ -4,13 +4,11 @@
   "private": true,
   "dependencies": {
     "@airswap/balances": "2.0.2",
-    "@airswap/constants": "3.0.7",
-    "@airswap/libraries": "3.5.0",
-    "@airswap/maker-registry": "3.1.5",
-    "@airswap/metadata": "3.0.9",
-    "@airswap/swap-erc20": "3.0.2",
-    "@airswap/typescript": "3.0.3",
-    "@airswap/utils": "3.0.8",
+    "@airswap/constants": "4.0.1",
+    "@airswap/libraries": "4.0.3",
+    "@airswap/metadata": "4.0.2",
+    "@airswap/types": "4.0.1",
+    "@airswap/utils": "4.0.3",
     "@ethersproject/providers": "^5.7.2",
     "@greypixel_/nicenumbers": "^0.0.17",
     "@openzeppelin/contracts": "^4.8.1",
@@ -52,18 +50,13 @@
       "react-app/jest"
     ]
   },
-  "browserslist": {
-    "production": [
-      ">0.2%",
-      "not dead",
-      "not op_mini all"
-    ],
-    "development": [
-      "last 1 chrome version",
-      "last 1 firefox version",
-      "last 1 safari version"
-    ]
-  },
+  "browserslist": [
+    ">0.2%",
+    "not ie <= 99",
+    "not android <= 4.4.4",
+    "not dead",
+    "not op_mini all"
+  ],
   "devDependencies": {
     "@craco/craco": "^6.4.1",
     "@types/jest": "^27.0.1",

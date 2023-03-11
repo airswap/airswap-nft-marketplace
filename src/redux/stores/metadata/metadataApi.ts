@@ -1,5 +1,5 @@
 import { getTokenFromContract } from '@airswap/metadata';
-import { TokenInfo } from '@airswap/typescript';
+import { TokenInfo } from '@airswap/types';
 import { createAsyncThunk } from '@reduxjs/toolkit';
 import { ethers } from 'ethers';
 

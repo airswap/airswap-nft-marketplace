@@ -1,7 +1,7 @@
 import BalanceChecker from '@airswap/balances/build/contracts/BalanceChecker.json';
 // eslint-disable-next-line import/extensions
 import balancesDeploys from '@airswap/balances/deploys.js';
-import { Swap, Wrapper } from '@airswap/libraries';
+import { SwapERC20, Wrapper } from '@airswap/libraries';
 import { createAsyncThunk } from '@reduxjs/toolkit';
 import { BigNumber, ethers, providers } from 'ethers';
 
@@ -49,7 +49,7 @@ const fetchBalancesOrAllowances: (
   let args = [walletAddress, tokenAddresses];
 
   if (spenderAddressType === 'swap') {
-    args = [walletAddress, Swap.getAddress(chainId), tokenAddresses];
+    args = [walletAddress, SwapERC20.getAddress(chainId), tokenAddresses];
   }
 
   if (spenderAddressType === 'wrapper') {
