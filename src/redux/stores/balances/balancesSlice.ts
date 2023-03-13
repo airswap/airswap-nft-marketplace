@@ -4,16 +4,18 @@ import { fetchBalances } from './balancesApi';
 
 interface BalancesState {
   isLoading: boolean;
-  allowances?: {
+  allowances: {
     [address: string]: string;
   }
-  balances?: {
+  balances: {
     [address: string]: string;
   }
 }
 
 const initialState: BalancesState = {
   isLoading: false,
+  allowances: {},
+  balances: {},
 };
 
 const balancesSlice = createSlice({
@@ -24,6 +26,32 @@ const balancesSlice = createSlice({
       ...state,
       isLoading: action.payload,
     }),
+    setAllowances: (state, action: PayloadAction<{ [address: string]: string; }>) => ({
+      ...state,
+      allowances: action.payload,
+    }),
+    setAllowance: (state, action: PayloadAction<{ address: string, amount: string }>) => {
+      const newAllowances = { ...state.allowances };
+      newAllowances[action.payload.address] = action.payload.amount;
+
+      return {
+        ...state,
+        allowances: newAllowances,
+      };
+    },
+    setBalances: (state, action: PayloadAction<{ [address: string]: string; }>) => ({
+      ...state,
+      balances: action.payload,
+    }),
+    setBalance: (state, action: PayloadAction<{ address: string, amount: string }>) => {
+      const newBalances = { ...state.balances };
+      newBalances[action.payload.address] = action.payload.amount;
+
+      return {
+        ...state,
+        balances: newBalances,
+      };
+    },
   },
   extraReducers: builder => {
     builder.addCase(fetchBalances.pending, (state) => ({
@@ -41,6 +69,10 @@ const balancesSlice = createSlice({
 
 export const {
   setIsLoading,
+  setAllowance,
+  setAllowances,
+  setBalance,
+  setBalances,
 } = balancesSlice.actions;
 
 export default balancesSlice.reducer;

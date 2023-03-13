@@ -75,7 +75,7 @@
     ethereumjs-abi "^0.6.8"
     ethers "^5.6.9"
 
-"@airswap/swap-erc20@^4.0.0":
+"@airswap/swap-erc20@^4.0.0", "@airswap/swap-erc20@^4.0.2":
   version "4.0.2"
   resolved "https://registry.yarnpkg.com/@airswap/swap-erc20/-/swap-erc20-4.0.2.tgz#91723defd39b927433a4d7ec1ffa6b8a06fdbceb"
   integrity sha512-3UatbzwMtisDuUz3jyolPRdVvg4Wjk0EEOpUlRuirSZXC0leShhG4nS8JnPBhugOUfz9exvE6pBrZMgDdwFbyg==
@@ -2060,6 +2060,18 @@
     native-url "^0.2.6"
     schema-utils "^2.6.5"
     source-map "^0.7.3"
+
+"@react-hookz/deep-equal@^1.0.2":
+  version "1.0.4"
+  resolved "https://registry.yarnpkg.com/@react-hookz/deep-equal/-/deep-equal-1.0.4.tgz#68a71f36cbc88724b3ce6f4036183778b6e7f282"
+  integrity sha512-N56fTrAPUDz/R423pag+n6TXWbvlBZDtTehaGFjK0InmN+V2OFWLE/WmORhmn6Ce7dlwH5+tQN1LJFw3ngTJVg==
+
+"@react-hookz/web@^14.2.2":
+  version "14.7.1"
+  resolved "https://registry.yarnpkg.com/@react-hookz/web/-/web-14.7.1.tgz#5e39e6fc21331cc4ae95f36e8135ad763e6c29fb"
+  integrity sha512-kU1CccZDXvQ9G4vcCCpX3mDQqYKkuLXGFOtPMgmbZ9KrvkEduMRH4JqSVXp1nI/bGI1GJ0KAWm4UEb1x5eDGAg==
+  dependencies:
+    "@react-hookz/deep-equal" "^1.0.2"
 
 "@reduxjs/toolkit@^1.9.1":
   version "1.9.2"

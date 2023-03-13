@@ -1,22 +1,22 @@
-import { AppError, AppErrorType, transformToAppError } from "./appError";
+import { AppError, AppErrorType, transformToAppError } from './appError';
 import {
   isEthersProjectError,
   transformEthersProjectErrorToAppError,
-} from "./ethersProjectError";
+} from './ethersProjectError';
 import {
   isNumericFaultErrorError,
   transformNumericFaultErrorErrorToAppError,
-} from "./numericFaultError";
-import { isRpcError, transformRpcErrorToAppError } from "./rpcError";
+} from './numericFaultError';
+import { isRpcError, transformRpcErrorToAppError } from './rpcError';
 import {
   isRpcErrorWithSwapErrorCode,
   transformRpcErrorWithSwapErrorCodeToAppError,
-} from "./rpcErrorWithSwapErrorCode";
+} from './rpcErrorWithSwapErrorCode';
 import {
   isRpcSignRejectedError,
   transformRpcSignRejectedErrorToAppError,
-} from "./rpcSignRejectedError";
-import { isSwapError, transformSwapErrorToAppError } from "./swapError";
+} from './rpcSignRejectedError';
+import { isSwapError, transformSwapErrorToAppError } from './swapError';
 
 const transformUnknownErrorToAppError = (error: any): AppError => {
   if (isRpcError(error)) {

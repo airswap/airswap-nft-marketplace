@@ -1,6 +1,6 @@
-import { errorCodes } from "eth-rpc-errors";
+import { errorCodes } from 'eth-rpc-errors';
 
-import { AppError, AppErrorType, transformToAppError } from "./appError";
+import { AppError, AppErrorType, transformToAppError } from './appError';
 
 export interface RpcError {
   code: number;
@@ -8,16 +8,14 @@ export interface RpcError {
   stack: string;
 }
 
-export const isRpcError = (error: any): error is RpcError => {
-  return (
-    typeof error === "object" &&
-    error !== null &&
-    "code" in error &&
-    Object.values({ ...errorCodes.rpc, ...errorCodes.provider }).includes(
-      error.code
+export const isRpcError = (error: any): error is RpcError => (
+  typeof error === 'object'
+    && error !== null
+    && 'code' in error
+    && Object.values({ ...errorCodes.rpc, ...errorCodes.provider }).includes(
+      error.code,
     )
-  );
-};
+);
 
 export const transformRpcErrorToAppError = (error: RpcError): AppError => {
   if (error.code === 4001) {
