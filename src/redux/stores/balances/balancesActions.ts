@@ -3,7 +3,11 @@ import { BigNumber } from 'ethers';
 import { AppDispatch, RootState } from '../../store';
 import { setBalances } from './balancesSlice';
 
-export const incrementBalance = (tokenAddress: string, amount: string, subtract = false) => (dispatch: AppDispatch, getState: () => RootState): void => {
+export const incrementBalance = (
+  tokenAddress: string,
+  amount: string,
+  subtract = false,
+) => (dispatch: AppDispatch, getState: () => RootState): void => {
   const { balances } = getState();
   const newBalances = { ...balances.balances };
   const currentAmount = BigNumber.from(
@@ -14,7 +18,11 @@ export const incrementBalance = (tokenAddress: string, amount: string, subtract 
   dispatch(setBalances(newBalances));
 };
 
-export const incrementAllowance = (tokenAddress: string, amount: string, subtract = false) => (dispatch: AppDispatch, getState: () => RootState): void => {
+export const incrementAllowance = (
+  tokenAddress: string,
+  amount: string,
+  subtract = false,
+) => (dispatch: AppDispatch, getState: () => RootState): void => {
   const { balances } = getState();
   const newAllowances = { ...balances.allowances };
   const currentAmount = BigNumber.from(
