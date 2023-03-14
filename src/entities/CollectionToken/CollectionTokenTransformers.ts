@@ -1,5 +1,5 @@
 import { tokenKinds } from '@airswap/constants';
-import { TokenInfo } from '@airswap/typescript';
+import { TokenInfo } from '@airswap/types';
 
 import { Erc721Token, Erc721TokenAttribute } from '../Erc721Token/Erc721Token';
 import { Erc1155Token, Erc1155TokenAttribute } from '../Erc1155Token/Erc1155Token';

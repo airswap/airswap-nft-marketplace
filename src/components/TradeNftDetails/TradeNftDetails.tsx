@@ -1,6 +1,6 @@
 import React, { FC } from 'react';
 
-import { TokenInfo } from '@airswap/typescript';
+import { TokenInfo } from '@airswap/types';
 import classNames from 'classnames';
 
 import Icon from '../Icon/Icon';
