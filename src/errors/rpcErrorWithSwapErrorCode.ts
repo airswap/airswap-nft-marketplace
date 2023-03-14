@@ -1,9 +1,9 @@
-import { AppError } from "./appError";
+import { AppError } from './appError';
 import {
   SwapError,
   swapErrors,
   transformSwapErrorToAppError,
-} from "./swapError";
+} from './swapError';
 
 // An error with SwapError code where the real error code is in "reason", not "code". For example:
 // {
@@ -25,22 +25,20 @@ type RpcErrorWithSwapErrorCode = {
 };
 
 export const isRpcErrorWithSwapErrorCode = (
-  error: any
-): error is RpcErrorWithSwapErrorCode => {
-  return (
-    typeof error === "object" &&
-    "code" in error &&
-    "method" in error &&
-    "reason" in error &&
-    swapErrors.includes(error.code)
-  );
-};
+  error: any,
+): error is RpcErrorWithSwapErrorCode => (
+  typeof error === 'object'
+    && 'code' in error
+    && 'method' in error
+    && 'reason' in error
+    && swapErrors.includes(error.code)
+);
 
 export const transformRpcErrorWithSwapErrorCodeToAppError = (
-  error: RpcErrorWithSwapErrorCode
+  error: RpcErrorWithSwapErrorCode,
 ): AppError => {
   const reasonError = swapErrors.find(
-    (swapError) => error.reason.indexOf(swapError) !== -1
+    (swapError) => error.reason.indexOf(swapError) !== -1,
   );
   return transformSwapErrorToAppError(reasonError || error.code);
 };

@@ -73,3 +73,8 @@ export const fetchBalances = createAsyncThunk<{ [address: string]: string }, Wal
     }), {});
   },
 );
+
+export const getTransactionsLocalStorageKey: (
+  walletAddress: string,
+  chainId: number
+) => string = (walletAddress, chainId) => `airswap-marketplace/transactions/${walletAddress}/${chainId}`;
