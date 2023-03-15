@@ -1,6 +1,6 @@
 import { getLibrary } from '../../../helpers/ethers';
 import { store } from '../../store';
-import { fetchBalances } from './balancesApi';
+import { fetchAllowances, fetchBalances } from './balancesApi';
 
 export const configureBalancesSubscriber = () => {
   let tokenKeysString: string;
@@ -22,6 +22,13 @@ export const configureBalancesSubscriber = () => {
       const library = getLibrary(web3.chainId);
 
       store.dispatch(fetchBalances({
+        chainId: web3.chainId,
+        provider: library,
+        tokenAddresses: Object.keys(metadata.tokens),
+        walletAddress: web3.account,
+      }));
+
+      store.dispatch(fetchAllowances({
         chainId: web3.chainId,
         provider: library,
         tokenAddresses: Object.keys(metadata.tokens),

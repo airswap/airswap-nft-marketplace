@@ -13,6 +13,7 @@ import CopyLinkButton from '../../compositions/CopyLinkButton/CopyLinkButton';
 import SelectExpiry from '../../compositions/SelectExpiry/SelectExpiry';
 import TransactionLink from '../../compositions/TransactionLink/TransactionLink';
 import { CollectionToken } from '../../entities/CollectionToken/CollectionToken';
+import useSufficientAllowance from '../../hooks/useSufficientAllowance';
 import { useAppSelector } from '../../redux/hooks';
 import { selectCurrencyTokenInfo } from '../../redux/stores/metadata/metadataSlice';
 import { getTitle } from './helpers';
@@ -69,6 +70,9 @@ const ListNftWidget: FC<ListNftWidgetProps> = ({ className = '' }) => {
   // const { collectionImage, collectionName } = useAppSelector(state => state.config);
   // const collectionToken = useAppSelector(selectCollectionTokenInfo);
   const currencyToken = useAppSelector(selectCurrencyTokenInfo);
+
+  const hasSufficientCurrencyAllowance = useSufficientAllowance(currencyToken, '1000');
+  console.log(hasSufficientCurrencyAllowance);
 
   const [state, setState] = useState<ListNftState>(ListNftState.details);
 
