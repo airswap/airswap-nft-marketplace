@@ -10,16 +10,20 @@ import { ListNftState } from '../ConnectedListNftWidget/ConnectedListNftWidget';
 import './ListActionButtons.scss';
 
 interface ActionButtonsProps {
+  hasInsufficientAmount: boolean;
+  hasInsufficientBalance: boolean;
+  hasNoCollectionTokenApproval: boolean;
   hasNotSufficientCurrencyAllowance: boolean;
-  hasNotSufficientCollectionAllowance: boolean;
-  currencyToken?: TokenInfo;
+  currencyToken: TokenInfo;
   state: ListNftState;
   onActionButtonClick: () => void;
   className?: string;
 }
 
 const ListActionButtons: FC<ActionButtonsProps> = ({
-  hasNotSufficientCollectionAllowance,
+  hasInsufficientAmount,
+  hasInsufficientBalance,
+  hasNoCollectionTokenApproval,
   hasNotSufficientCurrencyAllowance,
   currencyToken,
   state,
@@ -31,7 +35,7 @@ const ListActionButtons: FC<ActionButtonsProps> = ({
       return `Approve ${currencyToken?.symbol || ''}`;
     }
 
-    if (hasNotSufficientCollectionAllowance) {
+    if (hasNoCollectionTokenApproval) {
       return 'Approve NFT';
     }
 
@@ -43,6 +47,7 @@ const ListActionButtons: FC<ActionButtonsProps> = ({
       return (
         <Button
           text="List NFT"
+          disabled={hasInsufficientBalance || hasInsufficientAmount}
           onClick={onActionButtonClick}
           className="list-action-buttons__action-button"
         />
@@ -104,7 +109,14 @@ const ListActionButtons: FC<ActionButtonsProps> = ({
     }
 
     return null;
-  }, [state]);
+  }, [
+    hasInsufficientAmount,
+    hasInsufficientBalance,
+    hasNoCollectionTokenApproval,
+    hasNotSufficientCurrencyAllowance,
+    currencyToken,
+    state,
+  ]);
 
   return (
     <div className={`list-action-buttons ${className}`}>

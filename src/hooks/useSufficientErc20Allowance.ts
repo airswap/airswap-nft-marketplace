@@ -8,7 +8,7 @@ import { BigNumber } from 'bignumber.js';
 import findEthOrTokenByAddress from '../helpers/findEthOrTokenByAddress';
 import { useAppSelector } from '../redux/hooks';
 
-const useSufficientAllowance = (
+const useSufficientErc20Allowance = (
   token?: TokenInfo,
   amount?: string,
 ): boolean => {
@@ -42,4 +42,4 @@ const useSufficientAllowance = (
   }, [allowances, amount, token, tokens, chainId]);
 };
 
-export default useSufficientAllowance;
+export default useSufficientErc20Allowance;

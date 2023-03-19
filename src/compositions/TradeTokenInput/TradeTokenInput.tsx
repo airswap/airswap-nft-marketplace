@@ -8,7 +8,8 @@ import { transformInputEventToValue } from './helpers/transformInputEventToValue
 import './TradeTokenInput.scss';
 
 interface TradeTokenInputProps {
-  amountSubtext: string;
+  protocolFeeInCurrencyToken?: string;
+  protocolFeePercent?: number;
   token: TokenInfo;
   value: string;
   onInputChange: (value: string) => void;
@@ -16,7 +17,8 @@ interface TradeTokenInputProps {
 }
 
 const TradeTokenInput: FC<TradeTokenInputProps> = ({
-  amountSubtext,
+  protocolFeeInCurrencyToken,
+  protocolFeePercent,
   token,
   value,
   onInputChange,
@@ -57,7 +59,10 @@ const TradeTokenInput: FC<TradeTokenInputProps> = ({
             placeholder="0.00"
             className="trade-token-input__input"
           />
-          {amountSubtext && <span className="trade-token-input__amount-subtext">{amountSubtext}</span>}
+          <span className="trade-token-input__amount-subtext">
+            {protocolFeePercent && `Exl. fee ${protocolFeePercent}%`}
+            {protocolFeeInCurrencyToken && `= ${protocolFeeInCurrencyToken} ${token.symbol}`}
+          </span>
         </div>
       </div>
     </div>

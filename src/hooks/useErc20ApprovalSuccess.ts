@@ -6,7 +6,7 @@ import { useWeb3React } from '@web3-react/core';
 import { useAppSelector } from '../redux/hooks';
 import { selectApprovals } from '../redux/stores/transactions/transactionsSlice';
 
-const useApprovalSuccess = (tokenAddress?: string | null): boolean => {
+const useErc20ApprovalSuccess = (tokenAddress?: string | null): boolean => {
   const { chainId } = useWeb3React<Web3Provider>();
   const approvals = useAppSelector(selectApprovals);
 
@@ -23,4 +23,4 @@ const useApprovalSuccess = (tokenAddress?: string | null): boolean => {
   }, [tokenAddress, approvals, chainId]);
 };
 
-export default useApprovalSuccess;
+export default useErc20ApprovalSuccess;

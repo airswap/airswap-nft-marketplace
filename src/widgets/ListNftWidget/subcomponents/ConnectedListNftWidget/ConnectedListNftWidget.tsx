@@ -7,7 +7,6 @@ import React, {
 
 import { TokenInfo } from '@airswap/types';
 import { Web3Provider } from '@ethersproject/providers';
-import { BigNumber } from 'bignumber.js';
 
 import Button from '../../../../components/Button/Button';
 import ExpiryIndicator from '../../../../components/ExpiryIndicator/ExpiryIndicator';
@@ -21,11 +20,15 @@ import SelectExpiry from '../../../../compositions/SelectExpiry/SelectExpiry';
 import TradeTokenInput from '../../../../compositions/TradeTokenInput/TradeTokenInput';
 import TransactionLink from '../../../../compositions/TransactionLink/TransactionLink';
 import { CollectionToken } from '../../../../entities/CollectionToken/CollectionToken';
-import useApprovalSuccess from '../../../../hooks/useApprovalSuccess';
-import useSufficientAllowance from '../../../../hooks/useSufficientAllowance';
+import useErc20ApprovalSuccess from '../../../../hooks/useErc20ApprovalSuccess';
+import useInsufficientAmount from '../../../../hooks/useInsufficientAmount';
+import useInsufficientBalance from '../../../../hooks/useInsufficientBalance';
+import useNftTokenApproval from '../../../../hooks/useNftTokenApproval';
+import useSufficientErc20Allowance from '../../../../hooks/useSufficientErc20Allowance';
 import { useAppDispatch, useAppSelector } from '../../../../redux/hooks';
 import { approve } from '../../../../redux/stores/orders/ordersActions';
 import { getTitle } from '../../helpers';
+import useTokenAmountAndFee from '../../hooks/useTokenAmountAndFee';
 import ListActionButtons from '../ListActionButtons/ListActionButtons';
 import ListNftWidgetHeader from '../ListNftWidgetHeader/ListNftWidgetHeader';
 import SwapIcon from '../SwapIcon/SwapIcon';
@@ -59,27 +62,37 @@ export enum ListNftState {
 
 interface ListNftWidgetProps {
   chainId: number;
-  currencyToken: TokenInfo;
+  collectionTokenInfo: TokenInfo;
+  currencyTokenInfo: TokenInfo;
   library: Web3Provider
   className?: string;
 }
 
 const ConnectedListNftWidget: FC<ListNftWidgetProps> = ({
   chainId,
-  currencyToken,
+  collectionTokenInfo,
+  currencyTokenInfo,
   library,
   className = '',
 }) => {
   const dispatch = useAppDispatch();
   const { isLoading: isLoadingMetadata } = useAppSelector(state => state.metadata);
+  const { protocolFee, projectFee } = useAppSelector(state => state.metadata);
 
   // User input states
   const [widgetState, setWidgetState] = useState<ListNftState>(ListNftState.details);
+  // const tokenId = '2229377';
+  const tokenId = '3099580';
   const [currencyTokenAmount, setCurrencyTokenAmount] = useState('0');
 
   // States derived from user input
-  const hasSufficientCurrencyAllowance = useSufficientAllowance(currencyToken, currencyTokenAmount);
-  const hasCurrencyTokenApprovalSuccess = useApprovalSuccess(currencyToken.address);
+  const [currencyTokenAmountMinusProtocolFee, protocolFeeInCurrencyToken] = useTokenAmountAndFee(currencyTokenAmount);
+  const hasSufficientCurrencyAllowance = useSufficientErc20Allowance(currencyTokenInfo, currencyTokenAmount);
+  const hasSufficientBalance = !useInsufficientBalance(currencyTokenInfo, currencyTokenAmount);
+  const hasInsufficientAmount = useInsufficientAmount(currencyTokenAmount);
+  const hasCollectionTokenApproval = useNftTokenApproval(collectionTokenInfo, tokenId);
+  const hasCurrencyTokenApprovalSuccess = useErc20ApprovalSuccess(currencyTokenInfo.address);
+
   const title = useMemo(() => getTitle(widgetState), [widgetState]);
 
   const handleActionButtonClick = async () => {
@@ -87,13 +100,15 @@ const ConnectedListNftWidget: FC<ListNftWidgetProps> = ({
       setWidgetState(ListNftState.review);
     }
 
-    if (widgetState === ListNftState.review && !hasSufficientCurrencyAllowance) {
+    if (widgetState === ListNftState.review && (!hasSufficientCurrencyAllowance || !hasCollectionTokenApproval)) {
       setWidgetState(ListNftState.approve);
+      const tokenInfo = !hasSufficientCurrencyAllowance ? currencyTokenInfo : collectionTokenInfo;
 
       dispatch(approve({
-        token: currencyToken.address,
+        tokenInfo,
         library,
         chainId,
+        tokenId,
       }))
         .unwrap()
         .then(() => {
@@ -111,6 +126,12 @@ const ConnectedListNftWidget: FC<ListNftWidgetProps> = ({
     }
   }, [widgetState, hasCurrencyTokenApprovalSuccess]);
 
+  useEffect(() => {
+    if (hasCollectionTokenApproval && widgetState === ListNftState.approving) {
+      setWidgetState(ListNftState.review);
+    }
+  }, [widgetState, hasCollectionTokenApproval]);
+
   if (isLoadingMetadata) {
     return (
       <div className={`list-nft-widget ${className}`}>
@@ -127,7 +148,7 @@ const ConnectedListNftWidget: FC<ListNftWidgetProps> = ({
         className="list-nft-widget__header"
       />
 
-      {(collectionToken && currencyToken) && (
+      {(collectionToken && currencyTokenInfo) && (
         <div className="list-nft-widget__trade-details-container">
           {widgetState === ListNftState.details && (
             <>
@@ -137,8 +158,9 @@ const ConnectedListNftWidget: FC<ListNftWidgetProps> = ({
               />
               <SwapIcon className="list-nft-widget__swap-icon" />
               <TradeTokenInput
-                amountSubtext="Exl. fee 3% = 150 AST"
-                token={currencyToken}
+                protocolFeeInCurrencyToken={protocolFeeInCurrencyToken}
+                protocolFeePercent={protocolFee / 100}
+                token={currencyTokenInfo}
                 value={currencyTokenAmount}
                 onInputChange={setCurrencyTokenAmount}
               />
@@ -152,16 +174,17 @@ const ConnectedListNftWidget: FC<ListNftWidgetProps> = ({
               {widgetState === ListNftState.success && <Icon name="check" className="list-nft-widget__check-icon" />}
               <ReviewNftDetails
                 title={widgetState === ListNftState.review ? 'List' : 'From'}
-                token={collectionToken}
+                token={collectionTokenInfo}
+                tokenId={tokenId}
               />
               <SwapIcon className="list-nft-widget__swap-icon" />
               <ReviewTokenDetails
-                amount={new BigNumber('5000000000000000000')}
-                amountSubtext="5000 AST - Fee's ="
-                projectFeePercent={3}
-                protocolFeePercent={3}
+                amount={currencyTokenAmount}
+                amountMinusProtocolFee={currencyTokenAmountMinusProtocolFee}
+                projectFeePercent={projectFee / 100}
+                protocolFeePercent={protocolFee / 100}
                 title={widgetState === ListNftState.review ? 'For' : 'To'}
-                token={currencyToken}
+                token={currencyTokenInfo}
               />
               <ExpiryIndicator
                 unit="minutes"
@@ -215,9 +238,11 @@ const ConnectedListNftWidget: FC<ListNftWidgetProps> = ({
       {!(widgetState === ListNftState.sign || widgetState === ListNftState.approve || widgetState === ListNftState.approving) && (
         <ListActionButtons
           state={widgetState}
-          hasNotSufficientCollectionAllowance={false}
+          hasNoCollectionTokenApproval={!hasCollectionTokenApproval}
           hasNotSufficientCurrencyAllowance={!hasSufficientCurrencyAllowance}
-          currencyToken={currencyToken}
+          hasInsufficientBalance={!hasSufficientBalance}
+          hasInsufficientAmount={hasInsufficientAmount}
+          currencyToken={currencyTokenInfo}
           onActionButtonClick={handleActionButtonClick}
           className="list-nft-widget__action-buttons"
         />
