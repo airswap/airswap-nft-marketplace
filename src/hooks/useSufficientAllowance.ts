@@ -16,8 +16,6 @@ const useSufficientAllowance = (
   const tokens = useAppSelector(state => state.metadata.tokens);
   const allowances = useAppSelector(state => state.balances.allowances);
 
-  console.log(token, amount);
-
   return useMemo(() => {
     if (!token || !amount || !chainId) {
       return false;
@@ -28,9 +26,8 @@ const useSufficientAllowance = (
       Object.values(tokens),
       chainId,
     );
-    console.log(justifiedToken);
+
     const tokenAllowance = justifiedToken ? allowances[justifiedToken.address] : undefined;
-    console.log(tokenAllowance);
 
     if (!tokenAllowance) {
       // safer to return true here (has allowance) as validator will catch the

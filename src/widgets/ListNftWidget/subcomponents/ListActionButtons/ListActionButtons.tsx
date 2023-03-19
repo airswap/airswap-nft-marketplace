@@ -1,20 +1,43 @@
 import React, { FC, useCallback } from 'react';
 
+import { TokenInfo } from '@airswap/types';
 import { NavLink } from 'react-router-dom';
 
 import Button from '../../../../components/Button/Button';
 import { AppRoutes } from '../../../../routes';
-import { ListNftState } from '../../ListNftWidget';
+import { ListNftState } from '../ConnectedListNftWidget/ConnectedListNftWidget';
 
 import './ListActionButtons.scss';
 
 interface ActionButtonsProps {
+  hasNotSufficientCurrencyAllowance: boolean;
+  hasNotSufficientCollectionAllowance: boolean;
+  currencyToken?: TokenInfo;
   state: ListNftState;
   onActionButtonClick: () => void;
   className?: string;
 }
 
-const ListActionButtons: FC<ActionButtonsProps> = ({ state, onActionButtonClick, className = '' }) => {
+const ListActionButtons: FC<ActionButtonsProps> = ({
+  hasNotSufficientCollectionAllowance,
+  hasNotSufficientCurrencyAllowance,
+  currencyToken,
+  state,
+  onActionButtonClick,
+  className = '',
+}) => {
+  const getReviewButtonText = () => {
+    if (hasNotSufficientCurrencyAllowance) {
+      return `Approve ${currencyToken?.symbol || ''}`;
+    }
+
+    if (hasNotSufficientCollectionAllowance) {
+      return 'Approve NFT';
+    }
+
+    return 'Sign Transaction';
+  };
+
   const getActionButton = useCallback((): JSX.Element | null => {
     if (state === ListNftState.details) {
       return (
@@ -29,7 +52,7 @@ const ListActionButtons: FC<ActionButtonsProps> = ({ state, onActionButtonClick,
     if (state === ListNftState.review) {
       return (
         <Button
-          text="Sign transaction"
+          text={getReviewButtonText()}
           onClick={onActionButtonClick}
           className="list-action-buttons__action-button"
         />

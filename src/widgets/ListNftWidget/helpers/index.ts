@@ -1,4 +1,4 @@
-import { ListNftState } from '../ListNftWidget';
+import { ListNftState } from '../subcomponents/ConnectedListNftWidget/ConnectedListNftWidget';
 
 export const getTitle = (state: ListNftState): string => {
   if (state === ListNftState.review) {

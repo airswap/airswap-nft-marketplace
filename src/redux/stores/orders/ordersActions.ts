@@ -1,4 +1,5 @@
 import { FullOrderERC20, OrderERC20 } from '@airswap/types';
+import { Web3Provider } from '@ethersproject/providers';
 import { createAsyncThunk, Dispatch } from '@reduxjs/toolkit';
 import { Transaction } from 'ethers';
 
@@ -36,7 +37,7 @@ export const handleOrderError = (dispatch: Dispatch, error: any) => {
 
 interface ApproveParams {
   token: string;
-  library: any;
+  library: Web3Provider;
   chainId: number;
 }
 
@@ -65,6 +66,7 @@ ApproveParams,
       };
       dispatch(submitTransaction(transaction));
       params.library.once(tx.hash, async () => {
+        // @ts-ignore
         const receipt = await params.library.getTransactionReceipt(tx.hash);
         // const state: RootState = getState() as RootState;
         // const tokens = Object.values(state.metadata.tokens.all);
@@ -84,6 +86,7 @@ ApproveParams,
           //   params.chainId,
           // );
         } else {
+          // @ts-ignore
           dispatch(revertTransaction(receipt.transactionHash));
           // TODO: Add toasts to app
           // notifyTransaction(
