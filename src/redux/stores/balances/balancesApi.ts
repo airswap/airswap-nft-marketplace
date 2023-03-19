@@ -108,10 +108,13 @@ export const fetchTokenIds = createAsyncThunk<string[], fetchTokenIdsParams>(
     if (isERC721Enumerable) {
       const collectionContract = new ethers.Contract(collectionTokenAddress, ERC721Enumerable_ABI, provider);
 
-      /* TODO test and parse result */
-      const result = collectionContract.balanceOf(walletAddress);
+      const balance: number = await collectionContract.balanceOf(walletAddress);
+      const indexes = Array.from({ length: balance }, (_, i) => i);
 
-      return [''];
+      const tokenIdsPromises = indexes.map(async index => (await collectionContract.tokenOfOwnerByIndex(walletAddress, BigNumber.from(index))) as BigNumber);
+      const tokenIds = await Promise.all(tokenIdsPromises);
+
+      return tokenIds.map(t => t.toString());
     }
 
     const isERC721 = await contract.supportsInterface(tokenKinds.ERC721);
@@ -121,7 +124,7 @@ export const fetchTokenIds = createAsyncThunk<string[], fetchTokenIdsParams>(
 
       const events = await collectionContract.queryFilter(transferFilter, 0);
       /* get token ids from past events */
-      const tokenIds = events.map(e => e.args?.at(2).toString());
+      const tokenIds: string[] = events.map(e => e.args?.at(2).toString());
 
       /* get unique values */
       const uniqueTokenIds = tokenIds.filter((element, index) => tokenIds.indexOf(element) === index);
@@ -137,7 +140,7 @@ export const fetchTokenIds = createAsyncThunk<string[], fetchTokenIdsParams>(
 
       const events = await collectionContract.queryFilter(transferFilter, 0);
       /* get token ids from past events */
-      const tokenIds = events.map(e => e.args?.at(3).toString());
+      const tokenIds: string[] = events.map(e => e.args?.at(3).toString());
 
       /* get unique values */
       const uniqueTokenIds = tokenIds.filter((element, index) => tokenIds.indexOf(element) === index);
