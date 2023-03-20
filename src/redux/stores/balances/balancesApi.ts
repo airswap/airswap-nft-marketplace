@@ -2,7 +2,7 @@ import BalanceChecker from '@airswap/balances/build/contracts/BalanceChecker.jso
 // eslint-disable-next-line import/extensions
 import balancesDeploys from '@airswap/balances/deploys.js';
 import { ADDRESS_ZERO, tokenKinds } from '@airswap/constants';
-import { Swap, Wrapper } from '@airswap/libraries';
+import { SwapERC20, Wrapper } from '@airswap/libraries';
 import { abi as ERC165_ABI } from '@openzeppelin/contracts/build/contracts/ERC165.json';
 import { abi as ERC721_ABI } from '@openzeppelin/contracts/build/contracts/ERC721.json';
 // eslint-disable-next-line camelcase
@@ -32,7 +32,6 @@ interface WalletParams {
 }
 
 interface fetchTokenIdsParams {
-  chainId: number;
   provider: ethers.providers.Web3Provider;
   walletAddress: string;
   collectionTokenAddress: string;
@@ -62,7 +61,7 @@ const fetchBalancesOrAllowances: (
   let args = [walletAddress, tokenAddresses];
 
   if (spenderAddressType === 'swap') {
-    args = [walletAddress, Swap.getAddress(chainId), tokenAddresses];
+    args = [walletAddress, SwapERC20.getAddress(chainId), tokenAddresses];
   }
 
   if (spenderAddressType === 'wrapper') {
