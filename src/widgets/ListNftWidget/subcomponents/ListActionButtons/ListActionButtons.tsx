@@ -12,6 +12,7 @@ import './ListActionButtons.scss';
 interface ActionButtonsProps {
   hasInsufficientAmount: boolean;
   hasInsufficientBalance: boolean;
+  hasInsufficientExpiryAmount: boolean;
   hasNoCollectionTokenApproval: boolean;
   hasNotSufficientCurrencyAllowance: boolean;
   currencyToken: TokenInfo;
@@ -23,6 +24,7 @@ interface ActionButtonsProps {
 const ListActionButtons: FC<ActionButtonsProps> = ({
   hasInsufficientAmount,
   hasInsufficientBalance,
+  hasInsufficientExpiryAmount,
   hasNoCollectionTokenApproval,
   hasNotSufficientCurrencyAllowance,
   currencyToken,
@@ -32,7 +34,7 @@ const ListActionButtons: FC<ActionButtonsProps> = ({
 }) => {
   const getReviewButtonText = () => {
     if (hasNotSufficientCurrencyAllowance) {
-      return `Approve ${currencyToken?.symbol || ''}`;
+      return `Approve ${currencyToken.symbol || ''}`;
     }
 
     if (hasNoCollectionTokenApproval) {
@@ -42,12 +44,33 @@ const ListActionButtons: FC<ActionButtonsProps> = ({
     return 'Sign Transaction';
   };
 
+  const getDisabledButtonText = () => {
+    if (hasInsufficientBalance) {
+      return `Not enough ${currencyToken.symbol}`;
+    }
+
+    if (hasInsufficientExpiryAmount) {
+      return 'Fill in expiry';
+    }
+
+    return 'Fill in amount';
+  };
+
   const getActionButton = useCallback((): JSX.Element | null => {
+    if (hasInsufficientAmount || hasInsufficientBalance) {
+      return (
+        <Button
+          disabled
+          text={getDisabledButtonText()}
+          className="list-action-buttons__action-button"
+        />
+      );
+    }
+
     if (state === ListNftState.details) {
       return (
         <Button
           text="List NFT"
-          disabled={hasInsufficientBalance || hasInsufficientAmount}
           onClick={onActionButtonClick}
           className="list-action-buttons__action-button"
         />
@@ -112,6 +135,7 @@ const ListActionButtons: FC<ActionButtonsProps> = ({
   }, [
     hasInsufficientAmount,
     hasInsufficientBalance,
+    hasInsufficientExpiryAmount,
     hasNoCollectionTokenApproval,
     hasNotSufficientCurrencyAllowance,
     currencyToken,

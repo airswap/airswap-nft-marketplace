@@ -1,14 +1,16 @@
 import React, { FC } from 'react';
 
+import { ExpiryTimeUnit } from '../../types/ExpiryTimeUnit';
+
 import './ExpiryIndicator.scss';
 
 interface ExpiryIndicatorProps {
-  unit: string;
-  amount: number;
+  unit: ExpiryTimeUnit;
+  amount?: number;
   className?: string;
 }
 
-const ExpiryIndicator: FC<ExpiryIndicatorProps> = ({ unit, amount, className = '' }) => (
+const ExpiryIndicator: FC<ExpiryIndicatorProps> = ({ unit, amount = '0', className = '' }) => (
   <div className={`expiry-indicator ${className}`}>
     <div className="expiry-indicator__title">
       Expires in
