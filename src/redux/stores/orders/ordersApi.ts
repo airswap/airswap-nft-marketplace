@@ -1,11 +1,11 @@
+import { TokenKinds } from '@airswap/constants';
 import { SwapERC20 } from '@airswap/libraries';
 import { FullOrderERC20, OrderERC20 } from '@airswap/types';
-import erc20Abi from 'erc-20-abi';
+import erc20Contract from '@openzeppelin/contracts/build/contracts/ERC20.json';
+import erc721Contract from '@openzeppelin/contracts/build/contracts/ERC721.json';
+import erc1155Contract from '@openzeppelin/contracts/build/contracts/ERC1155.json';
 import {
-  constants,
-  ContractTransaction,
-  ethers,
-  Transaction,
+  constants, ContractTransaction, ethers, Transaction,
 } from 'ethers';
 
 import { nativeCurrencyAddress } from '../../../constants/nativeCurrency';
@@ -13,7 +13,9 @@ import { AppError } from '../../../errors/appError';
 import { SwapError, transformSwapErrorToAppError } from '../../../errors/swapError';
 import transformUnknownErrorToAppError from '../../../errors/transformUnknownErrorToAppError';
 
-const erc20Interface = new ethers.utils.Interface(erc20Abi);
+const erc20Interface = new ethers.utils.Interface(erc20Contract.abi);
+const erc721Interface = new ethers.utils.Interface(erc721Contract.abi);
+const erc1155Interface = new ethers.utils.Interface(erc1155Contract.abi);
 
 function swap(
   chainId: number,
@@ -32,18 +34,35 @@ function swap(
   );
 }
 
-export async function approveToken(
+export async function approveErc20Token(
   baseToken: string,
   provider: ethers.providers.Web3Provider,
 ): Promise<Transaction> {
-  const erc20Contract = new ethers.Contract(
+  const contract = new ethers.Contract(
     baseToken,
     erc20Interface,
     provider.getSigner(),
   );
-  return erc20Contract.approve(
+  return contract.approve(
     SwapERC20.getAddress(provider.network.chainId),
     constants.MaxUint256,
+  );
+}
+
+export async function approveNftToken(
+  baseToken: string,
+  tokenId: number,
+  provider: ethers.providers.Web3Provider,
+  tokenKind: TokenKinds.ERC1155 | TokenKinds.ERC721,
+): Promise<Transaction> {
+  const contract = new ethers.Contract(
+    baseToken,
+    tokenKind === TokenKinds.ERC1155 ? erc1155Interface : erc721Interface,
+    provider.getSigner(),
+  );
+  return contract.approve(
+    SwapERC20.getAddress(provider.network.chainId),
+    tokenId,
   );
 }
 
@@ -87,4 +106,22 @@ export async function getNonceUsed(
     order.signerWallet,
     order.nonce,
   );
+}
+
+export async function getNftTokenApproved(
+  baseToken: string,
+  tokenId: number,
+  provider: ethers.providers.Web3Provider,
+  tokenKind: TokenKinds.ERC1155 | TokenKinds.ERC721,
+): Promise<boolean> {
+  const contract = new ethers.Contract(
+    baseToken,
+    tokenKind === TokenKinds.ERC1155 ? erc1155Interface : erc721Interface,
+    provider.getSigner(),
+  );
+
+  const response = await contract.getApproved(tokenId);
+
+  // If response is 0x000... then it's not owned by wallet.
+  return response !== nativeCurrencyAddress;
 }

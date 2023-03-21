@@ -1,21 +1,72 @@
 import React, { FC, useCallback } from 'react';
 
+import { TokenInfo } from '@airswap/types';
 import { NavLink } from 'react-router-dom';
 
 import Button from '../../../../components/Button/Button';
 import { AppRoutes } from '../../../../routes';
-import { ListNftState } from '../../ListNftWidget';
+import { ListNftState } from '../ConnectedListNftWidget/ConnectedListNftWidget';
 
 import './ListActionButtons.scss';
 
 interface ActionButtonsProps {
+  hasInsufficientAmount: boolean;
+  hasInsufficientBalance: boolean;
+  hasInsufficientExpiryAmount: boolean;
+  hasNoCollectionTokenApproval: boolean;
+  hasNotSufficientCurrencyAllowance: boolean;
+  currencyToken: TokenInfo;
   state: ListNftState;
   onActionButtonClick: () => void;
   className?: string;
 }
 
-const ListActionButtons: FC<ActionButtonsProps> = ({ state, onActionButtonClick, className = '' }) => {
+const ListActionButtons: FC<ActionButtonsProps> = ({
+  hasInsufficientAmount,
+  hasInsufficientBalance,
+  hasInsufficientExpiryAmount,
+  hasNoCollectionTokenApproval,
+  hasNotSufficientCurrencyAllowance,
+  currencyToken,
+  state,
+  onActionButtonClick,
+  className = '',
+}) => {
+  const getReviewButtonText = () => {
+    if (hasNotSufficientCurrencyAllowance) {
+      return `Approve ${currencyToken.symbol || ''}`;
+    }
+
+    if (hasNoCollectionTokenApproval) {
+      return 'Approve NFT';
+    }
+
+    return 'Sign Transaction';
+  };
+
+  const getDisabledButtonText = () => {
+    if (hasInsufficientBalance) {
+      return `Not enough ${currencyToken.symbol}`;
+    }
+
+    if (hasInsufficientExpiryAmount) {
+      return 'Fill in expiry';
+    }
+
+    return 'Fill in amount';
+  };
+
   const getActionButton = useCallback((): JSX.Element | null => {
+    if (hasInsufficientAmount || hasInsufficientBalance) {
+      return (
+        <Button
+          disabled
+          text={getDisabledButtonText()}
+          className="list-action-buttons__action-button"
+        />
+      );
+    }
+
     if (state === ListNftState.details) {
       return (
         <Button
@@ -29,7 +80,7 @@ const ListActionButtons: FC<ActionButtonsProps> = ({ state, onActionButtonClick,
     if (state === ListNftState.review) {
       return (
         <Button
-          text="Sign transaction"
+          text={getReviewButtonText()}
           onClick={onActionButtonClick}
           className="list-action-buttons__action-button"
         />
@@ -81,7 +132,15 @@ const ListActionButtons: FC<ActionButtonsProps> = ({ state, onActionButtonClick,
     }
 
     return null;
-  }, [state]);
+  }, [
+    hasInsufficientAmount,
+    hasInsufficientBalance,
+    hasInsufficientExpiryAmount,
+    hasNoCollectionTokenApproval,
+    hasNotSufficientCurrencyAllowance,
+    currencyToken,
+    state,
+  ]);
 
   return (
     <div className={`list-action-buttons ${className}`}>

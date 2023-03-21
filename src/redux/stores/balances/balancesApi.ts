@@ -74,6 +74,19 @@ export const fetchBalances = createAsyncThunk<{ [address: string]: string }, Wal
   },
 );
 
+export const fetchAllowances = createAsyncThunk<{ [address: string]: string }, WalletParams>(
+  'balances/fetchAllowances',
+  async (params) => {
+    const responses = await fetchBalancesOrAllowances('walletAllowances', 'swap', params);
+    const bigNumbers = responses.map(bigNumber => bigNumber.toString());
+
+    return params.tokenAddresses.reduce((total, token, index) => ({
+      ...total,
+      [token]: bigNumbers[index],
+    }), {});
+  },
+);
+
 export const getTransactionsLocalStorageKey: (
   walletAddress: string,
   chainId: number
