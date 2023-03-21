@@ -40,7 +40,7 @@ interface ApproveParams {
   tokenInfo: TokenInfo;
   library: Web3Provider;
   chainId: number;
-  tokenId?: string;
+  tokenId?: number;
 }
 
 export const approve = createAsyncThunk<

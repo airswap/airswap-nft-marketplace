@@ -12,6 +12,7 @@ import LoadingSpinner from '../../components/LoadingSpinner/LoadingSpinner';
 import TradeDetails from '../../components/TradeDetails/TradeDetails';
 import TradeNftDetails, { TradeNftDetailsProps } from '../../components/TradeNftDetails/TradeNftDetails';
 import TransactionLink from '../../compositions/TransactionLink/TransactionLink';
+import { transformNFTTokenToCollectionToken } from '../../entities/CollectionToken/CollectionTokenTransformers';
 import { useAppSelector } from '../../redux/hooks';
 import { selectCollectionTokenInfo, selectCurrencyTokenInfo } from '../../redux/stores/metadata/metadataSlice';
 import { getNftDetailsIcon, getTitle } from './helpers';
@@ -36,8 +37,11 @@ interface BuyNftWidgetProps {
 const BuyNftWidget: FC<BuyNftWidgetProps> = ({ className = '' }) => {
   const { isLoading: isLoadingMetadata } = useAppSelector(state => state.metadata);
   const { collectionImage, collectionName } = useAppSelector(state => state.config);
-  const collectionToken = useAppSelector(selectCollectionTokenInfo);
-  const currencyToken = useAppSelector(selectCurrencyTokenInfo);
+  const collectionTokenInfo = useAppSelector(selectCollectionTokenInfo);
+  const currencyTokenInfo = useAppSelector(selectCurrencyTokenInfo);
+
+  // TODO: Get tokenId from owned nfts in store https://github.com/airswap/airswap-marketplace/issues/62
+  const collectionToken = collectionTokenInfo ? transformNFTTokenToCollectionToken(collectionTokenInfo, 78426, '1') : undefined;
 
   const [state, setState] = useState<BuyNftState>(BuyNftState.details);
 
@@ -74,20 +78,21 @@ const BuyNftWidget: FC<BuyNftWidgetProps> = ({ className = '' }) => {
       />
       <LoadingSpinner className="buy-nft-widget__loading-spinner" />
 
-      {(collectionToken && currencyToken) && (
+      {(collectionTokenInfo && currencyTokenInfo) && (
         <div className="buy-nft-widget__trade-details-container">
           {state === BuyNftState.details || state === BuyNftState.success || state === BuyNftState.failed ? (
             <TradeNftDetails
               icon={nftDetailsIcon}
               collectionImage={collectionImage}
               collectionName={collectionName}
-              collectionToken={collectionToken}
+              collectionToken={collectionTokenInfo}
               className="buy-nft-widget__trade-details"
             />
           ) : (
             <TradeDetails
+              logoURI={collectionToken ? collectionToken.image : collectionImage}
               title="Buy"
-              token={collectionToken}
+              token={collectionTokenInfo}
             />
           )}
 
@@ -98,8 +103,9 @@ const BuyNftWidget: FC<BuyNftWidgetProps> = ({ className = '' }) => {
               </div>
               <TradeDetails
                 amount={new BigNumber('2345000000000000000')}
+                logoURI={currencyTokenInfo.logoURI}
                 title="For"
-                token={currencyToken}
+                token={currencyTokenInfo}
                 className="buy-nft-widget__trade-details"
               />
             </>

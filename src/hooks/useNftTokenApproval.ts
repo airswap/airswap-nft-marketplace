@@ -9,7 +9,7 @@ import { getNftTokenApproved } from '../redux/stores/orders/ordersApi';
 
 const useNftTokenApproval = (
   tokenInfo: TokenInfo | undefined,
-  tokenId: string,
+  tokenId: number,
 ): boolean => {
   const { chainId, library } = useWeb3React<Web3Provider>();
   const [isApproved, setIsApproved] = useState(false);

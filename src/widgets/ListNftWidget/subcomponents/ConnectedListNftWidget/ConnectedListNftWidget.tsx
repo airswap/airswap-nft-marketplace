@@ -19,6 +19,7 @@ import CopyLinkButton from '../../../../compositions/CopyLinkButton/CopyLinkButt
 import SelectExpiry from '../../../../compositions/SelectExpiry/SelectExpiry';
 import TradeTokenInput from '../../../../compositions/TradeTokenInput/TradeTokenInput';
 import TransactionLink from '../../../../compositions/TransactionLink/TransactionLink';
+import { transformNFTTokenToCollectionToken } from '../../../../entities/CollectionToken/CollectionTokenTransformers';
 import useErc20ApprovalSuccess from '../../../../hooks/useErc20ApprovalSuccess';
 import useInsufficientAmount from '../../../../hooks/useInsufficientAmount';
 import useInsufficientBalance from '../../../../hooks/useInsufficientBalance';
@@ -64,13 +65,14 @@ const ConnectedListNftWidget: FC<ListNftWidgetProps> = ({
   className = '',
 }) => {
   const dispatch = useAppDispatch();
-  const { isLoading: isLoadingMetadata } = useAppSelector(state => state.metadata);
-  const { protocolFee, projectFee } = useAppSelector(state => state.metadata);
+  const { collectionImage } = useAppSelector(state => state.config);
+  const { isLoading: isLoadingMetadata, protocolFee, projectFee } = useAppSelector(state => state.metadata);
 
   // User input states
   const [widgetState, setWidgetState] = useState<ListNftState>(ListNftState.details);
   // TODO: Get tokenId from owned nfts in store https://github.com/airswap/airswap-marketplace/issues/62
-  const tokenId = '78426';
+  const tokenId = 78426;
+  const collectionToken = transformNFTTokenToCollectionToken(collectionTokenInfo, tokenId, '1');
   const [currencyTokenAmount, setCurrencyTokenAmount] = useState('0');
   const [expiryTimeUnit, setExpiryTimeUnit] = useState(ExpiryTimeUnit.minutes);
   const [expiryAmount, setExpiryAmount] = useState<number | undefined>(60);
@@ -147,6 +149,7 @@ const ConnectedListNftWidget: FC<ListNftWidgetProps> = ({
         {widgetState === ListNftState.details && (
           <>
             <TradeDetails
+              logoURI={collectionToken ? collectionToken.image : collectionImage}
               title="List"
               token={collectionTokenInfo}
             />
@@ -173,6 +176,7 @@ const ConnectedListNftWidget: FC<ListNftWidgetProps> = ({
             {widgetState === ListNftState.listing && <LoadingSpinner className="list-nft-widget__loading-spinner" />}
             {widgetState === ListNftState.success && <Icon name="check" className="list-nft-widget__check-icon" />}
             <ReviewNftDetails
+              logoURI={collectionToken ? collectionToken.image : collectionImage}
               title={widgetState === ListNftState.review ? 'List' : 'From'}
               token={collectionTokenInfo}
               tokenId={tokenId}
@@ -206,10 +210,19 @@ const ConnectedListNftWidget: FC<ListNftWidgetProps> = ({
         {widgetState === ListNftState.approving && (
           <>
             <LoadingSpinner className="list-nft-widget__loading-spinner" />
-            <TradeDetails
-              title="Approving"
-              token={collectionTokenInfo}
-            />
+            {hasSufficientCurrencyAllowance ? (
+              <TradeDetails
+                logoURI={currencyTokenInfo.logoURI}
+                title="Approving"
+                token={currencyTokenInfo}
+              />
+            ) : (
+              <TradeDetails
+                logoURI={collectionToken ? collectionToken.image : collectionImage}
+                title="Approving"
+                token={collectionTokenInfo}
+              />
+            )}
             <TransactionLink
               to="test"
               className="list-nft-widget__transaction-link"
