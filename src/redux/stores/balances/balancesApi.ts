@@ -104,7 +104,7 @@ export const getTransactionsLocalStorageKey: (
   chainId: number
 ) => string = (walletAddress, chainId) => `airswap-marketplace/transactions/${walletAddress}/${chainId}`;
 
-export const fetchTokenIds = createAsyncThunk<string[], fetchTokenIdsParams>(
+export const fetchTokenIds = createAsyncThunk<number[], fetchTokenIdsParams>(
   'balances/fetchTokenIds',
   async ({
     provider,
@@ -126,7 +126,7 @@ export const fetchTokenIds = createAsyncThunk<string[], fetchTokenIdsParams>(
       const tokenIdsPromises = indexes.map(async index => (await collectionContract.tokenOfOwnerByIndex(walletAddress, BigNumber.from(index))) as BigNumber);
       const tokenIds = await Promise.all(tokenIdsPromises);
 
-      return tokenIds.map(t => t.toString());
+      return tokenIds.map(t => t.toNumber());
     }
 
     const isERC721 = await contract.supportsInterface(tokenKinds.ERC721);
@@ -136,7 +136,7 @@ export const fetchTokenIds = createAsyncThunk<string[], fetchTokenIdsParams>(
 
       const events = await collectionContract.queryFilter(transferFilter, 0);
       /* get token ids from past events */
-      const tokenIds: string[] = events.map(e => e.args?.at(2).toString());
+      const tokenIds: number[] = events.map(e => e.args?.at(2).toNumber());
 
       /* get unique values */
       const uniqueTokenIds = tokenIds.filter((element, index) => tokenIds.indexOf(element) === index);
@@ -152,7 +152,7 @@ export const fetchTokenIds = createAsyncThunk<string[], fetchTokenIdsParams>(
 
       const events = await collectionContract.queryFilter(transferFilter, 0);
       /* get token ids from past events */
-      const tokenIds: string[] = events.map(e => e.args?.at(3).toString());
+      const tokenIds: number[] = events.map(e => e.args?.at(3).toNumber());
 
       /* get unique values */
       const uniqueTokenIds = tokenIds.filter((element, index) => tokenIds.indexOf(element) === index);

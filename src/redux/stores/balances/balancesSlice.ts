@@ -12,7 +12,7 @@ interface BalancesState {
   balances: {
     [address: string]: string;
   };
-  tokenIds: string[];
+  tokenIds: number[];
 }
 
 const initialState: BalancesState = {
