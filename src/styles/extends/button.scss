@@ -39,6 +39,11 @@
     &:focus {
         background: var(--c-primary-dark);
     }
+
+    &:disabled {
+        opacity: .65;
+        pointer-events: none;
+    }
 }
 
 %button-border-style {

@@ -1,5 +1,7 @@
+import { SwapERC20 } from '@airswap/libraries';
 import { getTokenFromContract } from '@airswap/metadata';
 import { TokenInfo } from '@airswap/types';
+import { Web3Provider } from '@ethersproject/providers';
 import { createAsyncThunk } from '@reduxjs/toolkit';
 import { ethers } from 'ethers';
 
@@ -29,3 +31,14 @@ TokenInfo | undefined)[], ScrapeTokensParams>(
     return wait(delay).then(async () => getTokenFromContract(library, token, tokenId));
   })),
   );
+
+export const getProtocolFee = async (
+  chainId: number,
+  provider: Web3Provider,
+): Promise<number> => {
+  const protocolFee = await new SwapERC20(
+    chainId,
+    provider.getSigner(),
+  ).contract.protocolFee();
+  return protocolFee.toNumber();
+};

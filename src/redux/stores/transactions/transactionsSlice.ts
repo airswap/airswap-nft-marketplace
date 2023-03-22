@@ -165,6 +165,10 @@ export const selectPendingDeposits = (
   (tx) => tx.status === 'processing' && tx.type === 'Deposit',
 ) as SubmittedDepositOrder[];
 
+export const selectApprovals = (state: RootState) => state.transactions.all.filter(
+  (tx) => tx.type === 'Approval',
+) as SubmittedApproval[];
+
 export const selectPendingApprovals = (state: RootState) => state.transactions.all.filter(
   (tx) => tx.status === 'processing' && tx.type === 'Approval',
 ) as SubmittedApproval[];

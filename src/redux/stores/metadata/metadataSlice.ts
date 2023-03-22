@@ -2,10 +2,13 @@ import { TokenInfo } from '@airswap/types';
 import { createSlice, PayloadAction } from '@reduxjs/toolkit';
 
 import { RootState } from '../../store';
+import { fetchProtocolFee } from './metadataActions';
 import { getCurrencyAndCollectionTokenInfo } from './metadataApi';
 
 export interface MetadataState {
   isLoading: boolean;
+  projectFee: number;
+  protocolFee: number;
   tokens: {
     [address: string]: TokenInfo;
   },
@@ -13,6 +16,8 @@ export interface MetadataState {
 
 const initialState: MetadataState = {
   isLoading: false,
+  projectFee: 0,
+  protocolFee: 7,
   tokens: {},
 };
 
@@ -51,6 +56,11 @@ const metadataSlice = createSlice({
         ...state,
       };
     });
+
+    builder.addCase(fetchProtocolFee.fulfilled, (state, action) => ({
+      ...state,
+      protocolFee: action.payload,
+    }));
   },
 });
 

@@ -1,9 +1,11 @@
 import { createSlice, PayloadAction } from '@reduxjs/toolkit';
 
-import { fetchBalances, fetchTokenIds } from './balancesApi';
+import { fetchAllowances, fetchBalances, fetchTokenIds } from './balancesApi';
 
 interface BalancesState {
   isLoading: boolean;
+  isLoadingBalances: boolean;
+  isLoadingAllowances: boolean;
   allowances: {
     [address: string]: string;
   };
@@ -15,6 +17,8 @@ interface BalancesState {
 
 const initialState: BalancesState = {
   isLoading: false,
+  isLoadingBalances: false,
+  isLoadingAllowances: false,
   allowances: {},
   balances: {},
   tokenIds: [],
@@ -56,14 +60,16 @@ const balancesSlice = createSlice({
     },
   },
   extraReducers: builder => {
-    builder.addCase(fetchBalances.pending, (state) => ({
+    builder.addCase(fetchBalances.pending, (state): BalancesState => ({
       ...state,
       isLoading: true,
+      isLoadingBalances: true,
     }));
 
-    builder.addCase(fetchBalances.fulfilled, (state, action) => ({
+    builder.addCase(fetchBalances.fulfilled, (state, action): BalancesState => ({
       ...state,
-      isLoading: false,
+      isLoading: state.isLoadingAllowances,
+      isLoadingBalances: false,
       balances: action.payload,
     }));
 
@@ -76,6 +82,18 @@ const balancesSlice = createSlice({
       ...state,
       isLoading: false,
       tokenIds: action.payload,
+    }));
+
+    builder.addCase(fetchAllowances.pending, (state): BalancesState => ({
+      ...state,
+      isLoadingAllowances: true,
+    }));
+
+    builder.addCase(fetchAllowances.fulfilled, (state, action): BalancesState => ({
+      ...state,
+      isLoading: state.isLoadingBalances,
+      isLoadingAllowances: false,
+      allowances: action.payload,
     }));
   },
 });

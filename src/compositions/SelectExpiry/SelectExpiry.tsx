@@ -1,23 +1,41 @@
-import React, { FC, useMemo, useState } from 'react';
+import React, { FC, useMemo } from 'react';
 
 import Input from '../../components/Input/Input';
+import { ExpiryTimeUnit } from '../../types/ExpiryTimeUnit';
+import { SelectOption } from '../../types/SelectOption';
 import Dropdown from '../Dropdown/Dropdown';
-import { getExpiryOptionsTranslations } from './helpers';
+import { getExpiryTimeUnitOptions, transformToExpiryTimeUnit } from './helpers';
 
 import './SelectExpiry.scss';
 
 interface SelectExpiryProps {
+  amount?: number;
+  timeUnit: ExpiryTimeUnit;
+  onAmountChange: (amount?: number) => void;
+  onTimeUnitChange: (timeUnit: ExpiryTimeUnit) => void;
   className?: string;
 }
 
-const SelectExpiry: FC<SelectExpiryProps> = ({ className = '' }) => {
-  const expiryOptions = useMemo(() => getExpiryOptionsTranslations(), []);
-  const [unit, setUnit] = useState(expiryOptions[1]);
-  const [amount, setAmount] = useState(60);
+const SelectExpiry: FC<SelectExpiryProps> = ({
+  amount,
+  timeUnit,
+  className = '',
+  onAmountChange,
+  onTimeUnitChange,
+}) => {
+  const expiryOptions = useMemo(() => getExpiryTimeUnitOptions(), []);
+
+  const unitOption = useMemo(
+    () => expiryOptions.find(option => option.value === timeUnit) as SelectOption,
+    [expiryOptions, timeUnit],
+  );
 
   const handleInputAmountChange = (e: React.ChangeEvent<HTMLInputElement>) => {
-    const value = parseInt(e.target.value, 10);
-    setAmount(value);
+    onAmountChange(parseInt(e.target.value, 10) || undefined);
+  };
+
+  const handleDropdownExpiryOptionChange = (option: SelectOption) => {
+    onTimeUnitChange(transformToExpiryTimeUnit(option.value));
   };
 
   return (
@@ -26,15 +44,16 @@ const SelectExpiry: FC<SelectExpiryProps> = ({ className = '' }) => {
         Expires in
       </div>
       <Input
+        min="1"
         type="number"
-        value={amount}
+        value={amount || ''}
         onChange={handleInputAmountChange}
         className="select-expiry__input-amount"
       />
       <Dropdown
-        selectedOption={unit}
+        selectedOption={unitOption}
         options={expiryOptions}
-        onChange={setUnit}
+        onChange={handleDropdownExpiryOptionChange}
         className="select-expiry__dropdown"
         buttonClassName="select-expiry__dropdown-button"
       />

@@ -1,4 +1,6 @@
-import { FullOrderERC20, OrderERC20 } from '@airswap/types';
+import { TokenKinds } from '@airswap/constants';
+import { FullOrderERC20, OrderERC20, TokenInfo } from '@airswap/types';
+import { Web3Provider } from '@ethersproject/providers';
 import { createAsyncThunk, Dispatch } from '@reduxjs/toolkit';
 import { Transaction } from 'ethers';
 
@@ -13,7 +15,7 @@ import {
   submitTransaction,
 } from '../transactions/transactionActions';
 import { SubmittedApproval } from '../transactions/transactionsSlice';
-import { approveToken, takeOrder } from './ordersApi';
+import { approveErc20Token, approveNftToken, takeOrder } from './ordersApi';
 import { setErrors } from './ordersSlice';
 
 
@@ -35,9 +37,10 @@ export const handleOrderError = (dispatch: Dispatch, error: any) => {
 };
 
 interface ApproveParams {
-  token: string;
-  library: any;
+  tokenInfo: TokenInfo;
+  library: Web3Provider;
   chainId: number;
+  tokenId?: number;
 }
 
 export const approve = createAsyncThunk<
@@ -54,18 +57,45 @@ ApproveParams,
 >('orders/approve', async (params, { dispatch }) => {
   let tx: Transaction;
   try {
-    tx = await approveToken(params.token, params.library);
+    const {
+      tokenInfo,
+      library,
+      tokenId,
+    } = params;
+
+    const tokenKind = (tokenInfo.extensions?.kind || TokenKinds.ERC20) as TokenKinds;
+
+    if (tokenKind !== TokenKinds.ERC20 && !tokenId) {
+      console.error('[orders/approve]: Missing tokenId when submitting ERC721 or ERC1155 approval');
+
+      return;
+    }
+
+    console.log('JA');
+
+    if ((tokenKind === TokenKinds.ERC721 || tokenKind === TokenKinds.ERC1155) && tokenId) {
+      tx = await approveNftToken(
+        tokenInfo.address,
+        tokenId,
+        library,
+        tokenKind,
+      );
+    } else {
+      tx = await approveErc20Token(tokenInfo.address, library);
+    }
+
     if (tx.hash) {
       const transaction: SubmittedApproval = {
         type: 'Approval',
         hash: tx.hash,
         status: 'processing',
-        tokenAddress: params.token,
+        tokenAddress: params.tokenInfo.address,
         timestamp: Date.now(),
       };
       dispatch(submitTransaction(transaction));
-      params.library.once(tx.hash, async () => {
-        const receipt = await params.library.getTransactionReceipt(tx.hash);
+      library.once(tx.hash, async () => {
+        // @ts-ignore
+        const receipt = await library.getTransactionReceipt(tx.hash);
         // const state: RootState = getState() as RootState;
         // const tokens = Object.values(state.metadata.tokens.all);
         if (receipt.status === 1) {
@@ -74,7 +104,7 @@ ApproveParams,
               hash: receipt.transactionHash,
             }),
           );
-          dispatch(setAllowance({ address: params.token, amount: APPROVE_AMOUNT }));
+          dispatch(setAllowance({ address: tokenInfo.address, amount: APPROVE_AMOUNT }));
           // TODO: Add toasts to app
           // notifyTransaction(
           //   'Approval',
@@ -84,6 +114,7 @@ ApproveParams,
           //   params.chainId,
           // );
         } else {
+          // @ts-ignore
           dispatch(revertTransaction(receipt.transactionHash));
           // TODO: Add toasts to app
           // notifyTransaction(
