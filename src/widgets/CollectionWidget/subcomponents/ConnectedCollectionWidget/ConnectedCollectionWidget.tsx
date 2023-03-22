@@ -32,7 +32,7 @@ const ConnectedCollectionWidget: FC<ConnectedCollectionWidgetProps> = ({ library
 
   useEffect(() => {
     getData();
-  }, []);
+  }, [tokenIds]);
 
   return (
     <div className={`collection-widget ${className}`}>
