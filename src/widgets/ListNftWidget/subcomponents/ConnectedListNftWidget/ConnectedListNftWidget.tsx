@@ -10,14 +10,13 @@ import { Web3Provider } from '@ethersproject/providers';
 
 import LoadingSpinner from '../../../../components/LoadingSpinner/LoadingSpinner';
 import { expiryAmounts } from '../../../../constants/expiry';
-import { nativeCurrencyAddress } from '../../../../constants/nativeCurrency';
 import { transformNFTTokenToCollectionToken } from '../../../../entities/CollectionToken/CollectionTokenTransformers';
 import { AppErrorType, isAppError } from '../../../../errors/appError';
 import useInsufficientAmount from '../../../../hooks/useInsufficientAmount';
 import useNftTokenApproval from '../../../../hooks/useNftTokenApproval';
 import useSufficientErc20Allowance from '../../../../hooks/useSufficientErc20Allowance';
 import { useAppDispatch, useAppSelector } from '../../../../redux/hooks';
-import { createOtcOrder } from '../../../../redux/stores/listNft/listNftActions';
+import { createNftOrder } from '../../../../redux/stores/listNft/listNftActions';
 import { approve } from '../../../../redux/stores/orders/ordersActions';
 import { ExpiryTimeUnit } from '../../../../types/ExpiryTimeUnit';
 import { getTitle } from '../../helpers';
@@ -61,6 +60,7 @@ const ConnectedListNftWidget: FC<ListNftWidgetProps> = ({
   const dispatch = useAppDispatch();
   const { collectionImage } = useAppSelector(state => state.config);
   const { isLoading: isLoadingMetadata, protocolFee, projectFee } = useAppSelector(state => state.metadata);
+  const { lastUserOrder } = useAppSelector(state => state.listNft);
 
   // User input states
   const [widgetState, setWidgetState] = useState<ListNftState>(ListNftState.details);
@@ -108,20 +108,18 @@ const ConnectedListNftWidget: FC<ListNftWidgetProps> = ({
 
       const expiryDate = Date.now() + (expiryAmounts[expiryTimeUnit] * (expiryAmount || 1));
 
-      dispatch(createOtcOrder({
-        chainId,
+      dispatch(createNftOrder({
         expiry: Math.floor(expiryDate / 1000).toString(),
         library,
-        nonce: expiryDate.toString(),
         signerWallet: account,
         signerTokenInfo: collectionTokenInfo,
         protocolFee,
-        senderWallet: nativeCurrencyAddress,
         senderTokenInfo: currencyTokenInfo,
         senderAmount: currencyTokenAmount,
         tokenId,
       })).unwrap()
-        .then(() => {
+        .then((e) => {
+          console.log(e);
           setWidgetState(ListNftState.success);
         })
         .catch((e) => {
@@ -172,6 +170,7 @@ const ConnectedListNftWidget: FC<ListNftWidgetProps> = ({
         currencyTokenInfo={currencyTokenInfo}
         expiryAmount={expiryAmount}
         expiryTimeUnit={expiryTimeUnit}
+        fullOrder={lastUserOrder}
         projectFee={projectFee}
         protocolFee={protocolFee}
         protocolFeeInCurrencyToken={protocolFeeInCurrencyToken}
@@ -185,12 +184,13 @@ const ConnectedListNftWidget: FC<ListNftWidgetProps> = ({
 
       {!(widgetState === ListNftState.sign || widgetState === ListNftState.approve || widgetState === ListNftState.approving) && (
         <ListActionButtons
-          state={widgetState}
           hasNoCollectionTokenApproval={!hasCollectionTokenApproval}
           hasNotSufficientCurrencyAllowance={!hasSufficientCurrencyAllowance}
           hasInsufficientAmount={hasInsufficientAmount}
           hasInsufficientExpiryAmount={hasInsufficientExpiryAmount}
           currencyToken={currencyTokenInfo}
+          fullOrder={lastUserOrder}
+          state={widgetState}
           onActionButtonClick={handleActionButtonClick}
           className="list-nft-widget__action-buttons"
         />

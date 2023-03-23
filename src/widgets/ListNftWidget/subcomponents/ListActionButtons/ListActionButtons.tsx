@@ -1,6 +1,6 @@
 import React, { FC, useCallback } from 'react';
 
-import { TokenInfo } from '@airswap/types';
+import { FullOrder, TokenInfo } from '@airswap/types';
 import { NavLink } from 'react-router-dom';
 
 import Button from '../../../../components/Button/Button';
@@ -15,6 +15,7 @@ interface ActionButtonsProps {
   hasNoCollectionTokenApproval: boolean;
   hasNotSufficientCurrencyAllowance: boolean;
   currencyToken: TokenInfo;
+  fullOrder?: FullOrder;
   state: ListNftState;
   onActionButtonClick: () => void;
   className?: string;
@@ -26,6 +27,7 @@ const ListActionButtons: FC<ActionButtonsProps> = ({
   hasNoCollectionTokenApproval,
   hasNotSufficientCurrencyAllowance,
   currencyToken,
+  fullOrder,
   state,
   onActionButtonClick,
   className = '',
@@ -104,9 +106,11 @@ const ListActionButtons: FC<ActionButtonsProps> = ({
     }
 
     if (state === ListNftState.success) {
+      const tokenId = fullOrder?.signer.id;
+
       return (
         <NavLink
-          to={`/${AppRoutes.profile}`}
+          to={`/${AppRoutes.nftDetail}/${tokenId}/buy`}
           className="list-action-buttons__action-button"
         >
           View listing

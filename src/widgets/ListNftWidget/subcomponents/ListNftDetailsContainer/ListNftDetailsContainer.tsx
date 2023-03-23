@@ -1,6 +1,6 @@
 import React, { FC } from 'react';
 
-import { TokenInfo } from '@airswap/types';
+import { FullOrder, TokenInfo } from '@airswap/types';
 import classNames from 'classnames';
 
 import ExpiryIndicator from '../../../../components/ExpiryIndicator/ExpiryIndicator';
@@ -14,6 +14,8 @@ import SelectExpiry from '../../../../compositions/SelectExpiry/SelectExpiry';
 import TradeTokenInput from '../../../../compositions/TradeTokenInput/TradeTokenInput';
 import TransactionLink from '../../../../compositions/TransactionLink/TransactionLink';
 import { CollectionToken } from '../../../../entities/CollectionToken/CollectionToken';
+import writeTextToClipboard from '../../../../helpers/browser';
+import { AppRoutes } from '../../../../routes';
 import { ExpiryTimeUnit } from '../../../../types/ExpiryTimeUnit';
 import { ListNftState } from '../ConnectedListNftWidget/ConnectedListNftWidget';
 import SwapIcon from '../SwapIcon/SwapIcon';
@@ -30,6 +32,7 @@ interface ListNftDetailContainerProps {
   currencyTokenInfo: TokenInfo;
   expiryAmount?: number;
   expiryTimeUnit: ExpiryTimeUnit;
+  fullOrder?: FullOrder,
   projectFee: number;
   protocolFeeInCurrencyToken?: string;
   protocolFee: number;
@@ -51,6 +54,7 @@ const ListNftDetailContainer: FC<ListNftDetailContainerProps> = ({
   currencyTokenAmountMinusProtocolFee,
   expiryAmount,
   expiryTimeUnit,
+  fullOrder,
   projectFee,
   protocolFeeInCurrencyToken,
   protocolFee,
@@ -64,6 +68,11 @@ const ListNftDetailContainer: FC<ListNftDetailContainerProps> = ({
   const wrapperClassNames = classNames('list-nft-details-container', {
     [`list-nft-details-container--has-${widgetState}-state`]: widgetState,
   }, className);
+
+  const handleCopyLinkClick = async () => {
+    const link = `${window.location.host}/#/${AppRoutes.nftDetail}/${fullOrder?.signer.id}/buy`;
+    await writeTextToClipboard(link);
+  };
 
   return (
     <div className={wrapperClassNames}>
@@ -123,7 +132,10 @@ const ListNftDetailContainer: FC<ListNftDetailContainerProps> = ({
             />
           )}
           {widgetState === ListNftState.success && (
-            <CopyLinkButton className="list-nft-details-container__copy-link-button" />
+            <CopyLinkButton
+              onClick={handleCopyLinkClick}
+              className="list-nft-details-container__copy-link-button"
+            />
           )}
         </>
       )}
