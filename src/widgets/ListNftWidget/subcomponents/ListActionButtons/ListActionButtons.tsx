@@ -11,7 +11,6 @@ import './ListActionButtons.scss';
 
 interface ActionButtonsProps {
   hasInsufficientAmount: boolean;
-  hasInsufficientBalance: boolean;
   hasInsufficientExpiryAmount: boolean;
   hasNoCollectionTokenApproval: boolean;
   hasNotSufficientCurrencyAllowance: boolean;
@@ -23,7 +22,6 @@ interface ActionButtonsProps {
 
 const ListActionButtons: FC<ActionButtonsProps> = ({
   hasInsufficientAmount,
-  hasInsufficientBalance,
   hasInsufficientExpiryAmount,
   hasNoCollectionTokenApproval,
   hasNotSufficientCurrencyAllowance,
@@ -45,10 +43,6 @@ const ListActionButtons: FC<ActionButtonsProps> = ({
   };
 
   const getDisabledButtonText = () => {
-    if (hasInsufficientBalance) {
-      return `Not enough ${currencyToken.symbol}`;
-    }
-
     if (hasInsufficientExpiryAmount) {
       return 'Fill in expiry';
     }
@@ -57,7 +51,7 @@ const ListActionButtons: FC<ActionButtonsProps> = ({
   };
 
   const getActionButton = useCallback((): JSX.Element | null => {
-    if (hasInsufficientAmount || hasInsufficientBalance) {
+    if (hasInsufficientAmount) {
       return (
         <Button
           disabled
@@ -134,7 +128,6 @@ const ListActionButtons: FC<ActionButtonsProps> = ({
     return null;
   }, [
     hasInsufficientAmount,
-    hasInsufficientBalance,
     hasInsufficientExpiryAmount,
     hasNoCollectionTokenApproval,
     hasNotSufficientCurrencyAllowance,

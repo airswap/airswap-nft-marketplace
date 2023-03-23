@@ -9,13 +9,15 @@ import { TokenInfo } from '@airswap/types';
 import { Web3Provider } from '@ethersproject/providers';
 
 import LoadingSpinner from '../../../../components/LoadingSpinner/LoadingSpinner';
+import { expiryAmounts } from '../../../../constants/expiry';
+import { nativeCurrencyAddress } from '../../../../constants/nativeCurrency';
 import { transformNFTTokenToCollectionToken } from '../../../../entities/CollectionToken/CollectionTokenTransformers';
-import useErc20ApprovalSuccess from '../../../../hooks/useErc20ApprovalSuccess';
+import { AppErrorType, isAppError } from '../../../../errors/appError';
 import useInsufficientAmount from '../../../../hooks/useInsufficientAmount';
-import useInsufficientBalance from '../../../../hooks/useInsufficientBalance';
 import useNftTokenApproval from '../../../../hooks/useNftTokenApproval';
 import useSufficientErc20Allowance from '../../../../hooks/useSufficientErc20Allowance';
 import { useAppDispatch, useAppSelector } from '../../../../redux/hooks';
+import { createOtcOrder } from '../../../../redux/stores/listNft/listNftActions';
 import { approve } from '../../../../redux/stores/orders/ordersActions';
 import { ExpiryTimeUnit } from '../../../../types/ExpiryTimeUnit';
 import { getTitle } from '../../helpers';
@@ -40,6 +42,7 @@ export enum ListNftState {
 }
 
 interface ListNftWidgetProps {
+  account: string;
   chainId: number;
   collectionTokenInfo: TokenInfo;
   currencyTokenInfo: TokenInfo;
@@ -48,6 +51,7 @@ interface ListNftWidgetProps {
 }
 
 const ConnectedListNftWidget: FC<ListNftWidgetProps> = ({
+  account,
   chainId,
   collectionTokenInfo,
   currencyTokenInfo,
@@ -70,12 +74,9 @@ const ConnectedListNftWidget: FC<ListNftWidgetProps> = ({
   // States derived from user input
   const [currencyTokenAmountMinusProtocolFee, protocolFeeInCurrencyToken] = useTokenAmountAndFee(currencyTokenAmount);
   const hasSufficientCurrencyAllowance = useSufficientErc20Allowance(currencyTokenInfo, currencyTokenAmount);
-  const hasSufficientBalance = !useInsufficientBalance(currencyTokenInfo, currencyTokenAmount);
   const hasInsufficientAmount = useInsufficientAmount(currencyTokenAmount);
   const hasInsufficientExpiryAmount = !expiryAmount || expiryAmount < 0;
   const hasCollectionTokenApproval = useNftTokenApproval(collectionTokenInfo, tokenId);
-  const hasCurrencyTokenApprovalSuccess = useErc20ApprovalSuccess(currencyTokenInfo.address);
-
   const title = useMemo(() => getTitle(widgetState), [widgetState]);
 
   const handleActionButtonClick = async () => {
@@ -103,15 +104,41 @@ const ConnectedListNftWidget: FC<ListNftWidgetProps> = ({
     }
 
     if (widgetState === ListNftState.review) {
-      // TODO: Dispatch make order
+      setWidgetState(ListNftState.sign);
+
+      const expiryDate = Date.now() + (expiryAmounts[expiryTimeUnit] * (expiryAmount || 1));
+
+      dispatch(createOtcOrder({
+        chainId,
+        expiry: Math.floor(expiryDate / 1000).toString(),
+        library,
+        nonce: expiryDate.toString(),
+        signerWallet: account,
+        signerTokenInfo: collectionTokenInfo,
+        protocolFee,
+        senderWallet: nativeCurrencyAddress,
+        senderTokenInfo: currencyTokenInfo,
+        senderAmount: currencyTokenAmount,
+        tokenId,
+      })).unwrap()
+        .then(() => {
+          setWidgetState(ListNftState.success);
+        })
+        .catch((e) => {
+          if (isAppError(e) && e.type === AppErrorType.rejectedByUser) {
+            setWidgetState(ListNftState.review);
+          } else {
+            setWidgetState(ListNftState.failed);
+          }
+        });
     }
   };
 
   useEffect(() => {
-    if (hasCurrencyTokenApprovalSuccess && widgetState === ListNftState.approving) {
+    if (widgetState === ListNftState.approving) {
       setWidgetState(ListNftState.review);
     }
-  }, [widgetState, hasCurrencyTokenApprovalSuccess]);
+  }, [widgetState]);
 
   useEffect(() => {
     if (hasCollectionTokenApproval && widgetState === ListNftState.approving) {
@@ -162,7 +189,6 @@ const ConnectedListNftWidget: FC<ListNftWidgetProps> = ({
           hasNoCollectionTokenApproval={!hasCollectionTokenApproval}
           hasNotSufficientCurrencyAllowance={!hasSufficientCurrencyAllowance}
           hasInsufficientAmount={hasInsufficientAmount}
-          hasInsufficientBalance={!hasSufficientBalance}
           hasInsufficientExpiryAmount={hasInsufficientExpiryAmount}
           currencyToken={currencyTokenInfo}
           onActionButtonClick={handleActionButtonClick}

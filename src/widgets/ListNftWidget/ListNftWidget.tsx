@@ -11,18 +11,20 @@ interface ListNftWidgetProps {
 }
 
 const ListNftWidget: FC<ListNftWidgetProps> = ({ className = '' }) => {
-  const { library, chainId } = useWeb3React();
+  const { account, library, chainId } = useWeb3React();
   const currencyToken = useAppSelector(selectCurrencyTokenInfo);
   const collectionToken = useAppSelector(selectCollectionTokenInfo);
 
   if (
-    chainId
+    account
+    && chainId
     && collectionToken
     && currencyToken
     && library
   ) {
     return (
       <ConnectedListNftWidget
+        account={account}
         library={library}
         chainId={chainId}
         collectionTokenInfo={collectionToken}

@@ -71,8 +71,6 @@ ApproveParams,
       return;
     }
 
-    console.log('JA');
-
     if ((tokenKind === TokenKinds.ERC721 || tokenKind === TokenKinds.ERC1155) && tokenId) {
       tx = await approveNftToken(
         tokenInfo.address,
