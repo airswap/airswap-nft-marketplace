@@ -3,11 +3,10 @@ import BalanceChecker from '@airswap/balances/build/contracts/BalanceChecker.jso
 import balancesDeploys from '@airswap/balances/deploys.js';
 import { tokenKinds } from '@airswap/constants';
 import { SwapERC20, Wrapper } from '@airswap/libraries';
-import { abi as ERC165_ABI } from '@openzeppelin/contracts/build/contracts/ERC165.json';
-import { abi as ERC721_ABI } from '@openzeppelin/contracts/build/contracts/ERC721.json';
-// eslint-disable-next-line camelcase
-import { abi as ERC721Enumerable_ABI } from '@openzeppelin/contracts/build/contracts/ERC721Enumerable.json';
-import { abi as ERC1155_ABI } from '@openzeppelin/contracts/build/contracts/ERC1155.json';
+import erc165AbiContract from '@openzeppelin/contracts/build/contracts/ERC165.json';
+import erc721AbiContract from '@openzeppelin/contracts/build/contracts/ERC721.json';
+import erc721EnumerableContract from '@openzeppelin/contracts/build/contracts/ERC721Enumerable.json';
+import erc1155Contract from '@openzeppelin/contracts/build/contracts/ERC1155.json';
 import { createAsyncThunk } from '@reduxjs/toolkit';
 import { BigNumber, ethers, providers } from 'ethers';
 
