@@ -141,6 +141,7 @@ export const fetchTokenIds = createAsyncThunk<number[], fetchTokenIdsParams>(
       /* get unique values */
       const uniqueTokenIds = foundTokenIds.filter((element, index) => foundTokenIds.indexOf(element) === index);
 
+      /* Get only the owned token ids */
       const ownedTokenIds = uniqueTokenIds.filter(async id => {
         const addr = await collectionContract.ownerOf(id);
 
@@ -161,13 +162,23 @@ export const fetchTokenIds = createAsyncThunk<number[], fetchTokenIdsParams>(
 
       const events = await collectionContract.queryFilter(transferFilter, 0);
       /* get token ids from past events */
-      const tokenIds: number[] = events.map(e => e.args?.at(3).toNumber());
+      const foundTokenIds: BigNumber[] = events.map(e => e.args?.at(3));
 
       /* get unique values */
-      const uniqueTokenIds = tokenIds.filter((element, index) => tokenIds.indexOf(element) === index);
+      const uniqueTokenIds = foundTokenIds.filter((element, index) => foundTokenIds.indexOf(element) === index);
 
-      /* TODO uniqueTokenIds should not be any[] */
-      return uniqueTokenIds;
+      /* Get only the owned token ids */
+      const ownedTokenIds = uniqueTokenIds.filter(async id => {
+        const balance = (await collectionContract.balanceOf(walletAddress, id)).toNumber();
+
+        if (balance !== 0) return true;
+
+        return false;
+      });
+
+      const tokenIds = ownedTokenIds.map(t => t.toNumber());
+
+      return tokenIds;
     }
 
     throw new Error('Unknown nft interface. Could not fetch token ids.');
