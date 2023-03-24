@@ -152,9 +152,8 @@ export const fetchTokenIds = createAsyncThunk<number[], fetchTokenIdsParams>(
       return tokenIds;
     }
 
-    const isERC1155 = await contract.supportsInterface(tokenKinds.ERC1155);
-    if (isERC1155) {
-      const collectionContract = new ethers.Contract(collectionTokenAddress, ERC1155_ABI, provider);
+    if (tokenKind === TokenKinds.ERC1155) {
+      const collectionContract = new ethers.Contract(collectionToken.address, erc1155Contract.abi, provider);
       const transferFilter = collectionContract.filters.TransferSingle(null, null, walletAddress);
 
       const events = await collectionContract.queryFilter(transferFilter, 0);
