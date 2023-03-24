@@ -112,11 +112,11 @@ export const fetchTokenIds = createAsyncThunk<number[], fetchTokenIdsParams>(
     // 0x780e9d63 is the interface ID for erc721 enumerable
     const ERC721Enumerable = '0x780e9d63';
 
-    const contract = new ethers.Contract(collectionTokenAddress, ERC165_ABI, provider);
+    const tokenKind = collectionToken.extensions?.kind as TokenKinds;
 
-    const isERC721Enumerable = await contract.supportsInterface(ERC721Enumerable);
-    if (isERC721Enumerable) {
-      const collectionContract = new ethers.Contract(collectionTokenAddress, ERC721Enumerable_ABI, provider);
+    // @ts-ignore
+    if (tokenKind === ERC721Enumerable) {
+      const collectionContract = new ethers.Contract(collectionToken.address, erc721EnumerableContract.abi, provider);
 
       const balance: number = await collectionContract.balanceOf(walletAddress);
       const indexes = Array.from({ length: balance }, (_, i) => i);
