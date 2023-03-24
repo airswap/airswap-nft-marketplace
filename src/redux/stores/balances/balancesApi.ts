@@ -30,12 +30,6 @@ interface WalletParams {
   tokenAddresses: string[];
 }
 
-interface fetchTokenIdsParams {
-  provider: ethers.providers.Web3Provider;
-  walletAddress: string;
-  collectionTokenAddress: string;
-}
-
 /**
  * Fetches balances or allowances for a wallet using the airswap utility
  * contract `BalanceChecker.sol`. Balances are returned in base units.
