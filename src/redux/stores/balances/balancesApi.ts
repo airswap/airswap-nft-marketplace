@@ -138,7 +138,7 @@ export const fetchTokenIds = createAsyncThunk<number[], fetchTokenIdsParams>(
       const foundTokenIds: BigNumber[] = events.map(e => e.args?.at(2));
 
       /* get unique values */
-      const uniqueTokenIds = foundTokenIds.filter((element, index) => foundTokenIds.indexOf(element) === index);
+      const uniqueTokenIds = [...new Set(foundTokenIds)];
 
       /* Get only the owned token ids */
       const ownedTokenIds = uniqueTokenIds.filter(async id => {
@@ -163,7 +163,7 @@ export const fetchTokenIds = createAsyncThunk<number[], fetchTokenIdsParams>(
       const foundTokenIds: BigNumber[] = events.map(e => e.args?.at(3));
 
       /* get unique values */
-      const uniqueTokenIds = foundTokenIds.filter((element, index) => foundTokenIds.indexOf(element) === index);
+      const uniqueTokenIds = [...new Set(foundTokenIds)];
 
       /* Get only the owned token ids */
       const ownedTokenIds = uniqueTokenIds.filter(async id => {
