@@ -14,7 +14,7 @@ export const configureBalancesSubscriber = () => {
     const newTokenKeys = Object.keys(metadata.tokens);
     const newTokenKeysString = newTokenKeys.toString();
 
-    if (!web3.chainId || !web3.account) return;
+    if (!web3.chainId || !web3.account || !config.collectionToken) return;
     const library = getLibrary(web3.chainId);
 
     if (
