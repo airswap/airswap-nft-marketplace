@@ -109,7 +109,6 @@ export const fetchTokenIds = createAsyncThunk<number[], fetchTokenIdsParams>(
     walletAddress,
     collectionToken,
   }) => {
-    console.log('entered');
     // 0x780e9d63 is the interface ID for erc721 enumerable
     const ERC721Enumerable = '0x780e9d63';
 
@@ -117,7 +116,6 @@ export const fetchTokenIds = createAsyncThunk<number[], fetchTokenIdsParams>(
 
     // @ts-ignore
     if (tokenKind === ERC721Enumerable) {
-      console.log('ok merge');
       const collectionContract = new ethers.Contract(collectionToken.address, erc721EnumerableContract.abi, provider);
 
       const balance: number = await collectionContract.balanceOf(walletAddress);
