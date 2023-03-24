@@ -36,15 +36,11 @@ export const configureBalancesSubscriber = () => {
         tokenAddresses: Object.keys(metadata.tokens),
         walletAddress: web3.account,
       }));
-    }
 
-    if (config.collectionToken && !tokenIdsFetched) {
-      tokenIdsFetched = true;
-
-      store.dispatch(fetchTokenIds({
+     store.dispatch(fetchTokenIds({
         provider: library,
         walletAddress: web3.account,
-        collectionTokenAddress: config.collectionToken,
+        collectionToken: metadata.tokens[config.collectionToken],
       }));
     }
   });
