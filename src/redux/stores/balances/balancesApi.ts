@@ -1,7 +1,7 @@
 import BalanceChecker from '@airswap/balances/build/contracts/BalanceChecker.json';
 // eslint-disable-next-line import/extensions
 import balancesDeploys from '@airswap/balances/deploys.js';
-import { ADDRESS_ZERO, tokenKinds } from '@airswap/constants';
+import { tokenKinds } from '@airswap/constants';
 import { SwapERC20, Wrapper } from '@airswap/libraries';
 import { abi as ERC165_ABI } from '@openzeppelin/contracts/build/contracts/ERC165.json';
 import { abi as ERC721_ABI } from '@openzeppelin/contracts/build/contracts/ERC721.json';
@@ -132,23 +132,32 @@ export const fetchTokenIds = createAsyncThunk<number[], fetchTokenIdsParams>(
     const isERC721 = await contract.supportsInterface(tokenKinds.ERC721);
     if (isERC721) {
       const collectionContract = new ethers.Contract(collectionTokenAddress, ERC721_ABI, provider);
-      const transferFilter = collectionContract.filters.Transfer(ADDRESS_ZERO, walletAddress);
+      const transferFilter = collectionContract.filters.Transfer(null, walletAddress);
 
       const events = await collectionContract.queryFilter(transferFilter, 0);
       /* get token ids from past events */
-      const tokenIds: number[] = events.map(e => e.args?.at(2).toNumber());
+      const foundTokenIds: BigNumber[] = events.map(e => e.args?.at(2));
 
       /* get unique values */
-      const uniqueTokenIds = tokenIds.filter((element, index) => tokenIds.indexOf(element) === index);
+      const uniqueTokenIds = foundTokenIds.filter((element, index) => foundTokenIds.indexOf(element) === index);
 
-      /* TODO uniqueTokenIds should not be any[] */
-      return uniqueTokenIds;
+      const ownedTokenIds = uniqueTokenIds.filter(async id => {
+        const addr = await collectionContract.ownerOf(id);
+
+        if (addr === walletAddress) return true;
+
+        return false;
+      });
+
+      const tokenIds = ownedTokenIds.map(t => t.toNumber());
+
+      return tokenIds;
     }
 
     const isERC1155 = await contract.supportsInterface(tokenKinds.ERC1155);
     if (isERC1155) {
       const collectionContract = new ethers.Contract(collectionTokenAddress, ERC1155_ABI, provider);
-      const transferFilter = collectionContract.filters.TransferSingle(null, ADDRESS_ZERO, walletAddress);
+      const transferFilter = collectionContract.filters.TransferSingle(null, null, walletAddress);
 
       const events = await collectionContract.queryFilter(transferFilter, 0);
       /* get token ids from past events */
