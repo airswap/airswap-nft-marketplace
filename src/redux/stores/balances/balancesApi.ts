@@ -1,9 +1,9 @@
 import BalanceChecker from '@airswap/balances/build/contracts/BalanceChecker.json';
 // eslint-disable-next-line import/extensions
 import balancesDeploys from '@airswap/balances/deploys.js';
-import { tokenKinds } from '@airswap/constants';
+import { TokenKinds } from '@airswap/constants';
 import { SwapERC20, Wrapper } from '@airswap/libraries';
-import erc165AbiContract from '@openzeppelin/contracts/build/contracts/ERC165.json';
+import { TokenInfo } from '@airswap/types';
 import erc721AbiContract from '@openzeppelin/contracts/build/contracts/ERC721.json';
 import erc721EnumerableContract from '@openzeppelin/contracts/build/contracts/ERC721Enumerable.json';
 import erc1155Contract from '@openzeppelin/contracts/build/contracts/ERC1155.json';
@@ -107,8 +107,9 @@ export const fetchTokenIds = createAsyncThunk<number[], fetchTokenIdsParams>(
   async ({
     provider,
     walletAddress,
-    collectionTokenAddress,
+    collectionToken,
   }) => {
+    console.log('entered');
     // 0x780e9d63 is the interface ID for erc721 enumerable
     const ERC721Enumerable = '0x780e9d63';
 
@@ -116,6 +117,7 @@ export const fetchTokenIds = createAsyncThunk<number[], fetchTokenIdsParams>(
 
     // @ts-ignore
     if (tokenKind === ERC721Enumerable) {
+      console.log('ok merge');
       const collectionContract = new ethers.Contract(collectionToken.address, erc721EnumerableContract.abi, provider);
 
       const balance: number = await collectionContract.balanceOf(walletAddress);

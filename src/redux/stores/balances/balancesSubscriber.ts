@@ -6,7 +6,6 @@ import {
 
 export const configureBalancesSubscriber = () => {
   let tokenKeysString: string;
-  let tokenIdsFetched = false;
 
   store.subscribe(() => {
     const { metadata, web3, config } = store.getState();
@@ -23,6 +22,7 @@ export const configureBalancesSubscriber = () => {
     ) {
       tokenKeysString = newTokenKeysString;
 
+
       store.dispatch(fetchBalances({
         chainId: web3.chainId,
         provider: library,
@@ -37,7 +37,7 @@ export const configureBalancesSubscriber = () => {
         walletAddress: web3.account,
       }));
 
-     store.dispatch(fetchTokenIds({
+      store.dispatch(fetchTokenIds({
         provider: library,
         walletAddress: web3.account,
         collectionToken: metadata.tokens[config.collectionToken],
