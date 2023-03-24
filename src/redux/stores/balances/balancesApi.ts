@@ -96,6 +96,11 @@ export const getTransactionsLocalStorageKey: (
   walletAddress: string,
   chainId: number
 ) => string = (walletAddress, chainId) => `airswap-marketplace/transactions/${walletAddress}/${chainId}`;
+interface fetchTokenIdsParams {
+  provider: ethers.providers.Web3Provider;
+  walletAddress: string;
+  collectionToken: TokenInfo;
+}
 
 export const fetchTokenIds = createAsyncThunk<number[], fetchTokenIdsParams>(
   'balances/fetchTokenIds',
