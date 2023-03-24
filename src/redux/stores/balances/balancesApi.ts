@@ -128,7 +128,7 @@ export const fetchTokenIds = createAsyncThunk<number[], fetchTokenIdsParams>(
     }
 
     if (tokenKind === TokenKinds.ERC721) {
-      const collectionContract = new ethers.Contract(collectionTokenAddress, ERC721_ABI, provider);
+      const collectionContract = new ethers.Contract(collectionToken.address, erc721AbiContract.abi, provider);
       const transferFilter = collectionContract.filters.Transfer(null, walletAddress);
 
       const events = await collectionContract.queryFilter(transferFilter, 0);
