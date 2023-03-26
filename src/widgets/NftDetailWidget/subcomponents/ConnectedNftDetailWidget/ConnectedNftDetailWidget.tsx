@@ -16,16 +16,16 @@ import NftDetailPortrait from '../NftDetailPortrait/NftDetailPortrait';
 import NftDetailProceedButton from '../NftDetailProceedButton/NftDetailProceedButton';
 import NftDetailSaleInfo from '../NftDetailSaleInfo/NftDetailSaleInfo';
 
-interface IConnectedNftDetailWidgetProps {
+interface ConnectedNftDetailWidgetProps {
   library: Web3Provider;
+  className?: string;
 }
 
-const ConnectedNftDetailWidget: FC<IConnectedNftDetailWidgetProps> = ({ library }) => {
+const ConnectedNftDetailWidget: FC<ConnectedNftDetailWidgetProps> = ({ library, className = '' }) => {
   const dispatch = useAppDispatch();
   const { id } = useParams();
-  const { config, nftDetail } = useAppSelector((state) => state);
-  const { collectionToken, collectionImage } = config;
-  const { isLoading, selectedTokenId, tokenMeta } = nftDetail;
+  const { collectionToken, collectionImage } = useAppSelector((state) => state.config);
+  const { isLoading, selectedTokenId, tokenMeta } = useAppSelector((state) => state.nftDetail);
 
   useEffect(() => {
     if (!id) {
@@ -39,7 +39,7 @@ const ConnectedNftDetailWidget: FC<IConnectedNftDetailWidgetProps> = ({ library 
 
   if (isLoading) {
     return (
-      <div className="nft-detail-widget">
+      <div className={`nft-detail-widget ${className}`}>
         <p>Loading</p>
       </div>
     );
@@ -47,7 +47,7 @@ const ConnectedNftDetailWidget: FC<IConnectedNftDetailWidgetProps> = ({ library 
 
   if (tokenMeta) {
     return (
-      <div className="nft-detail-widget">
+      <div className={`nft-detail-widget ${className}`}>
         <NftDetailContentContainer className="nft-detail-widget__mobile-view">
           <NftDetailMainInfo
             owner="sjnivo12345"

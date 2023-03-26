@@ -4,7 +4,7 @@ import { NavLink } from 'react-router-dom';
 
 import Button from '../../../../components/Button/Button';
 import { AppRoutes } from '../../../../routes';
-import { BuyNftState } from '../../BuyNftWidget';
+import { BuyNftState } from '../ConnectedBuyNftWidget/ConnectedBuyNftWidget';
 
 import './BuyActionButtons.scss';
 
