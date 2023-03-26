@@ -14,7 +14,6 @@ import { transformNFTTokenToCollectionToken } from '../../../../entities/Collect
 import { AppErrorType, isAppError } from '../../../../errors/appError';
 import useInsufficientAmount from '../../../../hooks/useInsufficientAmount';
 import useNftTokenApproval from '../../../../hooks/useNftTokenApproval';
-import useSufficientErc20Allowance from '../../../../hooks/useSufficientErc20Allowance';
 import { useAppDispatch, useAppSelector } from '../../../../redux/hooks';
 import { createNftOrder } from '../../../../redux/stores/listNft/listNftActions';
 import { approve } from '../../../../redux/stores/orders/ordersActions';
@@ -58,6 +57,8 @@ const ConnectedListNftWidget: FC<ListNftWidgetProps> = ({
   className = '',
 }) => {
   const dispatch = useAppDispatch();
+  const { error: ordersError } = useAppSelector(state => state.orders);
+  const { error: listNftError } = useAppSelector(state => state.listNft);
   const { collectionImage } = useAppSelector(state => state.config);
   const { isLoading: isLoadingMetadata, protocolFee, projectFee } = useAppSelector(state => state.metadata);
   const { lastUserOrder } = useAppSelector(state => state.listNft);
@@ -73,7 +74,6 @@ const ConnectedListNftWidget: FC<ListNftWidgetProps> = ({
 
   // States derived from user input
   const [currencyTokenAmountMinusProtocolFee, protocolFeeInCurrencyToken] = useTokenAmountAndFee(currencyTokenAmount);
-  const hasSufficientCurrencyAllowance = useSufficientErc20Allowance(currencyTokenInfo, currencyTokenAmount);
   const hasInsufficientAmount = useInsufficientAmount(currencyTokenAmount);
   const hasInsufficientExpiryAmount = !expiryAmount || expiryAmount < 0;
   const hasCollectionTokenApproval = useNftTokenApproval(collectionTokenInfo, tokenId);
@@ -84,12 +84,11 @@ const ConnectedListNftWidget: FC<ListNftWidgetProps> = ({
       setWidgetState(ListNftState.review);
     }
 
-    if (widgetState === ListNftState.review && (!hasSufficientCurrencyAllowance || !hasCollectionTokenApproval)) {
+    if (widgetState === ListNftState.review && !hasCollectionTokenApproval) {
       setWidgetState(ListNftState.approve);
-      const tokenInfo = !hasSufficientCurrencyAllowance ? currencyTokenInfo : collectionTokenInfo;
 
       dispatch(approve({
-        tokenInfo,
+        tokenInfo: collectionTokenInfo,
         library,
         chainId,
         tokenId,
@@ -98,8 +97,12 @@ const ConnectedListNftWidget: FC<ListNftWidgetProps> = ({
         .then(() => {
           setWidgetState(ListNftState.approving);
         })
-        .catch(() => {
-          setWidgetState(ListNftState.review);
+        .catch((e) => {
+          if (isAppError(e) && e.type === AppErrorType.rejectedByUser) {
+            setWidgetState(ListNftState.review);
+          } else {
+            setWidgetState(ListNftState.failed);
+          }
         });
     }
 
@@ -118,8 +121,7 @@ const ConnectedListNftWidget: FC<ListNftWidgetProps> = ({
         senderAmount: currencyTokenAmount,
         tokenId,
       })).unwrap()
-        .then((e) => {
-          console.log(e);
+        .then(() => {
           setWidgetState(ListNftState.success);
         })
         .catch((e) => {
@@ -161,13 +163,13 @@ const ConnectedListNftWidget: FC<ListNftWidgetProps> = ({
       />
 
       <ListNftDetailContainer
-        hasSufficientCurrencyAllowance={hasSufficientCurrencyAllowance}
         collectionImage={collectionImage}
         collectionToken={collectionToken}
         collectionTokenInfo={collectionTokenInfo}
         currencyTokenAmount={currencyTokenAmount}
         currencyTokenAmountMinusProtocolFee={currencyTokenAmountMinusProtocolFee}
         currencyTokenInfo={currencyTokenInfo}
+        error={listNftError || ordersError}
         expiryAmount={expiryAmount}
         expiryTimeUnit={expiryTimeUnit}
         fullOrder={lastUserOrder}
@@ -185,7 +187,6 @@ const ConnectedListNftWidget: FC<ListNftWidgetProps> = ({
       {!(widgetState === ListNftState.sign || widgetState === ListNftState.approve || widgetState === ListNftState.approving) && (
         <ListActionButtons
           hasNoCollectionTokenApproval={!hasCollectionTokenApproval}
-          hasNotSufficientCurrencyAllowance={!hasSufficientCurrencyAllowance}
           hasInsufficientAmount={hasInsufficientAmount}
           hasInsufficientExpiryAmount={hasInsufficientExpiryAmount}
           currencyToken={currencyTokenInfo}

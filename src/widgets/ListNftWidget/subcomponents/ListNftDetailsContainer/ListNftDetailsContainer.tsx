@@ -14,6 +14,7 @@ import SelectExpiry from '../../../../compositions/SelectExpiry/SelectExpiry';
 import TradeTokenInput from '../../../../compositions/TradeTokenInput/TradeTokenInput';
 import TransactionLink from '../../../../compositions/TransactionLink/TransactionLink';
 import { CollectionToken } from '../../../../entities/CollectionToken/CollectionToken';
+import { AppError } from '../../../../errors/appError';
 import writeTextToClipboard from '../../../../helpers/browser';
 import { AppRoutes } from '../../../../routes';
 import { ExpiryTimeUnit } from '../../../../types/ExpiryTimeUnit';
@@ -23,13 +24,13 @@ import SwapIcon from '../SwapIcon/SwapIcon';
 import './ListNftDetailsContainer.scss';
 
 interface ListNftDetailContainerProps {
-  hasSufficientCurrencyAllowance: boolean;
   collectionImage: string;
   collectionTokenInfo: TokenInfo;
   collectionToken?: CollectionToken;
   currencyTokenAmount: string;
   currencyTokenAmountMinusProtocolFee?: string;
   currencyTokenInfo: TokenInfo;
+  error?: AppError;
   expiryAmount?: number;
   expiryTimeUnit: ExpiryTimeUnit;
   fullOrder?: FullOrder,
@@ -45,13 +46,13 @@ interface ListNftDetailContainerProps {
 }
 
 const ListNftDetailContainer: FC<ListNftDetailContainerProps> = ({
-  hasSufficientCurrencyAllowance,
   collectionImage,
   collectionTokenInfo,
   collectionToken,
   currencyTokenInfo,
   currencyTokenAmount,
   currencyTokenAmountMinusProtocolFee,
+  error,
   expiryAmount,
   expiryTimeUnit,
   fullOrder,
@@ -143,19 +144,11 @@ const ListNftDetailContainer: FC<ListNftDetailContainerProps> = ({
       {widgetState === ListNftState.approving && (
         <>
           <LoadingSpinner className="list-nft-details-container__loading-spinner" />
-          {hasSufficientCurrencyAllowance ? (
-            <TradeDetails
-              logoURI={currencyTokenInfo.logoURI}
-              title="Approving"
-              token={currencyTokenInfo}
-            />
-          ) : (
-            <TradeDetails
-              logoURI={collectionToken ? collectionToken.image : collectionImage}
-              title="Approving"
-              token={collectionTokenInfo}
-            />
-          )}
+          <TradeDetails
+            logoURI={collectionToken ? collectionToken.image : collectionImage}
+            title="Approving"
+            token={collectionTokenInfo}
+          />
           <TransactionLink
             to="test"
             className="list-nft-details-container__transaction-link"
@@ -173,8 +166,8 @@ const ListNftDetailContainer: FC<ListNftDetailContainerProps> = ({
         <>
           <Icon name="close" className="list-nft-details-container__failed-icon" />
           <p className="list-nft-details-container__message">
-            Failed for the following reason:
-            {/* TODO: Use store value when implemented */}
+            {/* TODO: Add translations for errors */}
+            {`Failed for the following reason: ${error?.type}`}
           </p>
         </>
       )}

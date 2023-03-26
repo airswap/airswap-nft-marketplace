@@ -13,7 +13,6 @@ interface ActionButtonsProps {
   hasInsufficientAmount: boolean;
   hasInsufficientExpiryAmount: boolean;
   hasNoCollectionTokenApproval: boolean;
-  hasNotSufficientCurrencyAllowance: boolean;
   currencyToken: TokenInfo;
   fullOrder?: FullOrder;
   state: ListNftState;
@@ -25,7 +24,6 @@ const ListActionButtons: FC<ActionButtonsProps> = ({
   hasInsufficientAmount,
   hasInsufficientExpiryAmount,
   hasNoCollectionTokenApproval,
-  hasNotSufficientCurrencyAllowance,
   currencyToken,
   fullOrder,
   state,
@@ -33,10 +31,6 @@ const ListActionButtons: FC<ActionButtonsProps> = ({
   className = '',
 }) => {
   const getReviewButtonText = () => {
-    if (hasNotSufficientCurrencyAllowance) {
-      return `Approve ${currencyToken.symbol || ''}`;
-    }
-
     if (hasNoCollectionTokenApproval) {
       return 'Approve NFT';
     }
@@ -134,7 +128,6 @@ const ListActionButtons: FC<ActionButtonsProps> = ({
     hasInsufficientAmount,
     hasInsufficientExpiryAmount,
     hasNoCollectionTokenApproval,
-    hasNotSufficientCurrencyAllowance,
     currencyToken,
     state,
   ]);

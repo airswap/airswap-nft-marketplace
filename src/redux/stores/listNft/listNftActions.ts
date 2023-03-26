@@ -29,6 +29,8 @@ CreateOrderParams
 >(
   'make-otc/createOtcOrder',
   async (params, { dispatch, rejectWithValue }) => {
+    dispatch(setError(undefined));
+
     try {
       const senderAmount = toAtomicString(
         params.senderAmount,
