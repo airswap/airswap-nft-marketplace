@@ -4,12 +4,16 @@ import { Web3Provider } from '@ethersproject/providers';
 import { useWeb3React } from '@web3-react/core';
 import { useParams } from 'react-router-dom';
 
+import Accordion from '../../components/Accordion/Accordion';
 import Button from '../../components/Button/Button';
 import { IconSearch } from '../../components/Icon/icons';
 import Input from '../../components/Input/Input';
+import NftCard from '../../components/NftCard/NftCard';
 import useEnsAddress from '../../hooks/useEnsAddress';
 import { useAppSelector } from '../../redux/hooks';
+import { AppRoutes } from '../../routes';
 import ProfileHeader from './subcomponents/ProfileHeader/ProfileHeader';
+import ownedNfts from './temp-owned-nfts';
 
 import './ProfileWidget.scss';
 
@@ -30,6 +34,8 @@ const ProfileWidget: FC = () => {
 
   console.log('ProfileWidget - Wallet connected: ', active ? 'Yes' : 'No');
   console.log('ProfileWidget - isPrivate Profile: ', isPrivateProfile ? 'Yes' : 'No');
+  console.log('ProfileWidget - ownedNfts: ', ownedNfts);
+
   return (
     <div className="profile-widget">
       <ProfileHeader
@@ -42,8 +48,8 @@ const ProfileWidget: FC = () => {
       <div className="profile-widget__button-group-container">
         <div className="profile-widget__button-group">
           <Button text="NFTs" className="profile-widget__button-group__button profile-widget__button-group__button--is-active" />
-          <Button text="ACTIVITY" className="profile-widget__button-group__button" />
-          <Button text="LISTED" className="profile-widget__button-group__button" />
+          <Button text="ACTIVITY" className="profile-widget__button-group__button" disabled />
+          <Button text="LISTED" className="profile-widget__button-group__button" disabled />
         </div>
       </div>
       <div className="profile-widget__content">
@@ -52,6 +58,27 @@ const ProfileWidget: FC = () => {
             <IconSearch />
           </i>
           <Input className="profile-widget__search-bar" placeholder="Search NFT" />
+        </div>
+        <div className="profile-widget__collections">
+          <Accordion
+            label="Dark Blue Collection"
+            content={(
+              <div className="profile-widget__nfts-container">
+                {ownedNfts.map((nft) => (
+                  <NftCard
+                    key={nft.id}
+                    imageURI={nft.image}
+                    name={nft.name}
+                    price={nft.price.toString()}
+                    to={`${AppRoutes.nftDetail}/${nft.id}`}
+                    className="profile-widget__nft-card"
+                    symbol={nft.symbol || 'AST'} // TODO: remove the backup symbol
+                  />
+                ))}
+              </div>
+            )}
+          />
+
         </div>
       </div>
     </div>
