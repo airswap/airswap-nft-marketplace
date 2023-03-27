@@ -58,4 +58,32 @@
             color: #fff;
         }
     }
+
+    &__content {
+        padding: 0 var(--page-padding);
+    }
+
+    &__search-bar-container {
+        position: relative;
+        padding: 1.5rem 0rem;
+    }
+
+    &__search-bar-icon {
+        position: absolute;
+        top: 2.2rem;
+        left: 1rem;
+        width: 1.125rem;
+        height: 1.125rem;
+
+        & svg {
+            fill: var(--c-light-grey);
+        }
+    }
+
+    &__search-bar {
+        height: 2.5rem;
+        width: 100%;
+        padding-left: 3rem;
+    }
+
 }
