@@ -1,29 +1,41 @@
 import React, { FC } from 'react';
 
+import { Web3Provider } from '@ethersproject/providers';
 import { useWeb3React } from '@web3-react/core';
-import { useParams } from 'react-router-dom';
 
+import Button from '../../components/Button/Button';
+import useEnsAddress from '../../hooks/useEnsAddress';
+import { useAppSelector } from '../../redux/hooks';
 import ProfileHeader from './subcomponents/ProfileHeader/ProfileHeader';
 
 import './ProfileWidget.scss';
 
 const ProfileWidget: FC = () => {
-  // If there is a user active, then we need to check the id param to see if it's the same as the acccount
-  const { active, account } = useWeb3React();
-  // If there is no id param, then we should display the current user's profile
-  const { id } = useParams();
-  const isPrivateProfile = !id || id === account;
+  const { collectionImage } = useAppSelector((state) => state.config);
+  const { account, deactivate } = useWeb3React<Web3Provider>();
+  const ensAddress = useEnsAddress(account || '');
+  const { avatarUrl } = useAppSelector((state) => state.user);
 
+  const handleDisconnectClick = () => {
+    deactivate();
+  };
 
-  console.log('ProfileWidget - Wallet connected: ', active ? 'Yes' : 'No');
-  console.log('ProfileWidget - isPrivate Profile: ', isPrivateProfile ? 'Yes' : 'No');
   return (
     <div className="profile-widget">
       <ProfileHeader
-        avatarUrl="https://ychef.files.bbci.co.uk/976x549/p0dnxrcv.jpg"
-        onLogoutButtonClick={() => console.log('logout')}
-        backgroundImage="https://ychef.files.bbci.co.uk/976x549/p0dnxrcv.jpg"
+        backgroundImage={collectionImage}
+        avatarUrl={avatarUrl}
+        ensAddress={ensAddress}
+        address={account || ''}
+        onLogoutButtonClick={handleDisconnectClick}
       />
+      <div className="profile-widget__button-group-container">
+        <div className="profile-widget__button-group">
+          <Button text="NFTs" className="profile-widget__button-group__button profile-widget__button-group__button--is-active" />
+          <Button text="ACTIVITY" className="profile-widget__button-group__button" />
+          <Button text="LISTED" className="profile-widget__button-group__button" />
+        </div>
+      </div>
     </div>
   );
 };

@@ -1,5 +1,6 @@
 import { getLibrary } from '../../../helpers/ethers';
 import { store } from '../../store';
+import { fetchProtocolFee } from './metadataActions';
 import { getCurrencyAndCollectionTokenInfo } from './metadataApi';
 
 export const configureMetadataSubscriber = () => {
@@ -17,6 +18,11 @@ export const configureMetadataSubscriber = () => {
         currencyToken: config.currencyToken,
         collectionToken: config.collectionToken,
         library,
+        chainId: web3.chainId,
+      }));
+
+      store.dispatch(fetchProtocolFee({
+        provider: library,
         chainId: web3.chainId,
       }));
     }

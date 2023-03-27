@@ -1,7 +1,7 @@
 import BalanceChecker from '@airswap/balances/build/contracts/BalanceChecker.json';
 // eslint-disable-next-line import/extensions
 import balancesDeploys from '@airswap/balances/deploys.js';
-import { Swap, Wrapper } from '@airswap/libraries';
+import { SwapERC20, Wrapper } from '@airswap/libraries';
 import { createAsyncThunk } from '@reduxjs/toolkit';
 import { BigNumber, ethers, providers } from 'ethers';
 
@@ -49,7 +49,7 @@ const fetchBalancesOrAllowances: (
   let args = [walletAddress, tokenAddresses];
 
   if (spenderAddressType === 'swap') {
-    args = [walletAddress, Swap.getAddress(chainId), tokenAddresses];
+    args = [walletAddress, SwapERC20.getAddress(chainId), tokenAddresses];
   }
 
   if (spenderAddressType === 'wrapper') {
@@ -73,3 +73,21 @@ export const fetchBalances = createAsyncThunk<{ [address: string]: string }, Wal
     }), {});
   },
 );
+
+export const fetchAllowances = createAsyncThunk<{ [address: string]: string }, WalletParams>(
+  'balances/fetchAllowances',
+  async (params) => {
+    const responses = await fetchBalancesOrAllowances('walletAllowances', 'swap', params);
+    const bigNumbers = responses.map(bigNumber => bigNumber.toString());
+
+    return params.tokenAddresses.reduce((total, token, index) => ({
+      ...total,
+      [token]: bigNumbers[index],
+    }), {});
+  },
+);
+
+export const getTransactionsLocalStorageKey: (
+  walletAddress: string,
+  chainId: number
+) => string = (walletAddress, chainId) => `airswap-marketplace/transactions/${walletAddress}/${chainId}`;

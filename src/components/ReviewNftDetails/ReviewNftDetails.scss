@@ -13,10 +13,14 @@
     }
 
     &__name {
-        @extend %text-ellipsis;
         @extend %trade-window-name;
 
         margin-left: 1rem;
+        max-height: 2.5rem;
+        line-height: 1.25;
+        text-align: right;
+        word-wrap: break-word;
+        overflow: hidden;
     }
 
     &__icon {

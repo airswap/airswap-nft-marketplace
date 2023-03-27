@@ -1,4 +1,4 @@
-import { AppError, AppErrorType, transformToAppError } from "./appError";
+import { AppError, AppErrorType, transformToAppError } from './appError';
 
 // @ethersproject's logger throws errors like this:
 
@@ -12,29 +12,27 @@ import { AppError, AppErrorType, transformToAppError } from "./appError";
 export interface EthersProjectError {
   argument: string;
   value: string;
-  code: "INVALID_ARGUMENT";
+  code: 'INVALID_ARGUMENT';
 }
 
 export const isEthersProjectError = (
-  error: any
-): error is EthersProjectError => {
-  return (
-    typeof error === "object" &&
-    error !== null &&
-    "argument" in error &&
-    "value" in error &&
-    "code" in error
-  );
-};
+  error: any,
+): error is EthersProjectError => (
+  typeof error === 'object'
+    && error !== null
+    && 'argument' in error
+    && 'value' in error
+    && 'code' in error
+);
 
 export const transformEthersProjectErrorToAppError = (
-  error: EthersProjectError
+  error: EthersProjectError,
 ): AppError => {
-  if (error.argument === "address") {
+  if (error.argument === 'address') {
     return transformToAppError(AppErrorType.invalidAddress, error, error.value);
   }
 
-  if (error.argument === "value") {
+  if (error.argument === 'value') {
     return transformToAppError(AppErrorType.invalidValue, error, error.value);
   }
 

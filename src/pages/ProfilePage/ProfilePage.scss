@@ -1,0 +1,11 @@
+@import "src/styles";
+
+.profile-page {
+
+	&__content {
+		
+		@include for-size(phone-only) {
+			padding: 0;
+		}
+	}
+}
