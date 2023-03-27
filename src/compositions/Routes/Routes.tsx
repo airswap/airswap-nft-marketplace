@@ -35,6 +35,10 @@ const Routes: FC = () => {
       element: <ProfilePage />,
     },
     {
+      path: `/${AppRoutes.profile}/:id`,
+      element: <ProfilePage />,
+    },
+    {
       path: `/${AppRoutes.swap}`,
       element: <SwapPage />,
     },
