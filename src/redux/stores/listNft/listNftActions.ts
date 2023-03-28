@@ -1,6 +1,4 @@
 import { TokenKinds } from '@airswap/constants';
-// @ts-ignore
-// eslint-disable-next-line import/no-extraneous-dependencies
 import * as swapDeploys from '@airswap/swap/deploys';
 import { FullOrder, TokenInfo } from '@airswap/types';
 import { createOrder, toAtomicString } from '@airswap/utils';
@@ -58,7 +56,6 @@ CreateOrderParams
       const { chainId } = params.signerTokenInfo;
       const signature = await createOrderSignature(
         unsignedOrder,
-        // @ts-ignore
         params.library.getSigner(),
         swapDeploys[chainId],
         chainId,

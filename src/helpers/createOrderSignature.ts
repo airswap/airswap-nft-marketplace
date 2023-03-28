@@ -16,6 +16,7 @@ export const createOrderSignature = (
     const signature = await airswapCreateOrderSignature(
       unsignedOrder,
       // @ts-ignore
+      // Airswap library asking for incorrect VoidSigner. This will be fixed later.
       signer,
       swapContract,
       chainId,
