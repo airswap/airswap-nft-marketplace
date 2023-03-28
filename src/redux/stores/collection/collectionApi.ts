@@ -15,9 +15,7 @@ interface fetchNFTMetadataParams {
 export const fetchCollectionTokens = createAsyncThunk<(
 CollectionToken | undefined)[], fetchNFTMetadataParams>(
   'collection/fetchNFTMetadata',
-  async ({
-    library, collectionToken, tokenIds,
-  }) => {
+  async ({ library, collectionToken, tokenIds }) => {
     const dataPromises = tokenIds.map(async (tokenId) => {
       let tokenInfo: TokenInfo;
 

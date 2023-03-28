@@ -1,14 +1,18 @@
 import BalanceChecker from '@airswap/balances/build/contracts/BalanceChecker.json';
 // eslint-disable-next-line import/extensions
 import balancesDeploys from '@airswap/balances/deploys.js';
-import { TokenKinds } from '@airswap/constants';
+import { tokenKinds } from '@airswap/constants';
 import { SwapERC20, Wrapper } from '@airswap/libraries';
 import { TokenInfo } from '@airswap/types';
+// eslint-disable-next-line import/no-extraneous-dependencies
+import { Event } from '@ethersproject/contracts';
 import erc721AbiContract from '@openzeppelin/contracts/build/contracts/ERC721.json';
 import erc721EnumerableContract from '@openzeppelin/contracts/build/contracts/ERC721Enumerable.json';
 import erc1155Contract from '@openzeppelin/contracts/build/contracts/ERC1155.json';
 import { createAsyncThunk } from '@reduxjs/toolkit';
 import { BigNumber, ethers, providers } from 'ethers';
+
+import { getUniqueTokensForWallet } from './balancesHelpers';
 
 const balancesInterface = new ethers.utils.Interface(
   JSON.stringify(BalanceChecker.abi),
@@ -96,6 +100,7 @@ export const getTransactionsLocalStorageKey: (
   walletAddress: string,
   chainId: number
 ) => string = (walletAddress, chainId) => `airswap-marketplace/transactions/${walletAddress}/${chainId}`;
+
 interface fetchTokenIdsParams {
   provider: ethers.providers.Web3Provider;
   walletAddress: string;
@@ -109,13 +114,15 @@ export const fetchTokenIds = createAsyncThunk<number[], fetchTokenIdsParams>(
     walletAddress,
     collectionToken,
   }) => {
-    // 0x780e9d63 is the interface ID for erc721 enumerable
-    const ERC721Enumerable = '0x780e9d63';
+    const contract = new ethers.Contract(collectionToken.address, erc721AbiContract.abi, provider);
 
-    const tokenKind = collectionToken.extensions?.kind as TokenKinds;
+    const [isErc721Enumerable, isErc721, isErc1155] = await Promise.all([
+      contract.supportsInterface('0x780e9d63'), // The interface ID for erc721 enumerable
+      contract.supportsInterface(tokenKinds.ERC721),
+      contract.supportsInterface(tokenKinds.ERC1155),
+    ]) as boolean[];
 
-    // @ts-ignore
-    if (tokenKind === ERC721Enumerable) {
+    if (isErc721Enumerable) {
       const collectionContract = new ethers.Contract(collectionToken.address, erc721EnumerableContract.abi, provider);
 
       const balance: number = await collectionContract.balanceOf(walletAddress);
@@ -124,57 +131,31 @@ export const fetchTokenIds = createAsyncThunk<number[], fetchTokenIdsParams>(
       const tokenIdsPromises = indexes.map(async index => (await collectionContract.tokenOfOwnerByIndex(walletAddress, BigNumber.from(index))) as BigNumber);
       const tokenIds = await Promise.all(tokenIdsPromises);
 
-      return tokenIds.map(t => t.toNumber());
+      return tokenIds
+        .map(t => t.toNumber())
+        .sort((a, b) => a - b);
     }
 
-    if (tokenKind === TokenKinds.ERC721) {
+    if (isErc721) {
       const collectionContract = new ethers.Contract(collectionToken.address, erc721AbiContract.abi, provider);
       const transferFilter = collectionContract.filters.Transfer(null, walletAddress);
 
-      const events = await collectionContract.queryFilter(transferFilter, 0);
+      const events: Event[] = await collectionContract.queryFilter(transferFilter, 0);
       /* get token ids from past events */
       const foundTokenIds: BigNumber[] = events.map(e => e.args?.at(2));
 
-      /* get unique values */
-      const uniqueTokenIds = [...new Set(foundTokenIds)];
-
-      /* Get only the owned token ids */
-      const ownedTokenIds = uniqueTokenIds.filter(async id => {
-        const addr = await collectionContract.ownerOf(id);
-
-        if (addr === walletAddress) return true;
-
-        return false;
-      });
-
-      const tokenIds = ownedTokenIds.map(t => t.toNumber());
-
-      return tokenIds;
+      return getUniqueTokensForWallet(foundTokenIds, collectionContract, walletAddress);
     }
 
-    if (tokenKind === TokenKinds.ERC1155) {
+    if (isErc1155) {
       const collectionContract = new ethers.Contract(collectionToken.address, erc1155Contract.abi, provider);
       const transferFilter = collectionContract.filters.TransferSingle(null, null, walletAddress);
 
-      const events = await collectionContract.queryFilter(transferFilter, 0);
+      const events: Event[] = await collectionContract.queryFilter(transferFilter, 0);
       /* get token ids from past events */
       const foundTokenIds: BigNumber[] = events.map(e => e.args?.at(3));
 
-      /* get unique values */
-      const uniqueTokenIds = [...new Set(foundTokenIds)];
-
-      /* Get only the owned token ids */
-      const ownedTokenIds = uniqueTokenIds.filter(async id => {
-        const balance = (await collectionContract.balanceOf(walletAddress, id)).toNumber();
-
-        if (balance !== 0) return true;
-
-        return false;
-      });
-
-      const tokenIds = ownedTokenIds.map(t => t.toNumber());
-
-      return tokenIds;
+      return getUniqueTokensForWallet(foundTokenIds, collectionContract, walletAddress);
     }
 
     throw new Error('Unknown nft interface. Could not fetch token ids.');

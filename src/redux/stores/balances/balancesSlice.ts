@@ -4,8 +4,9 @@ import { fetchAllowances, fetchBalances, fetchTokenIds } from './balancesApi';
 
 interface BalancesState {
   isLoading: boolean;
-  isLoadingBalances: boolean;
   isLoadingAllowances: boolean;
+  isLoadingBalances: boolean;
+  isLoadingUserTokens: boolean;
   allowances: {
     [address: string]: string;
   };
@@ -17,8 +18,9 @@ interface BalancesState {
 
 const initialState: BalancesState = {
   isLoading: false,
-  isLoadingBalances: false,
   isLoadingAllowances: false,
+  isLoadingBalances: false,
+  isLoadingUserTokens: false,
   allowances: {},
   balances: {},
   tokenIds: [],
@@ -68,7 +70,7 @@ const balancesSlice = createSlice({
 
     builder.addCase(fetchBalances.fulfilled, (state, action): BalancesState => ({
       ...state,
-      isLoading: state.isLoadingAllowances,
+      isLoading: state.isLoadingAllowances && state.isLoadingUserTokens,
       isLoadingBalances: false,
       balances: action.payload,
     }));
@@ -76,22 +78,25 @@ const balancesSlice = createSlice({
     builder.addCase(fetchTokenIds.pending, (state) => ({
       ...state,
       isLoading: true,
+      isLoadingUserTokens: true,
     }));
 
     builder.addCase(fetchTokenIds.fulfilled, (state, action) => ({
       ...state,
-      isLoading: false,
+      isLoading: state.isLoadingAllowances && state.isLoadingBalances,
+      isLoadingUserTokens: false,
       tokenIds: action.payload,
     }));
 
     builder.addCase(fetchAllowances.pending, (state): BalancesState => ({
       ...state,
+      isLoading: true,
       isLoadingAllowances: true,
     }));
 
     builder.addCase(fetchAllowances.fulfilled, (state, action): BalancesState => ({
       ...state,
-      isLoading: state.isLoadingBalances,
+      isLoading: state.isLoadingBalances && state.isLoadingUserTokens,
       isLoadingAllowances: false,
       allowances: action.payload,
     }));

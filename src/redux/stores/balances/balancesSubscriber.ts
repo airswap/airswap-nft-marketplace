@@ -13,15 +13,15 @@ export const configureBalancesSubscriber = () => {
     const newTokenKeys = Object.keys(metadata.tokens);
     const newTokenKeysString = newTokenKeys.toString();
 
-    if (!web3.chainId || !web3.account || !config.collectionToken) return;
-    const library = getLibrary(web3.chainId);
-
     if (
       tokenKeysString !== newTokenKeysString
       && newTokenKeys.length
+      && web3.chainId
+      && web3.account
     ) {
       tokenKeysString = newTokenKeysString;
 
+      const library = getLibrary(web3.chainId);
 
       store.dispatch(fetchBalances({
         chainId: web3.chainId,
