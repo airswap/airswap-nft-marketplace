@@ -1,14 +1,10 @@
-
-
-import React, { FC, useEffect, useState } from 'react';
+import React, { FC, useState } from 'react';
 
 import { Web3Provider } from '@ethersproject/providers';
 
 import NftCard from '../../../../components/NftCard/NftCard';
 import SearchInput from '../../../../components/SearchInput/SearchInput';
-import useInfiniteScroll from '../../../../hooks/useInfiniteScroll';
-import { useAppDispatch, useAppSelector } from '../../../../redux/hooks';
-import { fetchCollectionTokens } from '../../../../redux/stores/collection/collectionApi';
+import { useAppSelector } from '../../../../redux/hooks';
 import { AppRoutes } from '../../../../routes';
 import CollectionPortrait from '../CollectionPortrait/CollectionPortrait';
 
@@ -17,35 +13,16 @@ interface ConnectedCollectionWidgetProps {
   className?: string;
 }
 
+// eslint-disable-next-line @typescript-eslint/no-unused-vars, no-unused-vars
 const ConnectedCollectionWidget: FC<ConnectedCollectionWidgetProps> = ({ library, className = '' }) => {
-  const dispatch = useAppDispatch();
   const {
-    collectionImage, collectionName, collectionToken,
+    collectionImage, collectionName,
   } = useAppSelector((state) => state.config);
   const {
-    allTokensAreLoaded,
-    isLoading,
-    tokensData,
-    lastTokenIndex,
+    isLoading, tokensData,
   } = useAppSelector((state) => state.collection);
 
-  const hasScrolledToBottom = useInfiniteScroll();
-
   const [searchInput, setSearchInput] = useState<string>('');
-
-  const getData = (): void => {
-    dispatch(fetchCollectionTokens({ library, collectionToken, startIndex: lastTokenIndex }));
-  };
-
-  useEffect(() => {
-    getData();
-  }, []);
-
-  useEffect(() => {
-    if (hasScrolledToBottom && !isLoading && !allTokensAreLoaded) {
-      getData();
-    }
-  }, [hasScrolledToBottom]);
 
   return (
     <div className={`collection-widget ${className}`}>
