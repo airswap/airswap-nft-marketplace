@@ -8,7 +8,6 @@ import React, {
 import { TokenInfo } from '@airswap/types';
 import { Web3Provider } from '@ethersproject/providers';
 
-import LoadingSpinner from '../../../../components/LoadingSpinner/LoadingSpinner';
 import { expiryAmounts } from '../../../../constants/expiry';
 import { transformNFTTokenToCollectionToken } from '../../../../entities/CollectionToken/CollectionTokenTransformers';
 import { AppErrorType, isAppError } from '../../../../errors/appError';
@@ -57,17 +56,17 @@ const ConnectedListNftWidget: FC<ListNftWidgetProps> = ({
   className = '',
 }) => {
   const dispatch = useAppDispatch();
+  const { tokenIds: userTokens } = useAppSelector(state => state.balances);
   const { error: ordersError } = useAppSelector(state => state.orders);
   const { error: listNftError } = useAppSelector(state => state.listNft);
   const { collectionImage } = useAppSelector(state => state.config);
-  const { isLoading: isLoadingMetadata, protocolFee, projectFee } = useAppSelector(state => state.metadata);
+  const { protocolFee, projectFee } = useAppSelector(state => state.metadata);
   const { lastUserOrder } = useAppSelector(state => state.listNft);
 
   // User input states
   const [widgetState, setWidgetState] = useState<ListNftState>(ListNftState.details);
-  // TODO: Get tokenId from owned nfts in store https://github.com/airswap/airswap-marketplace/issues/62
-  const tokenId = 78426;
-  const collectionToken = transformNFTTokenToCollectionToken(collectionTokenInfo, tokenId, '1');
+  const [selectedNft, setSelectedNft] = useState(userTokens[0]);
+  const collectionToken = transformNFTTokenToCollectionToken(collectionTokenInfo, selectedNft, '1');
   const [currencyTokenAmount, setCurrencyTokenAmount] = useState('0');
   const [expiryTimeUnit, setExpiryTimeUnit] = useState(ExpiryTimeUnit.minutes);
   const [expiryAmount, setExpiryAmount] = useState<number | undefined>(60);
@@ -76,7 +75,7 @@ const ConnectedListNftWidget: FC<ListNftWidgetProps> = ({
   const [currencyTokenAmountMinusProtocolFee, protocolFeeInCurrencyToken] = useTokenAmountAndFee(currencyTokenAmount);
   const hasInsufficientAmount = useInsufficientAmount(currencyTokenAmount);
   const hasInsufficientExpiryAmount = !expiryAmount || expiryAmount < 0;
-  const hasCollectionTokenApproval = useNftTokenApproval(collectionTokenInfo, tokenId);
+  const hasCollectionTokenApproval = useNftTokenApproval(collectionTokenInfo, selectedNft);
   const title = useMemo(() => getTitle(widgetState), [widgetState]);
 
   const handleActionButtonClick = async () => {
@@ -91,7 +90,7 @@ const ConnectedListNftWidget: FC<ListNftWidgetProps> = ({
         tokenInfo: collectionTokenInfo,
         library,
         chainId,
-        tokenId,
+        tokenId: selectedNft,
       }))
         .unwrap()
         .then(() => {
@@ -119,7 +118,7 @@ const ConnectedListNftWidget: FC<ListNftWidgetProps> = ({
         protocolFee,
         senderTokenInfo: currencyTokenInfo,
         senderAmount: currencyTokenAmount,
-        tokenId,
+        tokenId: selectedNft,
       })).unwrap()
         .then(() => {
           setWidgetState(ListNftState.success);
@@ -140,11 +139,17 @@ const ConnectedListNftWidget: FC<ListNftWidgetProps> = ({
     }
   }, [widgetState, hasCollectionTokenApproval]);
 
-  if (isLoadingMetadata) {
+  useEffect(() => {
+    setSelectedNft(userTokens[0]);
+  }, [userTokens]);
+
+  console.log(userTokens, selectedNft);
+
+  if (!userTokens.length) {
     return (
       <div className={`list-nft-widget ${className}`}>
         <h1>List NFT</h1>
-        <LoadingSpinner className="list-nft-widget__loading-spinner" />
+        You have no nfts to list
       </div>
     );
   }
@@ -170,10 +175,12 @@ const ConnectedListNftWidget: FC<ListNftWidgetProps> = ({
         projectFee={projectFee}
         protocolFee={protocolFee}
         protocolFeeInCurrencyToken={protocolFeeInCurrencyToken}
-        tokenId={tokenId}
+        selectedNft={selectedNft}
+        userNfts={userTokens}
         widgetState={widgetState}
         onExpiryAmountChange={setExpiryAmount}
         onExpiryTimeUnitChange={setExpiryTimeUnit}
+        onSelectedNftChange={setSelectedNft}
         onTradeTokenInputChange={setCurrencyTokenAmount}
         className="list-nft-widget__trade-details-container"
       />

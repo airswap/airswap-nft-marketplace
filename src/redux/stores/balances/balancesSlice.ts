@@ -70,7 +70,7 @@ const balancesSlice = createSlice({
 
     builder.addCase(fetchBalances.fulfilled, (state, action): BalancesState => ({
       ...state,
-      isLoading: state.isLoadingAllowances && state.isLoadingUserTokens,
+      isLoading: state.isLoadingAllowances || state.isLoadingUserTokens,
       isLoadingBalances: false,
       balances: action.payload,
     }));
@@ -83,7 +83,7 @@ const balancesSlice = createSlice({
 
     builder.addCase(fetchTokenIds.fulfilled, (state, action) => ({
       ...state,
-      isLoading: state.isLoadingAllowances && state.isLoadingBalances,
+      isLoading: state.isLoadingAllowances || state.isLoadingBalances,
       isLoadingUserTokens: false,
       tokenIds: action.payload,
     }));
@@ -96,7 +96,7 @@ const balancesSlice = createSlice({
 
     builder.addCase(fetchAllowances.fulfilled, (state, action): BalancesState => ({
       ...state,
-      isLoading: state.isLoadingBalances && state.isLoadingUserTokens,
+      isLoading: state.isLoadingBalances || state.isLoadingUserTokens,
       isLoadingAllowances: false,
       allowances: action.payload,
     }));

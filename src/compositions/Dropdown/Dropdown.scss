@@ -48,10 +48,16 @@ $component: dropdown;
         visibility: hidden;
     }
 
-    &__select-icon {
+    &__button-icon {
+        width: 1.25rem;
+        height: 1.25rem;
+    }
+
+    &__mobile-select-icon {
         position: absolute;
-        top: .75rem;
+        top: calc(50% - .5rem);
         right: 1rem;
+        width: 1rem;
         pointer-events: none;
 
         @include for-size(tablet-portrait-up) {
@@ -64,6 +70,7 @@ $component: dropdown;
         position: absolute;
         top: 0;
         width: 100%;
+        z-index: 10;
 
         &:before {
             @extend %after-block;

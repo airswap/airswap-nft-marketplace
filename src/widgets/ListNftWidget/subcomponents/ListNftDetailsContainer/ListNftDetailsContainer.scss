@@ -11,6 +11,10 @@
         flex-grow: 1;
     }
 
+    &--is-select-nft-focus &__select-nft {
+        z-index: 2;
+    }
+
     &__select-expiry {
         margin-top: 1rem;
     }

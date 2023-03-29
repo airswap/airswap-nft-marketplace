@@ -10,17 +10,27 @@ import './Dropdown.scss';
 export type DropdownProps = {
   selectedOption: SelectOption;
   options: SelectOption[];
+  onBlur?: () => void;
   onChange: (option: SelectOption) => void;
+  onFocus?: () => void;
   className?: string;
   buttonClassName?: string;
+  dropdownButtonClassName?: string;
+  dropdownButtonBackgroundClassName?: string;
+  mobileSelectIconClassName?: string;
 };
 
 const Dropdown: FC<DropdownProps> = ({
   selectedOption,
   options,
+  onBlur,
   onChange,
+  onFocus,
   className = '',
   buttonClassName = '',
+  dropdownButtonClassName = '',
+  dropdownButtonBackgroundClassName = '',
+  mobileSelectIconClassName = '',
 }) => {
   // activeOptionIndex is used for styling SelectOptions vertical position. This way
   // the active option in SelectOptions always opens directly on top of the Select.
@@ -40,11 +50,19 @@ const Dropdown: FC<DropdownProps> = ({
     const index = options.findIndex(option => option.value === selectedOption.value);
     setActiveOptionIndex(index);
     setActiveHoverIndex(index);
+
+    if (onBlur) {
+      onBlur();
+    }
   };
 
   const handleButtonClick = (e: React.MouseEvent<HTMLButtonElement>) => {
     // Unlike other browsers, on safari clicking a button won't focus it.
     e.currentTarget.focus();
+
+    if (onFocus) {
+      onFocus();
+    }
   };
 
   const handleSelectChange = (e: React.ChangeEvent<HTMLSelectElement>) => {
@@ -67,7 +85,9 @@ const Dropdown: FC<DropdownProps> = ({
         text={selectedOption.label}
         onBlur={handleButtonBlur}
         onClick={handleButtonClick}
+        onFocus={onFocus}
         className={`dropdown__button ${buttonClassName}`}
+        iconClassName="dropdown__button-icon"
       />
       <div
         style={{ transform: `translateY(${activeOptionIndex * -(100 / options.length)}%)` }}
@@ -80,12 +100,12 @@ const Dropdown: FC<DropdownProps> = ({
             option={option}
             onMouseOver={() => setActiveHoverIndex(index)}
             onPointerDown={() => handleOptionClick(option)}
-            className="dropdown__dropdown-button"
+            className={`dropdown__dropdown-button ${dropdownButtonClassName}`}
           />
         ))}
         <div
           style={{ transform: `translateY(calc(${activeHoverIndex * 100}% - ${activeHoverIndex}px)` }}
-          className="dropdown__dropdown-button-background"
+          className={`dropdown__dropdown-button-background ${dropdownButtonBackgroundClassName}`}
         />
       </div>
       {/* Native Select for mobile */}
@@ -102,7 +122,7 @@ const Dropdown: FC<DropdownProps> = ({
       </select>
       <Icon
         name="chevron-down"
-        className="dropdown__select-icon"
+        className={`dropdown__mobile-select-icon ${mobileSelectIconClassName}`}
       />
     </div>
   );
