@@ -9,19 +9,14 @@ import { transformNFTTokenToCollectionToken } from '../../../entities/Collection
 interface fetchNFTMetadataParams {
   library: Web3Provider,
   collectionToken: string,
-  startIndex: number,
+  tokenIds: number[],
 }
 
 export const fetchCollectionTokens = createAsyncThunk<(
 CollectionToken | undefined)[], fetchNFTMetadataParams>(
   'collection/fetchNFTMetadata',
-  async ({ library, collectionToken, startIndex }) => {
-    const CHUNK_SIZE = 20;
-    const tokensToFetch = new Array(CHUNK_SIZE)
-      .fill(null)
-      .map((value, index) => startIndex + index);
-
-    const dataPromises = tokensToFetch.map(async (tokenId) => {
+  async ({ library, collectionToken, tokenIds }) => {
+    const dataPromises = tokenIds.map(async (tokenId) => {
       let tokenInfo: TokenInfo;
 
       try {
