@@ -106,7 +106,7 @@ const ConnectedListNftWidget: FC<ListNftWidgetProps> = ({
         });
     }
 
-    if (widgetState === ListNftState.review) {
+    if (widgetState === ListNftState.review && hasCollectionTokenApproval) {
       setWidgetState(ListNftState.sign);
 
       const expiryDate = Date.now() + (expiryAmounts[expiryTimeUnit] * (expiryAmount || 1));
@@ -133,12 +133,6 @@ const ConnectedListNftWidget: FC<ListNftWidgetProps> = ({
         });
     }
   };
-
-  useEffect(() => {
-    if (widgetState === ListNftState.approving) {
-      setWidgetState(ListNftState.review);
-    }
-  }, [widgetState]);
 
   useEffect(() => {
     if (hasCollectionTokenApproval && widgetState === ListNftState.approving) {
