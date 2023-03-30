@@ -38,8 +38,8 @@ interface ListNftDetailContainerProps {
   projectFee: number;
   protocolFeeInCurrencyToken?: string;
   protocolFee: number;
-  selectedNft: number;
-  userNfts: number[];
+  selectedNft: CollectionToken;
+  userNfts: CollectionToken[];
   widgetState: ListNftState;
   onExpiryAmountChange: (value?: number) => void;
   onExpiryTimeUnitChange: (value: ExpiryTimeUnit) => void;
@@ -85,11 +85,11 @@ const ListNftDetailContainer: FC<ListNftDetailContainerProps> = ({
       {widgetState === ListNftState.details && (
         <>
           <SelectNft
-            logoURI={collectionToken ? collectionToken.image : collectionImage}
+            logoURI={selectedNft ? selectedNft.image : collectionImage}
             nfts={userNfts}
             title="List"
             token={collectionTokenInfo}
-            value={selectedNft}
+            value={selectedNft?.id}
             onSelect={onSelectedNftChange}
             className="list-nft-details-container__select-nft"
           />
@@ -116,10 +116,10 @@ const ListNftDetailContainer: FC<ListNftDetailContainerProps> = ({
           {widgetState === ListNftState.listing && <LoadingSpinner className="list-nft-details-container__loading-spinner" />}
           {widgetState === ListNftState.success && <Icon name="check" className="list-nft-details-container__check-icon" />}
           <ReviewNftDetails
-            logoURI={collectionToken ? collectionToken.image : collectionImage}
+            logoURI={selectedNft ? selectedNft.image : collectionImage}
             title={widgetState === ListNftState.review ? 'List' : 'From'}
             token={collectionTokenInfo}
-            tokenId={selectedNft}
+            tokenId={selectedNft?.id}
           />
           <SwapIcon className="list-nft-details-container__swap-icon" />
           <ReviewTokenDetails

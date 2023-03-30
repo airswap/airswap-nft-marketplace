@@ -9,7 +9,6 @@ import { TokenInfo } from '@airswap/types';
 import { Web3Provider } from '@ethersproject/providers';
 
 import { expiryAmounts } from '../../../../constants/expiry';
-import { transformNFTTokenToCollectionToken } from '../../../../entities/CollectionToken/CollectionTokenTransformers';
 import { AppErrorType, isAppError } from '../../../../errors/appError';
 import useInsufficientAmount from '../../../../hooks/useInsufficientAmount';
 import useNftTokenApproval from '../../../../hooks/useNftTokenApproval';
@@ -56,7 +55,7 @@ const ConnectedListNftWidget: FC<ListNftWidgetProps> = ({
   className = '',
 }) => {
   const dispatch = useAppDispatch();
-  const { tokenIds: userTokens } = useAppSelector(state => state.balances);
+  const { tokens: userTokens } = useAppSelector(state => state.balances);
   const { error: ordersError } = useAppSelector(state => state.orders);
   const { error: listNftError } = useAppSelector(state => state.listNft);
   const { collectionImage } = useAppSelector(state => state.config);
@@ -66,7 +65,7 @@ const ConnectedListNftWidget: FC<ListNftWidgetProps> = ({
   // User input states
   const [widgetState, setWidgetState] = useState<ListNftState>(ListNftState.details);
   const [selectedNft, setSelectedNft] = useState(userTokens[0]);
-  const collectionToken = transformNFTTokenToCollectionToken(collectionTokenInfo, selectedNft, '1');
+  const collectionToken = selectedNft;
   const [currencyTokenAmount, setCurrencyTokenAmount] = useState('0');
   const [expiryTimeUnit, setExpiryTimeUnit] = useState(ExpiryTimeUnit.minutes);
   const [expiryAmount, setExpiryAmount] = useState<number | undefined>(60);
@@ -75,7 +74,7 @@ const ConnectedListNftWidget: FC<ListNftWidgetProps> = ({
   const [currencyTokenAmountMinusProtocolFee, protocolFeeInCurrencyToken] = useTokenAmountAndFee(currencyTokenAmount);
   const hasInsufficientAmount = useInsufficientAmount(currencyTokenAmount);
   const hasInsufficientExpiryAmount = !expiryAmount || expiryAmount < 0;
-  const hasCollectionTokenApproval = useNftTokenApproval(collectionTokenInfo, selectedNft);
+  const hasCollectionTokenApproval = useNftTokenApproval(collectionTokenInfo, selectedNft?.id);
   const title = useMemo(() => getTitle(widgetState), [widgetState]);
 
   const handleActionButtonClick = async () => {
@@ -90,7 +89,7 @@ const ConnectedListNftWidget: FC<ListNftWidgetProps> = ({
         tokenInfo: collectionTokenInfo,
         library,
         chainId,
-        tokenId: selectedNft,
+        tokenId: selectedNft?.id,
       }))
         .unwrap()
         .then(() => {
@@ -118,7 +117,7 @@ const ConnectedListNftWidget: FC<ListNftWidgetProps> = ({
         protocolFee,
         senderTokenInfo: currencyTokenInfo,
         senderAmount: currencyTokenAmount,
-        tokenId: selectedNft,
+        tokenId: selectedNft?.id,
       })).unwrap()
         .then(() => {
           setWidgetState(ListNftState.success);
@@ -133,6 +132,10 @@ const ConnectedListNftWidget: FC<ListNftWidgetProps> = ({
     }
   };
 
+  const handleSelectedNftChange = (value: number) => {
+    setSelectedNft(userTokens.find(userToken => userToken.id === value) || userTokens[0]);
+  };
+
   useEffect(() => {
     if (hasCollectionTokenApproval && widgetState === ListNftState.approving) {
       setWidgetState(ListNftState.review);
@@ -142,8 +145,6 @@ const ConnectedListNftWidget: FC<ListNftWidgetProps> = ({
   useEffect(() => {
     setSelectedNft(userTokens[0]);
   }, [userTokens]);
-
-  console.log(userTokens, selectedNft);
 
   if (!userTokens.length) {
     return (
@@ -180,7 +181,7 @@ const ConnectedListNftWidget: FC<ListNftWidgetProps> = ({
         widgetState={widgetState}
         onExpiryAmountChange={setExpiryAmount}
         onExpiryTimeUnitChange={setExpiryTimeUnit}
-        onSelectedNftChange={setSelectedNft}
+        onSelectedNftChange={handleSelectedNftChange}
         onTradeTokenInputChange={setCurrencyTokenAmount}
         className="list-nft-widget__trade-details-container"
       />

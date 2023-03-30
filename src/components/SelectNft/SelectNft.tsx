@@ -3,6 +3,7 @@ import React, { FC, useMemo } from 'react';
 import { TokenInfo } from '@airswap/types';
 
 import Dropdown from '../../compositions/Dropdown/Dropdown';
+import { CollectionToken } from '../../entities/CollectionToken/CollectionToken';
 import { SelectOption } from '../../types/SelectOption';
 import Icon from '../Icon/Icon';
 import { getSelectNftOptions } from './helpers/getSelectNftOptions';
@@ -11,7 +12,7 @@ import './SelectNft.scss';
 
 interface SelectNftProps {
   logoURI?: string;
-  nfts: number[];
+  nfts: CollectionToken[];
   title: string;
   token: TokenInfo;
   value: number;
