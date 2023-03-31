@@ -1,13 +1,10 @@
 import BalanceChecker from '@airswap/balances/build/contracts/BalanceChecker.json';
-// eslint-disable-next-line import/extensions
-import balancesDeploys from '@airswap/balances/deploys.js';
+import balancesDeploys from '@airswap/balances/deploys';
 import { SwapERC20, Wrapper } from '@airswap/libraries';
 import { TokenInfo } from '@airswap/types';
 import { createAsyncThunk } from '@reduxjs/toolkit';
 import { BigNumber, ethers, providers } from 'ethers';
 
-import { CollectionToken } from '../../../entities/CollectionToken/CollectionToken';
-import { getCollectionToken } from '../../../entities/CollectionToken/CollectionTokenHelpers';
 import { getOwnedTokenIdsOfWallet } from './balancesHelpers';
 
 const balancesInterface = new ethers.utils.Interface(
@@ -103,17 +100,11 @@ interface fetchTokenIdsParams {
   collectionToken: TokenInfo;
 }
 
-export const fetchUserTokens = createAsyncThunk<CollectionToken[], fetchTokenIdsParams>(
+export const fetchUserTokens = createAsyncThunk<number[], fetchTokenIdsParams>(
   'balances/fetchUserTokens',
   async ({
     provider,
     walletAddress,
     collectionToken,
-  }) => {
-    const tokenIds = await getOwnedTokenIdsOfWallet(provider, walletAddress, collectionToken);
-    const tokens = await Promise.all(tokenIds
-      .map(tokenId => getCollectionToken(provider, collectionToken.address, tokenId)));
-
-    return tokens.filter(token => token) as CollectionToken[];
-  },
+  }) => getOwnedTokenIdsOfWallet(provider, walletAddress, collectionToken),
 );

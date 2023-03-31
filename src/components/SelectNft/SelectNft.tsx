@@ -3,7 +3,6 @@ import React, { FC, useMemo } from 'react';
 import { TokenInfo } from '@airswap/types';
 
 import Dropdown from '../../compositions/Dropdown/Dropdown';
-import { CollectionToken } from '../../entities/CollectionToken/CollectionToken';
 import { SelectOption } from '../../types/SelectOption';
 import Icon from '../Icon/Icon';
 import { getSelectNftOptions } from './helpers/getSelectNftOptions';
@@ -12,7 +11,7 @@ import './SelectNft.scss';
 
 interface SelectNftProps {
   logoURI?: string;
-  nfts: CollectionToken[];
+  tokens: number[];
   title: string;
   token: TokenInfo;
   value: number;
@@ -22,14 +21,14 @@ interface SelectNftProps {
 
 const SelectNft: FC<SelectNftProps> = ({
   logoURI,
-  nfts,
+  tokens,
   title,
   token,
   value,
   onSelect,
   className = '',
 }) => {
-  const options = useMemo(() => getSelectNftOptions(nfts, token.name), [nfts, token]);
+  const options = useMemo(() => getSelectNftOptions(tokens, token.name), [tokens, token]);
   const selectedOption = options.find(option => option.value === value?.toString()) || options[0] as SelectOption;
 
   const handleDropdownChange = (option: SelectOption): void => {

@@ -1,6 +1,5 @@
 import { createSlice, PayloadAction } from '@reduxjs/toolkit';
 
-import { CollectionToken } from '../../../entities/CollectionToken/CollectionToken';
 import { fetchAllowances, fetchBalances, fetchUserTokens } from './balancesApi';
 
 interface BalancesState {
@@ -14,7 +13,7 @@ interface BalancesState {
   balances: {
     [address: string]: string;
   };
-  tokens: CollectionToken[];
+  tokens: number[];
 }
 
 const initialState: BalancesState = {

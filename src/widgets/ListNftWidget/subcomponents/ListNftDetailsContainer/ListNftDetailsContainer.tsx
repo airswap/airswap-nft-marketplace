@@ -38,8 +38,8 @@ interface ListNftDetailContainerProps {
   projectFee: number;
   protocolFeeInCurrencyToken?: string;
   protocolFee: number;
-  selectedNft: CollectionToken;
-  userNfts: CollectionToken[];
+  selectedTokenId: number;
+  userTokens: number[];
   widgetState: ListNftState;
   onExpiryAmountChange: (value?: number) => void;
   onExpiryTimeUnitChange: (value: ExpiryTimeUnit) => void;
@@ -62,8 +62,8 @@ const ListNftDetailContainer: FC<ListNftDetailContainerProps> = ({
   projectFee,
   protocolFeeInCurrencyToken,
   protocolFee,
-  selectedNft,
-  userNfts,
+  selectedTokenId,
+  userTokens,
   widgetState,
   onExpiryAmountChange,
   onExpiryTimeUnitChange,
@@ -85,11 +85,11 @@ const ListNftDetailContainer: FC<ListNftDetailContainerProps> = ({
       {widgetState === ListNftState.details && (
         <>
           <SelectNft
-            logoURI={selectedNft ? selectedNft.image : collectionImage}
-            nfts={userNfts}
+            logoURI={collectionToken?.image}
+            tokens={userTokens}
             title="List"
             token={collectionTokenInfo}
-            value={selectedNft?.id}
+            value={selectedTokenId}
             onSelect={onSelectedNftChange}
             className="list-nft-details-container__select-nft"
           />
@@ -116,10 +116,10 @@ const ListNftDetailContainer: FC<ListNftDetailContainerProps> = ({
           {widgetState === ListNftState.listing && <LoadingSpinner className="list-nft-details-container__loading-spinner" />}
           {widgetState === ListNftState.success && <Icon name="check" className="list-nft-details-container__check-icon" />}
           <ReviewNftDetails
-            logoURI={selectedNft ? selectedNft.image : collectionImage}
+            logoURI={collectionToken ? collectionToken.image : collectionImage}
             title={widgetState === ListNftState.review ? 'List' : 'From'}
             token={collectionTokenInfo}
-            tokenId={selectedNft?.id}
+            tokenId={selectedTokenId}
           />
           <SwapIcon className="list-nft-details-container__swap-icon" />
           <ReviewTokenDetails
