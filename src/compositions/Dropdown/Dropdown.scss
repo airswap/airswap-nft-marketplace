@@ -30,7 +30,8 @@ $component: dropdown;
         background: var(--c-dark);
 
         &:focus + .#{$component}__options-container {
-            display: block;
+            visibility: visible;
+            pointer-events: visible;
         }
     }
 
@@ -66,11 +67,12 @@ $component: dropdown;
     }
 
     &__options-container {
-        display: none;
         position: absolute;
         top: 0;
         width: 100%;
         z-index: 10;
+        visibility: hidden;
+        pointer-events: none;
 
         &:before {
             @extend %after-block;
