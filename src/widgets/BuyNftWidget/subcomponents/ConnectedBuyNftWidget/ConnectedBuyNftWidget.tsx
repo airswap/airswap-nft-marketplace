@@ -45,7 +45,7 @@ const BuyNftWidget: FC<ConnectedBuyNftWidgetProps> = ({
 }) => {
   const { collectionImage, collectionName } = useAppSelector(state => state.config);
 
-  const collectionToken = collectionTokenInfo ? transformNFTTokenToCollectionToken(collectionTokenInfo, parseInt(fullOrder.signer.token, 10), '1') : undefined;
+  const collectionToken = collectionTokenInfo ? transformNFTTokenToCollectionToken(collectionTokenInfo, parseInt(fullOrder.signer.token, 10)) : undefined;
 
   const [widgetState, setWidgetState] = useState<BuyNftState>(BuyNftState.details);
 

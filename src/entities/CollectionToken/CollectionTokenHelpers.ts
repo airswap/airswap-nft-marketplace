@@ -16,7 +16,7 @@ export const getCollectionToken = async (library: ethers.providers.BaseProvider,
     return undefined;
   }
 
-  const token = transformNFTTokenToCollectionToken(tokenInfo, tokenId, '1');
+  const token = transformNFTTokenToCollectionToken(tokenInfo, tokenId);
 
   if (!token) {
     console.error(new Error(`Unable to parse data for ${address} with id ${tokenId}`));
