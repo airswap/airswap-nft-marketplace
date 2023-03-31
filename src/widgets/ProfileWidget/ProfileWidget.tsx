@@ -1,4 +1,4 @@
-import React, { FC } from 'react';
+import React, { FC, useState } from 'react';
 
 import { Web3Provider } from '@ethersproject/providers';
 import { useWeb3React } from '@web3-react/core';
@@ -9,6 +9,7 @@ import Button from '../../components/Button/Button';
 import { IconSearch } from '../../components/Icon/icons';
 import Input from '../../components/Input/Input';
 import NftCard from '../../components/NftCard/NftCard';
+import { CollectionToken } from '../../entities/CollectionToken/CollectionToken';
 import useEnsAddress from '../../hooks/useEnsAddress';
 import { useAppSelector } from '../../redux/hooks';
 import { AppRoutes } from '../../routes';
@@ -18,6 +19,7 @@ import ownedNfts from './temp-owned-nfts';
 import './ProfileWidget.scss';
 
 const ProfileWidget: FC = () => {
+  const [searchValue, setSearchValue] = useState('');
   // If there is a user active, then we need to check the id param to see if it's the same as the acccount
   const { active, account, deactivate } = useWeb3React<Web3Provider>();
   // If there is no id param, then we should display the current user's profile
@@ -32,9 +34,43 @@ const ProfileWidget: FC = () => {
     deactivate();
   };
 
-  console.log('ProfileWidget - Wallet connected: ', active ? 'Yes' : 'No');
-  console.log('ProfileWidget - isPrivate Profile: ', isPrivateProfile ? 'Yes' : 'No');
-  console.log('ProfileWidget - ownedNfts: ', ownedNfts);
+  if (false) {
+    console.log('ProfileWidget - Wallet connected: ', active ? 'Yes' : 'No');
+    console.log('ProfileWidget - isPrivate Profile: ', isPrivateProfile ? 'Yes' : 'No');
+    console.log('ProfileWidget - ownedNfts: ', ownedNfts);
+  }
+
+
+  const filterNftsBySearchValue = (sValue: string, toFilter: CollectionToken[]) => {
+    // If the search query is empty return all nfts
+    if (sValue === '') return toFilter;
+    const filteredNfts: CollectionToken[] = [];
+    // We can search by id, name, description & attribute values.
+    for (let i = 0; i < toFilter.length; i += 1) {
+      const nft = toFilter[i];
+      if (nft.name.toLowerCase().includes(sValue.toLowerCase())) {
+        filteredNfts.push(nft);
+      }
+      if (nft.description.toLowerCase().includes(sValue.toLowerCase())) {
+        filteredNfts.push(nft);
+      }
+      if (nft.id.toString().toLowerCase().includes(sValue.toLowerCase())) {
+        filteredNfts.push(nft);
+      }
+      if (nft.attributes) {
+        for (let j = 0; j < nft.attributes.length; j += 1) {
+          const attribute = nft.attributes[j];
+          if (attribute.value.toString().toLowerCase().includes(sValue.toLowerCase())) {
+            filteredNfts.push(nft);
+          }
+        }
+      }
+    }
+    // Remove duplicates
+    const uniqueNfts = filteredNfts.filter((nft, index) => filteredNfts.indexOf(nft) === index);
+    return uniqueNfts;
+  };
+
 
   return (
     <div className="profile-widget">
@@ -57,14 +93,14 @@ const ProfileWidget: FC = () => {
           <i className="profile-widget__search-bar-icon">
             <IconSearch />
           </i>
-          <Input className="profile-widget__search-bar" placeholder="Search NFT" />
+          <Input className="profile-widget__search-bar" placeholder="Search NFT" onChange={e => setSearchValue(e.target.value)} />
         </div>
         <div className="profile-widget__collections">
           <Accordion
             label="Dark Blue Collection"
             content={(
               <div className="profile-widget__nfts-container">
-                {ownedNfts.map((nft) => (
+                {filterNftsBySearchValue(searchValue, ownedNfts).map((nft) => (
                   <NftCard
                     key={nft.id}
                     imageURI={nft.image}
@@ -77,6 +113,7 @@ const ProfileWidget: FC = () => {
                 ))}
               </div>
             )}
+            isDefaultOpen
           />
 
         </div>
