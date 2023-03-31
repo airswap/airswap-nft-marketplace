@@ -4,7 +4,8 @@ import { AppError, AppErrorType, transformToAppError } from './appError';
 
 export interface RpcError {
   code: number;
-  message: any;
+  message?: any;
+  data?: any;
   stack: string;
 }
 
@@ -44,6 +45,10 @@ export const transformRpcErrorToAppError = (error: RpcError): AppError => {
 
   if (error.code === -32600) {
     return transformToAppError(AppErrorType.invalidRequest, error);
+  }
+
+  if (error.code === -32603) {
+    return transformToAppError(AppErrorType.approveCallerIsNotOwner, error);
   }
 
   // Add other errors from eth-rpc-errors if necessary.

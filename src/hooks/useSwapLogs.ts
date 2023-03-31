@@ -3,7 +3,6 @@ import { useEffect } from 'react';
 import { Wrapper } from '@airswap/libraries';
 /* eslint-disable import/no-extraneous-dependencies */
 import * as SwapContract from '@airswap/swap-erc20/build/contracts/SwapERC20.sol/SwapERC20.json';
-// @ts-ignore
 import * as swapDeploys from '@airswap/swap-erc20/deploys';
 import * as WrapperContract from '@airswap/wrapper/build/contracts/Wrapper.sol/Wrapper.json';
 import { Contract } from '@ethersproject/contracts';

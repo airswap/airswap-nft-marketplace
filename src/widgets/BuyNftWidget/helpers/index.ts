@@ -1,5 +1,5 @@
 import { TradeNftDetailsProps } from '../../../components/TradeNftDetails/TradeNftDetails';
-import { BuyNftState } from '../BuyNftWidget';
+import { BuyNftState } from '../subcomponents/ConnectedBuyNftWidget/ConnectedBuyNftWidget';
 
 export const getNftDetailsIcon = (state: BuyNftState): TradeNftDetailsProps['icon'] => {
   if (state === BuyNftState.success) {

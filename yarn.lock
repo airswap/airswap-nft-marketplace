@@ -82,6 +82,13 @@
   dependencies:
     "@openzeppelin/contracts" "^4.8.1"
 
+"@airswap/swap@^4.0.2":
+  version "4.0.2"
+  resolved "https://registry.yarnpkg.com/@airswap/swap/-/swap-4.0.2.tgz#8a6e1ef8e5306c9d28da40dc67beff6d1a5c82fc"
+  integrity sha512-deZc+R8v2UZIdx33l6EUfubGZXz/GoWlz3g1PhCLEkjLxXE4BLSfJZv+Z1PwDMhhTwFdSLNxsed/+9Lk85fhzQ==
+  dependencies:
+    "@openzeppelin/contracts" "^4.8.1"
+
 "@airswap/types@4.0.1", "@airswap/types@^4.0.0":
   version "4.0.1"
   resolved "https://registry.yarnpkg.com/@airswap/types/-/types-4.0.1.tgz#64a9269e56f947df19eff9504ce3a84731684a21"

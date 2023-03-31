@@ -23,6 +23,11 @@ const transformUnknownErrorToAppError = (error: any): AppError => {
     return transformRpcErrorToAppError(error);
   }
 
+  // Sometimes the RPC error is wrapped inside another error.
+  if (isRpcError(error?.error)) {
+    return transformRpcErrorToAppError(error.error);
+  }
+
   if (isEthersProjectError(error)) {
     return transformEthersProjectErrorToAppError(error);
   }

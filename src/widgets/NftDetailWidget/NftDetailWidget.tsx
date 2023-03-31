@@ -7,11 +7,22 @@ import DisconnectedNftDetailWidget from './subcomponents/DisconnectedNftDetailWi
 
 import './NftDetailWidget.scss';
 
-const NftDetailWidget: FC = () => {
+interface NftDetailWidgetProps {
+  className?: string;
+}
+
+const NftDetailWidget: FC<NftDetailWidgetProps> = ({ className = '' }) => {
   const { library } = useWeb3React();
 
-  if (library) return <ConnectedNftDetailWidget library={library} />;
-  return <DisconnectedNftDetailWidget />;
+  if (library) {
+    return (
+      <ConnectedNftDetailWidget
+        library={library}
+        className={className}
+      />
+    );
+  }
+  return <DisconnectedNftDetailWidget className={className} />;
 };
 
 export default NftDetailWidget;
