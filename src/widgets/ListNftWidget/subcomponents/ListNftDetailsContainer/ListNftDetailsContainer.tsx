@@ -8,6 +8,7 @@ import Icon from '../../../../components/Icon/Icon';
 import LoadingSpinner from '../../../../components/LoadingSpinner/LoadingSpinner';
 import ReviewNftDetails from '../../../../components/ReviewNftDetails/ReviewNftDetails';
 import ReviewTokenDetails from '../../../../components/ReviewTokenDetails/ReviewTokenDetails';
+import SelectNft from '../../../../components/SelectNft/SelectNft';
 import TradeDetails from '../../../../components/TradeDetails/TradeDetails';
 import CopyLinkButton from '../../../../compositions/CopyLinkButton/CopyLinkButton';
 import SelectExpiry from '../../../../compositions/SelectExpiry/SelectExpiry';
@@ -37,10 +38,12 @@ interface ListNftDetailContainerProps {
   projectFee: number;
   protocolFeeInCurrencyToken?: string;
   protocolFee: number;
-  tokenId: number;
+  selectedTokenId: number;
+  userTokens: number[];
   widgetState: ListNftState;
   onExpiryAmountChange: (value?: number) => void;
   onExpiryTimeUnitChange: (value: ExpiryTimeUnit) => void;
+  onSelectedNftChange: (value: number) => void;
   onTradeTokenInputChange: (value: string) => void;
   className?: string;
 }
@@ -59,10 +62,12 @@ const ListNftDetailContainer: FC<ListNftDetailContainerProps> = ({
   projectFee,
   protocolFeeInCurrencyToken,
   protocolFee,
-  tokenId,
+  selectedTokenId,
+  userTokens,
   widgetState,
   onExpiryAmountChange,
   onExpiryTimeUnitChange,
+  onSelectedNftChange,
   onTradeTokenInputChange,
   className = '',
 }) => {
@@ -79,10 +84,14 @@ const ListNftDetailContainer: FC<ListNftDetailContainerProps> = ({
     <div className={wrapperClassNames}>
       {widgetState === ListNftState.details && (
         <>
-          <TradeDetails
-            logoURI={collectionToken ? collectionToken.image : collectionImage}
+          <SelectNft
+            logoURI={collectionToken?.image}
+            tokens={userTokens}
             title="List"
             token={collectionTokenInfo}
+            value={selectedTokenId}
+            onSelect={onSelectedNftChange}
+            className="list-nft-details-container__select-nft"
           />
           <SwapIcon className="list-nft-details-container__swap-icon" />
           <TradeTokenInput
@@ -110,7 +119,7 @@ const ListNftDetailContainer: FC<ListNftDetailContainerProps> = ({
             logoURI={collectionToken ? collectionToken.image : collectionImage}
             title={widgetState === ListNftState.review ? 'List' : 'From'}
             token={collectionTokenInfo}
-            tokenId={tokenId}
+            tokenId={selectedTokenId}
           />
           <SwapIcon className="list-nft-details-container__swap-icon" />
           <ReviewTokenDetails

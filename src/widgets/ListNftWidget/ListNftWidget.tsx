@@ -13,9 +13,11 @@ interface ListNftWidgetProps {
 
 const ListNftWidget: FC<ListNftWidgetProps> = ({ className = '' }) => {
   const { account, library, chainId } = useWeb3React();
-  const { isLoading } = useAppSelector(state => state.metadata);
+  const { isLoading: isMetadataLoading } = useAppSelector(state => state.metadata);
+  const { isLoading: isBalancesLoading } = useAppSelector(state => state.balances);
   const currencyToken = useAppSelector(selectCurrencyTokenInfo);
   const collectionToken = useAppSelector(selectCollectionTokenInfo);
+  const isLoading = isBalancesLoading || isMetadataLoading;
 
   if (
     !isLoading

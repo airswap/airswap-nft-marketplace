@@ -59,7 +59,7 @@ const ConnectedNftDetailWidget: FC<ConnectedNftDetailWidgetProps> = ({ library, 
             className="nft-detail-widget__portrait"
           />
           <NftDetailSaleInfo
-            price={BigNumber.from(tokenMeta.price)}
+            price={BigNumber.from('0')}
             symbol={tokenMeta.symbol}
             className="nft-detail-widget__price"
           />
@@ -127,7 +127,7 @@ const ConnectedNftDetailWidget: FC<ConnectedNftDetailWidgetProps> = ({ library, 
               <p>{tokenMeta?.description}</p>
             </div>
             <NftDetailSaleInfo
-              price={BigNumber.from(tokenMeta.price)}
+              price={BigNumber.from('0')}
               symbol={tokenMeta.symbol}
               className="nft-detail-widget__price"
             />

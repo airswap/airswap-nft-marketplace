@@ -1,8 +1,6 @@
 import { getLibrary } from '../../../helpers/ethers';
 import { store } from '../../store';
-import {
-  fetchAllowances, fetchBalances, fetchTokenIds,
-} from './balancesApi';
+import { fetchAllowances, fetchBalances, fetchUserTokens } from './balancesApi';
 
 export const configureBalancesSubscriber = () => {
   let tokenKeysString: string;
@@ -37,7 +35,7 @@ export const configureBalancesSubscriber = () => {
         walletAddress: web3.account,
       }));
 
-      store.dispatch(fetchTokenIds({
+      store.dispatch(fetchUserTokens({
         provider: library,
         walletAddress: web3.account,
         collectionToken: metadata.tokens[config.collectionToken],

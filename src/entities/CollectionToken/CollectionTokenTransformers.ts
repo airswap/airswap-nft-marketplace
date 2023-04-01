@@ -19,11 +19,10 @@ export const transformErc721TokenAttributesToCollectionTokenAttributes = (attrib
   return collectionTokenAttributes;
 };
 
-export const transformErc721TokenToCollectionToken = (token: Erc721Token, tokenId: number, price: string): CollectionToken => ({
+export const transformErc721TokenToCollectionToken = (token: Erc721Token, tokenId: number): CollectionToken => ({
   id: tokenId,
   image: token.extensions.metadata.image.replace('ipfs://', 'https://ipfs.io/ipfs/'),
   description: token.extensions.metadata.description,
-  price,
   symbol: token.symbol,
   attributes: (token.extensions.metadata.attributes || []).map(transformErc721TokenAttributeToCollectionTokenAttribute),
   name: token.name,
@@ -34,11 +33,10 @@ const transformErc1155TokenAttributeToCollectionTokenAttribute = (attribute: Erc
   value: `${attribute.value}`,
 });
 
-export const transformErc1155TokenToCollectionToken = (token: Erc1155Token, tokenId: number, price: string): CollectionToken => ({
+export const transformErc1155TokenToCollectionToken = (token: Erc1155Token, tokenId: number): CollectionToken => ({
   id: tokenId,
   image: (token.extensions.metadata.image_url || token.extensions.metadata.image).replace('ipfs://', 'https://ipfs.io/ipfs/'),
   description: token.extensions.metadata.description,
-  price,
   symbol: token.symbol,
   name: token.extensions.metadata.name,
   attributes: (token.extensions.metadata.attributes || []).map(transformErc1155TokenAttributeToCollectionTokenAttribute),
@@ -46,12 +44,12 @@ export const transformErc1155TokenToCollectionToken = (token: Erc1155Token, toke
   externalUrl: token.extensions.metadata.external_url,
 });
 
-export const transformNFTTokenToCollectionToken = (tokenInfo: TokenInfo, tokenId: number, price: string): CollectionToken | undefined => {
+export const transformNFTTokenToCollectionToken = (tokenInfo: TokenInfo, tokenId: number): CollectionToken | undefined => {
   switch (tokenInfo.extensions?.kind) {
     case tokenKinds.ERC721:
-      return transformErc721TokenToCollectionToken(tokenInfo as unknown as Erc721Token, tokenId, price);
+      return transformErc721TokenToCollectionToken(tokenInfo as unknown as Erc721Token, tokenId);
     case tokenKinds.ERC1155:
-      return transformErc1155TokenToCollectionToken(tokenInfo as unknown as Erc1155Token, tokenId, price);
+      return transformErc1155TokenToCollectionToken(tokenInfo as unknown as Erc1155Token, tokenId);
     default:
       return undefined;
   }

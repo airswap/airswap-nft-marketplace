@@ -1,29 +1,29 @@
 import { createSlice, PayloadAction } from '@reduxjs/toolkit';
 
-import { fetchAllowances, fetchBalances, fetchTokenIds } from './balancesApi';
+import { fetchAllowances, fetchBalances, fetchUserTokens } from './balancesApi';
 
 interface BalancesState {
   isLoading: boolean;
   isLoadingAllowances: boolean;
   isLoadingBalances: boolean;
-  isLoadingUserTokens: boolean;
+  isLoadingTokens: boolean;
   allowances: {
     [address: string]: string;
   };
   balances: {
     [address: string]: string;
   };
-  tokenIds: number[];
+  tokens: number[];
 }
 
 const initialState: BalancesState = {
   isLoading: false,
   isLoadingAllowances: false,
   isLoadingBalances: false,
-  isLoadingUserTokens: false,
+  isLoadingTokens: false,
   allowances: {},
   balances: {},
-  tokenIds: [],
+  tokens: [],
 };
 
 const balancesSlice = createSlice({
@@ -70,22 +70,22 @@ const balancesSlice = createSlice({
 
     builder.addCase(fetchBalances.fulfilled, (state, action): BalancesState => ({
       ...state,
-      isLoading: state.isLoadingAllowances && state.isLoadingUserTokens,
+      isLoading: state.isLoadingAllowances || state.isLoadingTokens,
       isLoadingBalances: false,
       balances: action.payload,
     }));
 
-    builder.addCase(fetchTokenIds.pending, (state) => ({
+    builder.addCase(fetchUserTokens.pending, (state): BalancesState => ({
       ...state,
       isLoading: true,
-      isLoadingUserTokens: true,
+      isLoadingTokens: true,
     }));
 
-    builder.addCase(fetchTokenIds.fulfilled, (state, action) => ({
+    builder.addCase(fetchUserTokens.fulfilled, (state, action): BalancesState => ({
       ...state,
-      isLoading: state.isLoadingAllowances && state.isLoadingBalances,
-      isLoadingUserTokens: false,
-      tokenIds: action.payload,
+      isLoading: state.isLoadingAllowances || state.isLoadingBalances,
+      isLoadingTokens: false,
+      tokens: action.payload,
     }));
 
     builder.addCase(fetchAllowances.pending, (state): BalancesState => ({
@@ -96,7 +96,7 @@ const balancesSlice = createSlice({
 
     builder.addCase(fetchAllowances.fulfilled, (state, action): BalancesState => ({
       ...state,
-      isLoading: state.isLoadingBalances && state.isLoadingUserTokens,
+      isLoading: state.isLoadingBalances || state.isLoadingTokens,
       isLoadingAllowances: false,
       allowances: action.payload,
     }));

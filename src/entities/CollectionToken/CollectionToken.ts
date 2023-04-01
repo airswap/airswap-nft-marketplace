@@ -9,7 +9,6 @@ export interface CollectionToken {
   image: string;
   description: string;
   attributes: CollectionTokenAttribute[];
-  price: string;
   symbol: string;
   createdBy?: string;
   externalUrl?: string;

@@ -21,7 +21,7 @@ CollectionToken, FetchNftMetaParams>(
     } catch (e) {
       throw new Error(`Unable to fetch data for ${collectionToken} with id ${tokenId}`);
     }
-    const data = transformNFTTokenToCollectionToken(tokenInfo, parseInt(tokenId, 10), '9999999999');
+    const data = transformNFTTokenToCollectionToken(tokenInfo, parseInt(tokenId, 10));
     if (!data) {
       throw new Error(`Unable to transform ${collectionToken} to CollectionToken`);
     }
