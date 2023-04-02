@@ -4,6 +4,8 @@ import { fetchAllowances, fetchBalances, fetchUserTokens } from './balancesApi';
 
 export const configureBalancesSubscriber = () => {
   let tokenKeysString: string;
+  let account: string;
+  let chainId: number;
 
   store.subscribe(() => {
     const { metadata, web3, config } = store.getState();
@@ -11,13 +13,14 @@ export const configureBalancesSubscriber = () => {
     const newTokenKeys = Object.keys(metadata.tokens);
     const newTokenKeysString = newTokenKeys.toString();
 
-    if (
-      tokenKeysString !== newTokenKeysString
-      && newTokenKeys.length
-      && web3.chainId
-      && web3.account
-    ) {
+    if (!newTokenKeys.length || !web3.chainId || !web3.account) {
+      return;
+    }
+
+    if (tokenKeysString !== newTokenKeysString || account !== web3.account || chainId !== web3.chainId) {
       tokenKeysString = newTokenKeysString;
+      account = web3.account;
+      chainId = web3.chainId;
 
       const library = getLibrary(web3.chainId);
 

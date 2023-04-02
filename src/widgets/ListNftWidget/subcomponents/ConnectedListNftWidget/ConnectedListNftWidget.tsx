@@ -41,6 +41,7 @@ interface ListNftWidgetProps {
   chainId: number;
   currencyTokenInfo: TokenInfo;
   library: Web3Provider
+  userTokens: number[];
   className?: string;
 }
 
@@ -49,12 +50,12 @@ const ConnectedListNftWidget: FC<ListNftWidgetProps> = ({
   chainId,
   currencyTokenInfo,
   library,
+  userTokens,
   className = '',
 }) => {
   const dispatch = useAppDispatch();
 
   // Store data
-  const { tokens: userTokens } = useAppSelector(state => state.balances);
   const { error: ordersError } = useAppSelector(state => state.orders);
   const { error: listNftError } = useAppSelector(state => state.listNft);
   const { collectionImage, collectionToken } = useAppSelector(state => state.config);
@@ -144,15 +145,6 @@ const ConnectedListNftWidget: FC<ListNftWidgetProps> = ({
   useEffect(() => {
     setSelectedTokenId(userTokens[0]);
   }, [userTokens]);
-
-  if (!userTokens.length) {
-    return (
-      <div className={`list-nft-widget ${className}`}>
-        <h1>List NFT</h1>
-        You have no nfts to list
-      </div>
-    );
-  }
 
   return (
     <div className={`list-nft-widget ${className}`}>
