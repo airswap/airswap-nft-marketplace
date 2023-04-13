@@ -1,6 +1,6 @@
 import { TokenKinds } from '@airswap/constants';
 import * as swapDeploys from '@airswap/swap/deploys';
-import { FullOrder, TokenInfo } from '@airswap/types';
+import { CollectionTokenInfo, FullOrder, TokenInfo } from '@airswap/types';
 import { createOrder, toAtomicString } from '@airswap/utils';
 import { Web3Provider } from '@ethersproject/providers';
 import { createAsyncThunk } from '@reduxjs/toolkit';
@@ -14,7 +14,7 @@ interface CreateOrderParams {
   expiry: string;
   library: Web3Provider;
   protocolFee: number;
-  signerTokenInfo: TokenInfo;
+  signerTokenInfo: CollectionTokenInfo;
   signerWallet: string;
   senderAmount: string;
   senderTokenInfo: TokenInfo;

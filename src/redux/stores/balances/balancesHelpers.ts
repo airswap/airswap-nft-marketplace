@@ -1,5 +1,4 @@
 import { tokenKinds } from '@airswap/constants';
-import { TokenInfo } from '@airswap/types';
 // eslint-disable-next-line import/no-extraneous-dependencies
 import { Event } from '@ethersproject/contracts';
 import erc721AbiContract from '@openzeppelin/contracts/build/contracts/ERC721.json';
@@ -26,9 +25,9 @@ export const getUniqueTokensForWallet = (tokenIds: BigNumber[], collectionContra
 export const getOwnedTokenIdsOfWallet = async (
   provider: ethers.providers.Web3Provider,
   walletAddress: string,
-  collectionToken: TokenInfo,
+  collectionToken: string,
 ) => {
-  const contract = new ethers.Contract(collectionToken.address, erc721AbiContract.abi, provider);
+  const contract = new ethers.Contract(collectionToken, erc721AbiContract.abi, provider);
 
   const [isErc721Enumerable, isErc721, isErc1155] = await Promise.all([
     contract.supportsInterface('0x780e9d63'), // The interface ID for erc721 enumerable
@@ -37,7 +36,7 @@ export const getOwnedTokenIdsOfWallet = async (
   ]) as boolean[];
 
   if (isErc721Enumerable) {
-    const collectionContract = new ethers.Contract(collectionToken.address, erc721EnumerableContract.abi, provider);
+    const collectionContract = new ethers.Contract(collectionToken, erc721EnumerableContract.abi, provider);
 
     const balance: number = await collectionContract.balanceOf(walletAddress);
     const indexes = Array.from({ length: balance }, (_, i) => i);
@@ -51,7 +50,7 @@ export const getOwnedTokenIdsOfWallet = async (
   }
 
   if (isErc721) {
-    const collectionContract = new ethers.Contract(collectionToken.address, erc721AbiContract.abi, provider);
+    const collectionContract = new ethers.Contract(collectionToken, erc721AbiContract.abi, provider);
     const transferFilter = collectionContract.filters.Transfer(null, walletAddress);
 
     const events: Event[] = await collectionContract.queryFilter(transferFilter, 0);
@@ -62,7 +61,7 @@ export const getOwnedTokenIdsOfWallet = async (
   }
 
   if (isErc1155) {
-    const collectionContract = new ethers.Contract(collectionToken.address, erc1155Contract.abi, provider);
+    const collectionContract = new ethers.Contract(collectionToken, erc1155Contract.abi, provider);
     const transferFilter = collectionContract.filters.TransferSingle(null, null, walletAddress);
 
     const events: Event[] = await collectionContract.queryFilter(transferFilter, 0);

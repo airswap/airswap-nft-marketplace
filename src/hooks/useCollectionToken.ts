@@ -1,16 +1,16 @@
 import { useEffect, useState } from 'react';
 
+import { CollectionTokenInfo } from '@airswap/types';
 import { Web3Provider } from '@ethersproject/providers';
 import { useWeb3React } from '@web3-react/core';
 
-import { CollectionToken } from '../entities/CollectionToken/CollectionToken';
 import { getCollectionToken } from '../entities/CollectionToken/CollectionTokenHelpers';
 
-const useCollectionToken = (address: string, tokenId: number): CollectionToken | undefined => {
+const useCollectionToken = (address: string, tokenId: number): CollectionTokenInfo | undefined => {
   const { library } = useWeb3React<Web3Provider>();
 
   const [contractCalled, setIsContractCalled] = useState(false);
-  const [collectionToken, setCollectionToken] = useState<CollectionToken>();
+  const [collectionToken, setCollectionToken] = useState<CollectionTokenInfo>();
 
   useEffect((): void => {
     setIsContractCalled(false);

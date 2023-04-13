@@ -16,7 +16,6 @@ export const configureMetadataSubscriber = () => {
 
       store.dispatch(getCurrencyTokenInfo({
         currencyToken: config.currencyToken,
-        collectionToken: config.collectionToken,
         library,
         chainId: web3.chainId,
       }));

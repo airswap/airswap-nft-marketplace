@@ -1,7 +1,6 @@
 import BalanceChecker from '@airswap/balances/build/contracts/BalanceChecker.json';
 import balancesDeploys from '@airswap/balances/deploys';
 import { SwapERC20, Wrapper } from '@airswap/libraries';
-import { TokenInfo } from '@airswap/types';
 import { createAsyncThunk } from '@reduxjs/toolkit';
 import { BigNumber, ethers, providers } from 'ethers';
 
@@ -97,7 +96,7 @@ export const getTransactionsLocalStorageKey: (
 interface fetchTokenIdsParams {
   provider: ethers.providers.Web3Provider;
   walletAddress: string;
-  collectionToken: TokenInfo;
+  collectionToken: string;
 }
 
 export const fetchUserTokens = createAsyncThunk<number[], fetchTokenIdsParams>(

@@ -1,3 +1,4 @@
+import { CollectionTokenInfo } from '@airswap/types';
 import { createSlice } from '@reduxjs/toolkit';
 
 import { CollectionToken } from '../../../entities/CollectionToken/CollectionToken';
@@ -25,7 +26,7 @@ const collectionSlice = createSlice({
     }));
 
     builder.addCase(fetchCollectionTokens.fulfilled, (state, action) => {
-      const filteredTokens = action.payload.filter(token => token !== undefined) as CollectionToken[];
+      const filteredTokens = action.payload.filter(token => token !== undefined) as CollectionTokenInfo[];
 
       const newTokensData = getUniqueArrayChildren([
         ...state.tokensData,

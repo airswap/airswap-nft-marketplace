@@ -64,7 +64,6 @@ export const {
   setIsLoading,
 } = metadataSlice.actions;
 
-export const selectCollectionTokenInfo = (state: RootState): TokenInfo | undefined => state.metadata.tokens[state.config.collectionToken];
 export const selectCurrencyTokenInfo = (state: RootState): TokenInfo | undefined => state.metadata.tokens[state.config.currencyToken];
 
 export default metadataSlice.reducer;

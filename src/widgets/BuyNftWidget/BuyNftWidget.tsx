@@ -1,7 +1,8 @@
 import React, { FC } from 'react';
 
+import useCollectionToken from '../../hooks/useCollectionToken';
 import { useAppSelector } from '../../redux/hooks';
-import { selectCollectionTokenInfo, selectCurrencyTokenInfo } from '../../redux/stores/metadata/metadataSlice';
+import { selectCurrencyTokenInfo } from '../../redux/stores/metadata/metadataSlice';
 import ConnectedBuyNftWidget from './subcomponents/ConnectedBuyNftWidget/ConnectedBuyNftWidget';
 import DisconnectedBuyNftWidget from './subcomponents/DisconnectedBuyNftWidget/DisconnectedBuyNftWidget';
 
@@ -14,9 +15,11 @@ interface BuyNftWidgetProps {
 const BuyNftWidget: FC<BuyNftWidgetProps> = ({ className = '' }) => {
   const { isLoading: isLoadingMetadata } = useAppSelector(state => state.metadata);
   const { lastUserOrder } = useAppSelector((state) => state.listNft);
+  const { collectionToken } = useAppSelector((state) => state.config);
 
-  const collectionTokenInfo = useAppSelector(selectCollectionTokenInfo);
   const currencyTokenInfo = useAppSelector(selectCurrencyTokenInfo);
+  const id = lastUserOrder ? parseInt(lastUserOrder?.signer.id, 10) : 1;
+  const collectionTokenInfo = useCollectionToken(collectionToken, id);
 
   if (
     !isLoadingMetadata

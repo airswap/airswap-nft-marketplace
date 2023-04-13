@@ -1,6 +1,6 @@
 import React, { FC, useMemo } from 'react';
 
-import { TokenInfo } from '@airswap/types';
+import { CollectionTokenInfo } from '@airswap/types';
 
 import Dropdown from '../../compositions/Dropdown/Dropdown';
 import { SelectOption } from '../../types/SelectOption';
@@ -13,7 +13,7 @@ interface SelectNftProps {
   logoURI?: string;
   tokens: number[];
   title: string;
-  token: TokenInfo;
+  token?: CollectionTokenInfo;
   value: number;
   onSelect: (value: number) => void;
   className?: string;
@@ -28,7 +28,7 @@ const SelectNft: FC<SelectNftProps> = ({
   onSelect,
   className = '',
 }) => {
-  const options = useMemo(() => getSelectNftOptions(tokens, token.name), [tokens, token]);
+  const options = useMemo(() => getSelectNftOptions(tokens), [tokens, token]);
   const selectedOption = options.find(option => option.value === value?.toString()) || options[0] as SelectOption;
 
   const handleDropdownChange = (option: SelectOption): void => {
@@ -40,7 +40,7 @@ const SelectNft: FC<SelectNftProps> = ({
       <div className="select-nft__logo-icon" style={{ backgroundImage: `url("${logoURI}")` }} />
       <div className="select-nft__title-and-name">
         <h3 className="select-nft__title">{title}</h3>
-        <h4 className="select-nft__name">{`${token.name} #${value}`}</h4>
+        <h4 className="select-nft__name">{token?.name || ''}</h4>
       </div>
       <Icon name="chevron-down" className="select-nft__chevron-down-icon" />
 

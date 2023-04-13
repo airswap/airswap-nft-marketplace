@@ -1,6 +1,6 @@
 import React, { FC } from 'react';
 
-import { FullOrder, TokenInfo } from '@airswap/types';
+import { CollectionTokenInfo, FullOrder, TokenInfo } from '@airswap/types';
 import classNames from 'classnames';
 
 import ExpiryIndicator from '../../../../components/ExpiryIndicator/ExpiryIndicator';
@@ -14,7 +14,6 @@ import CopyLinkButton from '../../../../compositions/CopyLinkButton/CopyLinkButt
 import SelectExpiry from '../../../../compositions/SelectExpiry/SelectExpiry';
 import TradeTokenInput from '../../../../compositions/TradeTokenInput/TradeTokenInput';
 import TransactionLink from '../../../../compositions/TransactionLink/TransactionLink';
-import { CollectionToken } from '../../../../entities/CollectionToken/CollectionToken';
 import { AppError } from '../../../../errors/appError';
 import writeTextToClipboard from '../../../../helpers/browser';
 import { AppRoutes } from '../../../../routes';
@@ -26,8 +25,7 @@ import './ListNftDetailsContainer.scss';
 
 interface ListNftDetailContainerProps {
   collectionImage: string;
-  collectionTokenInfo: TokenInfo;
-  collectionToken?: CollectionToken;
+  collectionTokenInfo?: CollectionTokenInfo;
   currencyTokenAmount: string;
   currencyTokenAmountMinusProtocolFee?: string;
   currencyTokenInfo: TokenInfo;
@@ -51,7 +49,6 @@ interface ListNftDetailContainerProps {
 const ListNftDetailContainer: FC<ListNftDetailContainerProps> = ({
   collectionImage,
   collectionTokenInfo,
-  collectionToken,
   currencyTokenInfo,
   currencyTokenAmount,
   currencyTokenAmountMinusProtocolFee,
@@ -85,7 +82,7 @@ const ListNftDetailContainer: FC<ListNftDetailContainerProps> = ({
       {widgetState === ListNftState.details && (
         <>
           <SelectNft
-            logoURI={collectionToken?.image}
+            logoURI={collectionTokenInfo?.image}
             tokens={userTokens}
             title="List"
             token={collectionTokenInfo}
@@ -116,10 +113,9 @@ const ListNftDetailContainer: FC<ListNftDetailContainerProps> = ({
           {widgetState === ListNftState.listing && <LoadingSpinner className="list-nft-details-container__loading-spinner" />}
           {widgetState === ListNftState.success && <Icon name="check" className="list-nft-details-container__check-icon" />}
           <ReviewNftDetails
-            logoURI={collectionToken ? collectionToken.image : collectionImage}
+            logoURI={collectionTokenInfo ? collectionTokenInfo.image : collectionImage}
             title={widgetState === ListNftState.review ? 'List' : 'From'}
             token={collectionTokenInfo}
-            tokenId={selectedTokenId}
           />
           <SwapIcon className="list-nft-details-container__swap-icon" />
           <ReviewTokenDetails
@@ -153,11 +149,13 @@ const ListNftDetailContainer: FC<ListNftDetailContainerProps> = ({
       {widgetState === ListNftState.approving && (
         <>
           <LoadingSpinner className="list-nft-details-container__loading-spinner" />
-          <TradeDetails
-            logoURI={collectionToken ? collectionToken.image : collectionImage}
-            title="Approving"
-            token={collectionTokenInfo}
-          />
+          {collectionTokenInfo && (
+            <TradeDetails
+              logoURI={collectionTokenInfo ? collectionTokenInfo.image : collectionImage}
+              title="Approving"
+              token={collectionTokenInfo}
+            />
+          )}
           <TransactionLink
             to="test"
             className="list-nft-details-container__transaction-link"

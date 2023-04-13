@@ -1,4 +1,4 @@
-import { getTokenFromContract } from '@airswap/metadata';
+import { getCollectionTokenInfo } from '@airswap/metadata';
 import { TokenInfo } from '@airswap/types';
 import { Web3Provider } from '@ethersproject/providers';
 import { createAsyncThunk } from '@reduxjs/toolkit';
@@ -17,7 +17,7 @@ CollectionToken, FetchNftMetaParams>(
   async ({ library, collectionToken, tokenId }) => {
     let tokenInfo: TokenInfo;
     try {
-      tokenInfo = await getTokenFromContract(library, collectionToken, tokenId);
+      tokenInfo = await getCollectionTokenInfo(library, collectionToken, tokenId);
     } catch (e) {
       throw new Error(`Unable to fetch data for ${collectionToken} with id ${tokenId}`);
     }
