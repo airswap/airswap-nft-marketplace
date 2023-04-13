@@ -1,13 +1,12 @@
 import { CollectionTokenInfo } from '@airswap/types';
 import { createSlice } from '@reduxjs/toolkit';
 
-import { CollectionToken } from '../../../entities/CollectionToken/CollectionToken';
 import { getUniqueArrayChildren } from '../../../helpers/array';
 import { fetchCollectionTokens } from './collectionApi';
 
 export interface CollectionState {
   isLoading: boolean;
-  tokensData: CollectionToken[];
+  tokensData: CollectionTokenInfo[];
 }
 
 const initialState: CollectionState = {
@@ -31,7 +30,7 @@ const collectionSlice = createSlice({
       const newTokensData = getUniqueArrayChildren([
         ...state.tokensData,
         ...filteredTokens,
-      ].sort((a, b) => a.id - b.id), 'id') as CollectionToken[];
+      ].sort((a, b) => a.id - b.id), 'id') as CollectionTokenInfo[];
 
       return {
         ...state,
