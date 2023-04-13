@@ -36,9 +36,7 @@ const useSufficientErc20Allowance = (
       return true;
     }
 
-    return new BigNumber(tokenAllowance)
-      .div(10 ** justifiedToken.decimals)
-      .gte(amount);
+    return new BigNumber(tokenAllowance).gte(amount);
   }, [allowances, amount, token, tokens, chainId]);
 };
 

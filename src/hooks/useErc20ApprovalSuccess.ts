@@ -15,7 +15,6 @@ const useErc20ApprovalSuccess = (tokenAddress?: string | null): boolean => {
       return false;
     }
 
-    console.log(approvals);
     const tokenApprovals = approvals.filter(approval => approval.tokenAddress === tokenAddress);
     const lastApproval = tokenApprovals[0];
 

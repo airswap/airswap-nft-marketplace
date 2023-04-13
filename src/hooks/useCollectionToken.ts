@@ -6,10 +6,11 @@ import { useWeb3React } from '@web3-react/core';
 
 import { getCollectionToken } from '../entities/CollectionToken/CollectionTokenHelpers';
 
-const useCollectionToken = (address: string, tokenId: number): CollectionTokenInfo | undefined => {
+const useCollectionToken = (address: string, tokenId: number): [CollectionTokenInfo | undefined, boolean] => {
   const { library } = useWeb3React<Web3Provider>();
 
-  const [contractCalled, setIsContractCalled] = useState(false);
+  const [isContractCalled, setIsContractCalled] = useState(false);
+  const [isContractLoading, setIsContractLoading] = useState(false);
   const [collectionToken, setCollectionToken] = useState<CollectionTokenInfo>();
 
   useEffect((): void => {
@@ -18,7 +19,7 @@ const useCollectionToken = (address: string, tokenId: number): CollectionTokenIn
   }, [tokenId]);
 
   useEffect((): void => {
-    if (!library || contractCalled) {
+    if (!library || isContractCalled) {
       return;
     }
 
@@ -26,18 +27,20 @@ const useCollectionToken = (address: string, tokenId: number): CollectionTokenIn
       const result = await getCollectionToken(library, address, tokenId);
 
       setCollectionToken(result);
+      setIsContractLoading(false);
     };
 
     setIsContractCalled(true);
+    setIsContractLoading(true);
     callGetCollectionToken();
   }, [
     library,
     address,
     tokenId,
-    contractCalled,
+    isContractCalled,
   ]);
 
-  return collectionToken;
+  return [collectionToken, isContractLoading];
 };
 
 export default useCollectionToken;

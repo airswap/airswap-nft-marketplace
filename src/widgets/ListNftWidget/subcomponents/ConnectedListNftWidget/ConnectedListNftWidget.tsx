@@ -69,7 +69,7 @@ const ConnectedListNftWidget: FC<ListNftWidgetProps> = ({
   const [expiryAmount, setExpiryAmount] = useState<number | undefined>(60);
 
   // States derived from user input
-  const collectionTokenInfo = useCollectionToken(collectionToken, selectedTokenId);
+  const [collectionTokenInfo] = useCollectionToken(collectionToken, selectedTokenId);
   const [currencyTokenAmountMinusProtocolFee, protocolFeeInCurrencyToken] = useTokenAmountAndFee(currencyTokenAmount);
   const hasInsufficientAmount = useInsufficientAmount(currencyTokenAmount);
   const hasInsufficientExpiryAmount = !expiryAmount || expiryAmount < 0;
