@@ -14,10 +14,6 @@ export const getNftDetailsIcon = (state: BuyNftState): TradeNftDetailsProps['ico
 };
 
 export const getTitle = (state: BuyNftState): string => {
-  if (state === BuyNftState.details) {
-    return 'Sign with Wallet';
-  }
-
   if (state === BuyNftState.approve) {
     return 'Approve in Wallet';
   }

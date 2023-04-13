@@ -1,10 +1,5 @@
 import { TokenKinds } from '@airswap/constants';
-import {
-  CollectionTokenInfo,
-  FullOrderERC20,
-  OrderERC20,
-  TokenInfo,
-} from '@airswap/types';
+import { CollectionTokenInfo, FullOrder, TokenInfo } from '@airswap/types';
 import { Web3Provider } from '@ethersproject/providers';
 import { createAsyncThunk } from '@reduxjs/toolkit';
 import { Transaction } from 'ethers';
@@ -125,23 +120,22 @@ ApproveParams,
 });
 
 interface TakeParams {
-  order: OrderERC20 | FullOrderERC20;
-  library: any;
-  onExpired: () => void;
+  senderWallet: string;
+  order: FullOrder;
+  library: Web3Provider;
 }
 
 export const take = createAsyncThunk<
-// Return type of the payload creator
 void,
-// Params
 TakeParams,
-// Types for ThunkAPI
 {
   dispatch: AppDispatch;
   state: RootState;
 }
 >('orders/take', async (params, { dispatch }) => {
-  const tx = await takeOrder(params.order, params.library);
+  console.log(params);
+  const tx = await takeOrder(params.order, params.senderWallet, params.library);
+  console.log(tx);
 
   if (isAppError(tx)) {
     const appError = tx;
@@ -150,7 +144,7 @@ TakeParams,
       // notifyRejectedByUserError();
       dispatch(
         revertTransaction({
-          signerWallet: params.order.signerWallet,
+          signerWallet: params.order.signer.wallet,
           nonce: params.order.nonce,
           reason: appError.type,
         }),

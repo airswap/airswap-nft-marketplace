@@ -24,9 +24,6 @@ export const getProtocolFee = async (
   chainId: number,
   provider: Web3Provider,
 ): Promise<number> => {
-  const protocolFee = await new SwapERC20(
-    chainId,
-    provider.getSigner(),
-  ).contract.protocolFee();
+  const protocolFee = await SwapERC20.getContract(provider, chainId).protocolFee();
   return protocolFee.toNumber();
 };

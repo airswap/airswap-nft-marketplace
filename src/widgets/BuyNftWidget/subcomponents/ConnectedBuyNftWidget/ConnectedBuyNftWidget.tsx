@@ -11,7 +11,8 @@ import { AppErrorType, isAppError } from '../../../../errors/appError';
 import useErc20ApprovalSuccess from '../../../../hooks/useErc20ApprovalSuccess';
 import useSufficientErc20Allowance from '../../../../hooks/useSufficientErc20Allowance';
 import { useAppDispatch, useAppSelector } from '../../../../redux/hooks';
-import { approve as approveErc20 } from '../../../../redux/stores/orders/ordersActions';
+import { approve as approveErc20, take } from '../../../../redux/stores/orders/ordersActions';
+import { checkOrder } from '../../../../redux/stores/orders/ordersApi';
 import { getTitle } from '../../helpers';
 import BuyActionButtons from '../BuyActionButtons/BuyActionButtons';
 import BuyNftWidgetDetailsContainer from '../BuyNftWidgetDetailsContainer/BuyNftWidgetDetailsContainer';
@@ -59,7 +60,7 @@ const BuyNftWidget: FC<ConnectedBuyNftWidgetProps> = ({
 
   const title = useMemo(() => getTitle(widgetState), [widgetState]);
 
-  const handleActionButtonClick = () => {
+  const handleActionButtonClick = async () => {
     if (widgetState === BuyNftState.details && !hasSufficientCurrencyAllowance) {
       setWidgetState(BuyNftState.approve);
 
@@ -83,8 +84,23 @@ const BuyNftWidget: FC<ConnectedBuyNftWidgetProps> = ({
 
     if (widgetState === BuyNftState.details && hasSufficientCurrencyAllowance) {
       setWidgetState(BuyNftState.sign);
+
+      const errors = await checkOrder(
+        fullOrder,
+        account,
+        library,
+      );
+
+      console.log(errors);
+
+      dispatch(take({
+        order: fullOrder,
+        senderWallet: account,
+        library,
+      }));
     }
   };
+
   useEffect(() => {
     if (hasCurrencyApprovalSuccess && widgetState === BuyNftState.approving) {
       setWidgetState(BuyNftState.details);

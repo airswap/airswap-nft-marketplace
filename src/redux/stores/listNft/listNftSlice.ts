@@ -8,7 +8,12 @@ export interface ListNftState {
   error?: AppError;
 }
 
-const initialState: ListNftState = {};
+const lastUserOrderLocalStorageKey = 'airswap-marketplace/lastUserOrder';
+const localStorageLastUserOrder = localStorage.getItem(lastUserOrderLocalStorageKey);
+
+const initialState: ListNftState = {
+  ...(localStorageLastUserOrder && { lastUserOrder: JSON.parse(localStorageLastUserOrder) }),
+};
 
 export const listNftSlice = createSlice({
   name: 'make-otc',
@@ -17,10 +22,14 @@ export const listNftSlice = createSlice({
     setUserOrder: (
       state,
       action: PayloadAction<FullOrder>,
-    ): ListNftState => ({
-      ...state,
-      lastUserOrder: action.payload,
-    }),
+    ): ListNftState => {
+      localStorage.setItem(lastUserOrderLocalStorageKey, JSON.stringify(action.payload));
+
+      return {
+        ...state,
+        lastUserOrder: action.payload,
+      };
+    },
     clearLastUserOrder: (state): ListNftState => ({
       ...state,
       lastUserOrder: undefined,

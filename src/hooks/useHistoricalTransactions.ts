@@ -38,12 +38,10 @@ const useHistoricalTransactions = () => {
       const updateStorage: () => void = async () => {
         let lastLookSwapLogs: Event[] = [];
         let rfqSwapLogs: Event[] = [];
-        let wrappedSwapLogs: Event[] = [];
 
         if (swapLogs) {
           lastLookSwapLogs = swapLogs.lastLookSwapLogs;
           rfqSwapLogs = swapLogs.rfqSwapLogs;
-          wrappedSwapLogs = swapLogs.wrappedSwapLogs;
         }
 
         const reconcileLogs = async (
@@ -107,7 +105,6 @@ const useHistoricalTransactions = () => {
         await Promise.all([
           reconcileLogs('last-look', lastLookSwapLogs),
           reconcileLogs('request-for-quote', rfqSwapLogs),
-          reconcileLogs('request-for-quote', wrappedSwapLogs, true),
         ]);
 
         setLocalStorageTransactions(localTransactionsCopy);
