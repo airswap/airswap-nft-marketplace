@@ -25,7 +25,7 @@ const useSufficientErc20Allowance = (token?: TokenInfo, amount?: string): boolea
 
     const callGetErc20TokenAllowance = async () => {
       const allowance = await getErc20TokenAllowance(
-        token,
+        token.address,
         account,
         Swap.getAddress(chainId),
         library,

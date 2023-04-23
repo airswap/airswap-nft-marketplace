@@ -1,6 +1,6 @@
 import { TokenKinds } from '@airswap/constants';
 import { Swap } from '@airswap/libraries';
-import { FullOrder, FullOrderERC20, TokenInfo } from '@airswap/types';
+import { FullOrder, FullOrderERC20 } from '@airswap/types';
 import { checkResultToErrors } from '@airswap/utils';
 import erc20Contract from '@openzeppelin/contracts/build/contracts/ERC20.json';
 import erc721Contract from '@openzeppelin/contracts/build/contracts/ERC721.json';
@@ -116,13 +116,13 @@ export async function getNftTokenApproved(
 }
 
 export async function getErc20TokenAllowance(
-  tokenInfo: TokenInfo,
+  address: string,
   account: string,
   spenderAddress: string,
   provider: ethers.providers.Web3Provider,
 ): Promise<BigNumber> {
   const contract = new ethers.Contract(
-    tokenInfo.address,
+    address,
     erc20Interface,
     provider.getSigner(),
   );

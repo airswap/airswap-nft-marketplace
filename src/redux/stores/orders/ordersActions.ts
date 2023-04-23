@@ -85,7 +85,7 @@ ApproveParams,
               hash: receipt.transactionHash,
             }),
           );
-          dispatch(setAllowance({ address: tokenInfo.address, amount: APPROVE_AMOUNT }));
+          dispatch(setAllowance(APPROVE_AMOUNT));
           // TODO: Add toasts to app
           // notifyTransaction(
           //   'Approval',
