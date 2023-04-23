@@ -1,45 +1,49 @@
-import { useMemo } from 'react';
+import { useEffect, useState } from 'react';
 
+import { Swap } from '@airswap/libraries';
 import { TokenInfo } from '@airswap/types';
 import { Web3Provider } from '@ethersproject/providers';
 import { useWeb3React } from '@web3-react/core';
-import { BigNumber } from 'bignumber.js';
 
-import findEthOrTokenByAddress from '../helpers/findEthOrTokenByAddress';
-import { useAppSelector } from '../redux/hooks';
+import { getErc20TokenAllowance } from '../redux/stores/orders/ordersApi';
 
-const useSufficientErc20Allowance = (
-  token?: TokenInfo,
-  amount?: string,
-): boolean => {
-  const { chainId } = useWeb3React<Web3Provider>();
-  const tokens = useAppSelector(state => state.metadata.tokens);
-  const allowances = useAppSelector(state => state.balances.allowances);
+const useSufficientErc20Allowance = (token?: TokenInfo, amount?: string): boolean => {
+  const { account, chainId, library } = useWeb3React<Web3Provider>();
 
-  return useMemo(() => {
-    if (!token || !amount || !chainId) {
-      return false;
+  const [hasSufficientAllowance, setHasSufficientAllowance] = useState(false);
+
+  useEffect(() => {
+    if (
+      !account
+      || !amount
+      || !chainId
+      || !library
+      || !token
+    ) {
+      return;
     }
 
-    const justifiedToken = findEthOrTokenByAddress(
-      token.address,
-      Object.values(tokens),
-      chainId,
-    );
+    const callGetErc20TokenAllowance = async () => {
+      const allowance = await getErc20TokenAllowance(
+        token.address,
+        account,
+        Swap.getAddress(chainId),
+        library,
+      );
 
-    const tokenAllowance = justifiedToken ? allowances[justifiedToken.address] : undefined;
+      setHasSufficientAllowance(allowance.gt(amount));
+    };
 
-    if (!tokenAllowance) {
-      // safer to return true here (has allowance) as validator will catch the
-      // missing allowance, so the user won't swap, and they won't pay
-      // unnecessary gas for an approval they may not need.
-      return true;
-    }
+    callGetErc20TokenAllowance();
+  }, [
+    account,
+    amount,
+    chainId,
+    library,
+    token,
+  ]);
 
-    return new BigNumber(tokenAllowance)
-      .div(10 ** justifiedToken.decimals)
-      .gte(amount);
-  }, [allowances, amount, token, tokens, chainId]);
+  return hasSufficientAllowance;
 };
 
 export default useSufficientErc20Allowance;

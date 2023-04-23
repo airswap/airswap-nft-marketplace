@@ -1,5 +1,5 @@
 import { TokenKinds } from '@airswap/constants';
-import * as swapDeploys from '@airswap/swap/deploys';
+import { Swap } from '@airswap/libraries';
 import { CollectionTokenInfo, FullOrder, TokenInfo } from '@airswap/types';
 import { createOrder, toAtomicString } from '@airswap/utils';
 import { Web3Provider } from '@ethersproject/providers';
@@ -47,7 +47,7 @@ CreateOrderParams
         },
         sender: {
           wallet: nativeCurrencyAddress,
-          token: params.signerTokenInfo.address,
+          token: params.senderTokenInfo.address,
           kind: TokenKinds.ERC20,
           amount: senderAmount,
         },
@@ -57,7 +57,7 @@ CreateOrderParams
       const signature = await createOrderSignature(
         unsignedOrder,
         params.library.getSigner(),
-        swapDeploys[chainId],
+        Swap.getAddress(chainId),
         chainId,
       );
 
@@ -71,7 +71,7 @@ CreateOrderParams
         ...unsignedOrder,
         ...signature,
         chainId,
-        swapContract: swapDeploys[chainId],
+        swapContract: Swap.getAddress(chainId),
       };
 
       dispatch(setUserOrder(fullOrder));

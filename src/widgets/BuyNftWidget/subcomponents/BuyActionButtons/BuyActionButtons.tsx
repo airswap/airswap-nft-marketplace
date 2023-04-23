@@ -9,24 +9,44 @@ import { BuyNftState } from '../ConnectedBuyNftWidget/ConnectedBuyNftWidget';
 import './BuyActionButtons.scss';
 
 interface ActionButtonsProps {
+  hasNoCurrencyTokenApproval: boolean;
+  ownerIsAccount: boolean;
+  currencyTokenSymbol: string;
   state: BuyNftState;
   onActionButtonClick: () => void;
   className?: string;
 }
 
-const BuyActionButtons: FC<ActionButtonsProps> = ({ state, onActionButtonClick, className = '' }) => {
+const BuyActionButtons: FC<ActionButtonsProps> = ({
+  hasNoCurrencyTokenApproval,
+  ownerIsAccount,
+  currencyTokenSymbol,
+  state,
+  onActionButtonClick,
+  className = '',
+}) => {
   const getActionButton = useCallback((): JSX.Element | null => {
+    if (ownerIsAccount) {
+      return (
+        <Button
+          disabled
+          text="This is your own order"
+          className="buy-action-buttons__action-button"
+        />
+      );
+    }
+
     if (state === BuyNftState.details) {
       return (
         <Button
-          text="Buy NFT"
+          text={hasNoCurrencyTokenApproval ? `Approve ${currencyTokenSymbol}` : 'Buy NFT'}
           onClick={onActionButtonClick}
           className="buy-action-buttons__action-button"
         />
       );
     }
 
-    if (state === BuyNftState.pending) {
+    if (state === BuyNftState.buying) {
       return (
         <NavLink
           to="/"
@@ -60,7 +80,7 @@ const BuyActionButtons: FC<ActionButtonsProps> = ({ state, onActionButtonClick, 
     }
 
     return null;
-  }, [state]);
+  }, [state, hasNoCurrencyTokenApproval, ownerIsAccount]);
 
   return (
     <div className={`buy-action-buttons ${className}`}>

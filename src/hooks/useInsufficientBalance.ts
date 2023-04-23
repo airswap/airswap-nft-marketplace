@@ -9,7 +9,7 @@ const useInsufficientBalance = (
   tokenInfo: TokenInfo | null,
   amount: string,
 ): boolean => {
-  const { balances } = useAppSelector(store => store.balances);
+  const { currencyTokenBalance } = useAppSelector(store => store.balances);
 
   return useMemo(() => {
     if (!tokenInfo || !amount) {
@@ -24,10 +24,10 @@ const useInsufficientBalance = (
       return false;
     }
 
-    return new BigNumber(balances[tokenInfo.address] || '0').lt(
+    return new BigNumber(currencyTokenBalance).lt(
       new BigNumber(amount).multipliedBy(10 ** tokenInfo.decimals),
     );
-  }, [balances, tokenInfo, amount]);
+  }, [currencyTokenBalance, tokenInfo, amount]);
 };
 
 export default useInsufficientBalance;

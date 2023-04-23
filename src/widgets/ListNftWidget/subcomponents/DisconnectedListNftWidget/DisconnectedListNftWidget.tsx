@@ -6,11 +6,13 @@ import ListNftWidgetHeader from '../ListNftWidgetHeader/ListNftWidgetHeader';
 import '../../ListNftWidget.scss';
 
 interface ListNftWidgetProps {
+  hasNoUserTokens: boolean;
   isLoading: boolean;
   className?: string;
 }
 
 const DisconnectedListNftWidget: FC<ListNftWidgetProps> = ({
+  hasNoUserTokens = false,
   isLoading = false,
   className = '',
 }) => (
@@ -20,6 +22,9 @@ const DisconnectedListNftWidget: FC<ListNftWidgetProps> = ({
       className="list-nft-widget__header"
     />
     {isLoading && <LoadingSpinner className="list-nft-widget__loading-spinner" />}
+    {(!isLoading && hasNoUserTokens) && (
+      <div className="list-nft-widget__paragraph">You have no nfts to list</div>
+    )}
   </div>
 );
 

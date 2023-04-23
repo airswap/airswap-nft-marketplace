@@ -14,79 +14,12 @@ $component: buy-nft-widget;
         background: var(--c-dark);
     }
 
-    &--has-details-state {
-
-        .#{$component}__trade-details-container {
-            flex-direction: column;
-        }
-
-        .#{$component}__loading-spinner {
-            display: none;
-        }
-    }
-
-    &--has-confirm-state {
-
-        .#{$component}__loading-spinner {
-            visibility: hidden;
-        }
-    }
-
-    &--has-pending-state {
-
-        .#{$component}__transaction-link {
-            display: flex;
-        }
-    }
-
-    &--has-success-state,
-    &--has-failed-state {
-
-        .#{$component}__loading-spinner {
-            display: none;
-        }
-
-        .#{$component}__transaction-link {
-            display: flex;
-        }
+    &__trade-details-container {
+        margin: 1.75rem 0 1.25rem;
     }
 
     &__loading-spinner {
         margin: 1.75rem auto 0;
-    }
-
-    &__trade-details-container {
-        display: flex;
-        flex-direction: column-reverse;
-        justify-content: center;
-        align-items: center;
-        margin: 1.75rem 0 1.25rem;
-
-        @include for-size(tablet-portrait-up) {
-            font-size: 1.25rem;
-        }
-    }
-
-    &__swap-icon-container {
-        position: relative;
-        margin-top: -.5rem;
-        height: 1rem;
-        z-index: 1;
-    }
-
-    &__swap-icon {
-        border: 1px solid var(--c-dark-border);
-        border-radius: 50%;
-        width: 1.5rem;
-        height: 1.5rem;
-        padding: .3125rem;
-        color: var(--c-light-grey);
-        background: var(--c-black);
-    }
-
-    &__transaction-link {
-        display: none;
-        margin-bottom: 1.25rem;
     }
 
     &__action-buttons {

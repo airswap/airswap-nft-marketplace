@@ -1,16 +1,17 @@
 import BalanceChecker from '@airswap/balances/build/contracts/BalanceChecker.json';
 import balancesDeploys from '@airswap/balances/deploys';
-import { SwapERC20, Wrapper } from '@airswap/libraries';
+import { Swap } from '@airswap/libraries';
 import { createAsyncThunk } from '@reduxjs/toolkit';
-import { BigNumber, ethers, providers } from 'ethers';
+import { ethers, providers } from 'ethers';
 
+import { getErc20TokenAllowance } from '../orders/ordersApi';
 import { getOwnedTokenIdsOfWallet } from './balancesHelpers';
 
 const balancesInterface = new ethers.utils.Interface(
   JSON.stringify(BalanceChecker.abi),
 );
 
-const getContract = (
+const getBalancesContract = (
   chainId: keyof typeof balancesDeploys,
   provider: ethers.providers.Web3Provider,
 ) => new ethers.Contract(
@@ -23,68 +24,31 @@ interface WalletParams {
   chainId: number;
   provider: ethers.providers.Web3Provider;
   walletAddress: string;
-  tokenAddresses: string[];
+  collectionTokenAddress: string;
 }
 
-/**
- * Fetches balances or allowances for a wallet using the airswap utility
- * contract `BalanceChecker.sol`. Balances are returned in base units.
- */
-
-const fetchBalancesOrAllowances: (
-  method: 'walletBalances' | 'walletAllowances',
-  spenderAddressType: 'wrapper' | 'swap' | 'none',
-  params: WalletParams
-) => Promise<BigNumber[]> = async (
-  method,
-  spenderAddressType,
-  {
-    chainId,
-    provider,
-    tokenAddresses,
-    walletAddress,
-  },
-) => {
-  const contract = getContract(chainId, provider);
-
-  let args = [walletAddress, tokenAddresses];
-
-  if (spenderAddressType === 'swap') {
-    args = [walletAddress, SwapERC20.getAddress(chainId), tokenAddresses];
-  }
-
-  if (spenderAddressType === 'wrapper') {
-    args = [walletAddress, Wrapper.getAddress(chainId), tokenAddresses];
-  }
-
-  const amounts: BigNumber[] = await contract[method].apply(null, args);
-
-  return amounts.map((amount) => amount);
-};
-
-export const fetchBalances = createAsyncThunk<{ [address: string]: string }, WalletParams>(
+export const fetchCurrencyTokenBalance = createAsyncThunk<string, WalletParams>(
   'balances/fetchBalances',
   async (params) => {
-    const responses = await fetchBalancesOrAllowances('walletBalances', 'none', params);
-    const bigNumbers = responses.map(bigNumber => bigNumber.toString());
+    const contract = getBalancesContract(params.chainId, params.provider);
 
-    return params.tokenAddresses.reduce((total, token, index) => ({
-      ...total,
-      [token]: bigNumbers[index],
-    }), {});
+    const response = await contract.walletBalances(params.walletAddress, [params.collectionTokenAddress]);
+
+    return response.toString();
   },
 );
 
-export const fetchAllowances = createAsyncThunk<{ [address: string]: string }, WalletParams>(
+export const fetchCurrencyTokenAllowance = createAsyncThunk<string, WalletParams>(
   'balances/fetchAllowances',
   async (params) => {
-    const responses = await fetchBalancesOrAllowances('walletAllowances', 'swap', params);
-    const bigNumbers = responses.map(bigNumber => bigNumber.toString());
+    const response = await getErc20TokenAllowance(
+      params.collectionTokenAddress,
+      params.walletAddress,
+      Swap.getAddress(params.chainId),
+      params.provider,
+    );
 
-    return params.tokenAddresses.reduce((total, token, index) => ({
-      ...total,
-      [token]: bigNumbers[index],
-    }), {});
+    return response.toString();
   },
 );
 

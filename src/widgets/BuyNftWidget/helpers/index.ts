@@ -14,12 +14,20 @@ export const getNftDetailsIcon = (state: BuyNftState): TradeNftDetailsProps['ico
 };
 
 export const getTitle = (state: BuyNftState): string => {
-  if (state === BuyNftState.confirm) {
-    return 'Sign with wallet';
+  if (state === BuyNftState.approve) {
+    return 'Approve in Wallet';
   }
 
-  if (state === BuyNftState.pending) {
+  if (state === BuyNftState.approving) {
     return 'Transaction in progress';
+  }
+
+  if (state === BuyNftState.sign) {
+    return 'Sign in Wallet';
+  }
+
+  if (state === BuyNftState.buying) {
+    return 'Buying in progress';
   }
 
   if (state === BuyNftState.success) {

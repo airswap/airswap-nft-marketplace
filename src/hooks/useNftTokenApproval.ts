@@ -35,6 +35,7 @@ const useNftTokenApproval = (
         library,
         tokenKind,
       );
+
       setIsApproved(approved);
     };
 
