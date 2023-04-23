@@ -1,26 +1,21 @@
-import { getTokenFromContract } from '@airswap/metadata';
-import { TokenInfo } from '@airswap/types';
+import { getCollectionTokenInfo } from '@airswap/metadata';
+import { CollectionTokenInfo } from '@airswap/types';
 import * as ethers from 'ethers';
 
-import { CollectionToken } from './CollectionToken';
-import { transformNFTTokenToCollectionToken } from './CollectionTokenTransformers';
-
-export const getCollectionToken = async (library: ethers.providers.BaseProvider, address: string, tokenId: number): Promise<CollectionToken | undefined> => {
-  let tokenInfo: TokenInfo;
+export const getCollectionToken = async (library: ethers.providers.BaseProvider, address: string, tokenId: number): Promise<CollectionTokenInfo | undefined> => {
+  let tokenInfo: CollectionTokenInfo;
 
   try {
-    tokenInfo = await getTokenFromContract(library, address, tokenId.toString());
+    tokenInfo = await getCollectionTokenInfo(library, address, tokenId.toString());
   } catch (e) {
     console.error(new Error(`Unable to fetch data for ${address} with id ${tokenId}`));
 
     return undefined;
   }
 
-  const token = transformNFTTokenToCollectionToken(tokenInfo, tokenId);
-
-  if (!token) {
+  if (!tokenInfo) {
     console.error(new Error(`Unable to parse data for ${address} with id ${tokenId}`));
   }
 
-  return token;
+  return tokenInfo;
 };

@@ -38,7 +38,7 @@ export const configureBalancesSubscriber = () => {
       store.dispatch(fetchUserTokens({
         provider: library,
         walletAddress: web3.account,
-        collectionToken: metadata.tokens[config.collectionToken],
+        collectionToken: config.collectionToken,
       }));
     }
   });

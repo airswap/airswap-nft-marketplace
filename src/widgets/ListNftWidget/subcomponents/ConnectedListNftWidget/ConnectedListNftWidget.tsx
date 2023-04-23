@@ -39,7 +39,6 @@ export enum ListNftState {
 interface ListNftWidgetProps {
   account: string;
   chainId: number;
-  collectionTokenInfo: TokenInfo;
   currencyTokenInfo: TokenInfo;
   library: Web3Provider
   className?: string;
@@ -48,7 +47,6 @@ interface ListNftWidgetProps {
 const ConnectedListNftWidget: FC<ListNftWidgetProps> = ({
   account,
   chainId,
-  collectionTokenInfo,
   currencyTokenInfo,
   library,
   className = '',
@@ -59,7 +57,7 @@ const ConnectedListNftWidget: FC<ListNftWidgetProps> = ({
   const { tokens: userTokens } = useAppSelector(state => state.balances);
   const { error: ordersError } = useAppSelector(state => state.orders);
   const { error: listNftError } = useAppSelector(state => state.listNft);
-  const { collectionImage } = useAppSelector(state => state.config);
+  const { collectionImage, collectionToken } = useAppSelector(state => state.config);
   const { protocolFee, projectFee } = useAppSelector(state => state.metadata);
   const { lastUserOrder } = useAppSelector(state => state.listNft);
 
@@ -71,7 +69,7 @@ const ConnectedListNftWidget: FC<ListNftWidgetProps> = ({
   const [expiryAmount, setExpiryAmount] = useState<number | undefined>(60);
 
   // States derived from user input
-  const collectionToken = useCollectionToken(collectionTokenInfo.address, selectedTokenId);
+  const collectionTokenInfo = useCollectionToken(collectionToken, selectedTokenId);
   const [currencyTokenAmountMinusProtocolFee, protocolFeeInCurrencyToken] = useTokenAmountAndFee(currencyTokenAmount);
   const hasInsufficientAmount = useInsufficientAmount(currencyTokenAmount);
   const hasInsufficientExpiryAmount = !expiryAmount || expiryAmount < 0;
@@ -83,7 +81,7 @@ const ConnectedListNftWidget: FC<ListNftWidgetProps> = ({
       setWidgetState(ListNftState.review);
     }
 
-    if (widgetState === ListNftState.review && !hasCollectionTokenApproval) {
+    if (widgetState === ListNftState.review && collectionTokenInfo && !hasCollectionTokenApproval) {
       setWidgetState(ListNftState.approve);
 
       dispatch(approveNft({
@@ -105,7 +103,7 @@ const ConnectedListNftWidget: FC<ListNftWidgetProps> = ({
         });
     }
 
-    if (widgetState === ListNftState.review && hasCollectionTokenApproval) {
+    if (widgetState === ListNftState.review && collectionTokenInfo && hasCollectionTokenApproval) {
       setWidgetState(ListNftState.sign);
 
       const expiryDate = Date.now() + (expiryAmounts[expiryTimeUnit] * (expiryAmount || 1));
@@ -165,7 +163,6 @@ const ConnectedListNftWidget: FC<ListNftWidgetProps> = ({
 
       <ListNftDetailContainer
         collectionImage={collectionImage}
-        collectionToken={collectionToken}
         collectionTokenInfo={collectionTokenInfo}
         currencyTokenAmount={currencyTokenAmount}
         currencyTokenAmountMinusProtocolFee={currencyTokenAmountMinusProtocolFee}

@@ -1,27 +1,24 @@
 import { SwapERC20 } from '@airswap/libraries';
-import { getTokenFromContract } from '@airswap/metadata';
+import { getTokenInfo } from '@airswap/metadata';
 import { TokenInfo } from '@airswap/types';
 import { Web3Provider } from '@ethersproject/providers';
 import { createAsyncThunk } from '@reduxjs/toolkit';
 import { ethers } from 'ethers';
 
-interface ScrapeTokensParams {
+interface GetCurrencyTokenInfoParams {
   currencyToken: string;
-  collectionToken: string;
   library: ethers.providers.BaseProvider;
   chainId?: number;
 }
 
-export const getCurrencyAndCollectionTokenInfo = createAsyncThunk<(
-TokenInfo | undefined)[], ScrapeTokensParams>(
-  'metadata/getTokenFromContract',
-  async ({
+export const getCurrencyTokenInfo = createAsyncThunk<
+TokenInfo, GetCurrencyTokenInfoParams>(
+  'metadata/getCurrencyTokenInfo',
+  ({
     currencyToken,
-    collectionToken,
     library,
-  }) => Promise.all([currencyToken, collectionToken].map(token => (
-    getTokenFromContract(library, token, token === collectionToken ? '1' : undefined)))),
-  );
+  }) => getTokenInfo(library, currencyToken),
+);
 
 export const getProtocolFee = async (
   chainId: number,

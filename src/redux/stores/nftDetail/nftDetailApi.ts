@@ -1,10 +1,7 @@
-import { getTokenFromContract } from '@airswap/metadata';
-import { TokenInfo } from '@airswap/types';
+import { getCollectionTokenInfo } from '@airswap/metadata';
+import { CollectionTokenInfo } from '@airswap/types';
 import { Web3Provider } from '@ethersproject/providers';
 import { createAsyncThunk } from '@reduxjs/toolkit';
-
-import { CollectionToken } from '../../../entities/CollectionToken/CollectionToken';
-import { transformNFTTokenToCollectionToken } from '../../../entities/CollectionToken/CollectionTokenTransformers';
 
 interface FetchNftMetaParams {
   library: Web3Provider;
@@ -12,20 +9,16 @@ interface FetchNftMetaParams {
   tokenId: string;
 }
 export const fetchNftMeta = createAsyncThunk<
-CollectionToken, FetchNftMetaParams>(
+CollectionTokenInfo, FetchNftMetaParams>(
   'nftDetail/fetchNftMeta',
   async ({ library, collectionToken, tokenId }) => {
-    let tokenInfo: TokenInfo;
+    let tokenInfo: CollectionTokenInfo;
     try {
-      tokenInfo = await getTokenFromContract(library, collectionToken, tokenId);
+      tokenInfo = await getCollectionTokenInfo(library, collectionToken, tokenId);
     } catch (e) {
       throw new Error(`Unable to fetch data for ${collectionToken} with id ${tokenId}`);
     }
-    const data = transformNFTTokenToCollectionToken(tokenInfo, parseInt(tokenId, 10));
-    if (!data) {
-      throw new Error(`Unable to transform ${collectionToken} to CollectionToken`);
-    }
-    return data;
+    return tokenInfo;
   },
 );
 

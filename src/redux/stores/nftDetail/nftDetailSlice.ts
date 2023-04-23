@@ -1,6 +1,6 @@
+import { CollectionTokenInfo } from '@airswap/types';
 import { createSlice, PayloadAction } from '@reduxjs/toolkit';
 
-import { CollectionToken } from '../../../entities/CollectionToken/CollectionToken';
 import { fetchNftMeta } from './nftDetailApi';
 
 export interface EventLog {
@@ -19,7 +19,7 @@ export interface TokenState {
   isLoading: boolean;
   error: NftDetailError;
   selectedTokenId?: string;
-  tokenMeta?: CollectionToken
+  tokenMeta?: CollectionTokenInfo;
   eventLogs: EventLog[];
 }
 

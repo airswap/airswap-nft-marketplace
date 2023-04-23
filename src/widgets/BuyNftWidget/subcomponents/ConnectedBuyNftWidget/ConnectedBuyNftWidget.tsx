@@ -4,7 +4,7 @@ import React, {
   useState,
 } from 'react';
 
-import { FullOrder, TokenInfo } from '@airswap/types';
+import { CollectionTokenInfo, FullOrder, TokenInfo } from '@airswap/types';
 import { BigNumber } from 'bignumber.js';
 import classNames from 'classnames';
 
@@ -13,7 +13,6 @@ import LoadingSpinner from '../../../../components/LoadingSpinner/LoadingSpinner
 import TradeDetails from '../../../../components/TradeDetails/TradeDetails';
 import TradeNftDetails, { TradeNftDetailsProps } from '../../../../components/TradeNftDetails/TradeNftDetails';
 import TransactionLink from '../../../../compositions/TransactionLink/TransactionLink';
-import { transformNFTTokenToCollectionToken } from '../../../../entities/CollectionToken/CollectionTokenTransformers';
 import { useAppSelector } from '../../../../redux/hooks';
 import { getNftDetailsIcon, getTitle } from '../../helpers';
 import BuyActionButtons from '../BuyActionButtons/BuyActionButtons';
@@ -31,7 +30,7 @@ export enum BuyNftState {
 }
 
 interface ConnectedBuyNftWidgetProps {
-  collectionTokenInfo: TokenInfo;
+  collectionTokenInfo: CollectionTokenInfo;
   currencyTokenInfo: TokenInfo;
   fullOrder: FullOrder;
   className?: string;
@@ -44,8 +43,6 @@ const BuyNftWidget: FC<ConnectedBuyNftWidgetProps> = ({
   className = '',
 }) => {
   const { collectionImage, collectionName } = useAppSelector(state => state.config);
-
-  const collectionToken = collectionTokenInfo ? transformNFTTokenToCollectionToken(collectionTokenInfo, parseInt(fullOrder.signer.token, 10)) : undefined;
 
   const [widgetState, setWidgetState] = useState<BuyNftState>(BuyNftState.details);
 
@@ -81,7 +78,7 @@ const BuyNftWidget: FC<ConnectedBuyNftWidgetProps> = ({
           />
         ) : (
           <TradeDetails
-            logoURI={collectionToken ? collectionToken.image : collectionImage}
+            logoURI={collectionTokenInfo ? collectionTokenInfo.image : collectionImage}
             title="Buy"
             token={collectionTokenInfo}
           />

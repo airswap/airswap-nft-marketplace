@@ -1,6 +1,6 @@
 import React, { FC } from 'react';
 
-import { TokenInfo } from '@airswap/types';
+import { CollectionTokenInfo } from '@airswap/types';
 import classNames from 'classnames';
 
 import Icon from '../Icon/Icon';
@@ -10,7 +10,7 @@ import './TradeNftDetails.scss';
 export interface TradeNftDetailsProps {
   collectionImage: string;
   collectionName: string;
-  collectionToken: TokenInfo; // TODO: should be CollectionToken
+  collectionToken: CollectionTokenInfo;
   icon?: 'success' | 'failed';
   className?: string;
 }
@@ -39,7 +39,7 @@ const TradeNftDetails: FC<TradeNftDetailsProps> = ({
         </div>
       )}
       <div
-        style={{ backgroundImage: `url("${collectionToken.logoURI}")` }}
+        style={{ backgroundImage: `url("${collectionToken.uri}")` }}
         className="trade-nft-details__inner"
       >
         <h2 className="trade-nft-details__token-name">{collectionToken.name}</h2>

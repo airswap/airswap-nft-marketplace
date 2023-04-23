@@ -1,5 +1,10 @@
 import { TokenKinds } from '@airswap/constants';
-import { FullOrderERC20, OrderERC20, TokenInfo } from '@airswap/types';
+import {
+  CollectionTokenInfo,
+  FullOrderERC20,
+  OrderERC20,
+  TokenInfo,
+} from '@airswap/types';
 import { Web3Provider } from '@ethersproject/providers';
 import { createAsyncThunk } from '@reduxjs/toolkit';
 import { Transaction } from 'ethers';
@@ -26,7 +31,7 @@ import { setError } from './ordersSlice';
 const APPROVE_AMOUNT = '90071992547409910000000000';
 
 interface ApproveParams {
-  tokenInfo: TokenInfo;
+  tokenInfo: TokenInfo | CollectionTokenInfo;
   library: Web3Provider;
   chainId: number;
   tokenId?: number;
@@ -46,7 +51,7 @@ ApproveParams,
     let tx: Transaction;
     const { tokenInfo, library, tokenId } = params;
 
-    const tokenKind = (tokenInfo.extensions?.kind || TokenKinds.ERC20) as TokenKinds;
+    const tokenKind = 'kind' in tokenInfo ? tokenInfo.kind : TokenKinds.ERC20;
 
     if (tokenKind !== TokenKinds.ERC20 && !tokenId) {
       console.error('[orders/approve]: Missing tokenId when submitting ERC721 or ERC1155 approval');

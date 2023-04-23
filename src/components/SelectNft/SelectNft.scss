@@ -76,6 +76,7 @@ $component: select-nft;
         @extend %text-ellipsis;
 
         margin-top: .5rem;
+        min-height: 1.125rem;
     }
 
     &__chevron-down-icon {
