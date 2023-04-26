@@ -21,6 +21,7 @@ $widget-width: 19.5rem;
         display: block;
         position: absolute;
         width: calc(100% - var(--page-padding) * 2);
+        height: 100%;
         overflow: hidden;
     }
 }

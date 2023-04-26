@@ -58,7 +58,7 @@ const ConnectedListNftWidget: FC<ListNftWidgetProps> = ({
   // Store data
   const { error: ordersError } = useAppSelector(state => state.orders);
   const { error: listNftError } = useAppSelector(state => state.listNft);
-  const { collectionImage, collectionToken } = useAppSelector(state => state.config);
+  const { collectionImage, collectionToken, collectionName } = useAppSelector(state => state.config);
   const { protocolFee, projectFee } = useAppSelector(state => state.metadata);
   const { lastUserOrder } = useAppSelector(state => state.listNft);
 
@@ -155,6 +155,7 @@ const ConnectedListNftWidget: FC<ListNftWidgetProps> = ({
 
       <ListNftDetailContainer
         collectionImage={collectionImage}
+        collectionName={collectionName}
         collectionTokenInfo={collectionTokenInfo}
         currencyTokenAmount={currencyTokenAmount}
         currencyTokenAmountMinusProtocolFee={currencyTokenAmountMinusProtocolFee}

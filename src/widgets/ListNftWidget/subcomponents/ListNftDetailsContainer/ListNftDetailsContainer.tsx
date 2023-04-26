@@ -25,6 +25,7 @@ import './ListNftDetailsContainer.scss';
 
 interface ListNftDetailContainerProps {
   collectionImage: string;
+  collectionName: string;
   collectionTokenInfo?: CollectionTokenInfo;
   currencyTokenAmount: string;
   currencyTokenAmountMinusProtocolFee?: string;
@@ -48,6 +49,7 @@ interface ListNftDetailContainerProps {
 
 const ListNftDetailContainer: FC<ListNftDetailContainerProps> = ({
   collectionImage,
+  collectionName,
   collectionTokenInfo,
   currencyTokenInfo,
   currencyTokenAmount,
@@ -82,6 +84,7 @@ const ListNftDetailContainer: FC<ListNftDetailContainerProps> = ({
       {widgetState === ListNftState.details && (
         <>
           <SelectNft
+            collectionName={collectionName}
             logoURI={collectionTokenInfo?.image}
             tokens={userTokens}
             title="List"
