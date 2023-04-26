@@ -5,8 +5,8 @@ import { CollectionTokenInfo } from '@airswap/types';
 import './ReviewNftDetails.scss';
 
 interface ReviewNftDetailsProps {
-  logoURI: string;
-  title: string;
+  logoURI?: string;
+  title?: string;
   token?: CollectionTokenInfo;
   className?: string;
 }

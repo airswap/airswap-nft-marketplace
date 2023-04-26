@@ -3,7 +3,7 @@ import React, { FC } from 'react';
 import './NftDetailMainInfo.scss';
 
 export interface INftDetailMainInfoProps {
-  title: string;
+  title?: string;
   owner: string;
   className?: string;
 }
