@@ -9,6 +9,7 @@ import { BuyNftState } from '../ConnectedBuyNftWidget/ConnectedBuyNftWidget';
 import './BuyActionButtons.scss';
 
 interface ActionButtonsProps {
+  hasInsufficientAmount: boolean;
   hasNoCurrencyTokenApproval: boolean;
   ownerIsAccount: boolean;
   currencyTokenSymbol: string;
@@ -18,6 +19,7 @@ interface ActionButtonsProps {
 }
 
 const BuyActionButtons: FC<ActionButtonsProps> = ({
+  hasInsufficientAmount,
   hasNoCurrencyTokenApproval,
   ownerIsAccount,
   currencyTokenSymbol,
@@ -31,6 +33,16 @@ const BuyActionButtons: FC<ActionButtonsProps> = ({
         <Button
           disabled
           text="This is your own order"
+          className="buy-action-buttons__action-button"
+        />
+      );
+    }
+
+    if (hasInsufficientAmount) {
+      return (
+        <Button
+          disabled
+          text={`Insufficient ${currencyTokenSymbol}`}
           className="buy-action-buttons__action-button"
         />
       );

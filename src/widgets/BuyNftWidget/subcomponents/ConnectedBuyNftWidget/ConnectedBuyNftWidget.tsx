@@ -1,5 +1,6 @@
 import React, {
-  FC, useEffect,
+  FC,
+  useEffect,
   useMemo,
   useState,
 } from 'react';
@@ -9,6 +10,7 @@ import { Web3Provider } from '@ethersproject/providers';
 
 import { AppErrorType, isAppError } from '../../../../errors/appError';
 import useErc20ApprovalSuccess from '../../../../hooks/useErc20ApprovalSuccess';
+import useInsufficientBalance from '../../../../hooks/useInsufficientBalance';
 import useSufficientErc20Allowance from '../../../../hooks/useSufficientErc20Allowance';
 import { useAppDispatch, useAppSelector } from '../../../../redux/hooks';
 import { approve as approveErc20, take } from '../../../../redux/stores/orders/ordersActions';
@@ -54,6 +56,7 @@ const BuyNftWidget: FC<ConnectedBuyNftWidgetProps> = ({
 
   const [widgetState, setWidgetState] = useState<BuyNftState>(BuyNftState.details);
 
+  const hasInsufficientBalance = useInsufficientBalance(fullOrder.sender.amount);
   const hasSufficientCurrencyAllowance = useSufficientErc20Allowance(currencyTokenInfo, fullOrder.sender.amount);
   const hasCurrencyApprovalSuccess = useErc20ApprovalSuccess(currencyTokenInfo.address);
   const ownerIsAccount = fullOrder.signer.wallet.toLowerCase() === account.toLowerCase();
@@ -130,6 +133,7 @@ const BuyNftWidget: FC<ConnectedBuyNftWidgetProps> = ({
       />
 
       <BuyActionButtons
+        hasInsufficientAmount={hasInsufficientBalance}
         hasNoCurrencyTokenApproval={!hasSufficientCurrencyAllowance}
         ownerIsAccount={ownerIsAccount}
         currencyTokenSymbol={currencyTokenInfo.symbol}

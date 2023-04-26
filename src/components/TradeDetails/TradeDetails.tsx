@@ -25,7 +25,6 @@ const TradeDetails: FC<TradeDetailsProps> = ({
 }) => {
   const symbol = 'symbol' in token && token.symbol;
   const name = 'name' in token && token.name;
-  const id = 'id' in token && token.id;
   const decimals = 'decimals' in token;
 
   const readableAmount = useMemo(() => {
@@ -44,7 +43,7 @@ const TradeDetails: FC<TradeDetailsProps> = ({
       <div className="trade-details__icon" style={{ backgroundImage: `url("${logoURI}")` }} />
       <div className="trade-details__title-and-name">
         <h3 className="trade-details__title">{title}</h3>
-        <h4 className="trade-details__name">{symbol || `${name} #${id}`}</h4>
+        <h4 className="trade-details__name">{symbol || name}</h4>
       </div>
       <div className="trade-details__amount-container">
         <div className="trade-details__amount-container-content">

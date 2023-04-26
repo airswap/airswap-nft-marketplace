@@ -12,18 +12,15 @@ import {
 } from '../../../errors/appError';
 import transformUnknownErrorToAppError from '../../../errors/transformUnknownErrorToAppError';
 import { AppDispatch, RootState } from '../../store';
-import { setAllowance } from '../balances/balancesSlice';
 import {
   declineTransaction,
   mineTransaction,
   revertTransaction,
   submitTransaction,
 } from '../transactions/transactionActions';
-import { SubmittedApproval } from '../transactions/transactionsSlice';
+import { SubmittedApproval, SubmittedTransactionWithOrder } from '../transactions/transactionsSlice';
 import { approveErc20Token, approveNftToken, takeOrder } from './ordersApi';
 import { setError } from './ordersSlice';
-
-const APPROVE_AMOUNT = '90071992547409910000000000';
 
 interface ApproveParams {
   tokenInfo: TokenInfo | CollectionTokenInfo;
@@ -80,12 +77,7 @@ ApproveParams,
         // const state: RootState = getState() as RootState;
         // const tokens = Object.values(state.metadata.tokens.all);
         if (receipt.status === 1) {
-          dispatch(
-            mineTransaction({
-              hash: receipt.transactionHash,
-            }),
-          );
-          dispatch(setAllowance(APPROVE_AMOUNT));
+          dispatch(mineTransaction({ hash: receipt.transactionHash }));
           // TODO: Add toasts to app
           // notifyTransaction(
           //   'Approval',
@@ -133,7 +125,6 @@ TakeParams,
   state: RootState;
 }
 >('orders/take', async (params, { dispatch }) => {
-  console.log(params);
   const tx = await takeOrder(params.order, params.senderWallet, params.library);
 
   if (isAppError(tx)) {
@@ -158,4 +149,26 @@ TakeParams,
 
     throw appError;
   }
+
+  console.log(tx);
+
+  if (tx.hash) {
+    const transaction: SubmittedTransactionWithOrder = {
+      type: 'Order',
+      hash: tx.hash,
+      status: 'processing',
+      order: params.order,
+      timestamp: Date.now(),
+    };
+    dispatch(submitTransaction(transaction));
+    params.library.once(tx.hash, async () => {
+      const receipt = await params.library.getTransactionReceipt(tx.hash);
+      // const state: RootState = getState() as RootState;
+      // const tokens = Object.values(state.metadata.tokens.all);
+      if (receipt.status === 1) {
+        dispatch(mineTransaction({ hash: receipt.transactionHash }));
+      }
+    });
+  }
 });
+

@@ -87,9 +87,9 @@ const BuyNftWidgetDetailsContainer: FC<BuyNftWidgetDetailsContainerProps> = ({
         <>
           <LoadingSpinner className="buy-nft-details-container__loading-spinner" />
           <TradeDetails
-            logoURI={collectionTokenInfo ? collectionTokenInfo.image : collectionImage}
+            logoURI={currencyTokenInfo.logoURI}
             title="Approving"
-            token={collectionTokenInfo}
+            token={currencyTokenInfo}
           />
           <TransactionLink
             to="test"

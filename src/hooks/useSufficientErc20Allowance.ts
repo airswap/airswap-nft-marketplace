@@ -1,47 +1,25 @@
 import { useEffect, useState } from 'react';
 
-import { Swap } from '@airswap/libraries';
 import { TokenInfo } from '@airswap/types';
-import { Web3Provider } from '@ethersproject/providers';
-import { useWeb3React } from '@web3-react/core';
+import { BigNumber } from 'bignumber.js';
 
-import { getErc20TokenAllowance } from '../redux/stores/orders/ordersApi';
+import { useAppSelector } from '../redux/hooks';
 
 const useSufficientErc20Allowance = (token?: TokenInfo, amount?: string): boolean => {
-  const { account, chainId, library } = useWeb3React<Web3Provider>();
+  const { currencyTokenAllowance } = useAppSelector((state) => state.balances);
 
   const [hasSufficientAllowance, setHasSufficientAllowance] = useState(false);
 
   useEffect(() => {
-    if (
-      !account
-      || !amount
-      || !chainId
-      || !library
-      || !token
-    ) {
+    if (!amount) {
       return;
     }
 
-    const callGetErc20TokenAllowance = async () => {
-      const allowance = await getErc20TokenAllowance(
-        token.address,
-        account,
-        Swap.getAddress(chainId),
-        library,
-      );
+    console.log(currencyTokenAllowance);
+    console.log(amount);
 
-      setHasSufficientAllowance(allowance.gt(amount));
-    };
-
-    callGetErc20TokenAllowance();
-  }, [
-    account,
-    amount,
-    chainId,
-    library,
-    token,
-  ]);
+    setHasSufficientAllowance(new BigNumber(currencyTokenAllowance).gt(amount));
+  }, [amount, currencyTokenAllowance]);
 
   return hasSufficientAllowance;
 };
