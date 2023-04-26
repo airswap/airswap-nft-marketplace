@@ -1,4 +1,4 @@
-import { tokenKinds } from '@airswap/constants';
+import { TokenKinds } from '@airswap/constants';
 // eslint-disable-next-line import/no-extraneous-dependencies
 import { Event } from '@ethersproject/contracts';
 import erc721AbiContract from '@openzeppelin/contracts/build/contracts/ERC721.json';
@@ -31,8 +31,8 @@ export const getOwnedTokenIdsOfWallet = async (
 
   const [isErc721Enumerable, isErc721, isErc1155] = await Promise.all([
     contract.supportsInterface('0x780e9d63'), // The interface ID for erc721 enumerable
-    contract.supportsInterface(tokenKinds.ERC721),
-    contract.supportsInterface(tokenKinds.ERC1155),
+    contract.supportsInterface(TokenKinds.ERC721),
+    contract.supportsInterface(TokenKinds.ERC1155),
   ]) as boolean[];
 
   if (isErc721Enumerable) {

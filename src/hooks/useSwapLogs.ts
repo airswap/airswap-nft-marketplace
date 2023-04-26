@@ -1,8 +1,8 @@
 import { useEffect } from 'react';
 
 /* eslint-disable import/no-extraneous-dependencies */
-import * as SwapContract from '@airswap/swap-erc20/build/contracts/SwapERC20.sol/SwapERC20.json';
-import * as swapDeploys from '@airswap/swap-erc20/deploys';
+import * as SwapContract from '@airswap/swap/build/contracts/Swap.sol/Swap.json';
+import * as swapDeploys from '@airswap/swap/deploys';
 import { Contract } from '@ethersproject/contracts';
 /* eslint-enable import/no-extraneous-dependencies */
 import { useAsync } from '@react-hookz/web/esm';
