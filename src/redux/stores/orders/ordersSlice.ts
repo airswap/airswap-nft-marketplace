@@ -5,30 +5,28 @@ import {
 } from '@reduxjs/toolkit';
 
 import { AppError } from '../../../errors/appError';
-import { RootState } from '../../store';
 import { approve, take } from './ordersActions';
 
 export interface OrdersState {
   orders: OrderERC20[];
   status: 'idle' | 'requesting' | 'approving' | 'taking' | 'failed' | 'reset';
   reRequestTimerId: number | null;
-  errors: AppError[];
+  error?: AppError;
 }
 
 const initialState: OrdersState = {
   orders: [],
   status: 'idle',
   reRequestTimerId: null,
-  errors: [],
 };
 
 export const ordersSlice = createSlice({
   name: 'orders',
   initialState,
   reducers: {
-    setErrors: (state, action: PayloadAction<AppError[]>) => ({
+    setError: (state, action: PayloadAction<AppError | undefined>) => ({
       ...state,
-      errors: action.payload,
+      error: action.payload,
     }),
     clear: () => initialState,
     setReRequestTimerId: (state, action: PayloadAction<number>) => ({
@@ -74,11 +72,7 @@ export const ordersSlice = createSlice({
 
 export const {
   clear,
-  setErrors,
+  setError,
 } = ordersSlice.actions;
-
-export const selectFirstOrder = (state: RootState) => state.orders.orders[0];
-export const selectOrdersStatus = (state: RootState) => state.orders.status;
-export const selectOrdersErrors = (state: RootState) => state.orders.errors;
 
 export default ordersSlice.reducer;

@@ -1,10 +1,20 @@
 import { TokenKinds } from '@airswap/constants';
-import { FullOrderERC20, OrderERC20, TokenInfo } from '@airswap/types';
+import {
+  CollectionTokenInfo,
+  FullOrderERC20,
+  OrderERC20,
+  TokenInfo,
+} from '@airswap/types';
 import { Web3Provider } from '@ethersproject/providers';
-import { createAsyncThunk, Dispatch } from '@reduxjs/toolkit';
+import { createAsyncThunk } from '@reduxjs/toolkit';
 import { Transaction } from 'ethers';
 
-import { AppErrorType, isAppError } from '../../../errors/appError';
+import {
+  AppError,
+  AppErrorType,
+  isAppError,
+  transformToAppError,
+} from '../../../errors/appError';
 import transformUnknownErrorToAppError from '../../../errors/transformUnknownErrorToAppError';
 import { AppDispatch, RootState } from '../../store';
 import { setAllowance } from '../balances/balancesSlice';
@@ -16,62 +26,38 @@ import {
 } from '../transactions/transactionActions';
 import { SubmittedApproval } from '../transactions/transactionsSlice';
 import { approveErc20Token, approveNftToken, takeOrder } from './ordersApi';
-import { setErrors } from './ordersSlice';
-
+import { setError } from './ordersSlice';
 
 const APPROVE_AMOUNT = '90071992547409910000000000';
 
-export const handleOrderError = (dispatch: Dispatch, error: any) => {
-  const appError = transformUnknownErrorToAppError(error);
-
-  if (appError.error && 'message' in appError.error) {
-    dispatch(declineTransaction(appError.error.message));
-  }
-
-  if (appError.type === AppErrorType.rejectedByUser) {
-    // TODO: Add toasts to app
-    // notifyRejectedByUserError();
-  } else {
-    dispatch(setErrors([appError]));
-  }
-};
-
 interface ApproveParams {
-  tokenInfo: TokenInfo;
+  tokenInfo: TokenInfo | CollectionTokenInfo;
   library: Web3Provider;
   chainId: number;
   tokenId?: number;
 }
 
 export const approve = createAsyncThunk<
-// Return type of the payload creator
-void,
-// Params
+Transaction | AppError,
 ApproveParams,
-// Types for ThunkAPI
 {
-  // thunkApi
   dispatch: AppDispatch;
   state: RootState;
 }
->('orders/approve', async (params, { dispatch }) => {
-  let tx: Transaction;
-  try {
-    const {
-      tokenInfo,
-      library,
-      tokenId,
-    } = params;
+>('orders/approve', async (params, { dispatch, rejectWithValue }) => {
+  dispatch(setError(undefined));
 
-    const tokenKind = (tokenInfo.extensions?.kind || TokenKinds.ERC20) as TokenKinds;
+  try {
+    let tx: Transaction;
+    const { tokenInfo, library, tokenId } = params;
+
+    const tokenKind = 'kind' in tokenInfo ? tokenInfo.kind : TokenKinds.ERC20;
 
     if (tokenKind !== TokenKinds.ERC20 && !tokenId) {
       console.error('[orders/approve]: Missing tokenId when submitting ERC721 or ERC1155 approval');
 
-      return;
+      return rejectWithValue(transformToAppError(AppErrorType.unknownError));
     }
-
-    console.log('JA');
 
     if ((tokenKind === TokenKinds.ERC721 || tokenKind === TokenKinds.ERC1155) && tokenId) {
       tx = await approveNftToken(
@@ -127,9 +113,14 @@ ApproveParams,
         }
       });
     }
+
+    return tx;
   } catch (e: any) {
-    handleOrderError(dispatch, e);
-    throw e;
+    console.error(e);
+    const error = transformUnknownErrorToAppError(e);
+    dispatch(setError(error));
+
+    return rejectWithValue(error);
   }
 });
 
@@ -165,7 +156,7 @@ TakeParams,
         }),
       );
     } else {
-      dispatch(setErrors([appError]));
+      dispatch(setError(appError));
     }
 
     if (appError.error && 'message' in appError.error) {

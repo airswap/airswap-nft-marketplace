@@ -1,6 +1,6 @@
 import React, { FC, useCallback } from 'react';
 
-import { TokenInfo } from '@airswap/types';
+import { FullOrder, TokenInfo } from '@airswap/types';
 import { NavLink } from 'react-router-dom';
 
 import Button from '../../../../components/Button/Button';
@@ -11,11 +11,10 @@ import './ListActionButtons.scss';
 
 interface ActionButtonsProps {
   hasInsufficientAmount: boolean;
-  hasInsufficientBalance: boolean;
   hasInsufficientExpiryAmount: boolean;
   hasNoCollectionTokenApproval: boolean;
-  hasNotSufficientCurrencyAllowance: boolean;
   currencyToken: TokenInfo;
+  fullOrder?: FullOrder;
   state: ListNftState;
   onActionButtonClick: () => void;
   className?: string;
@@ -23,20 +22,15 @@ interface ActionButtonsProps {
 
 const ListActionButtons: FC<ActionButtonsProps> = ({
   hasInsufficientAmount,
-  hasInsufficientBalance,
   hasInsufficientExpiryAmount,
   hasNoCollectionTokenApproval,
-  hasNotSufficientCurrencyAllowance,
   currencyToken,
+  fullOrder,
   state,
   onActionButtonClick,
   className = '',
 }) => {
   const getReviewButtonText = () => {
-    if (hasNotSufficientCurrencyAllowance) {
-      return `Approve ${currencyToken.symbol || ''}`;
-    }
-
     if (hasNoCollectionTokenApproval) {
       return 'Approve NFT';
     }
@@ -45,10 +39,6 @@ const ListActionButtons: FC<ActionButtonsProps> = ({
   };
 
   const getDisabledButtonText = () => {
-    if (hasInsufficientBalance) {
-      return `Not enough ${currencyToken.symbol}`;
-    }
-
     if (hasInsufficientExpiryAmount) {
       return 'Fill in expiry';
     }
@@ -57,7 +47,7 @@ const ListActionButtons: FC<ActionButtonsProps> = ({
   };
 
   const getActionButton = useCallback((): JSX.Element | null => {
-    if (hasInsufficientAmount || hasInsufficientBalance) {
+    if (hasInsufficientAmount) {
       return (
         <Button
           disabled
@@ -110,9 +100,11 @@ const ListActionButtons: FC<ActionButtonsProps> = ({
     }
 
     if (state === ListNftState.success) {
+      const tokenId = fullOrder?.signer.id;
+
       return (
         <NavLink
-          to={`/${AppRoutes.profile}`}
+          to={`/${AppRoutes.nftDetail}/${tokenId}/buy`}
           className="list-action-buttons__action-button"
         >
           View listing
@@ -134,10 +126,8 @@ const ListActionButtons: FC<ActionButtonsProps> = ({
     return null;
   }, [
     hasInsufficientAmount,
-    hasInsufficientBalance,
     hasInsufficientExpiryAmount,
     hasNoCollectionTokenApproval,
-    hasNotSufficientCurrencyAllowance,
     currencyToken,
     state,
   ]);

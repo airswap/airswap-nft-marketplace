@@ -8,39 +8,26 @@ import React, {
 import { TokenInfo } from '@airswap/types';
 import { Web3Provider } from '@ethersproject/providers';
 
-import Button from '../../../../components/Button/Button';
-import ExpiryIndicator from '../../../../components/ExpiryIndicator/ExpiryIndicator';
-import Icon from '../../../../components/Icon/Icon';
-import LoadingSpinner from '../../../../components/LoadingSpinner/LoadingSpinner';
-import ReviewNftDetails from '../../../../components/ReviewNftDetails/ReviewNftDetails';
-import ReviewTokenDetails from '../../../../components/ReviewTokenDetails/ReviewTokenDetails';
-import TradeDetails from '../../../../components/TradeDetails/TradeDetails';
-import CopyLinkButton from '../../../../compositions/CopyLinkButton/CopyLinkButton';
-import SelectExpiry from '../../../../compositions/SelectExpiry/SelectExpiry';
-import TradeTokenInput from '../../../../compositions/TradeTokenInput/TradeTokenInput';
-import TransactionLink from '../../../../compositions/TransactionLink/TransactionLink';
-import { transformNFTTokenToCollectionToken } from '../../../../entities/CollectionToken/CollectionTokenTransformers';
-import useErc20ApprovalSuccess from '../../../../hooks/useErc20ApprovalSuccess';
+import { expiryAmounts } from '../../../../constants/expiry';
+import { AppErrorType, isAppError } from '../../../../errors/appError';
+import useCollectionToken from '../../../../hooks/useCollectionToken';
 import useInsufficientAmount from '../../../../hooks/useInsufficientAmount';
-import useInsufficientBalance from '../../../../hooks/useInsufficientBalance';
 import useNftTokenApproval from '../../../../hooks/useNftTokenApproval';
-import useSufficientErc20Allowance from '../../../../hooks/useSufficientErc20Allowance';
 import { useAppDispatch, useAppSelector } from '../../../../redux/hooks';
-import { approve } from '../../../../redux/stores/orders/ordersActions';
+import { createNftOrder } from '../../../../redux/stores/listNft/listNftActions';
+import { approve as approveNft } from '../../../../redux/stores/orders/ordersActions';
 import { ExpiryTimeUnit } from '../../../../types/ExpiryTimeUnit';
 import { getTitle } from '../../helpers';
 import useTokenAmountAndFee from '../../hooks/useTokenAmountAndFee';
 import ListActionButtons from '../ListActionButtons/ListActionButtons';
+import ListNftDetailContainer from '../ListNftDetailsContainer/ListNftDetailsContainer';
 import ListNftWidgetHeader from '../ListNftWidgetHeader/ListNftWidgetHeader';
-import SwapIcon from '../SwapIcon/SwapIcon';
 
 import '../../ListNftWidget.scss';
 
-// TODO: Move ListNftState to store when it's made
 export enum ListNftState {
   details = 'details',
   review = 'review',
-  // eslint-disable-next-line @typescript-eslint/no-shadow
   approve = 'approve',
   approving = 'approving',
   sign = 'sign',
@@ -50,42 +37,43 @@ export enum ListNftState {
 }
 
 interface ListNftWidgetProps {
+  account: string;
   chainId: number;
-  collectionTokenInfo: TokenInfo;
   currencyTokenInfo: TokenInfo;
   library: Web3Provider
   className?: string;
 }
 
 const ConnectedListNftWidget: FC<ListNftWidgetProps> = ({
+  account,
   chainId,
-  collectionTokenInfo,
   currencyTokenInfo,
   library,
   className = '',
 }) => {
   const dispatch = useAppDispatch();
-  const { collectionImage } = useAppSelector(state => state.config);
-  const { isLoading: isLoadingMetadata, protocolFee, projectFee } = useAppSelector(state => state.metadata);
+
+  // Store data
+  const { tokens: userTokens } = useAppSelector(state => state.balances);
+  const { error: ordersError } = useAppSelector(state => state.orders);
+  const { error: listNftError } = useAppSelector(state => state.listNft);
+  const { collectionImage, collectionToken } = useAppSelector(state => state.config);
+  const { protocolFee, projectFee } = useAppSelector(state => state.metadata);
+  const { lastUserOrder } = useAppSelector(state => state.listNft);
 
   // User input states
   const [widgetState, setWidgetState] = useState<ListNftState>(ListNftState.details);
-  // TODO: Get tokenId from owned nfts in store https://github.com/airswap/airswap-marketplace/issues/62
-  const tokenId = 78426;
-  const collectionToken = transformNFTTokenToCollectionToken(collectionTokenInfo, tokenId, '1');
+  const [selectedTokenId, setSelectedTokenId] = useState(userTokens[0]);
   const [currencyTokenAmount, setCurrencyTokenAmount] = useState('0');
   const [expiryTimeUnit, setExpiryTimeUnit] = useState(ExpiryTimeUnit.minutes);
   const [expiryAmount, setExpiryAmount] = useState<number | undefined>(60);
 
   // States derived from user input
+  const collectionTokenInfo = useCollectionToken(collectionToken, selectedTokenId);
   const [currencyTokenAmountMinusProtocolFee, protocolFeeInCurrencyToken] = useTokenAmountAndFee(currencyTokenAmount);
-  const hasSufficientCurrencyAllowance = useSufficientErc20Allowance(currencyTokenInfo, currencyTokenAmount);
-  const hasSufficientBalance = !useInsufficientBalance(currencyTokenInfo, currencyTokenAmount);
   const hasInsufficientAmount = useInsufficientAmount(currencyTokenAmount);
   const hasInsufficientExpiryAmount = !expiryAmount || expiryAmount < 0;
-  const hasCollectionTokenApproval = useNftTokenApproval(collectionTokenInfo, tokenId);
-  const hasCurrencyTokenApprovalSuccess = useErc20ApprovalSuccess(currencyTokenInfo.address);
-
+  const hasCollectionTokenApproval = useNftTokenApproval(collectionTokenInfo, selectedTokenId);
   const title = useMemo(() => getTitle(widgetState), [widgetState]);
 
   const handleActionButtonClick = async () => {
@@ -93,35 +81,59 @@ const ConnectedListNftWidget: FC<ListNftWidgetProps> = ({
       setWidgetState(ListNftState.review);
     }
 
-    if (widgetState === ListNftState.review && (!hasSufficientCurrencyAllowance || !hasCollectionTokenApproval)) {
+    if (widgetState === ListNftState.review && collectionTokenInfo && !hasCollectionTokenApproval) {
       setWidgetState(ListNftState.approve);
-      const tokenInfo = !hasSufficientCurrencyAllowance ? currencyTokenInfo : collectionTokenInfo;
 
-      dispatch(approve({
-        tokenInfo,
+      dispatch(approveNft({
+        tokenInfo: collectionTokenInfo,
         library,
         chainId,
-        tokenId,
+        tokenId: selectedTokenId,
       }))
         .unwrap()
         .then(() => {
           setWidgetState(ListNftState.approving);
         })
-        .catch(() => {
-          setWidgetState(ListNftState.review);
+        .catch((e) => {
+          if (isAppError(e) && e.type === AppErrorType.rejectedByUser) {
+            setWidgetState(ListNftState.review);
+          } else {
+            setWidgetState(ListNftState.failed);
+          }
         });
     }
 
-    if (widgetState === ListNftState.review) {
-      // TODO: Dispatch make order
+    if (widgetState === ListNftState.review && collectionTokenInfo && hasCollectionTokenApproval) {
+      setWidgetState(ListNftState.sign);
+
+      const expiryDate = Date.now() + (expiryAmounts[expiryTimeUnit] * (expiryAmount || 1));
+
+      dispatch(createNftOrder({
+        expiry: Math.floor(expiryDate / 1000).toString(),
+        library,
+        signerWallet: account,
+        signerTokenInfo: collectionTokenInfo,
+        protocolFee,
+        senderTokenInfo: currencyTokenInfo,
+        senderAmount: currencyTokenAmount,
+        tokenId: selectedTokenId,
+      })).unwrap()
+        .then(() => {
+          setWidgetState(ListNftState.success);
+        })
+        .catch((e) => {
+          if (isAppError(e) && e.type === AppErrorType.rejectedByUser) {
+            setWidgetState(ListNftState.review);
+          } else {
+            setWidgetState(ListNftState.failed);
+          }
+        });
     }
   };
 
-  useEffect(() => {
-    if (hasCurrencyTokenApprovalSuccess && widgetState === ListNftState.approving) {
-      setWidgetState(ListNftState.review);
-    }
-  }, [widgetState, hasCurrencyTokenApprovalSuccess]);
+  const handleSelectedNftChange = (value: number) => {
+    setSelectedTokenId(value);
+  };
 
   useEffect(() => {
     if (hasCollectionTokenApproval && widgetState === ListNftState.approving) {
@@ -129,11 +141,15 @@ const ConnectedListNftWidget: FC<ListNftWidgetProps> = ({
     }
   }, [widgetState, hasCollectionTokenApproval]);
 
-  if (isLoadingMetadata) {
+  useEffect(() => {
+    setSelectedTokenId(userTokens[0]);
+  }, [userTokens]);
+
+  if (!userTokens.length) {
     return (
       <div className={`list-nft-widget ${className}`}>
         <h1>List NFT</h1>
-        <LoadingSpinner className="list-nft-widget__loading-spinner" />
+        You have no nfts to list
       </div>
     );
   }
@@ -145,127 +161,41 @@ const ConnectedListNftWidget: FC<ListNftWidgetProps> = ({
         className="list-nft-widget__header"
       />
 
-      <div className="list-nft-widget__trade-details-container">
-        {widgetState === ListNftState.details && (
-          <>
-            <TradeDetails
-              logoURI={collectionToken ? collectionToken.image : collectionImage}
-              title="List"
-              token={collectionTokenInfo}
-            />
-            <SwapIcon className="list-nft-widget__swap-icon" />
-            <TradeTokenInput
-              protocolFeeInCurrencyToken={protocolFeeInCurrencyToken}
-              protocolFeePercent={protocolFee / 100}
-              token={currencyTokenInfo}
-              value={currencyTokenAmount}
-              onInputChange={setCurrencyTokenAmount}
-            />
-            <SelectExpiry
-              amount={expiryAmount}
-              timeUnit={expiryTimeUnit}
-              onAmountChange={setExpiryAmount}
-              onTimeUnitChange={setExpiryTimeUnit}
-              className="list-nft-widget__select-expiry"
-            />
-          </>
-        )}
-
-        {(widgetState === ListNftState.review || widgetState === ListNftState.listing || widgetState === ListNftState.success) && (
-          <>
-            {widgetState === ListNftState.listing && <LoadingSpinner className="list-nft-widget__loading-spinner" />}
-            {widgetState === ListNftState.success && <Icon name="check" className="list-nft-widget__check-icon" />}
-            <ReviewNftDetails
-              logoURI={collectionToken ? collectionToken.image : collectionImage}
-              title={widgetState === ListNftState.review ? 'List' : 'From'}
-              token={collectionTokenInfo}
-              tokenId={tokenId}
-            />
-            <SwapIcon className="list-nft-widget__swap-icon" />
-            <ReviewTokenDetails
-              amount={currencyTokenAmount}
-              amountMinusProtocolFee={currencyTokenAmountMinusProtocolFee}
-              projectFeePercent={projectFee / 100}
-              protocolFeePercent={protocolFee / 100}
-              title={widgetState === ListNftState.review ? 'For' : 'To'}
-              token={currencyTokenInfo}
-            />
-            <ExpiryIndicator
-              unit={expiryTimeUnit}
-              amount={expiryAmount}
-              className="list-nft-widget__expiry-indicator"
-            />
-            {widgetState === ListNftState.listing && (
-              <TransactionLink
-                to="test"
-                className="list-nft-widget__transaction-link"
-              />
-            )}
-            {widgetState === ListNftState.success && (
-              <CopyLinkButton className="list-nft-widget__copy-link-button" />
-            )}
-          </>
-        )}
-
-        {widgetState === ListNftState.approving && (
-          <>
-            <LoadingSpinner className="list-nft-widget__loading-spinner" />
-            {hasSufficientCurrencyAllowance ? (
-              <TradeDetails
-                logoURI={currencyTokenInfo.logoURI}
-                title="Approving"
-                token={currencyTokenInfo}
-              />
-            ) : (
-              <TradeDetails
-                logoURI={collectionToken ? collectionToken.image : collectionImage}
-                title="Approving"
-                token={collectionTokenInfo}
-              />
-            )}
-            <TransactionLink
-              to="test"
-              className="list-nft-widget__transaction-link"
-            />
-          </>
-        )}
-      </div>
-
-      {(widgetState === ListNftState.sign || widgetState === ListNftState.approve) && (
-        <p className="list-nft-widget__message">
-          If your wallet does not open something went wrong
-        </p>
-      )}
-
-      {widgetState === ListNftState.failed && (
-        <>
-          <Icon name="close" className="list-nft-widget__failed-icon" />
-          <p className="list-nft-widget__message">
-            Failed for the following reason:
-            {/* TODO: Use store value when implemented */}
-          </p>
-        </>
-      )}
+      <ListNftDetailContainer
+        collectionImage={collectionImage}
+        collectionTokenInfo={collectionTokenInfo}
+        currencyTokenAmount={currencyTokenAmount}
+        currencyTokenAmountMinusProtocolFee={currencyTokenAmountMinusProtocolFee}
+        currencyTokenInfo={currencyTokenInfo}
+        error={listNftError || ordersError}
+        expiryAmount={expiryAmount}
+        expiryTimeUnit={expiryTimeUnit}
+        fullOrder={lastUserOrder}
+        projectFee={projectFee}
+        protocolFee={protocolFee}
+        protocolFeeInCurrencyToken={protocolFeeInCurrencyToken}
+        selectedTokenId={selectedTokenId}
+        userTokens={userTokens}
+        widgetState={widgetState}
+        onExpiryAmountChange={setExpiryAmount}
+        onExpiryTimeUnitChange={setExpiryTimeUnit}
+        onSelectedNftChange={handleSelectedNftChange}
+        onTradeTokenInputChange={setCurrencyTokenAmount}
+        className="list-nft-widget__trade-details-container"
+      />
 
       {!(widgetState === ListNftState.sign || widgetState === ListNftState.approve || widgetState === ListNftState.approving) && (
         <ListActionButtons
-          state={widgetState}
           hasNoCollectionTokenApproval={!hasCollectionTokenApproval}
-          hasNotSufficientCurrencyAllowance={!hasSufficientCurrencyAllowance}
           hasInsufficientAmount={hasInsufficientAmount}
-          hasInsufficientBalance={!hasSufficientBalance}
           hasInsufficientExpiryAmount={hasInsufficientExpiryAmount}
           currencyToken={currencyTokenInfo}
+          fullOrder={lastUserOrder}
+          state={widgetState}
           onActionButtonClick={handleActionButtonClick}
           className="list-nft-widget__action-buttons"
         />
       )}
-
-      <Button
-        text="Invisible dummy button (for testing only)"
-        onClick={handleActionButtonClick}
-        className="list-nft-widget__dummy-button"
-      />
     </div>
   );
 };

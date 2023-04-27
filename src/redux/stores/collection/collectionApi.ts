@@ -1,10 +1,8 @@
-import { getTokenFromContract } from '@airswap/metadata';
-import { TokenInfo } from '@airswap/types';
+import { CollectionTokenInfo } from '@airswap/types';
 import { Web3Provider } from '@ethersproject/providers';
 import { createAsyncThunk } from '@reduxjs/toolkit';
 
-import { CollectionToken } from '../../../entities/CollectionToken/CollectionToken';
-import { transformNFTTokenToCollectionToken } from '../../../entities/CollectionToken/CollectionTokenTransformers';
+import { getCollectionToken } from '../../../entities/CollectionToken/CollectionTokenHelpers';
 
 interface fetchNFTMetadataParams {
   library: Web3Provider,
@@ -13,28 +11,10 @@ interface fetchNFTMetadataParams {
 }
 
 export const fetchCollectionTokens = createAsyncThunk<(
-CollectionToken | undefined)[], fetchNFTMetadataParams>(
+CollectionTokenInfo | undefined)[], fetchNFTMetadataParams>(
   'collection/fetchNFTMetadata',
   async ({ library, collectionToken, tokenIds }) => {
-    const dataPromises = tokenIds.map(async (tokenId) => {
-      let tokenInfo: TokenInfo;
-
-      try {
-        tokenInfo = await getTokenFromContract(library, collectionToken, tokenId.toString());
-      } catch (e) {
-        console.error(new Error(`Unable to fetch data for ${collectionToken} with id ${tokenId}`));
-
-        return undefined;
-      }
-
-      const token = transformNFTTokenToCollectionToken(tokenInfo, tokenId, '0.154000000000000000');
-
-      if (!token) {
-        console.error(new Error(`Unable to parse data for ${collectionToken} with id ${tokenId}`));
-      }
-
-      return token;
-    });
+    const dataPromises = tokenIds.map(async (tokenId) => getCollectionToken(library, collectionToken, tokenId));
 
     return Promise.all(dataPromises);
   },

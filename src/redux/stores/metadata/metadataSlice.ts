@@ -3,7 +3,7 @@ import { createSlice, PayloadAction } from '@reduxjs/toolkit';
 
 import { RootState } from '../../store';
 import { fetchProtocolFee } from './metadataActions';
-import { getCurrencyAndCollectionTokenInfo } from './metadataApi';
+import { getCurrencyTokenInfo } from './metadataApi';
 
 export interface MetadataState {
   isLoading: boolean;
@@ -31,25 +31,21 @@ const metadataSlice = createSlice({
     }),
   },
   extraReducers: builder => {
-    builder.addCase(getCurrencyAndCollectionTokenInfo.pending, (state) => ({
+    builder.addCase(getCurrencyTokenInfo.pending, (state) => ({
       ...state,
       isLoading: true,
     }));
 
-    builder.addCase(getCurrencyAndCollectionTokenInfo.fulfilled, (state, action) => {
-      const tokens: { [address: string]: TokenInfo } = action.payload.reduce((total, token) => ({
-        ...total,
-        ...(token ? { [token.address]: token } : {}),
-      }), {});
+    builder.addCase(getCurrencyTokenInfo.fulfilled, (state, action) => ({
+      ...state,
+      isLoading: false,
+      tokens: {
+        ...state.tokens,
+        [action.payload.address]: action.payload,
+      },
+    }));
 
-      return {
-        ...state,
-        isLoading: false,
-        tokens,
-      };
-    });
-
-    builder.addCase(getCurrencyAndCollectionTokenInfo.rejected, (state, action) => {
+    builder.addCase(getCurrencyTokenInfo.rejected, (state, action) => {
       console.error(action.error);
 
       return {
@@ -68,7 +64,6 @@ export const {
   setIsLoading,
 } = metadataSlice.actions;
 
-export const selectCollectionTokenInfo = (state: RootState): TokenInfo | undefined => state.metadata.tokens[state.config.collectionToken];
 export const selectCurrencyTokenInfo = (state: RootState): TokenInfo | undefined => state.metadata.tokens[state.config.currencyToken];
 
 export default metadataSlice.reducer;

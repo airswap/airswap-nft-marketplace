@@ -4,14 +4,16 @@ import { useAppSelector } from '../../../../redux/hooks';
 import NftDetailMainInfo from '../NftDetailMainInfo/NftDetailMainInfo';
 import NftDetailPortrait from '../NftDetailPortrait/NftDetailPortrait';
 
-// import './NftDetailWidget.scss';
+interface DisconnectedNftDetailWidgetProps {
+  className?: string;
+}
 
-const DisconnectedNftDetailWidget: FC = () => {
+const DisconnectedNftDetailWidget: FC<DisconnectedNftDetailWidgetProps> = ({ className = '' }) => {
   const { collection } = useAppSelector((state: any) => state);
   const { collectionImage } = collection;
 
   return (
-    <div className="nft-detail-widget">
+    <div className={`nft-detail-widget ${className}`}>
       <NftDetailMainInfo
         owner="sjnivo12345"
         title="Wallet Disconnected"

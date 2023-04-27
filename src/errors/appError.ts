@@ -4,6 +4,7 @@ import { RpcError } from './rpcError';
 import { RpcSignRejectedError } from './rpcSignRejectedError';
 
 export enum AppErrorType {
+  approveCallerIsNotOwner = 'approveCallerIsNotOwner',
   arithmeticUnderflow = 'arithmetic-underflow',
   chainDisconnected = 'chain-disconnected',
   disconnected = 'disconnected',

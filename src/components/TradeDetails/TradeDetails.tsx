@@ -1,6 +1,6 @@
 import React, { FC, useMemo } from 'react';
 
-import { TokenInfo } from '@airswap/types';
+import { CollectionTokenInfo, TokenInfo } from '@airswap/types';
 import { format } from '@greypixel_/nicenumbers';
 import { BigNumber } from 'bignumber.js';
 
@@ -11,7 +11,7 @@ interface TradeDetailsProps {
   amountSubtext?: string;
   logoURI?: string;
   title: string;
-  token: TokenInfo;
+  token: TokenInfo | CollectionTokenInfo;
   className?: string;
 }
 
