@@ -39,3 +39,9 @@ export const hideToast = (toastId: string) => async (dispatch: AppDispatch, getS
 
   dispatch(setToasts(updatedToasts));
 };
+
+export const removeHiddenToasts = () => async (dispatch: AppDispatch, getState: () => RootState): Promise<void> => {
+  const { toasts } = getState().toasts;
+
+  dispatch(setToasts([...toasts].filter(toast => !toast.isHidden)));
+};

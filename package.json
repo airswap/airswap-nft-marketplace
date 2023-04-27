@@ -31,6 +31,7 @@
     "erc721a": "^4.2.3",
     "eth-rpc-errors": "^4.0.3",
     "ethers": "^5.7.2",
+    "lodash.debounce": "^4.0.8",
     "react": "^17.0.2",
     "react-dom": "^17.0.2",
     "react-error-overlay": "^6.0.11",
@@ -65,6 +66,7 @@
   "devDependencies": {
     "@craco/craco": "^6.4.1",
     "@types/jest": "^27.0.1",
+    "@types/lodash.debounce": "^4.0.7",
     "@types/node": "^16.7.13",
     "@types/react": "^17.0.52",
     "@types/react-dom": "^17.0.18",
