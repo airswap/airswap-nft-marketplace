@@ -5,11 +5,12 @@ import { fetchOwnedTokenMeta } from './profileApi';
 
 export interface ProfileState {
   isLoading: boolean;
-  ownedTokenMeta?: CollectionTokenInfo[];
+  ownedTokenMeta: CollectionTokenInfo[];
 }
 
 const initialState: ProfileState = {
   isLoading: false,
+  ownedTokenMeta: [],
 };
 
 const profileSlice = createSlice({
