@@ -8,7 +8,7 @@ import { getNonceUsed } from '../redux/stores/orders/ordersApi';
 
 const useFullOrderNonceUsed = (fullOrder?: FullOrder): [boolean, boolean] => {
   const { library } = useWeb3React<Web3Provider>();
-  const [isLoading, setIsLoading] = useState(false);
+  const [isLoading, setIsLoading] = useState(true);
   const [isNonceUsed, setIsNonceUsed] = useState(false);
 
   useEffect((): () => void => {

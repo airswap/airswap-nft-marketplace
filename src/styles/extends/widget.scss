@@ -53,7 +53,7 @@ $widget-height: 34.125rem;
         align-items: center;
         justify-content: center;
         max-width: calc(#{$widget-width} + var(--page-padding) * 2);
-        min-height: calc(100svh - var(--desktop-top-bar-height) - var(--page-padding) * 2);
+        min-height: calc(100svh - var(--desktop-top-bar-height) - var(--page-padding) * 3);
         background: none;
     }
 }

@@ -1,22 +1,22 @@
 import { useEffect, useState } from 'react';
 
-import { TokenInfo } from '@airswap/types';
+import { FullOrder } from '@airswap/types';
 import { BigNumber } from 'bignumber.js';
 
+import { getFullOrderSenderAmountPlusTotalFees } from '../entities/FullOrder/FullOrderHelpers';
 import { useAppSelector } from '../redux/hooks';
 
-const useSufficientErc20Allowance = (token?: TokenInfo, amount?: string): boolean => {
+const useSufficientErc20Allowance = (fullOrder: FullOrder): boolean => {
   const { currencyTokenAllowance } = useAppSelector((state) => state.balances);
 
   const [hasSufficientAllowance, setHasSufficientAllowance] = useState(false);
 
   useEffect(() => {
-    if (!amount) {
-      return;
-    }
-
+    const amount = getFullOrderSenderAmountPlusTotalFees(fullOrder);
+    console.log(amount.toString());
+    console.log(currencyTokenAllowance);
     setHasSufficientAllowance(new BigNumber(currencyTokenAllowance).gte(amount));
-  }, [amount, currencyTokenAllowance]);
+  }, [fullOrder, currencyTokenAllowance]);
 
   return hasSufficientAllowance;
 };

@@ -60,11 +60,13 @@ export async function takeOrder(
 ): Promise<ContractTransaction | AppError> {
   try {
     const { chainId } = provider.network;
-    return Swap.getContract(provider.getSigner(), chainId).swap(
+    const result = await Swap.getContract(provider.getSigner(), chainId).swap(
       senderWallet,
       '0',
       order,
     );
+
+    return result;
   } catch (error: any) {
     console.error(error);
     return transformUnknownErrorToAppError(error);

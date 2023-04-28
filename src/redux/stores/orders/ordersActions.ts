@@ -13,7 +13,6 @@ import {
 import transformUnknownErrorToAppError from '../../../errors/transformUnknownErrorToAppError';
 import { AppDispatch, RootState } from '../../store';
 import {
-  declineTransaction,
   mineTransaction,
   revertTransaction,
   submitTransaction,
@@ -147,43 +146,24 @@ TakeParams,
   const tx = await takeOrder(params.order, senderWallet, params.library);
 
   if (isAppError(tx)) {
-    const appError = tx;
-    if (appError.type === AppErrorType.rejectedByUser) {
-      // TODO: Add Toasts to app
-      // notifyRejectedByUserError();
-      dispatch(
-        revertTransaction({
-          signerWallet: order.signer.wallet,
-          nonce: order.nonce,
-          reason: appError.type,
-        }),
-      );
-    } else {
-      dispatch(setError(appError));
-    }
+    dispatch(setError(tx));
 
-    if (appError.error && 'message' in appError.error) {
-      dispatch(declineTransaction(appError.error.message));
-    }
-
-    throw appError;
+    throw tx;
   }
 
-  if (tx.hash) {
-    const transaction: SubmittedTransactionWithOrder = {
-      type: 'Order',
-      hash: tx.hash,
-      status: 'processing',
-      order,
-      timestamp: Date.now(),
-    };
-    dispatch(submitTransaction(transaction));
-    library.once(tx.hash, async () => {
-      const receipt = await library.getTransactionReceipt(tx.hash);
-      if (receipt.status === 1) {
-        dispatch(mineTransaction({ hash: receipt.transactionHash }));
-      }
-    });
-  }
+  const transaction: SubmittedTransactionWithOrder = {
+    type: 'Order',
+    hash: tx.hash,
+    status: 'processing',
+    order,
+    timestamp: Date.now(),
+  };
+  dispatch(submitTransaction(transaction));
+  library.once(tx.hash, async () => {
+    const receipt = await library.getTransactionReceipt(tx.hash);
+    if (receipt.status === 1) {
+      dispatch(mineTransaction({ hash: receipt.transactionHash }));
+    }
+  });
 });
 

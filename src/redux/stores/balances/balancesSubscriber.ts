@@ -1,26 +1,37 @@
 import { getLibrary } from '../../../helpers/ethers';
 import { store } from '../../store';
-import { TransactionStatus } from '../transactions/transactionsSlice';
 import { fetchCurrencyTokenAllowance, fetchCurrencyTokenBalance, fetchUserTokens } from './balancesApi';
 import { setIsInitialized } from './balancesSlice';
 
 export const configureBalancesSubscriber = () => {
   let account: string;
   let chainId: number;
-  let lastTransactionStatus: TransactionStatus | undefined;
+  let lastTransactionHash: string | undefined;
 
   store.subscribe(() => {
-    const { web3, config, transactions } = store.getState();
-    const lastTransaction = transactions.all[transactions.all.length - 1];
+    const {
+      balances,
+      config,
+      transactions,
+      web3,
+    } = store.getState();
+
+    const lastTransaction = transactions.all[0];
+    const lastSucceededTransaction = lastTransaction?.status === 'succeeded' ? lastTransaction : undefined;
 
     if (!web3.chainId || !web3.account) {
       return;
     }
 
-    if (account !== web3.account || chainId !== web3.chainId || (lastTransaction && lastTransaction.status !== lastTransactionStatus)) {
+    if (
+      account !== web3.account
+      || chainId !== web3.chainId
+      || (lastSucceededTransaction && lastSucceededTransaction.hash !== lastTransactionHash)
+    ) {
       account = web3.account;
       chainId = web3.chainId;
-      lastTransactionStatus = lastTransaction?.status;
+      lastTransactionHash = lastSucceededTransaction?.hash;
+      console.log(lastTransactionHash);
 
       const library = getLibrary(web3.chainId);
 
@@ -45,7 +56,9 @@ export const configureBalancesSubscriber = () => {
           collectionToken: config.collectionToken,
         })),
       ]).then(() => {
-        store.dispatch(setIsInitialized(true));
+        if (!balances.isInitialized) {
+          store.dispatch(setIsInitialized(true));
+        }
       });
     }
   });

@@ -3,7 +3,7 @@ import { useMemo } from 'react';
 import { useAppSelector } from '../redux/hooks';
 import { selectApprovals, SubmittedApproval } from '../redux/stores/transactions/transactionsSlice';
 
-const useApproveCurrencyTokenPending = (): SubmittedApproval | undefined => {
+const useApproveCurrencyTokenTransaction = (): SubmittedApproval | undefined => {
   const { currencyToken } = useAppSelector(state => state.config);
   const pendingTransactions = useAppSelector(selectApprovals);
 
@@ -16,4 +16,4 @@ const useApproveCurrencyTokenPending = (): SubmittedApproval | undefined => {
   }, [pendingTransactions]);
 };
 
-export default useApproveCurrencyTokenPending;
+export default useApproveCurrencyTokenTransaction;

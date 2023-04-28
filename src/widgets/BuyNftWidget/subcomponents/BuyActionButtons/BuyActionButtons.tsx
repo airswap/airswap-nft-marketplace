@@ -45,7 +45,7 @@ const BuyActionButtons: FC<ActionButtonsProps> = ({
       );
     }
 
-    if (isOrderNonceUsed) {
+    if (isOrderNonceUsed && state === BuyNftState.details) {
       return (
         <Button
           disabled
@@ -55,7 +55,7 @@ const BuyActionButtons: FC<ActionButtonsProps> = ({
       );
     }
 
-    if (isOrderExpired) {
+    if (isOrderExpired && state === BuyNftState.details) {
       return (
         <Button
           disabled
@@ -65,7 +65,7 @@ const BuyActionButtons: FC<ActionButtonsProps> = ({
       );
     }
 
-    if (hasInsufficientAmount) {
+    if (hasInsufficientAmount && state === BuyNftState.details) {
       return (
         <Button
           disabled
