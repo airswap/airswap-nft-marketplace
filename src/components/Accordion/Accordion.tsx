@@ -25,19 +25,20 @@ const Accordion: FC<AccordionProps> = ({
   const [contentHeight, setContentHeight] = useState<number>();
   const contentRef = useRef<HTMLDivElement>(null);
 
-  // Initialise accordion
+  // Initialise accordion and watch for content changes.
   useEffect(() => {
-    if (contentRef.current) {
-      const { height } = contentRef.current.getBoundingClientRect();
-      if (!contentHeight) {
-        setContentHeight(height);
-        setIsOpen(isDefaultOpen);
-        contentRef.current.style.height = isOpen ? `${height}px` : '0px';
-        // Set transition duration based on height to maintain constant speed
-        contentRef.current.style.transitionDuration = `${height / 300}s`;
-      }
+    if (!contentRef.current) return;
+    contentRef.current.style.height = 'auto';
+    const { height } = contentRef.current.getBoundingClientRect();
+    if (!contentHeight) {
+      // Initialising accordion
+      setIsOpen(isDefaultOpen);
     }
-  }, [contentRef.current, contentHeight]);
+    setContentHeight(height);
+    contentRef.current.style.height = isOpen ? `${height}px` : '0px';
+    // Set transition duration based on height to maintain constant speed
+    contentRef.current.style.transitionDuration = `${height / 300}s`;
+  }, [contentRef.current, contentHeight, content]);
 
   window.addEventListener('resize', () => {
     if (contentRef.current) {
