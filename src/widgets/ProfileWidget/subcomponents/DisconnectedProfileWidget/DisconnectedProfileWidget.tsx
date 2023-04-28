@@ -1,8 +1,12 @@
 import React, { FC } from 'react';
 
-const DisconnectedProfileWidget: FC = () => {
+interface DisconnectedProfileWidgetProps {
+  className?: string;
+}
+
+const DisconnectedProfileWidget: FC<DisconnectedProfileWidgetProps> = ({ className = '' }) => {
   console.log('DisconnectedProfileWidget');
-  return <div className="disconnected-profile-widget">DisconnectedProfileWidget</div>;
+  return <div className={`disconnected-profile-widget ${className}`}>DisconnectedProfileWidget</div>;
 };
 
 export default DisconnectedProfileWidget;
