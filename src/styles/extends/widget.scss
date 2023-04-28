@@ -22,22 +22,25 @@ $widget-height: 34.125rem;
         display: block;
         position: absolute;
         width: calc(100% - var(--page-padding) * 2);
+        height: 100%;
         overflow: hidden;
+
+        &:after {
+            display: block;
+            content: '';
+            position: absolute;
+            top: -1rem;
+            left: -1rem;
+            width: calc(100% + 2rem);
+            height: calc(100% + 2rem);
+            background: rgba(0, 0, 0, 0.75);
+            backdrop-filter: blur(2px);
+        }
     }
-
-    // TODO: think of better way... lol
-    // @media (max-height: #{$widget-height + 8rem}) {
-    //     min-height: 100%;
-    // }
-}
-
-%widget-over-widget-cover {
-    position: relative;
-    width: 100%;
-    background: rgba(0, 0, 0, 0.7);
 }
 
 %widget-over-widget-container {
+    position: relative;
     margin: 0 auto;
     width: 100%;
     max-width: #{$widget-width};

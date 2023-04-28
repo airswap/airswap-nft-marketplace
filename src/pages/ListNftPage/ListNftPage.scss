@@ -7,10 +7,6 @@
         @extend %widget-under-widget;
     }
 
-    &__list-nft-widget-cover {
-        @extend %widget-over-widget-cover;
-    }
-
     &__list-nft-widget-container {
         @extend %widget-over-widget-container;
     }
