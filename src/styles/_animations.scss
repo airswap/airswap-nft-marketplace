@@ -2,3 +2,8 @@
     from { transform: rotate(0deg) }
     to { transform: rotate(1turn) }
 }
+
+@keyframes scaleIn {
+    from { transform: scale(0) }
+    to { transform: scale(1) }
+}

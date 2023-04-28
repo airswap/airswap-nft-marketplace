@@ -26,6 +26,7 @@ import IconLaunch from './IconLaunch';
 import IconLibrary from './IconLibrary';
 import IconLink from './IconLink';
 import IconLogout from './IconLogout';
+import IconMarkerCheck from './IconMarkerCheck';
 import IconMedium from './IconMedium';
 import IconMenu from './IconMenu';
 import IconPending from './IconPending';
@@ -69,6 +70,7 @@ export {
   IconLibrary,
   IconLink,
   IconLogout,
+  IconMarkerCheck,
   IconMedium,
   IconMenu,
   IconPending,
