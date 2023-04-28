@@ -125,6 +125,7 @@ TakeParams,
   state: RootState;
 }
 >('orders/take', async (params, { dispatch }) => {
+  const { order, library } = params;
   const tx = await takeOrder(params.order, params.senderWallet, params.library);
 
   if (isAppError(tx)) {
@@ -134,8 +135,8 @@ TakeParams,
       // notifyRejectedByUserError();
       dispatch(
         revertTransaction({
-          signerWallet: params.order.signer.wallet,
-          nonce: params.order.nonce,
+          signerWallet: order.signer.wallet,
+          nonce: order.nonce,
           reason: appError.type,
         }),
       );
@@ -150,21 +151,17 @@ TakeParams,
     throw appError;
   }
 
-  console.log(tx);
-
   if (tx.hash) {
     const transaction: SubmittedTransactionWithOrder = {
       type: 'Order',
       hash: tx.hash,
       status: 'processing',
-      order: params.order,
+      order,
       timestamp: Date.now(),
     };
     dispatch(submitTransaction(transaction));
-    params.library.once(tx.hash, async () => {
-      const receipt = await params.library.getTransactionReceipt(tx.hash);
-      // const state: RootState = getState() as RootState;
-      // const tokens = Object.values(state.metadata.tokens.all);
+    library.once(tx.hash, async () => {
+      const receipt = await library.getTransactionReceipt(tx.hash);
       if (receipt.status === 1) {
         dispatch(mineTransaction({ hash: receipt.transactionHash }));
       }

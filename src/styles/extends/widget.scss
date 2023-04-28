@@ -4,13 +4,14 @@
 // or ListNftWidget in front of ProfileWidget
 
 $widget-width: 19.5rem;
+$widget-height: 34.125rem;
 
 %widget-over-widget {
     width: 100%;
     min-height: calc(100svh - var(--top-bar-height) - var(--page-padding) * 2);
 
     @include for-size(tablet-portrait-up) {
-        min-height: 34.125rem;
+        min-height: $widget-height;
     }
 }
 
@@ -21,9 +22,13 @@ $widget-width: 19.5rem;
         display: block;
         position: absolute;
         width: calc(100% - var(--page-padding) * 2);
-        height: 100%;
         overflow: hidden;
     }
+
+    // TODO: think of better way... lol
+    // @media (max-height: #{$widget-height + 8rem}) {
+    //     min-height: 100%;
+    // }
 }
 
 %widget-over-widget-cover {

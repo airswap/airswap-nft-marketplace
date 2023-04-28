@@ -3,6 +3,7 @@ import { createSlice, PayloadAction } from '@reduxjs/toolkit';
 import { fetchCurrencyTokenAllowance, fetchCurrencyTokenBalance, fetchUserTokens } from './balancesApi';
 
 interface BalancesState {
+  isInitialized: boolean;
   isLoading: boolean;
   isLoadingAllowances: boolean;
   isLoadingBalances: boolean;
@@ -13,6 +14,7 @@ interface BalancesState {
 }
 
 const initialState: BalancesState = {
+  isInitialized: false,
   isLoading: false,
   isLoadingAllowances: false,
   isLoadingBalances: false,
@@ -29,6 +31,10 @@ const balancesSlice = createSlice({
     setIsLoading: (state, action: PayloadAction<boolean>): BalancesState => ({
       ...state,
       isLoading: action.payload,
+    }),
+    setIsInitialized: (state, action: PayloadAction<boolean>): BalancesState => ({
+      ...state,
+      isInitialized: action.payload,
     }),
     setAllowance: (state, action: PayloadAction<string>): BalancesState => ({
       ...state,
@@ -85,6 +91,7 @@ export const {
   setIsLoading,
   setAllowance,
   setBalance,
+  setIsInitialized,
 } = balancesSlice.actions;
 
 export default balancesSlice.reducer;

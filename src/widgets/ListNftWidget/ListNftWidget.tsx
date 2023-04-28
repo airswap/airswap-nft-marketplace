@@ -15,9 +15,9 @@ const ListNftWidget: FC<ListNftWidgetProps> = ({ className = '' }) => {
   const { account, library, chainId } = useWeb3React();
   const { tokens: userTokens } = useAppSelector(state => state.balances);
   const { isLoading: isMetadataLoading } = useAppSelector(state => state.metadata);
-  const { isLoading: isBalancesLoading } = useAppSelector(state => state.balances);
+  const { isInitialized: isBalancesInitialized } = useAppSelector(state => state.balances);
   const currencyToken = useAppSelector(selectCurrencyTokenInfo);
-  const isLoading = isBalancesLoading || isMetadataLoading;
+  const isLoading = !isBalancesInitialized || isMetadataLoading;
 
   if (
     !isLoading

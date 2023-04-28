@@ -72,6 +72,10 @@ export interface SubmittedWithdrawOrder extends SubmittedTransaction {
   order: DepositOrWithdrawOrder;
 }
 
+export interface SubmittedOrder extends SubmittedTransaction {
+  order: Order;
+}
+
 export interface TransactionsState {
   all: SubmittedTransaction[];
 }
@@ -172,6 +176,10 @@ export const selectApprovals = (state: RootState) => state.transactions.all.filt
 export const selectPendingApprovals = (state: RootState) => state.transactions.all.filter(
   (tx) => tx.status === 'processing' && tx.type === 'Approval',
 ) as SubmittedApproval[];
+
+export const selectPendingOrders = (state: RootState) => state.transactions.all.filter(
+  (tx) => tx.status === 'processing' && tx.type === 'Order',
+) as SubmittedOrder[];
 
 export const selectCancellations = (state: RootState) => state.transactions.all.filter(
   (tx) => tx.status === 'succeeded' && tx.type === 'Cancel',

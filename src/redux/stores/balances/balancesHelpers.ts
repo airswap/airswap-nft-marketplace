@@ -6,6 +6,8 @@ import erc721EnumerableContract from '@openzeppelin/contracts/build/contracts/ER
 import erc1155Contract from '@openzeppelin/contracts/build/contracts/ERC1155.json';
 import { BigNumber, ethers } from 'ethers';
 
+import { getUniqueSingleDimensionArray } from '../../../helpers/array';
+
 export const getUniqueTokensForWallet = (tokenIds: BigNumber[], collectionContract: ethers.Contract, walletAddress: string): number[] => {
   /* get unique values */
   const uniqueTokenIds = [...new Set(tokenIds)];
@@ -19,6 +21,7 @@ export const getUniqueTokensForWallet = (tokenIds: BigNumber[], collectionContra
 
   return ownedTokenIds
     .map(t => t.toNumber())
+    .filter(getUniqueSingleDimensionArray)
     .sort((a, b) => a - b);
 };
 
@@ -26,7 +29,7 @@ export const getOwnedTokenIdsOfWallet = async (
   provider: ethers.providers.Web3Provider,
   walletAddress: string,
   collectionToken: string,
-) => {
+): Promise<number[]> => {
   const contract = new ethers.Contract(collectionToken, erc721AbiContract.abi, provider);
 
   const [isErc721Enumerable, isErc721, isErc1155] = await Promise.all([
@@ -46,6 +49,7 @@ export const getOwnedTokenIdsOfWallet = async (
 
     return tokenIds
       .map(t => t.toNumber())
+      .filter(getUniqueSingleDimensionArray)
       .sort((a, b) => a - b);
   }
 

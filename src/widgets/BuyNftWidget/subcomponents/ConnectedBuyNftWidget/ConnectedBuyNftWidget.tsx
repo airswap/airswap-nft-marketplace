@@ -11,6 +11,7 @@ import { Web3Provider } from '@ethersproject/providers';
 import { AppErrorType, isAppError } from '../../../../errors/appError';
 import useErc20ApprovalSuccess from '../../../../hooks/useErc20ApprovalSuccess';
 import useInsufficientBalance from '../../../../hooks/useInsufficientBalance';
+import useOrderTransaction from '../../../../hooks/useOrderTransaction';
 import useSufficientErc20Allowance from '../../../../hooks/useSufficientErc20Allowance';
 import { useAppDispatch, useAppSelector } from '../../../../redux/hooks';
 import { approve as approveErc20, take } from '../../../../redux/stores/orders/ordersActions';
@@ -59,6 +60,7 @@ const BuyNftWidget: FC<ConnectedBuyNftWidgetProps> = ({
   const hasInsufficientBalance = useInsufficientBalance(fullOrder.sender.amount);
   const hasSufficientCurrencyAllowance = useSufficientErc20Allowance(currencyTokenInfo, fullOrder.sender.amount);
   const hasCurrencyApprovalSuccess = useErc20ApprovalSuccess(currencyTokenInfo.address);
+  const orderTransaction = useOrderTransaction(fullOrder.nonce);
   const ownerIsAccount = fullOrder.signer.wallet.toLowerCase() === account.toLowerCase();
 
   const title = useMemo(() => getTitle(widgetState), [widgetState]);
@@ -114,6 +116,18 @@ const BuyNftWidget: FC<ConnectedBuyNftWidgetProps> = ({
       setWidgetState(BuyNftState.details);
     }
   }, [widgetState, hasCurrencyApprovalSuccess]);
+
+  useEffect(() => {
+    if (orderTransaction?.status === 'processing') {
+      setWidgetState(BuyNftState.buying);
+    }
+
+    if (orderTransaction?.status === 'succeeded') {
+      setWidgetState(BuyNftState.success);
+    }
+  }, [orderTransaction?.status]);
+
+  console.log(widgetState);
 
   return (
     <div className={`buy-nft-widget ${className}`}>

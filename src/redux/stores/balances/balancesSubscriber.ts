@@ -2,6 +2,7 @@ import { getLibrary } from '../../../helpers/ethers';
 import { store } from '../../store';
 import { TransactionStatus } from '../transactions/transactionsSlice';
 import { fetchCurrencyTokenAllowance, fetchCurrencyTokenBalance, fetchUserTokens } from './balancesApi';
+import { setIsInitialized } from './balancesSlice';
 
 export const configureBalancesSubscriber = () => {
   let account: string;
@@ -23,25 +24,29 @@ export const configureBalancesSubscriber = () => {
 
       const library = getLibrary(web3.chainId);
 
-      store.dispatch(fetchCurrencyTokenBalance({
-        chainId: web3.chainId,
-        provider: library,
-        collectionTokenAddress: config.currencyToken,
-        walletAddress: web3.account,
-      }));
+      Promise.all([
+        store.dispatch(fetchCurrencyTokenBalance({
+          chainId: web3.chainId,
+          provider: library,
+          collectionTokenAddress: config.currencyToken,
+          walletAddress: web3.account,
+        })),
 
-      store.dispatch(fetchCurrencyTokenAllowance({
-        chainId: web3.chainId,
-        provider: library,
-        collectionTokenAddress: config.currencyToken,
-        walletAddress: web3.account,
-      }));
+        store.dispatch(fetchCurrencyTokenAllowance({
+          chainId: web3.chainId,
+          provider: library,
+          collectionTokenAddress: config.currencyToken,
+          walletAddress: web3.account,
+        })),
 
-      store.dispatch(fetchUserTokens({
-        provider: library,
-        walletAddress: web3.account,
-        collectionToken: config.collectionToken,
-      }));
+        store.dispatch(fetchUserTokens({
+          provider: library,
+          walletAddress: web3.account,
+          collectionToken: config.collectionToken,
+        })),
+      ]).then(() => {
+        store.dispatch(setIsInitialized(true));
+      });
     }
   });
 };

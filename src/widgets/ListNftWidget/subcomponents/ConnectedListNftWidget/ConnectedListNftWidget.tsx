@@ -10,6 +10,7 @@ import { Web3Provider } from '@ethersproject/providers';
 
 import { expiryAmounts } from '../../../../constants/expiry';
 import { AppErrorType, isAppError } from '../../../../errors/appError';
+import useApproveNftTransaction from '../../../../hooks/useApproveNftTransaction';
 import useCollectionToken from '../../../../hooks/useCollectionToken';
 import useInsufficientAmount from '../../../../hooks/useInsufficientAmount';
 import useNftTokenApproval from '../../../../hooks/useNftTokenApproval';
@@ -31,7 +32,6 @@ export enum ListNftState {
   approve = 'approve',
   approving = 'approving',
   sign = 'sign',
-  listing = 'listing',
   success = 'success',
   failed = 'failed',
 }
@@ -61,6 +61,7 @@ const ConnectedListNftWidget: FC<ListNftWidgetProps> = ({
   const { collectionImage, collectionToken, collectionName } = useAppSelector(state => state.config);
   const { protocolFee, projectFee } = useAppSelector(state => state.metadata);
   const { lastUserOrder } = useAppSelector(state => state.listNft);
+  const approveTransaction = useApproveNftTransaction();
 
   // User input states
   const [widgetState, setWidgetState] = useState<ListNftState>(ListNftState.details);
@@ -137,13 +138,21 @@ const ConnectedListNftWidget: FC<ListNftWidgetProps> = ({
   };
 
   useEffect(() => {
+    if (approveTransaction?.status === 'processing') {
+      setWidgetState(ListNftState.approving);
+    }
+  }, [approveTransaction]);
+
+  useEffect(() => {
     if (hasCollectionTokenApproval && widgetState === ListNftState.approving) {
       setWidgetState(ListNftState.review);
     }
   }, [widgetState, hasCollectionTokenApproval]);
 
   useEffect(() => {
-    setSelectedTokenId(userTokens[0]);
+    if (!selectedTokenId) {
+      setSelectedTokenId(userTokens[0]);
+    }
   }, [userTokens]);
 
   return (
@@ -154,6 +163,7 @@ const ConnectedListNftWidget: FC<ListNftWidgetProps> = ({
       />
 
       <ListNftDetailContainer
+        chainId={chainId}
         collectionImage={collectionImage}
         collectionName={collectionName}
         collectionTokenInfo={collectionTokenInfo}
@@ -168,6 +178,7 @@ const ConnectedListNftWidget: FC<ListNftWidgetProps> = ({
         protocolFee={protocolFee}
         protocolFeeInCurrencyToken={protocolFeeInCurrencyToken}
         selectedTokenId={selectedTokenId}
+        submittedApproval={approveTransaction}
         userTokens={userTokens}
         widgetState={widgetState}
         onExpiryAmountChange={setExpiryAmount}
