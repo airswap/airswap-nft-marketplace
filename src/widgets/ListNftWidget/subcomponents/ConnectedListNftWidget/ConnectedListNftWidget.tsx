@@ -1,8 +1,5 @@
 import React, {
-  FC,
-  useEffect,
-  useMemo,
-  useState,
+  FC, useEffect, useMemo, useState,
 } from 'react';
 
 import { TokenInfo } from '@airswap/types';
@@ -17,7 +14,9 @@ import useNftTokenApproval from '../../../../hooks/useNftTokenApproval';
 import { useAppDispatch, useAppSelector } from '../../../../redux/hooks';
 import { createNftOrder } from '../../../../redux/stores/listNft/listNftActions';
 import { approve as approveNft } from '../../../../redux/stores/orders/ordersActions';
+import { addToast } from '../../../../redux/stores/toasts/toastsActions';
 import { ExpiryTimeUnit } from '../../../../types/ExpiryTimeUnit';
+import { ToastType } from '../../../../types/ToastType';
 import { getTitle } from '../../helpers';
 import useTokenAmountAndFee from '../../hooks/useTokenAmountAndFee';
 import ListActionButtons from '../ListActionButtons/ListActionButtons';
@@ -150,6 +149,13 @@ const ConnectedListNftWidget: FC<ListNftWidgetProps> = ({
 
   useEffect(() => {
     if (hasCollectionTokenApproval && widgetState === ListNftState.approving) {
+      dispatch(addToast({
+        type: ToastType.success,
+        id: crypto.randomUUID(),
+        title: 'Approved',
+        text: `Approved ${collectionTokenInfo?.name} to be spend`,
+        willAutomaticallyHide: true,
+      }));
       setWidgetState(ListNftState.review);
     }
   }, [widgetState, hasCollectionTokenApproval]);

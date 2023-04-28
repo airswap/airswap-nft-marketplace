@@ -17,6 +17,8 @@ import useSufficientErc20Allowance from '../../../../hooks/useSufficientErc20All
 import { useAppDispatch, useAppSelector } from '../../../../redux/hooks';
 import { approve as approveErc20, take } from '../../../../redux/stores/orders/ordersActions';
 import { setError } from '../../../../redux/stores/orders/ordersSlice';
+import { addToast } from '../../../../redux/stores/toasts/toastsActions';
+import { ToastType } from '../../../../types/ToastType';
 import { getTitle } from '../../helpers';
 import BuyActionButtons from '../BuyActionButtons/BuyActionButtons';
 import BuyNftWidgetDetailsContainer from '../BuyNftWidgetDetailsContainer/BuyNftWidgetDetailsContainer';
@@ -109,6 +111,13 @@ const BuyNftWidget: FC<ConnectedBuyNftWidgetProps> = ({
 
   useEffect(() => {
     if (approveTransaction?.status === 'succeeded' && widgetState === BuyNftState.approving) {
+      dispatch(addToast({
+        type: ToastType.success,
+        id: crypto.randomUUID(),
+        title: 'Approved',
+        text: `Approved ${currencyTokenInfo.symbol} to be spend.`,
+        willAutomaticallyHide: true,
+      }));
       setWidgetState(BuyNftState.details);
     }
   }, [widgetState, approveTransaction]);
