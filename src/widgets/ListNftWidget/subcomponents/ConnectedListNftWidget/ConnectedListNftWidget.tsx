@@ -105,7 +105,12 @@ const ConnectedListNftWidget: FC<ListNftWidgetProps> = ({
         });
     }
 
-    if (widgetState === ListNftState.review && collectionTokenInfo && hasCollectionTokenApproval) {
+    if (
+      widgetState === ListNftState.review
+      && collectionTokenInfo
+      && hasCollectionTokenApproval
+      && currencyTokenAmountMinusProtocolFee
+    ) {
       setWidgetState(ListNftState.sign);
 
       const expiryDate = Date.now() + (expiryAmounts[expiryTimeUnit] * (expiryAmount || 1));
@@ -117,7 +122,7 @@ const ConnectedListNftWidget: FC<ListNftWidgetProps> = ({
         signerTokenInfo: collectionTokenInfo,
         protocolFee,
         senderTokenInfo: currencyTokenInfo,
-        senderAmount: currencyTokenAmount,
+        senderAmount: currencyTokenAmountMinusProtocolFee,
         tokenId: selectedTokenId,
       })).unwrap()
         .then(() => {

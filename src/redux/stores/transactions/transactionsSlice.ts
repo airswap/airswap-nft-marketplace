@@ -181,6 +181,10 @@ export const selectPendingOrders = (state: RootState) => state.transactions.all.
   (tx) => tx.status === 'processing' && tx.type === 'Order',
 ) as SubmittedOrder[];
 
+export const selectOrders = (state: RootState) => state.transactions.all.filter(
+  (tx) => tx.type === 'Order',
+) as SubmittedOrder[];
+
 export const selectCancellations = (state: RootState) => state.transactions.all.filter(
   (tx) => tx.status === 'succeeded' && tx.type === 'Cancel',
 ) as SubmittedCancellation[];

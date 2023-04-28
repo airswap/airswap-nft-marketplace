@@ -81,7 +81,6 @@ const ListNftDetailContainer: FC<ListNftDetailContainerProps> = ({
   }, className);
 
   const approvalUrl = useMemo(() => (submittedApproval?.hash ? getReceiptUrl(chainId, submittedApproval.hash) : undefined), [submittedApproval]);
-  console.log(approvalUrl);
 
   const handleCopyLinkClick = async () => {
     const link = `${window.location.host}/#/${AppRoutes.nftDetail}/${fullOrder?.signer.id}/buy`;

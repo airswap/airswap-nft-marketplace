@@ -1,7 +1,7 @@
 import React, { FC, useMemo } from 'react';
 
 import { CollectionTokenInfo, FullOrder, TokenInfo } from '@airswap/types';
-import { BigNumber } from 'bignumber.js';
+import { getReceiptUrl } from '@airswap/utils';
 import classNames from 'classnames';
 
 import Icon from '../../../../components/Icon/Icon';
@@ -9,27 +9,38 @@ import LoadingSpinner from '../../../../components/LoadingSpinner/LoadingSpinner
 import TradeDetails from '../../../../components/TradeDetails/TradeDetails';
 import TradeNftDetails, { TradeNftDetailsProps } from '../../../../components/TradeNftDetails/TradeNftDetails';
 import TransactionLink from '../../../../compositions/TransactionLink/TransactionLink';
+import { getFullOrderSenderAmountPlusTotalFees } from '../../../../entities/FullOrder/FullOrderHelpers';
+import { AppError } from '../../../../errors/appError';
+import { SubmittedApproval, SubmittedOrder } from '../../../../redux/stores/transactions/transactionsSlice';
 import { getNftDetailsIcon } from '../../helpers';
 import { BuyNftState } from '../ConnectedBuyNftWidget/ConnectedBuyNftWidget';
 
 import './BuyNftWidgetDetailsContainer.scss';
 
 interface BuyNftWidgetDetailsContainerProps {
+  chainId: number;
   collectionImage: string;
   collectionName: string;
   collectionTokenInfo: CollectionTokenInfo;
   currencyTokenInfo: TokenInfo;
+  error?: AppError;
   fullOrder: FullOrder,
+  submittedApproval?: SubmittedApproval;
+  submittedOrder?: SubmittedOrder;
   widgetState: BuyNftState;
   className?: string;
 }
 
 const BuyNftWidgetDetailsContainer: FC<BuyNftWidgetDetailsContainerProps> = ({
+  chainId,
   collectionImage,
   collectionName,
   collectionTokenInfo,
   currencyTokenInfo,
+  error,
   fullOrder,
+  submittedApproval,
+  submittedOrder,
   widgetState,
   className = '',
 }) => {
@@ -37,7 +48,10 @@ const BuyNftWidgetDetailsContainer: FC<BuyNftWidgetDetailsContainerProps> = ({
     [`buy-nft-details-container--has-${widgetState}-state`]: widgetState,
   }, className);
 
+  const pricePlusFees = useMemo(() => getFullOrderSenderAmountPlusTotalFees(fullOrder), [fullOrder]);
   const nftDetailsIcon: TradeNftDetailsProps['icon'] = useMemo(() => getNftDetailsIcon(widgetState), [widgetState]);
+  const approvalUrl = useMemo(() => (submittedApproval?.hash ? getReceiptUrl(chainId, submittedApproval.hash) : undefined), [submittedApproval]);
+  const orderUrl = useMemo(() => (submittedOrder?.hash ? getReceiptUrl(chainId, submittedOrder.hash) : undefined), [submittedOrder]);
 
   return (
     <div className={wrapperClassName}>
@@ -56,7 +70,7 @@ const BuyNftWidgetDetailsContainer: FC<BuyNftWidgetDetailsContainerProps> = ({
                 <Icon className="buy-nft-details-container__swap-icon" name="swap" />
               </div>
               <TradeDetails
-                amount={new BigNumber(fullOrder.sender.amount)}
+                amount={pricePlusFees}
                 logoURI={currencyTokenInfo.logoURI}
                 title="For"
                 token={currencyTokenInfo}
@@ -64,11 +78,17 @@ const BuyNftWidgetDetailsContainer: FC<BuyNftWidgetDetailsContainerProps> = ({
               />
             </>
           )}
-          {widgetState === BuyNftState.success && (
+          {(widgetState === BuyNftState.success && orderUrl) && (
             <TransactionLink
-              to="test"
+              to={orderUrl}
               className="buy-nft-details-container__transaction-link"
             />
+          )}
+          {(widgetState === BuyNftState.failed && error) && (
+            <p className="buy-nft-details-container__message">
+              {/* TODO: Add translations for errors */}
+              {`Failed for the following reason: ${error.type}`}
+            </p>
           )}
         </>
       )}
@@ -91,10 +111,12 @@ const BuyNftWidgetDetailsContainer: FC<BuyNftWidgetDetailsContainerProps> = ({
             title="Approving"
             token={currencyTokenInfo}
           />
-          <TransactionLink
-            to="test"
-            className="list-nft-details-container__transaction-link"
-          />
+          {approvalUrl && (
+            <TransactionLink
+              to={approvalUrl}
+              className="list-nft-details-container__transaction-link"
+            />
+          )}
         </>
       )}
 
@@ -102,7 +124,7 @@ const BuyNftWidgetDetailsContainer: FC<BuyNftWidgetDetailsContainerProps> = ({
         <>
           <LoadingSpinner className="buy-nft-details-container__loading-spinner" />
           <TradeDetails
-            amount={new BigNumber(fullOrder.sender.amount)}
+            amount={pricePlusFees}
             logoURI={currencyTokenInfo.logoURI}
             title="For"
             token={currencyTokenInfo}
@@ -116,10 +138,12 @@ const BuyNftWidgetDetailsContainer: FC<BuyNftWidgetDetailsContainerProps> = ({
             title="Buy"
             token={collectionTokenInfo}
           />
-          <TransactionLink
-            to="test"
-            className="list-nft-details-container__transaction-link"
-          />
+          {orderUrl && (
+            <TransactionLink
+              to={orderUrl}
+              className="buy-nft-details-container__transaction-link"
+            />
+          )}
         </>
       )}
     </div>

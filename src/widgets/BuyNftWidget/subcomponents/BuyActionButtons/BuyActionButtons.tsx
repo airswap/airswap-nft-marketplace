@@ -1,5 +1,6 @@
 import React, { FC, useCallback } from 'react';
 
+import { CollectionTokenInfo } from '@airswap/types';
 import { NavLink } from 'react-router-dom';
 
 import Button from '../../../../components/Button/Button';
@@ -12,6 +13,7 @@ interface ActionButtonsProps {
   hasInsufficientAmount: boolean;
   hasNoCurrencyTokenApproval: boolean;
   ownerIsAccount: boolean;
+  collectionTokenInfo: CollectionTokenInfo;
   currencyTokenSymbol: string;
   state: BuyNftState;
   onActionButtonClick: () => void;
@@ -22,6 +24,7 @@ const BuyActionButtons: FC<ActionButtonsProps> = ({
   hasInsufficientAmount,
   hasNoCurrencyTokenApproval,
   ownerIsAccount,
+  collectionTokenInfo,
   currencyTokenSymbol,
   state,
   onActionButtonClick,
@@ -83,7 +86,8 @@ const BuyActionButtons: FC<ActionButtonsProps> = ({
     if (state === BuyNftState.failed) {
       return (
         <NavLink
-          to={`/${AppRoutes.nftDetail}/1`}
+          to={`/${AppRoutes.nftDetail}/${collectionTokenInfo.id}`}
+          onClick={onActionButtonClick}
           className="buy-action-buttons__action-button"
         >
           Go back

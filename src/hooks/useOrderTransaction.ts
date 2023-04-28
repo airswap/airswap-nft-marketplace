@@ -1,10 +1,10 @@
 import { useMemo } from 'react';
 
 import { useAppSelector } from '../redux/hooks';
-import { selectPendingOrders, SubmittedOrder } from '../redux/stores/transactions/transactionsSlice';
+import { selectOrders, SubmittedOrder } from '../redux/stores/transactions/transactionsSlice';
 
 const useOrderTransaction = (orderNonce: string): SubmittedOrder | undefined => {
-  const pendingOrders = useAppSelector(selectPendingOrders);
+  const pendingOrders = useAppSelector(selectOrders);
 
   return useMemo(() => {
     if (!orderNonce || !pendingOrders.length) {

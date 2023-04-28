@@ -19,7 +19,12 @@ import {
   submitTransaction,
 } from '../transactions/transactionActions';
 import { SubmittedApproval, SubmittedTransactionWithOrder } from '../transactions/transactionsSlice';
-import { approveErc20Token, approveNftToken, takeOrder } from './ordersApi';
+import {
+  approveErc20Token,
+  approveNftToken,
+  checkOrder,
+  takeOrder,
+} from './ordersApi';
 import { setError } from './ordersSlice';
 
 interface ApproveParams {
@@ -125,8 +130,21 @@ TakeParams,
   state: RootState;
 }
 >('orders/take', async (params, { dispatch }) => {
-  const { order, library } = params;
-  const tx = await takeOrder(params.order, params.senderWallet, params.library);
+  const { order, library, senderWallet } = params;
+
+  const checkErrors = await checkOrder(
+    order,
+    senderWallet,
+    library,
+  );
+
+  if (checkErrors.length) {
+    dispatch(setError(checkErrors[0]));
+
+    throw checkErrors[0];
+  }
+
+  const tx = await takeOrder(params.order, senderWallet, params.library);
 
   if (isAppError(tx)) {
     const appError = tx;

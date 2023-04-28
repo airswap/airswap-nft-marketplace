@@ -50,6 +50,7 @@ const BuyNftWidget: FC<BuyNftWidgetProps> = ({ className = '' }) => {
   return (
     <DisconnectedBuyNftWidget
       isLoading={isLoading}
+      nftId={id}
       className={className}
     />
   );

@@ -15,10 +15,7 @@ const useSufficientErc20Allowance = (token?: TokenInfo, amount?: string): boolea
       return;
     }
 
-    console.log(currencyTokenAllowance);
-    console.log(amount);
-
-    setHasSufficientAllowance(new BigNumber(currencyTokenAllowance).gt(amount));
+    setHasSufficientAllowance(new BigNumber(currencyTokenAllowance).gte(amount));
   }, [amount, currencyTokenAllowance]);
 
   return hasSufficientAllowance;
