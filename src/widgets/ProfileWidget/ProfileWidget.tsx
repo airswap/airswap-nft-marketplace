@@ -1,5 +1,6 @@
 import React, { FC, useEffect, useState } from 'react';
 
+import { CollectionTokenInfo } from '@airswap/types';
 import { Web3Provider } from '@ethersproject/providers';
 import { useWeb3React } from '@web3-react/core';
 import { useParams } from 'react-router-dom';
@@ -9,19 +10,19 @@ import Button from '../../components/Button/Button';
 import { IconSearch } from '../../components/Icon/icons';
 import Input from '../../components/Input/Input';
 import NftCard from '../../components/NftCard/NftCard';
-import { CollectionToken } from '../../entities/CollectionToken/CollectionToken';
 import useEnsAddress from '../../hooks/useEnsAddress';
-import { useAppSelector } from '../../redux/hooks';
+import { useAppDispatch, useAppSelector } from '../../redux/hooks';
 import { AppRoutes } from '../../routes';
 import ProfileHeader from './subcomponents/ProfileHeader/ProfileHeader';
 import ownedNfts from './temp-owned-nfts';
+import { fetchOwnedTokenMeta } from './userApi';
 
 import './ProfileWidget.scss';
 
-const filterNftsBySearchValue = (sValue: string, toFilter: CollectionToken[]) => {
+const filterNftsBySearchValue = (sValue: string, toFilter: CollectionTokenInfo[]) => {
   // If the search query is empty return all nfts
   if (sValue === '') return toFilter;
-  const filteredNfts: CollectionToken[] = [];
+  const filteredNfts: CollectionTokenInfo[] = [];
   // We can search by id, name, description & attribute values.
   for (let i = 0; i < toFilter.length; i += 1) {
     const nft = toFilter[i];
@@ -49,6 +50,7 @@ const filterNftsBySearchValue = (sValue: string, toFilter: CollectionToken[]) =>
 };
 
 const ProfileWidget: FC = () => {
+  const dispatch = useAppDispatch();
   const [searchValue, setSearchValue] = useState('');
   // If there is a user active, then we need to check the id param to see if it's the same as the acccount
   const { active, account, deactivate } = useWeb3React<Web3Provider>();
@@ -58,13 +60,16 @@ const ProfileWidget: FC = () => {
 
   const { collectionImage, collectionName } = useAppSelector((state) => state.config);
   const { avatarUrl } = useAppSelector((state) => state.user);
-  const { isLoading, balances, tokenIds } = useAppSelector((state) => state.balances);
+  const { isLoading, balances, tokens } = useAppSelector((state) => state.balances);
   const ensAddress = useEnsAddress(account || '');
 
   useEffect(() => {
     console.log('ProfileWidget - balances: ', balances);
-    console.log('ProfileWidget - tokenIds: ', tokenIds);
-  }, [balances, tokenIds, isLoading]);
+    console.log('ProfileWidget - tokens: ', tokens);
+    if (tokens) {
+      dispatch(fetchOwnedTokenMeta(library, collectionToken, tokens));
+    }
+  }, [balances, isLoading]);
 
   const handleDisconnectClick = () => {
     deactivate();
@@ -109,10 +114,10 @@ const ProfileWidget: FC = () => {
                     key={nft.id}
                     imageURI={nft.image}
                     name={nft.name}
-                    price={nft.price.toString()}
+                    price="12345"
                     to={`/${AppRoutes.nftDetail}/${nft.id}`}
                     className="profile-widget__nft-card"
-                    symbol={nft.symbol || 'AST'} // TODO: remove the backup symbol
+                    symbol="AST" // TODO: remove the backup symbol
                   />
                 ))}
               </div>

@@ -1,9 +1,11 @@
+import { CollectionTokenInfo } from '@airswap/types';
+
 export default [{
   id: 1,
   image: 'https://ipfs.io/ipfs/Qma7vwvyAovZzQeWhWKos3r6jrDfmt95rdG5e71wLZsWBr/1.png',
   description: 'Moonturd Alert 42069',
-  price: '0.154000000000000000',
-  symbol: 'Moonturds69',
+  // price: '0.154000000000000000',
+  // symbol: 'Moonturds69',
   attributes: [
     {
       label: 'Background',
@@ -32,8 +34,8 @@ export default [{
   id: 2,
   image: 'https://ipfs.io/ipfs/Qma7vwvyAovZzQeWhWKos3r6jrDfmt95rdG5e71wLZsWBr/2.png',
   description: 'Moonturd Alert 42069',
-  price: '0.154000000000000000',
-  symbol: 'Moonturds69',
+  // price: '0.154000000000000000',
+  // symbol: 'Moonturds69',
   attributes: [
     {
       label: 'Background',
@@ -62,8 +64,8 @@ export default [{
   id: 6,
   image: 'https://ipfs.io/ipfs/Qma7vwvyAovZzQeWhWKos3r6jrDfmt95rdG5e71wLZsWBr/6.png',
   description: 'Moonturd Alert 42069',
-  price: '0.154000000000000000',
-  symbol: 'Moonturds69',
+  // price: '0.154000000000000000',
+  // symbol: 'Moonturds69',
   attributes: [
     {
       label: 'Background',
@@ -88,4 +90,4 @@ export default [{
   ],
   name: 'Moonturds69',
 },
-];
+] as CollectionTokenInfo[];
