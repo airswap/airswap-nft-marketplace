@@ -10,6 +10,7 @@ import { Web3Provider } from '@ethersproject/providers';
 
 import { AppErrorType, isAppError } from '../../../../errors/appError';
 import useApproveCurrencyTokenPending from '../../../../hooks/useApproveCurrencyTokenPending';
+import useFullOrderExpired from '../../../../hooks/useFullOrderExpired';
 import useInsufficientBalance from '../../../../hooks/useInsufficientBalance';
 import useOrderTransaction from '../../../../hooks/useOrderTransaction';
 import useSufficientErc20Allowance from '../../../../hooks/useSufficientErc20Allowance';
@@ -34,6 +35,7 @@ export enum BuyNftState {
 }
 
 interface ConnectedBuyNftWidgetProps {
+  isOrderNonceUsed: boolean;
   account: string;
   chainId: number
   collectionTokenInfo: CollectionTokenInfo;
@@ -44,6 +46,7 @@ interface ConnectedBuyNftWidgetProps {
 }
 
 const BuyNftWidget: FC<ConnectedBuyNftWidgetProps> = ({
+  isOrderNonceUsed,
   account,
   chainId,
   collectionTokenInfo,
@@ -62,6 +65,7 @@ const BuyNftWidget: FC<ConnectedBuyNftWidgetProps> = ({
   const hasSufficientCurrencyAllowance = useSufficientErc20Allowance(currencyTokenInfo, fullOrder.sender.amount);
   const approveTransaction = useApproveCurrencyTokenPending();
   const orderTransaction = useOrderTransaction(fullOrder.nonce);
+  const isOrderExpired = useFullOrderExpired(fullOrder.expiry);
   const ownerIsAccount = fullOrder.signer.wallet.toLowerCase() === account.toLowerCase();
 
   const title = useMemo(() => getTitle(widgetState), [widgetState]);
@@ -153,6 +157,8 @@ const BuyNftWidget: FC<ConnectedBuyNftWidgetProps> = ({
       <BuyActionButtons
         hasInsufficientAmount={hasInsufficientBalance}
         hasNoCurrencyTokenApproval={!hasSufficientCurrencyAllowance}
+        isOrderExpired={isOrderExpired}
+        isOrderNonceUsed={isOrderNonceUsed}
         ownerIsAccount={ownerIsAccount}
         collectionTokenInfo={collectionTokenInfo}
         currencyTokenSymbol={currencyTokenInfo.symbol}

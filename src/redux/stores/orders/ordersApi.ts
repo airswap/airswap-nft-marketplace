@@ -1,6 +1,6 @@
 import { TokenKinds } from '@airswap/constants';
 import { Swap } from '@airswap/libraries';
-import { FullOrder, FullOrderERC20 } from '@airswap/types';
+import { FullOrder } from '@airswap/types';
 import { checkResultToErrors } from '@airswap/utils';
 import erc20Contract from '@openzeppelin/contracts/build/contracts/ERC20.json';
 import erc721Contract from '@openzeppelin/contracts/build/contracts/ERC721.json';
@@ -89,11 +89,11 @@ export async function checkOrder(
 }
 
 export async function getNonceUsed(
-  order: FullOrderERC20,
+  order: FullOrder,
   provider: ethers.providers.Web3Provider,
 ): Promise<boolean> {
   return Swap.getContract(provider, order.chainId).nonceUsed(
-    order.signerWallet,
+    order.signer.wallet,
     order.nonce,
   );
 }

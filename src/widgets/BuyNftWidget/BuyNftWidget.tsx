@@ -3,6 +3,7 @@ import React, { FC } from 'react';
 import { useWeb3React } from '@web3-react/core';
 
 import useCollectionToken from '../../hooks/useCollectionToken';
+import useFullOrderNonceUsed from '../../hooks/useFullOrderNonceUsed';
 import { useAppSelector } from '../../redux/hooks';
 import { selectCurrencyTokenInfo } from '../../redux/stores/metadata/metadataSlice';
 import ConnectedBuyNftWidget from './subcomponents/ConnectedBuyNftWidget/ConnectedBuyNftWidget';
@@ -23,7 +24,8 @@ const BuyNftWidget: FC<BuyNftWidgetProps> = ({ className = '' }) => {
   const currencyTokenInfo = useAppSelector(selectCurrencyTokenInfo);
   const id = lastUserOrder ? parseInt(lastUserOrder?.signer.id, 10) : 1;
   const [collectionTokenInfo, isCollectionTokenInfoLoading] = useCollectionToken(collectionToken, id);
-  const isLoading = isMetadataLoading || isCollectionTokenInfoLoading;
+  const [isNonceUsed, isNonceUsedLoading] = useFullOrderNonceUsed(lastUserOrder);
+  const isLoading = isMetadataLoading || isCollectionTokenInfoLoading || isNonceUsedLoading;
 
   if (
     !isLoading
@@ -36,6 +38,7 @@ const BuyNftWidget: FC<BuyNftWidgetProps> = ({ className = '' }) => {
   ) {
     return (
       <ConnectedBuyNftWidget
+        isOrderNonceUsed={isNonceUsed}
         account={account}
         chainId={chainId}
         collectionTokenInfo={collectionTokenInfo}

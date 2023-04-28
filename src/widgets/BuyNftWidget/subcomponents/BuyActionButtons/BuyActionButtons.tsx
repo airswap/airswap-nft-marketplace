@@ -12,6 +12,8 @@ import './BuyActionButtons.scss';
 interface ActionButtonsProps {
   hasInsufficientAmount: boolean;
   hasNoCurrencyTokenApproval: boolean;
+  isOrderExpired: boolean;
+  isOrderNonceUsed: boolean;
   ownerIsAccount: boolean;
   collectionTokenInfo: CollectionTokenInfo;
   currencyTokenSymbol: string;
@@ -23,6 +25,8 @@ interface ActionButtonsProps {
 const BuyActionButtons: FC<ActionButtonsProps> = ({
   hasInsufficientAmount,
   hasNoCurrencyTokenApproval,
+  isOrderExpired,
+  isOrderNonceUsed,
   ownerIsAccount,
   collectionTokenInfo,
   currencyTokenSymbol,
@@ -36,6 +40,26 @@ const BuyActionButtons: FC<ActionButtonsProps> = ({
         <Button
           disabled
           text="This is your own order"
+          className="buy-action-buttons__action-button"
+        />
+      );
+    }
+
+    if (isOrderNonceUsed) {
+      return (
+        <Button
+          disabled
+          text="Order is already taken"
+          className="buy-action-buttons__action-button"
+        />
+      );
+    }
+
+    if (isOrderExpired) {
+      return (
+        <Button
+          disabled
+          text="Order is expired"
           className="buy-action-buttons__action-button"
         />
       );
@@ -96,7 +120,16 @@ const BuyActionButtons: FC<ActionButtonsProps> = ({
     }
 
     return null;
-  }, [state, hasNoCurrencyTokenApproval, ownerIsAccount]);
+  }, [
+    hasInsufficientAmount,
+    hasNoCurrencyTokenApproval,
+    isOrderExpired,
+    isOrderNonceUsed,
+    ownerIsAccount,
+    collectionTokenInfo,
+    currencyTokenSymbol,
+    state,
+  ]);
 
   return (
     <div className={`buy-action-buttons ${className}`}>
