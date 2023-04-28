@@ -1,0 +1,14 @@
+@import "src/styles/index";
+
+.toasts-widget {
+    display: flex;
+    flex-direction: column;
+    position: fixed;
+    top: 0;
+    right: 0;
+    padding: var(--page-padding);
+    width: 100vw;
+    max-width: 22.5rem;
+    z-index: 100;
+    pointer-events: none;
+}

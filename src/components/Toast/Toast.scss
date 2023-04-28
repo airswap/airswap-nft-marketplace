@@ -1,0 +1,97 @@
+@import "src/styles";
+
+$component: toast;
+
+.#{$component} {
+    will-change: transform, height, margin-top;
+    display: flex;
+    margin-bottom: 1rem;
+    overflow: hidden;
+    transition: transform 0.2s ease-in, height 0.3s ease-in, margin-bottom 0.3s ease-in;
+    animation: scaleIn ease-out .3s;
+    pointer-events: visible;
+
+    &--is-success {
+
+        .#{$component}__icon-wrapper-background {
+            opacity: 0.25;
+            background: var(--c-green);
+        }
+
+        .#{$component}__icon {
+            color: var(--c-green);
+        }
+    }
+
+    &--is-deny,
+    &--is-fail {
+
+        .#{$component}__icon-wrapper-background {
+            opacity: 0.25;
+            background: var(--c-red);
+        }
+
+        .#{$component}__icon {
+            color: var(--c-red);
+        }
+    }
+
+    &--is-hidden {
+        height: 0 !important;
+        margin-bottom: 0;
+        transform: scale(0);
+    }
+
+    &__inner {
+        display: flex;
+        align-items: center;
+        width: 100%;
+        border-radius: .25rem;
+        padding: 1rem;
+        color: var(--c-white);
+        background: var(--c-dark);
+        box-shadow: 0 3px 10px rgba(0, 0, 0, 0.1), 0 3px 3px rgba(0, 0, 0, 0.05);
+        overflow: hidden;
+    }
+
+    &__icon-wrapper {
+        @extend %flex-align-center;
+
+        position: relative;
+        border-radius: 50%;
+        min-width: 2.5rem;
+        aspect-ratio: 1;
+    }
+
+    &__icon-wrapper-background {
+        position: absolute;
+        top: 0;
+        left: 0;
+        border-radius: 50%;
+        width: 100%;
+        height: 100%;
+    }
+
+    &__icon {
+        width: 1.25rem;
+        aspect-ratio: 1;
+    }
+
+    &__title-text-wrapper {
+        display: flex;
+        flex-direction: column;
+        margin: 0 1rem;
+    }
+
+    &__title {
+        font-size: 1rem;
+        font-weight: var(--fw-700);
+    }
+
+    &__close-button {
+        justify-self: flex-end;
+        margin-left: auto;
+        width: 1.5rem;
+        aspect-ratio: 1;
+    }
+}
