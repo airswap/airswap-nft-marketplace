@@ -14,9 +14,8 @@ import useNftTokenApproval from '../../../../hooks/useNftTokenApproval';
 import { useAppDispatch, useAppSelector } from '../../../../redux/hooks';
 import { createNftOrder } from '../../../../redux/stores/listNft/listNftActions';
 import { approve as approveNft } from '../../../../redux/stores/orders/ordersActions';
-import { addToast } from '../../../../redux/stores/toasts/toastsActions';
+import { addInfoToast, addUserRejectedToast } from '../../../../redux/stores/toasts/toastsActions';
 import { ExpiryTimeUnit } from '../../../../types/ExpiryTimeUnit';
-import { ToastType } from '../../../../types/ToastType';
 import { getTitle } from '../../helpers';
 import useTokenAmountAndFee from '../../hooks/useTokenAmountAndFee';
 import ListActionButtons from '../ListActionButtons/ListActionButtons';
@@ -97,6 +96,7 @@ const ConnectedListNftWidget: FC<ListNftWidgetProps> = ({
         })
         .catch((e) => {
           if (isAppError(e) && e.type === AppErrorType.rejectedByUser) {
+            dispatch(addUserRejectedToast());
             setWidgetState(ListNftState.review);
           } else {
             setWidgetState(ListNftState.failed);
@@ -129,6 +129,7 @@ const ConnectedListNftWidget: FC<ListNftWidgetProps> = ({
         })
         .catch((e) => {
           if (isAppError(e) && e.type === AppErrorType.rejectedByUser) {
+            dispatch(addUserRejectedToast());
             setWidgetState(ListNftState.review);
           } else {
             setWidgetState(ListNftState.failed);
@@ -149,13 +150,7 @@ const ConnectedListNftWidget: FC<ListNftWidgetProps> = ({
 
   useEffect(() => {
     if (hasCollectionTokenApproval && widgetState === ListNftState.approving) {
-      dispatch(addToast({
-        type: ToastType.success,
-        id: crypto.randomUUID(),
-        title: 'Approved',
-        text: `Approved ${collectionTokenInfo?.name} to be spend`,
-        willAutomaticallyHide: true,
-      }));
+      dispatch(addInfoToast('Approved', `Approved ${collectionTokenInfo?.name} to be spend.`));
       setWidgetState(ListNftState.review);
     }
   }, [widgetState, hasCollectionTokenApproval]);
