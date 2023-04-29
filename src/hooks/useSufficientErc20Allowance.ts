@@ -13,8 +13,6 @@ const useSufficientErc20Allowance = (fullOrder: FullOrder): boolean => {
 
   useEffect(() => {
     const amount = getFullOrderSenderAmountPlusTotalFees(fullOrder);
-    console.log(amount.toString());
-    console.log(currencyTokenAllowance);
     setHasSufficientAllowance(new BigNumber(currencyTokenAllowance).gte(amount));
   }, [fullOrder, currencyTokenAllowance]);
 

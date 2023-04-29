@@ -31,7 +31,6 @@ export const configureBalancesSubscriber = () => {
       account = web3.account;
       chainId = web3.chainId;
       lastTransactionHash = lastSucceededTransaction?.hash;
-      console.log(lastTransactionHash);
 
       const library = getLibrary(web3.chainId);
 
