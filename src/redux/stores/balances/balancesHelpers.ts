@@ -54,10 +54,22 @@ export const getOwnedTokenIdsOfWallet = async (
     const transferFilter = collectionContract.filters.Transfer(null, walletAddress);
 
     const events: Event[] = await collectionContract.queryFilter(transferFilter, 0);
+
     /* get token ids from past events */
     const foundTokenIds: BigNumber[] = events.map(e => e.args?.at(2));
 
-    return getUniqueTokensForWallet(foundTokenIds, collectionContract, walletAddress);
+    /* get unique values */
+    const uniqueTokenIds = [...new Set(foundTokenIds)];
+
+    /* get only the owned token ids */
+    const ownedTokenIds = uniqueTokenIds.filter(async id => {
+      const addr = await collectionContract.ownerOf(id);
+      return addr === walletAddress;
+    });
+
+    return ownedTokenIds
+      .map(t => t.toNumber())
+      .sort((a, b) => a - b);
   }
 
   if (isErc1155) {
@@ -65,10 +77,22 @@ export const getOwnedTokenIdsOfWallet = async (
     const transferFilter = collectionContract.filters.TransferSingle(null, null, walletAddress);
 
     const events: Event[] = await collectionContract.queryFilter(transferFilter, 0);
+
     /* get token ids from past events */
     const foundTokenIds: BigNumber[] = events.map(e => e.args?.at(3));
 
-    return getUniqueTokensForWallet(foundTokenIds, collectionContract, walletAddress);
+    /* get unique values */
+    const uniqueTokenIds = [...new Set(foundTokenIds)];
+
+    /* get only the owned token ids */
+    const ownedTokenIds = uniqueTokenIds.filter(async id => {
+      const balance = (await collectionContract.balanceOf(walletAddress, id)).toNumber();
+      return balance > 0;
+    });
+
+    return ownedTokenIds
+      .map(t => t.toNumber())
+      .sort((a, b) => a - b);
   }
 
   throw new Error('Unknown nft interface. Could not fetch token ids.');
