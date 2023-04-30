@@ -16,7 +16,7 @@ import { configureMetadataSubscriber } from './stores/metadata/metadataSubscribe
 import nftDetailReducer from './stores/nftDetail/nftDetailSlice';
 import ordersReducer from './stores/orders/ordersSlice';
 import toastsReducer from './stores/toasts/toastsSlice';
-import transactionsReducer from './stores/transactions/transactionsSlice';
+import transactionsReducer from './stores/transactions-v2/transactionsSlice';
 import userReducer from './stores/user/userSlice';
 import { configureUserSubscriber } from './stores/user/userSubscriber';
 import web3Reducer from './stores/web3/web3Slice';

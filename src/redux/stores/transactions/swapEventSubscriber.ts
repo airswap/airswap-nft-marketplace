@@ -36,18 +36,7 @@ export default function subscribeToSwapEvents(params: {
 
     const { transactions } = store.getState();
 
-    const matchingTransaction = transactions.all.find((tx) => {
-      if (tx.protocol === 'last-look') {
-        // Last look transactions don't have a nonce, but the
-        const llTransaction = tx as LastLookTransaction;
-        return (
-          llTransaction.order.nonce === args.nonce.toString()
-          && llTransaction.order.signer.wallet.toLowerCase() === _account
-        );
-      }
-      // rfq transactions will have a hash
-      return tx.hash === swapEvent.transactionHash;
-    });
+    const matchingTransaction = transactions.transactions.find((tx) => tx.hash === swapEvent.transactionHash);
 
     if (matchingTransaction) {
       // TODO: Add toasts to app

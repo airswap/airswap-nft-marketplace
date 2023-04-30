@@ -16,7 +16,7 @@ export const configureBalancesSubscriber = () => {
       web3,
     } = store.getState();
 
-    const lastTransaction = transactions.all[0];
+    const lastTransaction = transactions.transactions[0];
     const lastSucceededTransaction = lastTransaction?.status === 'succeeded' ? lastTransaction : undefined;
 
     if (!web3.chainId || !web3.account) {

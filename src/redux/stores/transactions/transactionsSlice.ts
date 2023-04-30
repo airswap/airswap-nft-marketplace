@@ -156,41 +156,11 @@ export const transactionsSlice = createSlice({
 });
 
 export const { clear, setTransactions } = transactionsSlice.actions;
-export const selectTransactions = (state: RootState) => state.transactions.all;
+export const selectTransactions = (state: RootState) => state.transactions.transactions;
 
 export const selectPendingTransactions = createSelector(
   selectTransactions,
   (transactions) => transactions.filter((tx) => tx.status === 'processing'),
 );
-
-export const selectPendingDeposits = (
-  state: RootState,
-): SubmittedDepositOrder[] => state.transactions.all.filter(
-  (tx) => tx.status === 'processing' && tx.type === 'Deposit',
-) as SubmittedDepositOrder[];
-
-export const selectApprovals = (state: RootState) => state.transactions.all.filter(
-  (tx) => tx.type === 'Approval',
-) as SubmittedApproval[];
-
-export const selectPendingApprovals = (state: RootState) => state.transactions.all.filter(
-  (tx) => tx.status === 'processing' && tx.type === 'Approval',
-) as SubmittedApproval[];
-
-export const selectPendingOrders = (state: RootState) => state.transactions.all.filter(
-  (tx) => tx.status === 'processing' && tx.type === 'Order',
-) as SubmittedOrder[];
-
-export const selectOrders = (state: RootState) => state.transactions.all.filter(
-  (tx) => tx.type === 'Order',
-) as SubmittedOrder[];
-
-export const selectCancellations = (state: RootState) => state.transactions.all.filter(
-  (tx) => tx.status === 'succeeded' && tx.type === 'Cancel',
-) as SubmittedCancellation[];
-
-export const selectPendingCancellations = (state: RootState) => state.transactions.all.filter(
-  (tx) => tx.status === 'processing' && tx.type === 'Cancel',
-) as SubmittedCancellation[];
 
 export default transactionsSlice.reducer;

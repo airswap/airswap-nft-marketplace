@@ -59,7 +59,6 @@ const ConnectedListNftWidget: FC<ListNftWidgetProps> = ({
   const { collectionImage, collectionToken, collectionName } = useAppSelector(state => state.config);
   const { protocolFee, projectFee } = useAppSelector(state => state.metadata);
   const { lastUserOrder } = useAppSelector(state => state.listNft);
-  const approveTransaction = useApproveNftTransaction();
 
   // User input states
   const [widgetState, setWidgetState] = useState<ListNftState>(ListNftState.details);
@@ -71,9 +70,11 @@ const ConnectedListNftWidget: FC<ListNftWidgetProps> = ({
   // States derived from user input
   const [collectionTokenInfo] = useCollectionToken(collectionToken, selectedTokenId);
   const [currencyTokenAmountMinusProtocolFee, protocolFeeInCurrencyToken] = useTokenAmountAndFee(currencyTokenAmount);
+  const [approvalTransactionHash, setApprovalTransactionHash] = useState<string>();
   const hasInsufficientAmount = useInsufficientAmount(currencyTokenAmount);
   const hasInsufficientExpiryAmount = !expiryAmount || expiryAmount < 0;
   const hasCollectionTokenApproval = useNftTokenApproval(collectionTokenInfo, selectedTokenId);
+  const approveTransaction = useApproveNftTransaction(approvalTransactionHash);
   const title = useMemo(() => getTitle(widgetState), [widgetState]);
 
   const handleActionButtonClick = async () => {
@@ -91,7 +92,10 @@ const ConnectedListNftWidget: FC<ListNftWidgetProps> = ({
         tokenId: selectedTokenId,
       }))
         .unwrap()
-        .then(() => {
+        .then((transactionHash) => {
+          if (typeof transactionHash === 'string') {
+            setApprovalTransactionHash(transactionHash);
+          }
           setWidgetState(ListNftState.approving);
         })
         .catch((e) => {
@@ -146,14 +150,12 @@ const ConnectedListNftWidget: FC<ListNftWidgetProps> = ({
     if (approveTransaction?.status === 'processing') {
       setWidgetState(ListNftState.approving);
     }
-  }, [approveTransaction]);
 
-  useEffect(() => {
-    if (hasCollectionTokenApproval && widgetState === ListNftState.approving) {
+    if (approveTransaction?.status === 'succeeded') {
       dispatch(addInfoToast('Approved', `Approved ${collectionTokenInfo?.name} to be spend.`));
       setWidgetState(ListNftState.review);
     }
-  }, [widgetState, hasCollectionTokenApproval]);
+  }, [approveTransaction]);
 
   useEffect(() => {
     if (!selectedTokenId) {

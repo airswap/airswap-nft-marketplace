@@ -15,9 +15,9 @@ import CopyLinkButton from '../../../../compositions/CopyLinkButton/CopyLinkButt
 import SelectExpiry from '../../../../compositions/SelectExpiry/SelectExpiry';
 import TradeTokenInput from '../../../../compositions/TradeTokenInput/TradeTokenInput';
 import TransactionLink from '../../../../compositions/TransactionLink/TransactionLink';
+import { NftApprovalTransaction } from '../../../../entities/SubmittedTransaction/SubmittedTransaction';
 import { AppError } from '../../../../errors/appError';
 import writeTextToClipboard from '../../../../helpers/browser';
-import { SubmittedApproval } from '../../../../redux/stores/transactions/transactionsSlice';
 import { AppRoutes } from '../../../../routes';
 import { ExpiryTimeUnit } from '../../../../types/ExpiryTimeUnit';
 import { ListNftState } from '../ConnectedListNftWidget/ConnectedListNftWidget';
@@ -41,7 +41,7 @@ interface ListNftDetailContainerProps {
   protocolFeeInCurrencyToken?: string;
   protocolFee: number;
   selectedTokenId: number;
-  submittedApproval?: SubmittedApproval;
+  submittedApproval?: NftApprovalTransaction;
   userTokens: number[];
   widgetState: ListNftState;
   onExpiryAmountChange: (value?: number) => void;
