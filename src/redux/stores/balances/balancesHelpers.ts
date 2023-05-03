@@ -88,14 +88,14 @@ export const getOwnedTokenIdsOfWallet = async (
     const uniqueTokenIds = [...new Set(foundTokenIds)];
 
     /* get balances of tokens */
-    const tokenBalances: number[] = await Promise.all(
+    const tokenBalances: BigNumber[] = await Promise.all(
       uniqueTokenIds.map(
-        tokenId => collectionContract.balanceOf(walletAddress, tokenId).toNumber(),
+        async tokenId => collectionContract.balanceOf(walletAddress, tokenId),
       ),
     );
 
     /* get only the owned token ids */
-    const ownedTokenIds = uniqueTokenIds.filter((_, index) => tokenBalances[index] > 0);
+    const ownedTokenIds = uniqueTokenIds.filter((_, index) => tokenBalances[index].toNumber() > 0);
 
     /* return sorted array of numbers */
     return ownedTokenIds
