@@ -61,12 +61,15 @@ export const getOwnedTokenIdsOfWallet = async (
     /* get unique values */
     const uniqueTokenIds = [...new Set(foundTokenIds)];
 
-    /* get only the owned token ids */
-    const ownedTokenIds = uniqueTokenIds.filter(async id => {
-      const addr = await collectionContract.ownerOf(id);
-      return addr === walletAddress;
-    });
+    /* get owners of tokens */
+    const tokenOwners: string[] = await Promise.all(
+      uniqueTokenIds.map(tokenId => collectionContract.ownerOf(tokenId)),
+    );
 
+    /* get only the owned token ids */
+    const ownedTokenIds = uniqueTokenIds.filter((_, index) => tokenOwners[index] === walletAddress);
+
+    /* return sorted array of numbers */
     return ownedTokenIds
       .map(t => t.toNumber())
       .sort((a, b) => a - b);
@@ -84,12 +87,17 @@ export const getOwnedTokenIdsOfWallet = async (
     /* get unique values */
     const uniqueTokenIds = [...new Set(foundTokenIds)];
 
-    /* get only the owned token ids */
-    const ownedTokenIds = uniqueTokenIds.filter(async id => {
-      const balance = (await collectionContract.balanceOf(walletAddress, id)).toNumber();
-      return balance > 0;
-    });
+    /* get balances of tokens */
+    const tokenBalances: number[] = await Promise.all(
+      uniqueTokenIds.map(
+        tokenId => collectionContract.balanceOf(walletAddress, tokenId).toNumber(),
+      ),
+    );
 
+    /* get only the owned token ids */
+    const ownedTokenIds = uniqueTokenIds.filter((_, index) => tokenBalances[index] > 0);
+
+    /* return sorted array of numbers */
     return ownedTokenIds
       .map(t => t.toNumber())
       .sort((a, b) => a - b);
