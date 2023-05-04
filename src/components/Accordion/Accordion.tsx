@@ -60,11 +60,8 @@ const Accordion: FC<AccordionProps> = ({
   }, []);
 
   useEffect(() => {
-    if (contentRef.current) {
-      if (contentHeight) {
-        contentRef.current.style.height = isOpen ? `${contentHeight}px` : '0px';
-      }
-    }
+    if (!contentRef.current || !contentHeight) return;
+    contentRef.current.style.height = isOpen ? `${contentHeight}px` : '0px';
   }, [isOpen]);
 
   const onClick = () => {
