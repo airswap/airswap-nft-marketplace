@@ -16,6 +16,7 @@ import { configureMetadataSubscriber } from './stores/metadata/metadataSubscribe
 import nftDetailReducer from './stores/nftDetail/nftDetailSlice';
 import ordersReducer from './stores/orders/ordersSlice';
 import profileReducer from './stores/profile/profileSlice';
+import toastsReducer from './stores/toasts/toastsSlice';
 import transactionsReducer from './stores/transactions/transactionsSlice';
 import userReducer from './stores/user/userSlice';
 import { configureUserSubscriber } from './stores/user/userSubscriber';
@@ -31,6 +32,7 @@ export const store = configureStore({
     nftDetail: nftDetailReducer,
     orders: ordersReducer,
     profile: profileReducer,
+    toasts: toastsReducer,
     transactions: transactionsReducer,
     user: userReducer,
     web3: web3Reducer,
