@@ -10,7 +10,7 @@ const useFullOrderExpired = (orderExpiry: string): boolean => {
       setIsExpired(new Date().getTime() > expiry);
     }, 1000);
 
-    return () => clearTimeout(timer);
+    return () => clearInterval(timer);
   }, [orderExpiry]);
 
   return isExpired;

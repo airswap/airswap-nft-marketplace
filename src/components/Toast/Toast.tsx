@@ -39,7 +39,7 @@ const Toast: FC<ToastProps> = ({ toast, onHide, className = '' }): ReactElement 
       timeoutId = setTimeout(() => onHide(toast.id), 3000);
     }
 
-    return () => clearInterval(timeoutId);
+    return () => clearTimeout(timeoutId);
   }, [toast.willAutomaticallyHide]);
 
   useEffect(() => {

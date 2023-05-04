@@ -41,7 +41,7 @@ const useNftTokenApproval = (
 
     timer = setInterval(() => callGetNftTokenApproved(), 1000);
 
-    return () => clearTimeout(timer);
+    return () => clearInterval(timer);
   }, [
     tokenInfo,
     tokenId,

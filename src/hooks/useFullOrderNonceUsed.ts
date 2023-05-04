@@ -20,14 +20,14 @@ const useFullOrderNonceUsed = (fullOrder?: FullOrder): [boolean, boolean] => {
       const response = await getNonceUsed(fullOrder, library);
 
       if (response) {
-        clearTimeout(timer);
+        clearInterval(timer);
       }
 
       setIsLoading(false);
       setIsNonceUsed(response);
     }, 1000);
 
-    return () => clearTimeout(timer);
+    return () => clearInterval(timer);
   }, [fullOrder, library]);
 
   return [isNonceUsed, isLoading];

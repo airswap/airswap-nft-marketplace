@@ -80,8 +80,8 @@ export async function checkOrder(
 ): Promise<AppError[]> {
   const { chainId } = provider.network;
 
-  const result = await Swap.getContract(provider.getSigner(), chainId).check(senderWallet, order);
-  const errors = checkResultToErrors(result[1], result[0]) as SwapError[];
+  const [count, checkErrors] = await Swap.getContract(provider.getSigner(), chainId).check(senderWallet, order);
+  const errors = (count && checkErrors) ? checkResultToErrors(checkErrors, count) as SwapError[] : [];
 
   if (errors.length) {
     console.error(errors);
