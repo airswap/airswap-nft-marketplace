@@ -40,14 +40,24 @@ const Accordion: FC<AccordionProps> = ({
     contentRef.current.style.transitionDuration = `${height / 300}s`;
   }, [contentRef.current, contentHeight, content]);
 
-  window.addEventListener('resize', () => {
-    if (contentRef.current) {
+  // Watch for window resize and update accordion height
+  useEffect(() => {
+    const resizeHandler = () => {
+      if (!contentRef.current) return;
       contentRef.current.style.height = 'auto';
       const { height } = contentRef.current.getBoundingClientRect();
       setContentHeight(height);
       contentRef.current.style.height = isOpen ? `${height}px` : '0px';
-    }
-  });
+      // Set transition duration based on height to maintain constant speed
+      contentRef.current.style.transitionDuration = `${height / 300}s`;
+    };
+
+    window.addEventListener('resize', resizeHandler);
+
+    return () => {
+      window.removeEventListener('resize', resizeHandler);
+    };
+  }, []);
 
   useEffect(() => {
     if (contentRef.current) {
