@@ -1,11 +1,15 @@
 import React, {
-  FC, useEffect, useMemo, useState,
+  FC,
+  useEffect,
+  useMemo,
+  useState,
 } from 'react';
 
 import { TokenInfo } from '@airswap/types';
 import { Web3Provider } from '@ethersproject/providers';
 
 import { expiryAmounts } from '../../../../constants/expiry';
+import { SubmittedTransactionStatus } from '../../../../entities/SubmittedTransaction/SubmittedTransaction';
 import { AppErrorType, isAppError } from '../../../../errors/appError';
 import useApproveNftTransaction from '../../../../hooks/useApproveNftTransaction';
 import useCollectionToken from '../../../../hooks/useCollectionToken';
@@ -147,11 +151,11 @@ const ConnectedListNftWidget: FC<ListNftWidgetProps> = ({
   };
 
   useEffect(() => {
-    if (approveTransaction?.status === 'processing') {
+    if (approveTransaction?.status === SubmittedTransactionStatus.processing) {
       setWidgetState(ListNftState.approving);
     }
 
-    if (approveTransaction?.status === 'succeeded') {
+    if (approveTransaction?.status === SubmittedTransactionStatus.succeeded) {
       dispatch(addInfoToast('Approved', `Approved ${collectionTokenInfo?.name} to be spend.`));
       setWidgetState(ListNftState.review);
     }

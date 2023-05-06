@@ -5,6 +5,8 @@ import {
   NftApprovalTransaction,
   OrderTransaction,
   SubmittedTransaction,
+  SubmittedTransactionStatus,
+  SubmittedTransactionType,
 } from '../../../entities/SubmittedTransaction/SubmittedTransaction';
 import { AppDispatch, RootState } from '../../store';
 import { setTransactions } from './transactionsSlice';
@@ -27,9 +29,9 @@ export const addERC20ApprovalTransaction = (hash: string) => async (dispatch: Ap
   const { transactions } = getState().transactions;
 
   const transaction: Erc20ApprovalTransaction = {
-    type: 'erc20-approval',
+    type: SubmittedTransactionType.erc20Approval,
     hash,
-    status: 'processing',
+    status: SubmittedTransactionStatus.processing,
     timestamp: Date.now(),
   };
 
@@ -43,10 +45,10 @@ export const addNftApprovalTransaction = (hash: string, tokenId: number) => asyn
   const { transactions } = getState().transactions;
 
   const transaction: NftApprovalTransaction = {
-    type: 'nft-approval',
+    type: SubmittedTransactionType.nftApproval,
     hash,
     tokenId,
-    status: 'processing',
+    status: SubmittedTransactionStatus.processing,
     timestamp: Date.now(),
   };
 
@@ -60,10 +62,10 @@ export const addOrderTransaction = (hash: string, order: Order) => async (dispat
   const { transactions } = getState().transactions;
 
   const transaction: OrderTransaction = {
-    type: 'order',
+    type: SubmittedTransactionType.order,
     hash,
     order,
-    status: 'processing',
+    status: SubmittedTransactionStatus.processing,
     timestamp: Date.now(),
   };
 

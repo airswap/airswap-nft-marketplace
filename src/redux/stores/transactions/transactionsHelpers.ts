@@ -1,4 +1,4 @@
-import { SubmittedTransaction } from '../../../entities/SubmittedTransaction/SubmittedTransaction';
+import { SubmittedTransaction, SubmittedTransactionStatus } from '../../../entities/SubmittedTransaction/SubmittedTransaction';
 import { AppDispatch } from '../../store';
 import { updateTransaction } from './transactionsActions';
 
@@ -13,7 +13,7 @@ export const getLocalStorageTransactions = (account: string, chainId: number): S
 export const handleTransactionReceipt = (status: number, transaction: SubmittedTransaction, dispatch: AppDispatch): void => {
   dispatch(updateTransaction({
     ...transaction,
-    status: status === 1 ? 'succeeded' : 'failed',
+    status: status === 1 ? SubmittedTransactionStatus.succeeded : SubmittedTransactionStatus.failed,
   }));
 };
 

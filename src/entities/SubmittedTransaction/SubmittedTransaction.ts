@@ -1,40 +1,41 @@
 import { Order } from '@airswap/types';
 
-export type TransactionType =
-  | 'erc20-approval'
-  | 'nft-approval'
-  | 'order'
-  | 'cancel-order';
+export enum SubmittedTransactionType {
+  erc20Approval = 'erc20-approval',
+  nftApproval = 'nft-approval',
+  order = 'order',
+  cancelOrder = 'cancel-order',
+}
 
-export type TransactionStatus =
-  | 'processing'
-  | 'succeeded'
-  | 'failed'
-  | 'expired';
+export enum SubmittedTransactionStatus {
+  processing = 'processing',
+  succeeded = 'succeeded',
+  failed = 'failed',
+}
 
 export interface Transaction {
-  type: TransactionType;
+  type: SubmittedTransactionType;
   hash: string;
-  status: TransactionStatus;
+  status: SubmittedTransactionStatus;
   timestamp: number;
 }
 
 export interface Erc20ApprovalTransaction extends Transaction {
-  type: 'erc20-approval',
+  type: SubmittedTransactionType.erc20Approval,
 }
 
 export interface NftApprovalTransaction extends Transaction {
-  type: 'nft-approval',
+  type: SubmittedTransactionType.nftApproval,
   tokenId: number;
 }
 
 export interface OrderTransaction extends Transaction {
-  type: 'order',
+  type: SubmittedTransactionType.order,
   order: Order;
 }
 
 export interface CancelOrderTransaction extends Transaction {
-  type: 'cancel-order',
+  type: SubmittedTransactionType.cancelOrder,
 }
 
 export type SubmittedTransaction =
