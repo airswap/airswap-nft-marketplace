@@ -146,6 +146,10 @@ const ConnectedListNftWidget: FC<ListNftWidgetProps> = ({
     }
   };
 
+  const handleBackButtonClick = () => {
+    setWidgetState(ListNftState.details);
+  };
+
   const handleSelectedNftChange = (value: number) => {
     setSelectedTokenId(value);
   };
@@ -209,6 +213,7 @@ const ConnectedListNftWidget: FC<ListNftWidgetProps> = ({
           fullOrder={lastUserOrder}
           state={widgetState}
           onActionButtonClick={handleActionButtonClick}
+          onBackButtonClick={handleBackButtonClick}
           className="list-nft-widget__action-buttons"
         />
       )}

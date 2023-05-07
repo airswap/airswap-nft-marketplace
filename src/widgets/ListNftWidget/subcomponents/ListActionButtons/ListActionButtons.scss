@@ -1,12 +1,29 @@
 @import "src/styles/index";
 
 .list-action-buttons {
+    display: flex;
+
+    &__back-button,
+    &__action-button {
+        @extend %text-ellipsis;
+
+        display: inline-block;
+        text-align: center;
+        line-height: 1.5;
+    }
+
+    &__back-button {
+        @extend %button--is-secondary;
+
+        order: 1;
+        margin-right: 1rem;
+        min-width: 30%;
+    }
 
     &__action-button {
         @extend %button--is-primary;
 
-        justify-self: flex-end;
-        margin-top: auto;
+        order: 2;
         width: 100%;
     }
 }
