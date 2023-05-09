@@ -2,6 +2,7 @@ import { useCustomCompareEffect } from '@react-hookz/web';
 import { useWeb3React } from '@web3-react/core';
 import { Event } from 'ethers';
 
+import { nativeCurrencyAddress } from '../constants/nativeCurrency';
 import { useAppDispatch } from '../redux/hooks';
 import {
   setTransactions,
@@ -38,12 +39,10 @@ const useHistoricalTransactions = () => {
       const updateStorage: () => void = async () => {
         let lastLookSwapLogs: Event[] = [];
         let rfqSwapLogs: Event[] = [];
-        let wrappedSwapLogs: Event[] = [];
 
         if (swapLogs) {
           lastLookSwapLogs = swapLogs.lastLookSwapLogs;
           rfqSwapLogs = swapLogs.rfqSwapLogs;
-          wrappedSwapLogs = swapLogs.wrappedSwapLogs;
         }
 
         const reconcileLogs = async (
@@ -64,7 +63,7 @@ const useHistoricalTransactions = () => {
                   const { order } = tx as SubmittedTransactionWithOrder;
                   return (
                     order.nonce === args.nonce.toString()
-                    && order.signerWallet.toLowerCase()
+                    && order.signer.wallet.toLowerCase()
                       === args.signerWallet.toLowerCase()
                   );
                 },
@@ -88,11 +87,23 @@ const useHistoricalTransactions = () => {
                   order: {
                     expiry: '-',
                     nonce: args.nonce.toString(),
-                    signerWallet: args.signerWallet,
-                    signerToken: args.signerToken,
-                    senderToken: args.senderToken,
-                    senderAmount: args.senderAmount.toString(),
-                    signerAmount: args.signerAmount.toString(),
+                    protocolFee: '0',
+                    affiliateAmount: '0',
+                    affiliateWallet: nativeCurrencyAddress,
+                    signer: {
+                      id: '',
+                      kind: '',
+                      amount: args.signerAmount.toString(),
+                      token: args.signerToken,
+                      wallet: args.signerWallet,
+                    },
+                    sender: {
+                      id: '',
+                      kind: '',
+                      amount: args.signerAmount.toString(),
+                      token: args.signerToken,
+                      wallet: args.signerWallet,
+                    },
                     v: '-',
                     r: '-',
                     s: '-',
@@ -107,7 +118,6 @@ const useHistoricalTransactions = () => {
         await Promise.all([
           reconcileLogs('last-look', lastLookSwapLogs),
           reconcileLogs('request-for-quote', rfqSwapLogs),
-          reconcileLogs('request-for-quote', wrappedSwapLogs, true),
         ]);
 
         setLocalStorageTransactions(localTransactionsCopy);

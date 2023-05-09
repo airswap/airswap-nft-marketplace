@@ -17,7 +17,7 @@ const ListNftWidgetHeader: FC<ListNftWidgetHeaderProps> = ({ title, className = 
       hideLabel
       icon="close"
       text="Back"
-      to={`${AppRoutes.nftDetail}`}
+      to={`/${AppRoutes.nftDetail}`}
       className="list-nft-widget-header__back-button"
     />
   </div>

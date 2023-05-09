@@ -88,17 +88,6 @@ const ListActionButtons: FC<ActionButtonsProps> = ({
       );
     }
 
-    if (state === ListNftState.listing) {
-      return (
-        <NavLink
-          to="/"
-          className="list-action-buttons__action-button"
-        >
-          Back to collection
-        </NavLink>
-      );
-    }
-
     if (state === ListNftState.success) {
       const tokenId = fullOrder?.signer.id;
 

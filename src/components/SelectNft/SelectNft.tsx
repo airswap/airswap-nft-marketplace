@@ -10,6 +10,7 @@ import { getSelectNftOptions } from './helpers/getSelectNftOptions';
 import './SelectNft.scss';
 
 interface SelectNftProps {
+  collectionName: string;
   logoURI?: string;
   tokens: number[];
   title: string;
@@ -20,6 +21,7 @@ interface SelectNftProps {
 }
 
 const SelectNft: FC<SelectNftProps> = ({
+  collectionName,
   logoURI,
   tokens,
   title,
@@ -28,7 +30,7 @@ const SelectNft: FC<SelectNftProps> = ({
   onSelect,
   className = '',
 }) => {
-  const options = useMemo(() => getSelectNftOptions(tokens), [tokens, token]);
+  const options = useMemo(() => getSelectNftOptions(tokens, collectionName), [tokens, collectionName, token]);
   const selectedOption = options.find(option => option.value === value?.toString()) || options[0] as SelectOption;
 
   const handleDropdownChange = (option: SelectOption): void => {
@@ -40,7 +42,7 @@ const SelectNft: FC<SelectNftProps> = ({
       <div className="select-nft__logo-icon" style={{ backgroundImage: `url("${logoURI}")` }} />
       <div className="select-nft__title-and-name">
         <h3 className="select-nft__title">{title}</h3>
-        <h4 className="select-nft__name">{token?.name || ''}</h4>
+        <h4 className="select-nft__name">{`${collectionName} ${token?.id ? `#${token.id}` : ''}`}</h4>
       </div>
       <Icon name="chevron-down" className="select-nft__chevron-down-icon" />
 

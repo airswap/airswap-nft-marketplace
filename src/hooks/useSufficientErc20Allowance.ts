@@ -1,45 +1,22 @@
-import { useMemo } from 'react';
+import { useEffect, useState } from 'react';
 
-import { TokenInfo } from '@airswap/types';
-import { Web3Provider } from '@ethersproject/providers';
-import { useWeb3React } from '@web3-react/core';
+import { FullOrder } from '@airswap/types';
 import { BigNumber } from 'bignumber.js';
 
-import findEthOrTokenByAddress from '../helpers/findEthOrTokenByAddress';
+import { getFullOrderSenderAmountPlusTotalFees } from '../entities/FullOrder/FullOrderHelpers';
 import { useAppSelector } from '../redux/hooks';
 
-const useSufficientErc20Allowance = (
-  token?: TokenInfo,
-  amount?: string,
-): boolean => {
-  const { chainId } = useWeb3React<Web3Provider>();
-  const tokens = useAppSelector(state => state.metadata.tokens);
-  const allowances = useAppSelector(state => state.balances.allowances);
+const useSufficientErc20Allowance = (fullOrder: FullOrder): boolean => {
+  const { currencyTokenAllowance } = useAppSelector((state) => state.balances);
 
-  return useMemo(() => {
-    if (!token || !amount || !chainId) {
-      return false;
-    }
+  const [hasSufficientAllowance, setHasSufficientAllowance] = useState(false);
 
-    const justifiedToken = findEthOrTokenByAddress(
-      token.address,
-      Object.values(tokens),
-      chainId,
-    );
+  useEffect(() => {
+    const amount = getFullOrderSenderAmountPlusTotalFees(fullOrder);
+    setHasSufficientAllowance(new BigNumber(currencyTokenAllowance).gte(amount));
+  }, [fullOrder, currencyTokenAllowance]);
 
-    const tokenAllowance = justifiedToken ? allowances[justifiedToken.address] : undefined;
-
-    if (!tokenAllowance) {
-      // safer to return true here (has allowance) as validator will catch the
-      // missing allowance, so the user won't swap, and they won't pay
-      // unnecessary gas for an approval they may not need.
-      return true;
-    }
-
-    return new BigNumber(tokenAllowance)
-      .div(10 ** justifiedToken.decimals)
-      .gte(amount);
-  }, [allowances, amount, token, tokens, chainId]);
+  return hasSufficientAllowance;
 };
 
 export default useSufficientErc20Allowance;

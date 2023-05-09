@@ -1,6 +1,6 @@
 import { SelectOption } from '../../../types/SelectOption';
 
-export const getSelectNftOptions = (tokens: number[]): SelectOption[] => tokens.map(token => ({
+export const getSelectNftOptions = (tokens: number[], collectionName: string): SelectOption[] => tokens.map(token => ({
   value: token.toString(),
-  label: `#${token}`,
+  label: `${collectionName} #${token}`,
 }));

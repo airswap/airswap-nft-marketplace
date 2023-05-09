@@ -13,6 +13,7 @@ interface TransactionLinkProps extends NavLinkProps {
 const TransactionLink: FC<TransactionLinkProps> = ({ className = '', ...props }) => (
   <IconNavLink
     {...props}
+    target="_blank"
     icon="transaction-link"
     iconAlign="right"
     text="View on Etherscan"

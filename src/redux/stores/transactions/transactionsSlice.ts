@@ -1,4 +1,4 @@
-import { OrderERC20 } from '@airswap/types';
+import { Order } from '@airswap/types';
 import { createSelector, createSlice, PayloadAction } from '@reduxjs/toolkit';
 
 import { RootState } from '../../store';
@@ -24,7 +24,7 @@ export type TransactionType =
   | 'Withdraw'
   | 'Cancel';
 
-export type StatusType =
+export type TransactionStatus =
   | 'processing'
   | 'succeeded'
   | 'reverted'
@@ -36,7 +36,7 @@ export type ProtocolType = 'request-for-quote' | 'last-look';
 export interface SubmittedTransaction {
   type: TransactionType;
   hash?: string; // LL orders doesn't have hash
-  status: StatusType;
+  status: TransactionStatus;
   nonce?: string;
   expiry?: string;
   timestamp: number;
@@ -44,7 +44,7 @@ export interface SubmittedTransaction {
 }
 
 export interface SubmittedTransactionWithOrder extends SubmittedTransaction {
-  order: OrderERC20;
+  order: Order;
 }
 
 export type SubmittedRFQOrder = SubmittedTransactionWithOrder
@@ -70,6 +70,10 @@ export interface SubmittedDepositOrder extends SubmittedTransaction {
 
 export interface SubmittedWithdrawOrder extends SubmittedTransaction {
   order: DepositOrWithdrawOrder;
+}
+
+export interface SubmittedOrder extends SubmittedTransaction {
+  order: Order;
 }
 
 export interface TransactionsState {
@@ -172,6 +176,14 @@ export const selectApprovals = (state: RootState) => state.transactions.all.filt
 export const selectPendingApprovals = (state: RootState) => state.transactions.all.filter(
   (tx) => tx.status === 'processing' && tx.type === 'Approval',
 ) as SubmittedApproval[];
+
+export const selectPendingOrders = (state: RootState) => state.transactions.all.filter(
+  (tx) => tx.status === 'processing' && tx.type === 'Order',
+) as SubmittedOrder[];
+
+export const selectOrders = (state: RootState) => state.transactions.all.filter(
+  (tx) => tx.type === 'Order',
+) as SubmittedOrder[];
 
 export const selectCancellations = (state: RootState) => state.transactions.all.filter(
   (tx) => tx.status === 'succeeded' && tx.type === 'Cancel',

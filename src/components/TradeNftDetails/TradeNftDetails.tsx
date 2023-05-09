@@ -39,7 +39,7 @@ const TradeNftDetails: FC<TradeNftDetailsProps> = ({
         </div>
       )}
       <div
-        style={{ backgroundImage: `url("${collectionToken.uri}")` }}
+        style={{ backgroundImage: `url("${collectionToken.image}")` }}
         className="trade-nft-details__inner"
       >
         <h2 className="trade-nft-details__token-name">{collectionToken.name}</h2>

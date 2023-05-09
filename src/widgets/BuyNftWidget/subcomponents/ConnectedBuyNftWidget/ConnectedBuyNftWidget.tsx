@@ -1,107 +1,176 @@
 import React, {
   FC,
+  useEffect,
   useMemo,
   useState,
 } from 'react';
 
 import { CollectionTokenInfo, FullOrder, TokenInfo } from '@airswap/types';
-import { BigNumber } from 'bignumber.js';
-import classNames from 'classnames';
+import { Web3Provider } from '@ethersproject/providers';
 
-import Icon from '../../../../components/Icon/Icon';
-import LoadingSpinner from '../../../../components/LoadingSpinner/LoadingSpinner';
-import TradeDetails from '../../../../components/TradeDetails/TradeDetails';
-import TradeNftDetails, { TradeNftDetailsProps } from '../../../../components/TradeNftDetails/TradeNftDetails';
-import TransactionLink from '../../../../compositions/TransactionLink/TransactionLink';
-import { useAppSelector } from '../../../../redux/hooks';
-import { getNftDetailsIcon, getTitle } from '../../helpers';
+import { AppErrorType, isAppError } from '../../../../errors/appError';
+import useApproveCurrencyTokenTransaction from '../../../../hooks/useApproveCurrencyTokenTransaction';
+import useFullOrderExpired from '../../../../hooks/useFullOrderExpired';
+import useInsufficientBalance from '../../../../hooks/useInsufficientBalance';
+import useOrderTransaction from '../../../../hooks/useOrderTransaction';
+import useSufficientErc20Allowance from '../../../../hooks/useSufficientErc20Allowance';
+import { useAppDispatch, useAppSelector } from '../../../../redux/hooks';
+import { approve as approveErc20, take } from '../../../../redux/stores/orders/ordersActions';
+import { setError } from '../../../../redux/stores/orders/ordersSlice';
+import { addInfoToast, addUserRejectedToast } from '../../../../redux/stores/toasts/toastsActions';
+import { getTitle } from '../../helpers';
 import BuyActionButtons from '../BuyActionButtons/BuyActionButtons';
+import BuyNftWidgetDetailsContainer from '../BuyNftWidgetDetailsContainer/BuyNftWidgetDetailsContainer';
 import BuyNftWidgetHeader from '../BuyNftWidgetHeader/BuyNftWidgetHeader';
 
 import '../../BuyNftWidget.scss';
 
-// TODO: Move BuyNftState to store when it's made
 export enum BuyNftState {
   details = 'details',
-  confirm = 'confirm',
-  pending = 'pending',
+  approve = 'approve',
+  approving = 'approving',
+  sign = 'sign',
+  buying = 'buying',
   success = 'success',
   failed = 'failed',
 }
 
 interface ConnectedBuyNftWidgetProps {
+  isOrderNonceUsed: boolean;
+  account: string;
+  chainId: number
   collectionTokenInfo: CollectionTokenInfo;
   currencyTokenInfo: TokenInfo;
   fullOrder: FullOrder;
+  library: Web3Provider
   className?: string;
 }
 
 const BuyNftWidget: FC<ConnectedBuyNftWidgetProps> = ({
+  isOrderNonceUsed,
+  account,
+  chainId,
   collectionTokenInfo,
   currencyTokenInfo,
   fullOrder,
+  library,
   className = '',
 }) => {
+  const dispatch = useAppDispatch();
   const { collectionImage, collectionName } = useAppSelector(state => state.config);
+  const { error } = useAppSelector(state => state.orders);
 
   const [widgetState, setWidgetState] = useState<BuyNftState>(BuyNftState.details);
 
-  const widgetClassName = classNames('buy-nft-widget', {
-    [`buy-nft-widget--has-${widgetState}-state`]: widgetState,
-  }, className);
+  const hasInsufficientBalance = useInsufficientBalance(fullOrder.sender.amount);
+  const hasSufficientCurrencyAllowance = useSufficientErc20Allowance(fullOrder);
+  const approveTransaction = useApproveCurrencyTokenTransaction();
+  const orderTransaction = useOrderTransaction(fullOrder.nonce);
+  const isOrderExpired = useFullOrderExpired(fullOrder.expiry);
+  const ownerIsAccount = fullOrder.signer.wallet.toLowerCase() === account.toLowerCase();
 
-  const nftDetailsIcon: TradeNftDetailsProps['icon'] = useMemo(() => getNftDetailsIcon(widgetState), [widgetState]);
   const title = useMemo(() => getTitle(widgetState), [widgetState]);
 
-  const handleActionButtonClick = () => {
-    if (widgetState === BuyNftState.details) {
-      setWidgetState(BuyNftState.confirm);
+  const handleActionButtonClick = async () => {
+    if (widgetState === BuyNftState.details && !hasSufficientCurrencyAllowance) {
+      setWidgetState(BuyNftState.approve);
+
+      dispatch(approveErc20({
+        tokenInfo: currencyTokenInfo,
+        library,
+        chainId,
+      }))
+        .unwrap()
+        .then(() => {
+          setWidgetState(BuyNftState.approving);
+        })
+        .catch((e) => {
+          if (isAppError(e) && e.type === AppErrorType.rejectedByUser) {
+            setWidgetState(BuyNftState.details);
+          } else {
+            setWidgetState(BuyNftState.failed);
+          }
+        });
+    }
+
+    if (widgetState === BuyNftState.details && hasSufficientCurrencyAllowance) {
+      setWidgetState(BuyNftState.sign);
+
+      dispatch(take({
+        order: fullOrder,
+        senderWallet: account,
+        library,
+      }));
+    }
+
+    if (widgetState === BuyNftState.failed) {
+      dispatch(setError(undefined));
     }
   };
 
+  useEffect(() => {
+    if (approveTransaction?.status === 'succeeded' && widgetState === BuyNftState.approving) {
+      dispatch(addInfoToast('Approved', `Approved ${currencyTokenInfo.symbol} to be spend.`));
+      setWidgetState(BuyNftState.details);
+    }
+  }, [widgetState, approveTransaction]);
+
+  useEffect(() => {
+    if (orderTransaction?.status === 'processing') {
+      setWidgetState(BuyNftState.buying);
+    }
+
+    if (orderTransaction?.status === 'succeeded') {
+      setWidgetState(BuyNftState.success);
+    }
+  }, [orderTransaction?.status]);
+
+  useEffect(() => {
+    if (!error) {
+      return;
+    }
+
+    if (error?.type === AppErrorType.rejectedByUser) {
+      dispatch(addUserRejectedToast());
+      setWidgetState(BuyNftState.details);
+    } else {
+      setWidgetState(BuyNftState.failed);
+    }
+  }, [error]);
+
+  // This will clear the store when unmounting the component
+  useEffect((): () => void => () => dispatch(setError(undefined)), []);
+
   return (
-    <div className={widgetClassName}>
+    <div className={`buy-nft-widget ${className}`}>
       <BuyNftWidgetHeader
+        nftId={collectionTokenInfo.id}
         title={title}
         className="buy-nft-widget__header"
       />
-      <LoadingSpinner className="buy-nft-widget__loading-spinner" />
 
-      <div className="buy-nft-widget__trade-details-container">
-        {widgetState === BuyNftState.details || widgetState === BuyNftState.success || widgetState === BuyNftState.failed ? (
-          <TradeNftDetails
-            icon={nftDetailsIcon}
-            collectionImage={collectionImage}
-            collectionName={collectionName}
-            collectionToken={collectionTokenInfo}
-            className="buy-nft-widget__trade-details"
-          />
-        ) : (
-          <TradeDetails
-            logoURI={collectionTokenInfo ? collectionTokenInfo.image : collectionImage}
-            title="Buy"
-            token={collectionTokenInfo}
-          />
-        )}
+      <BuyNftWidgetDetailsContainer
+        chainId={chainId}
+        collectionImage={collectionImage}
+        collectionName={collectionName}
+        collectionTokenInfo={collectionTokenInfo}
+        currencyTokenInfo={currencyTokenInfo}
+        error={error}
+        fullOrder={fullOrder}
+        submittedApproval={approveTransaction}
+        submittedOrder={orderTransaction}
+        widgetState={widgetState}
+        className="buy-nft-widget__trade-details-container"
+      />
 
-        {!(widgetState === BuyNftState.success || widgetState === BuyNftState.failed) && (
-          <>
-            <div className="buy-nft-widget__swap-icon-container">
-              <Icon className="buy-nft-widget__swap-icon" name="swap" />
-            </div>
-            <TradeDetails
-              amount={new BigNumber(fullOrder.sender.amount)}
-              logoURI={currencyTokenInfo.logoURI}
-              title="For"
-              token={currencyTokenInfo}
-              className="buy-nft-widget__trade-details"
-            />
-          </>
-        )}
-      </div>
-
-      <TransactionLink to="test" className="buy-nft-widget__transaction-link" />
       <BuyActionButtons
+        hasInsufficientAmount={hasInsufficientBalance}
+        hasNoCurrencyTokenApproval={!hasSufficientCurrencyAllowance}
+        isOrderExpired={isOrderExpired}
+        isOrderNonceUsed={isOrderNonceUsed}
+        ownerIsAccount={ownerIsAccount}
+        collectionTokenInfo={collectionTokenInfo}
+        currencyTokenSymbol={currencyTokenInfo.symbol}
         state={widgetState}
         onActionButtonClick={handleActionButtonClick}
         className="buy-nft-widget__action-buttons"

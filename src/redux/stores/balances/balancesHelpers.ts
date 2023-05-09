@@ -1,10 +1,12 @@
-import { tokenKinds } from '@airswap/constants';
+import { TokenKinds } from '@airswap/constants';
 // eslint-disable-next-line import/no-extraneous-dependencies
 import { Event } from '@ethersproject/contracts';
 import erc721AbiContract from '@openzeppelin/contracts/build/contracts/ERC721.json';
 import erc721EnumerableContract from '@openzeppelin/contracts/build/contracts/ERC721Enumerable.json';
 import erc1155Contract from '@openzeppelin/contracts/build/contracts/ERC1155.json';
 import { BigNumber, ethers } from 'ethers';
+
+import { getUniqueSingleDimensionArray } from '../../../helpers/array';
 
 export const getUniqueTokensForWallet = (tokenIds: BigNumber[], collectionContract: ethers.Contract, walletAddress: string): number[] => {
   /* get unique values */
@@ -19,6 +21,7 @@ export const getUniqueTokensForWallet = (tokenIds: BigNumber[], collectionContra
 
   return ownedTokenIds
     .map(t => t.toNumber())
+    .filter(getUniqueSingleDimensionArray)
     .sort((a, b) => a - b);
 };
 
@@ -26,13 +29,13 @@ export const getOwnedTokenIdsOfWallet = async (
   provider: ethers.providers.Web3Provider,
   walletAddress: string,
   collectionToken: string,
-) => {
+): Promise<number[]> => {
   const contract = new ethers.Contract(collectionToken, erc721AbiContract.abi, provider);
 
   const [isErc721Enumerable, isErc721, isErc1155] = await Promise.all([
     contract.supportsInterface('0x780e9d63'), // The interface ID for erc721 enumerable
-    contract.supportsInterface(tokenKinds.ERC721),
-    contract.supportsInterface(tokenKinds.ERC1155),
+    contract.supportsInterface(TokenKinds.ERC721),
+    contract.supportsInterface(TokenKinds.ERC1155),
   ]) as boolean[];
 
   if (isErc721Enumerable) {
@@ -46,6 +49,7 @@ export const getOwnedTokenIdsOfWallet = async (
 
     return tokenIds
       .map(t => t.toNumber())
+      .filter(getUniqueSingleDimensionArray)
       .sort((a, b) => a - b);
   }
 
