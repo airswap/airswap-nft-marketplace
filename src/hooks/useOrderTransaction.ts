@@ -2,7 +2,7 @@ import { useMemo } from 'react';
 
 import { OrderTransaction } from '../entities/SubmittedTransaction/SubmittedTransaction';
 import { useAppSelector } from '../redux/hooks';
-import { selectOrderTransactions } from '../redux/stores/transactions-v2/transactionsSlice';
+import { selectOrderTransactions } from '../redux/stores/transactions/transactionsSlice';
 
 const useOrderTransaction = (orderNonce: string): OrderTransaction | undefined => {
   const pendingOrders = useAppSelector(selectOrderTransactions);

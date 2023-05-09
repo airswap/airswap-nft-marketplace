@@ -16,7 +16,7 @@ import {
   addERC20ApprovalTransaction,
   addNftApprovalTransaction,
   addOrderTransaction,
-} from '../transactions-v2/transactionsActions';
+} from '../transactions/transactionsActions';
 import {
   approveErc20Token,
   approveNftToken,

@@ -2,7 +2,7 @@ import { useMemo } from 'react';
 
 import { NftApprovalTransaction } from '../entities/SubmittedTransaction/SubmittedTransaction';
 import { useAppSelector } from '../redux/hooks';
-import { selectNftApprovalTransactions } from '../redux/stores/transactions-v2/transactionsSlice';
+import { selectNftApprovalTransactions } from '../redux/stores/transactions/transactionsSlice';
 
 const useApproveNftTransaction = (hash?: string): NftApprovalTransaction | undefined => {
   const transactions = useAppSelector(selectNftApprovalTransactions);

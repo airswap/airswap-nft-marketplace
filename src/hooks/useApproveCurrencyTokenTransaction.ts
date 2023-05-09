@@ -2,7 +2,7 @@ import { useMemo } from 'react';
 
 import { Erc20ApprovalTransaction } from '../entities/SubmittedTransaction/SubmittedTransaction';
 import { useAppSelector } from '../redux/hooks';
-import { selectErc20ApprovalTransactions } from '../redux/stores/transactions-v2/transactionsSlice';
+import { selectErc20ApprovalTransactions } from '../redux/stores/transactions/transactionsSlice';
 
 const useApproveCurrencyTokenTransaction = (hash?: string): Erc20ApprovalTransaction | undefined => {
   const transactions = useAppSelector(selectErc20ApprovalTransactions);
