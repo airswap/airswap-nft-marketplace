@@ -46,7 +46,9 @@ export const getOwnedTokenIdsOfWallet = async (
     const foundTokenIds: BigNumber[] = events.map(e => e.args?.at(2));
 
     /* get unique values */
-    const uniqueTokenIds = [...new Set(foundTokenIds.map(tokenId => tokenId.toNumber()))];
+    const uniqueTokenIds = foundTokenIds
+      .map(t => t.toNumber())
+      .filter(getUniqueSingleDimensionArray);
 
     /* get owners of tokens */
     const tokenOwners: string[] = await Promise.all(
@@ -70,7 +72,9 @@ export const getOwnedTokenIdsOfWallet = async (
     const foundTokenIds: BigNumber[] = events.map(e => e.args?.at(3));
 
     /* get unique values */
-    const uniqueTokenIds = [...new Set(foundTokenIds.map(tokenId => tokenId.toNumber()))];
+    const uniqueTokenIds = foundTokenIds
+      .map(t => t.toNumber())
+      .filter(getUniqueSingleDimensionArray);
 
     /* get balances of tokens */
     const tokenBalances: BigNumber[] = await Promise.all(
