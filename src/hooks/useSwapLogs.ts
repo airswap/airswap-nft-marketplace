@@ -1,10 +1,8 @@
 import { useEffect } from 'react';
 
-import { Wrapper } from '@airswap/libraries';
 /* eslint-disable import/no-extraneous-dependencies */
-import * as SwapContract from '@airswap/swap-erc20/build/contracts/SwapERC20.sol/SwapERC20.json';
-import * as swapDeploys from '@airswap/swap-erc20/deploys';
-import * as WrapperContract from '@airswap/wrapper/build/contracts/Wrapper.sol/Wrapper.json';
+import * as SwapContract from '@airswap/swap/build/contracts/Swap.sol/Swap.json';
+import * as swapDeploys from '@airswap/swap/deploys';
 import { Contract } from '@ethersproject/contracts';
 /* eslint-enable import/no-extraneous-dependencies */
 import { useAsync } from '@react-hookz/web/esm';
@@ -15,7 +13,6 @@ const useSwapLogs = () => {
   const [state, actions] = useAsync(
     async (
       swapContract: Contract,
-      wrapperContract: Contract,
       account: string,
     ) => {
       const signerSwapFilter = swapContract.filters.SwapERC20(
@@ -40,20 +37,14 @@ const useSwapLogs = () => {
         null, // senderAmount
       );
 
-      const wrapperSwapFilter = wrapperContract.filters.WrappedSwapFor(
-        account, // senderWallet
-      );
-
-      const [lastLookSwapLogs, rfqSwapLogs, wrappedSwapLogs] = await Promise.all([
+      const [lastLookSwapLogs, rfqSwapLogs] = await Promise.all([
         swapContract.queryFilter(signerSwapFilter),
         swapContract.queryFilter(senderSwapFilter),
-        wrapperContract.queryFilter(wrapperSwapFilter),
       ]);
 
       return {
         lastLookSwapLogs,
         rfqSwapLogs,
-        wrappedSwapLogs,
         // eslint-disable-next-line @typescript-eslint/no-use-before-define
         chainId,
         account,
@@ -76,13 +67,7 @@ const useSwapLogs = () => {
       SwapContract.abi,
       provider,
     );
-
-    const wrapperContract = new Contract(
-      Wrapper.getAddress(chainId),
-      WrapperContract.abi,
-      provider,
-    );
-    actions.execute(swapContract, wrapperContract, account);
+    actions.execute(swapContract, account);
   }, [chainId, account, provider, actions]);
 
   return state;

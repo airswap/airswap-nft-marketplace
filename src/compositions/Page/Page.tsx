@@ -9,7 +9,6 @@ import useEnsAddress from '../../hooks/useEnsAddress';
 import useToggle from '../../hooks/useToggle';
 import { useAppSelector } from '../../redux/hooks';
 import { clearLastProvider } from '../../redux/stores/web3/web3Api';
-import ToastsWidget from '../../widgets/ToastsWidget/ToastsWidget';
 import WalletConnector from '../../widgets/WalletConnector/WalletConnector';
 import MobileMenu from '../MobileMenu/MobileMenu';
 import TopBar from '../TopBar/TopBar';
@@ -71,7 +70,6 @@ const Page: FC<PageProps> = ({ className = '', contentClassName = '', children }
         onCloseButtonClick={toggleShowWalletConnector}
         className="page__wallet-connector"
       />
-      <ToastsWidget />
 
       <div className={`page__content ${contentClassName}`}>
         {children}

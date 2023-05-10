@@ -1,6 +1,7 @@
-import React, { FC } from 'react';
+import React, { FC, useMemo } from 'react';
 
 import { CollectionTokenInfo, FullOrder, TokenInfo } from '@airswap/types';
+import { getReceiptUrl } from '@airswap/utils';
 import classNames from 'classnames';
 
 import ExpiryIndicator from '../../../../components/ExpiryIndicator/ExpiryIndicator';
@@ -16,6 +17,7 @@ import TradeTokenInput from '../../../../compositions/TradeTokenInput/TradeToken
 import TransactionLink from '../../../../compositions/TransactionLink/TransactionLink';
 import { AppError } from '../../../../errors/appError';
 import writeTextToClipboard from '../../../../helpers/browser';
+import { SubmittedApproval } from '../../../../redux/stores/transactions/transactionsSlice';
 import { AppRoutes } from '../../../../routes';
 import { ExpiryTimeUnit } from '../../../../types/ExpiryTimeUnit';
 import { ListNftState } from '../ConnectedListNftWidget/ConnectedListNftWidget';
@@ -24,7 +26,9 @@ import SwapIcon from '../SwapIcon/SwapIcon';
 import './ListNftDetailsContainer.scss';
 
 interface ListNftDetailContainerProps {
+  chainId: number;
   collectionImage: string;
+  collectionName: string;
   collectionTokenInfo?: CollectionTokenInfo;
   currencyTokenAmount: string;
   currencyTokenAmountMinusProtocolFee?: string;
@@ -37,6 +41,7 @@ interface ListNftDetailContainerProps {
   protocolFeeInCurrencyToken?: string;
   protocolFee: number;
   selectedTokenId: number;
+  submittedApproval?: SubmittedApproval;
   userTokens: number[];
   widgetState: ListNftState;
   onExpiryAmountChange: (value?: number) => void;
@@ -47,7 +52,9 @@ interface ListNftDetailContainerProps {
 }
 
 const ListNftDetailContainer: FC<ListNftDetailContainerProps> = ({
+  chainId,
   collectionImage,
+  collectionName,
   collectionTokenInfo,
   currencyTokenInfo,
   currencyTokenAmount,
@@ -60,6 +67,7 @@ const ListNftDetailContainer: FC<ListNftDetailContainerProps> = ({
   protocolFeeInCurrencyToken,
   protocolFee,
   selectedTokenId,
+  submittedApproval,
   userTokens,
   widgetState,
   onExpiryAmountChange,
@@ -72,6 +80,8 @@ const ListNftDetailContainer: FC<ListNftDetailContainerProps> = ({
     [`list-nft-details-container--has-${widgetState}-state`]: widgetState,
   }, className);
 
+  const approvalUrl = useMemo(() => (submittedApproval?.hash ? getReceiptUrl(chainId, submittedApproval.hash) : undefined), [submittedApproval]);
+
   const handleCopyLinkClick = async () => {
     const link = `${window.location.host}/#/${AppRoutes.nftDetail}/${fullOrder?.signer.id}/buy`;
     await writeTextToClipboard(link);
@@ -82,6 +92,7 @@ const ListNftDetailContainer: FC<ListNftDetailContainerProps> = ({
       {widgetState === ListNftState.details && (
         <>
           <SelectNft
+            collectionName={collectionName}
             logoURI={collectionTokenInfo?.image}
             tokens={userTokens}
             title="List"
@@ -108,9 +119,8 @@ const ListNftDetailContainer: FC<ListNftDetailContainerProps> = ({
         </>
       )}
 
-      {(widgetState === ListNftState.review || widgetState === ListNftState.listing || widgetState === ListNftState.success) && (
+      {(widgetState === ListNftState.review || widgetState === ListNftState.success) && (
         <>
-          {widgetState === ListNftState.listing && <LoadingSpinner className="list-nft-details-container__loading-spinner" />}
           {widgetState === ListNftState.success && <Icon name="check" className="list-nft-details-container__check-icon" />}
           <ReviewNftDetails
             logoURI={collectionTokenInfo ? collectionTokenInfo.image : collectionImage}
@@ -131,12 +141,6 @@ const ListNftDetailContainer: FC<ListNftDetailContainerProps> = ({
             amount={expiryAmount}
             className="list-nft-details-container__expiry-indicator"
           />
-          {widgetState === ListNftState.listing && (
-            <TransactionLink
-              to="test"
-              className="list-nft-details-container__transaction-link"
-            />
-          )}
           {widgetState === ListNftState.success && (
             <CopyLinkButton
               onClick={handleCopyLinkClick}
@@ -156,10 +160,12 @@ const ListNftDetailContainer: FC<ListNftDetailContainerProps> = ({
               token={collectionTokenInfo}
             />
           )}
-          <TransactionLink
-            to="test"
-            className="list-nft-details-container__transaction-link"
-          />
+          {approvalUrl && (
+            <TransactionLink
+              to={approvalUrl}
+              className="list-nft-details-container__transaction-link"
+            />
+          )}
         </>
       )}
 

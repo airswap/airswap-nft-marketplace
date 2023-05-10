@@ -7,13 +7,13 @@ import NftDetailAttributeCard from '../NftDetailAttributeCard/NftDetailAttribute
 import './NftDetailAttributes.scss';
 
 interface NftDetailAttributesProps {
-  attrs: Array<CollectionTokenAttribute>;
+  attrs?: Array<CollectionTokenAttribute>;
   className?: string;
 }
 
 const NftDetailAttributes: FC<NftDetailAttributesProps> = ({ attrs, className = '' }) => (
   <div className={`nft-detail-attributes ${className}`}>
-    {attrs.map((attribute: CollectionTokenAttribute) => (
+    {attrs?.map((attribute: CollectionTokenAttribute) => (
       <NftDetailAttributeCard
         className="nft-detail-attributes__card"
         key={attribute.label}

@@ -42,7 +42,7 @@ export default function subscribeToSwapEvents(params: {
         const llTransaction = tx as LastLookTransaction;
         return (
           llTransaction.order.nonce === args.nonce.toString()
-          && llTransaction.order.signerWallet.toLowerCase() === _account
+          && llTransaction.order.signer.wallet.toLowerCase() === _account
         );
       }
       // rfq transactions will have a hash
