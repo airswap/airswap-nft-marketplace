@@ -43,7 +43,7 @@ export const getOwnedTokenIdsOfWallet = async (
     const foundTokenIds: BigNumber[] = events.map(e => e.args?.at(2));
 
     /* get unique values */
-    const uniqueTokenIds = [...new Set(foundTokenIds)];
+    const uniqueTokenIds = [...new Set(foundTokenIds.map(tokenId => tokenId.toNumber()))];
 
     /* get owners of tokens */
     const tokenOwners: string[] = await Promise.all(
@@ -54,9 +54,7 @@ export const getOwnedTokenIdsOfWallet = async (
     const ownedTokenIds = uniqueTokenIds.filter((_, index) => tokenOwners[index] === walletAddress);
 
     /* return sorted array of numbers */
-    return ownedTokenIds
-      .map(t => t.toNumber())
-      .sort((a, b) => a - b);
+    return ownedTokenIds.sort((a, b) => a - b);
   }
 
   if (isErc1155) {
@@ -69,7 +67,7 @@ export const getOwnedTokenIdsOfWallet = async (
     const foundTokenIds: BigNumber[] = events.map(e => e.args?.at(3));
 
     /* get unique values */
-    const uniqueTokenIds = [...new Set(foundTokenIds)];
+    const uniqueTokenIds = [...new Set(foundTokenIds.map(tokenId => tokenId.toNumber()))];
 
     /* get balances of tokens */
     const tokenBalances: BigNumber[] = await Promise.all(
@@ -82,9 +80,7 @@ export const getOwnedTokenIdsOfWallet = async (
     const ownedTokenIds = uniqueTokenIds.filter((_, index) => tokenBalances[index].toNumber() > 0);
 
     /* return sorted array of numbers */
-    return ownedTokenIds
-      .map(t => t.toNumber())
-      .sort((a, b) => a - b);
+    return ownedTokenIds.sort((a, b) => a - b);
   }
 
   throw new Error('Unknown nft interface. Could not fetch token ids.');
