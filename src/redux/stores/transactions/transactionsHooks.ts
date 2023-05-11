@@ -1,13 +1,12 @@
 import { useEffect, useState } from 'react';
 
-import { TransactionReceipt } from '@ethersproject/providers';
 import { useWeb3React } from '@web3-react/core';
 
 import { useAppDispatch, useAppSelector } from '../../hooks';
 import {
   getLocalStorageTransactions,
   getTransactionsLocalStorageKey,
-  handleTransactionReceipt,
+  listenForTransactionReceipt,
 } from './transactionsHelpers';
 import { setTransactions } from './transactionsSlice';
 
@@ -30,17 +29,7 @@ export const useTransactions = (): void => {
 
     const newListenerHashes = transactions
       .filter(transaction => transaction.status === 'processing' && !activeListenerHashes.includes(transaction.hash))
-      .map(transaction => {
-        library.once(transaction.hash, () => {
-          library.getTransactionReceipt(transaction.hash)
-            .then((receipt: TransactionReceipt) => {
-              if (receipt?.status !== undefined) {
-                handleTransactionReceipt(receipt.status, transaction, dispatch);
-              }
-            });
-        });
-        return transaction.hash;
-      });
+      .map(transaction => listenForTransactionReceipt(transaction, library, dispatch));
 
     setActiveListenerHashes([...activeListenerHashes, ...newListenerHashes]);
   }, [transactions]);

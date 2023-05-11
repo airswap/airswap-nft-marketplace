@@ -23,28 +23,28 @@ export const configureBalancesSubscriber = () => {
       account = web3.account;
       chainId = web3.chainId;
 
-      const library = getLibrary(web3.chainId);
+      const library = getLibrary(chainId);
 
       store.dispatch(setIsInitialized(false));
 
       Promise.all([
         store.dispatch(fetchCurrencyTokenBalance({
-          chainId: web3.chainId,
+          chainId,
           provider: library,
           collectionTokenAddress: config.currencyToken,
-          walletAddress: web3.account,
+          walletAddress: account,
         })),
 
         store.dispatch(fetchCurrencyTokenAllowance({
-          chainId: web3.chainId,
+          chainId,
           provider: library,
           collectionTokenAddress: config.currencyToken,
-          walletAddress: web3.account,
+          walletAddress: account,
         })),
 
         store.dispatch(fetchUserTokens({
           provider: library,
-          walletAddress: web3.account,
+          walletAddress: account,
           collectionToken: config.collectionToken,
         })),
       ]).then(() => {
@@ -53,7 +53,7 @@ export const configureBalancesSubscriber = () => {
     }
 
     if (lastSucceededTransaction && lastSucceededTransaction.hash !== lastTransactionHash) {
-      lastTransactionHash = lastSucceededTransaction?.hash;
+      lastTransactionHash = lastSucceededTransaction.hash;
 
       const library = getLibrary(web3.chainId);
 
