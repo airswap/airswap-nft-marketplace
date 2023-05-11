@@ -8,23 +8,6 @@ import { BigNumber, ethers } from 'ethers';
 
 import { getUniqueSingleDimensionArray } from '../../../helpers/array';
 
-export const getUniqueTokensForWallet = (tokenIds: BigNumber[], collectionContract: ethers.Contract, walletAddress: string): number[] => {
-  /* get unique values */
-  const uniqueTokenIds = [...new Set(tokenIds)];
-
-  /* Get only the owned token ids */
-  const ownedTokenIds = uniqueTokenIds.filter(async id => {
-    const addr = await collectionContract.ownerOf(id);
-
-    return addr === walletAddress;
-  });
-
-  return ownedTokenIds
-    .map(t => t.toNumber())
-    .filter(getUniqueSingleDimensionArray)
-    .sort((a, b) => a - b);
-};
-
 export const getOwnedTokenIdsOfWallet = async (
   provider: ethers.providers.Web3Provider,
   walletAddress: string,
@@ -58,10 +41,25 @@ export const getOwnedTokenIdsOfWallet = async (
     const transferFilter = collectionContract.filters.Transfer(null, walletAddress);
 
     const events: Event[] = await collectionContract.queryFilter(transferFilter, 0);
+
     /* get token ids from past events */
     const foundTokenIds: BigNumber[] = events.map(e => e.args?.at(2));
 
-    return getUniqueTokensForWallet(foundTokenIds, collectionContract, walletAddress);
+    /* get unique values */
+    const uniqueTokenIds = foundTokenIds
+      .map(t => t.toNumber())
+      .filter(getUniqueSingleDimensionArray);
+
+    /* get owners of tokens */
+    const tokenOwners: string[] = await Promise.all(
+      uniqueTokenIds.map(tokenId => collectionContract.ownerOf(tokenId)),
+    );
+
+    /* get only the owned token ids */
+    const ownedTokenIds = uniqueTokenIds.filter((_, index) => tokenOwners[index] === walletAddress);
+
+    /* return sorted array of numbers */
+    return ownedTokenIds.sort((a, b) => a - b);
   }
 
   if (isErc1155) {
@@ -69,10 +67,27 @@ export const getOwnedTokenIdsOfWallet = async (
     const transferFilter = collectionContract.filters.TransferSingle(null, null, walletAddress);
 
     const events: Event[] = await collectionContract.queryFilter(transferFilter, 0);
+
     /* get token ids from past events */
     const foundTokenIds: BigNumber[] = events.map(e => e.args?.at(3));
 
-    return getUniqueTokensForWallet(foundTokenIds, collectionContract, walletAddress);
+    /* get unique values */
+    const uniqueTokenIds = foundTokenIds
+      .map(t => t.toNumber())
+      .filter(getUniqueSingleDimensionArray);
+
+    /* get balances of tokens */
+    const tokenBalances: BigNumber[] = await Promise.all(
+      uniqueTokenIds.map(
+        async tokenId => collectionContract.balanceOf(walletAddress, tokenId),
+      ),
+    );
+
+    /* get only the owned token ids */
+    const ownedTokenIds = uniqueTokenIds.filter((_, index) => tokenBalances[index].toNumber() > 0);
+
+    /* return sorted array of numbers */
+    return ownedTokenIds.sort((a, b) => a - b);
   }
 
   throw new Error('Unknown nft interface. Could not fetch token ids.');
