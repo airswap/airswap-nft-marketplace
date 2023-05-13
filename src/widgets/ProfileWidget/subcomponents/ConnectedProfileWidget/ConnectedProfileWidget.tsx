@@ -71,6 +71,7 @@ const ConnectedProfileWidget: FC<ConnectedProfileWidgetProps> = ({ library, clas
 
   useEffect(() => {
     if (tokens) {
+      // TODO: support loading the tokens of other users
       dispatch(fetchOwnedTokenMeta({ library, collectionToken, tokenIds: tokens }));
     }
   }, [library, collectionToken, tokens]);
