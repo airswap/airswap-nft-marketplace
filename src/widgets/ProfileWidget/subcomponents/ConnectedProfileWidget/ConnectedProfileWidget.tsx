@@ -25,10 +25,10 @@ const filterNftsBySearchValue = (sValue: string, toFilter: CollectionTokenInfo[]
   // We can search by id, name, description & attribute values.
   for (let i = 0; i < toFilter.length; i += 1) {
     const nft = toFilter[i];
-    if (nft.name.toLowerCase().includes(sValue.toLowerCase())) {
+    if (nft.name && nft.name.toLowerCase().includes(sValue.toLowerCase())) {
       filteredNfts.push(nft);
     }
-    if (nft.description.toLowerCase().includes(sValue.toLowerCase())) {
+    if (nft.description && nft.description.toLowerCase().includes(sValue.toLowerCase())) {
       filteredNfts.push(nft);
     }
     if (nft.id.toString().toLowerCase().includes(sValue.toLowerCase())) {
@@ -62,18 +62,14 @@ const ConnectedProfileWidget: FC<ConnectedProfileWidgetProps> = ({ library, clas
   const [ownedNfts, setOwnedNfts] = useState<CollectionTokenInfo[]>([]);
   const [searchValue, setSearchValue] = useState('');
 
-  // If there is a user active, then we need to check the id param to see if it's the same as the acccount
-  const { active, account, deactivate } = useWeb3React<Web3Provider>();
+  const { account, deactivate } = useWeb3React<Web3Provider>();
   // If there is no id param, then we should display the current user's profile
   const { id } = useParams();
-  const isPrivateProfile = !id || id === account;
 
   const dispatch = useAppDispatch();
   const ensAddress = useEnsAddress(account || '');
 
   useEffect(() => {
-    // console.log('ProfileWidget - balances: ', balances);
-    // console.log('ProfileWidget - tokens: ', tokens);
     if (tokens) {
       dispatch(fetchOwnedTokenMeta({ library, collectionToken, tokenIds: tokens }));
     }
@@ -81,7 +77,6 @@ const ConnectedProfileWidget: FC<ConnectedProfileWidgetProps> = ({ library, clas
 
   useEffect(() => {
     if (ownedTokenMeta) {
-      console.log('ProfileWidget - ownedTokenMeta: ', ownedTokenMeta);
       setOwnedNfts(ownedTokenMeta);
     }
   }, [ownedTokenMeta, isLoading]);
@@ -90,19 +85,13 @@ const ConnectedProfileWidget: FC<ConnectedProfileWidgetProps> = ({ library, clas
     deactivate();
   };
 
-  if (false) {
-    console.log('ProfileWidget - Wallet connected: ', active ? 'Yes' : 'No');
-    console.log('ProfileWidget - isPrivate Profile: ', isPrivateProfile ? 'Yes' : 'No');
-    // console.log('ProfileWidget - ownedNfts: ', ownedNfts);
-  }
-
   return (
     <div className={`profile-widget ${className}`}>
       <ProfileHeader
         avatarUrl={avatarUrl}
         backgroundImage={collectionImage}
         ensAddress={ensAddress}
-        address={account || ''}
+        address={id || account || ''}
         onLogoutButtonClick={handleDisconnectClick}
       />
       <div className="profile-widget__button-group-container">
