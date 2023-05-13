@@ -9,8 +9,8 @@ import './NftCard.scss';
 const { parseEther } = utils;
 
 interface NftCardProps extends NavLinkProps {
-  imageURI: string;
-  name: string;
+  imageURI?: string;
+  name?: string;
   price?: string;
   symbol?: string;
   className?: string;

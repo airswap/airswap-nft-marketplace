@@ -1,10 +1,5 @@
 import { TokenKinds } from '@airswap/constants';
-import {
-  CollectionTokenInfo,
-  FullOrderERC20,
-  OrderERC20,
-  TokenInfo,
-} from '@airswap/types';
+import { CollectionTokenInfo, FullOrder, TokenInfo } from '@airswap/types';
 import { Web3Provider } from '@ethersproject/providers';
 import { createAsyncThunk } from '@reduxjs/toolkit';
 import { Transaction } from 'ethers';
@@ -17,18 +12,19 @@ import {
 } from '../../../errors/appError';
 import transformUnknownErrorToAppError from '../../../errors/transformUnknownErrorToAppError';
 import { AppDispatch, RootState } from '../../store';
-import { setAllowance } from '../balances/balancesSlice';
 import {
-  declineTransaction,
   mineTransaction,
   revertTransaction,
   submitTransaction,
 } from '../transactions/transactionActions';
-import { SubmittedApproval } from '../transactions/transactionsSlice';
-import { approveErc20Token, approveNftToken, takeOrder } from './ordersApi';
+import { SubmittedApproval, SubmittedTransactionWithOrder } from '../transactions/transactionsSlice';
+import {
+  approveErc20Token,
+  approveNftToken,
+  checkOrder,
+  takeOrder,
+} from './ordersApi';
 import { setError } from './ordersSlice';
-
-const APPROVE_AMOUNT = '90071992547409910000000000';
 
 interface ApproveParams {
   tokenInfo: TokenInfo | CollectionTokenInfo;
@@ -85,12 +81,7 @@ ApproveParams,
         // const state: RootState = getState() as RootState;
         // const tokens = Object.values(state.metadata.tokens.all);
         if (receipt.status === 1) {
-          dispatch(
-            mineTransaction({
-              hash: receipt.transactionHash,
-            }),
-          );
-          dispatch(setAllowance({ address: tokenInfo.address, amount: APPROVE_AMOUNT }));
+          dispatch(mineTransaction({ hash: receipt.transactionHash }));
           // TODO: Add toasts to app
           // notifyTransaction(
           //   'Approval',
@@ -125,44 +116,54 @@ ApproveParams,
 });
 
 interface TakeParams {
-  order: OrderERC20 | FullOrderERC20;
-  library: any;
-  onExpired: () => void;
+  senderWallet: string;
+  order: FullOrder;
+  library: Web3Provider;
 }
 
 export const take = createAsyncThunk<
-// Return type of the payload creator
 void,
-// Params
 TakeParams,
-// Types for ThunkAPI
 {
   dispatch: AppDispatch;
   state: RootState;
 }
 >('orders/take', async (params, { dispatch }) => {
-  const tx = await takeOrder(params.order, params.library);
+  const { order, library, senderWallet } = params;
+
+  const checkErrors = await checkOrder(
+    order,
+    senderWallet,
+    library,
+  );
+
+  if (checkErrors.length) {
+    dispatch(setError(checkErrors[0]));
+
+    throw checkErrors[0];
+  }
+
+  const tx = await takeOrder(params.order, senderWallet, params.library);
 
   if (isAppError(tx)) {
-    const appError = tx;
-    if (appError.type === AppErrorType.rejectedByUser) {
-      // TODO: Add Toasts to app
-      // notifyRejectedByUserError();
-      dispatch(
-        revertTransaction({
-          signerWallet: params.order.signerWallet,
-          nonce: params.order.nonce,
-          reason: appError.type,
-        }),
-      );
-    } else {
-      dispatch(setError(appError));
-    }
+    dispatch(setError(tx));
 
-    if (appError.error && 'message' in appError.error) {
-      dispatch(declineTransaction(appError.error.message));
-    }
-
-    throw appError;
+    throw tx;
   }
+
+  const transaction: SubmittedTransactionWithOrder = {
+    type: 'Order',
+    hash: tx.hash,
+    status: 'processing',
+    order,
+    timestamp: Date.now(),
+  };
+  dispatch(submitTransaction(transaction));
+  library.once(tx.hash, async () => {
+    const receipt = await library.getTransactionReceipt(tx.hash);
+    if (receipt.status === 1) {
+      dispatch(mineTransaction({ hash: receipt.transactionHash }));
+    }
+  });
 });
+

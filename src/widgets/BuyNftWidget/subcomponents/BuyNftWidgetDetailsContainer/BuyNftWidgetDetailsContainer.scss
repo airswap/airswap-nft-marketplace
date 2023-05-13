@@ -1,0 +1,59 @@
+@import "src/styles";
+
+$component: buy-nft-details-container;
+
+.#{$component} {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+
+    @include for-size(tablet-portrait-up) {
+        font-size: 1.25rem;
+    }
+
+    &--has-sign-state,
+    &--has-approve-state {
+        flex-grow: 1;
+    }
+
+    &__loading-spinner {
+        margin: 0 auto 1.75rem;
+
+        &--is-hidden {
+            visibility: hidden;
+        }
+    }
+
+    &__swap-icon-container {
+        position: relative;
+        margin-top: -.5rem;
+        height: 1rem;
+        z-index: 1;
+    }
+
+    &__swap-icon {
+        border: 1px solid var(--c-dark-border);
+        border-radius: 50%;
+        width: 1.5rem;
+        height: 1.5rem;
+        padding: .3125rem;
+        color: var(--c-light-grey);
+        background: var(--c-black);
+    }
+
+    &__transaction-link {
+        margin-top: 1.25rem;
+    }
+
+    &__message {
+        justify-self: center;
+        margin: 1rem auto 0;
+        width: 50%;
+        min-width: 12rem;
+        text-align: center;
+        font-size: .875rem;
+        font-weight: var(--fw-400);
+        color: var(--c-text-grey);
+    }
+}

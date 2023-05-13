@@ -1,14 +1,18 @@
 import { TokenKinds } from '@airswap/constants';
-import { SwapERC20 } from '@airswap/libraries';
-import { FullOrderERC20, OrderERC20 } from '@airswap/types';
+import { Swap } from '@airswap/libraries';
+import { FullOrder } from '@airswap/types';
+import { checkResultToErrors } from '@airswap/utils';
 import erc20Contract from '@openzeppelin/contracts/build/contracts/ERC20.json';
 import erc721Contract from '@openzeppelin/contracts/build/contracts/ERC721.json';
 import erc1155Contract from '@openzeppelin/contracts/build/contracts/ERC1155.json';
 import {
-  constants, ContractTransaction, ethers, Transaction,
+  BigNumber,
+  constants,
+  ContractTransaction,
+  ethers,
+  Transaction,
 } from 'ethers';
 
-import { nativeCurrencyAddress } from '../../../constants/nativeCurrency';
 import { AppError } from '../../../errors/appError';
 import { SwapError, transformSwapErrorToAppError } from '../../../errors/swapError';
 import transformUnknownErrorToAppError from '../../../errors/transformUnknownErrorToAppError';
@@ -16,23 +20,6 @@ import transformUnknownErrorToAppError from '../../../errors/transformUnknownErr
 const erc20Interface = new ethers.utils.Interface(erc20Contract.abi);
 const erc721Interface = new ethers.utils.Interface(erc721Contract.abi);
 const erc1155Interface = new ethers.utils.Interface(erc1155Contract.abi);
-
-function swap(
-  chainId: number,
-  provider: ethers.providers.Web3Provider,
-  order: OrderERC20 | FullOrderERC20,
-): Promise<ContractTransaction> {
-  if ('senderWallet' in order && order.senderWallet === nativeCurrencyAddress) {
-    return new SwapERC20(chainId, provider).swapAnySender(
-      order,
-      provider.getSigner(),
-    );
-  }
-  return new SwapERC20(chainId, provider).swap(
-    order,
-    provider.getSigner(),
-  );
-}
 
 export async function approveErc20Token(
   baseToken: string,
@@ -44,7 +31,7 @@ export async function approveErc20Token(
     provider.getSigner(),
   );
   return contract.approve(
-    SwapERC20.getAddress(provider.network.chainId),
+    Swap.getAddress(provider.network.chainId),
     constants.MaxUint256,
   );
 }
@@ -61,35 +48,40 @@ export async function approveNftToken(
     provider.getSigner(),
   );
   return contract.approve(
-    SwapERC20.getAddress(provider.network.chainId),
+    Swap.getAddress(provider.network.chainId),
     tokenId,
   );
 }
 
 export async function takeOrder(
-  order: OrderERC20 | FullOrderERC20,
+  order: FullOrder,
+  senderWallet: string,
   provider: ethers.providers.Web3Provider,
-): Promise<Transaction | AppError> {
-  return new Promise<Transaction | AppError>((resolve) => {
-    swap(provider.network.chainId, provider, order)
-      .then(tx => resolve(tx))
-      .catch((error: any) => {
-        transformUnknownErrorToAppError(error);
-      });
-  });
+): Promise<ContractTransaction | AppError> {
+  try {
+    const { chainId } = provider.network;
+    const result = await Swap.getContract(provider.getSigner(), chainId).swap(
+      senderWallet,
+      '0',
+      order,
+    );
+
+    return result;
+  } catch (error: any) {
+    console.error(error);
+    return transformUnknownErrorToAppError(error);
+  }
 }
 
-export async function check(
-  order: OrderERC20,
+export async function checkOrder(
+  order: FullOrder,
   senderWallet: string,
-  chainId: number,
-  signer?: ethers.providers.JsonRpcSigner,
+  provider: ethers.providers.Web3Provider,
 ): Promise<AppError[]> {
-  const errors = (await new SwapERC20(chainId, signer).check(
-    order,
-    senderWallet,
-    signer,
-  )) as SwapError[];
+  const { chainId } = provider.network;
+
+  const [count, checkErrors] = await Swap.getContract(provider.getSigner(), chainId).check(senderWallet, order);
+  const errors = (count && checkErrors) ? checkResultToErrors(checkErrors, count) as SwapError[] : [];
 
   if (errors.length) {
     console.error(errors);
@@ -99,11 +91,11 @@ export async function check(
 }
 
 export async function getNonceUsed(
-  order: FullOrderERC20,
+  order: FullOrder,
   provider: ethers.providers.Web3Provider,
 ): Promise<boolean> {
-  return new SwapERC20(order.chainId, provider).contract.nonceUsed(
-    order.signerWallet,
+  return Swap.getContract(provider, order.chainId).nonceUsed(
+    order.signer.wallet,
     order.nonce,
   );
 }
@@ -122,6 +114,20 @@ export async function getNftTokenApproved(
 
   const response = await contract.getApproved(tokenId);
 
-  // If response is 0x000... then it's not owned by wallet.
-  return response !== nativeCurrencyAddress;
+  return response === Swap.getAddress(5);
+}
+
+export async function getErc20TokenAllowance(
+  address: string,
+  account: string,
+  spenderAddress: string,
+  provider: ethers.providers.Web3Provider,
+): Promise<BigNumber> {
+  const contract = new ethers.Contract(
+    address,
+    erc20Interface,
+    provider.getSigner(),
+  );
+
+  return contract.allowance(account, spenderAddress);
 }

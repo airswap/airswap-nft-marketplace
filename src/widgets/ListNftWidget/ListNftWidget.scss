@@ -18,6 +18,10 @@
         margin: 1.75rem 0 1.25rem;
     }
 
+    &__paragraph {
+        margin-top: 1.75rem;
+    }
+
     &__action-buttons {
         justify-self: flex-end;
         margin-top: auto;
@@ -25,6 +29,6 @@
     }
 
     &__loading-spinner {
-        margin: 1.75rem auto 0;
+        margin: 3.5rem auto 0;
     }
 }

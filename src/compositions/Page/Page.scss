@@ -5,9 +5,13 @@ $component: page;
 .#{$component} {
     position: relative;
     margin: 0 auto;
+    width: 100%;
     min-width: 12.5rem;
-    max-width: var(--page-max-width);
     z-index: 100;
+
+    @include for-size(desktop-up) {
+        max-width: var(--page-max-width);
+    }
 
     &--show-wallet-connector .#{$component}__wallet-connector {
         visibility: visible;

@@ -1,9 +1,12 @@
 import { createAction } from '@reduxjs/toolkit';
 
 import {
-  ProtocolType, StatusType,
-  SubmittedApproval, SubmittedLastLookOrder,
-  SubmittedTransaction, TransactionsState,
+  ProtocolType,
+  SubmittedApproval,
+  SubmittedLastLookOrder,
+  SubmittedTransaction,
+  TransactionsState,
+  TransactionStatus,
 } from './transactionsSlice';
 
 const submitTransaction = createAction<
@@ -42,7 +45,7 @@ interface UpdateTransactionParams {
   nonce?: string;
   hash?: string;
   signerWallet?: string;
-  status: StatusType;
+  status: TransactionStatus;
   protocol?: ProtocolType;
 }
 
@@ -57,7 +60,7 @@ export const updateTransaction = (params: UpdateTransactionParams) => {
 
   if (!!signerWallet && !!nonce) {
     const swap = state.all.find(s => s.nonce === nonce
-      && (s as SubmittedLastLookOrder).order.signerWallet.toLowerCase() === signerWallet.toLowerCase());
+      && (s as SubmittedLastLookOrder).order.signer.wallet.toLowerCase() === signerWallet.toLowerCase());
 
     if (swap) {
       swap.timestamp = Date.now();

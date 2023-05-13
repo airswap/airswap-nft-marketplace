@@ -7,10 +7,6 @@
         @extend %widget-under-widget;
     }
 
-    &__buy-nft-widget-cover {
-        @extend %widget-over-widget-cover;
-    }
-
     &__buy-nft-widget-container {
         @extend %widget-over-widget-container;
     }
