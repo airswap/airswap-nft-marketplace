@@ -1,5 +1,7 @@
 import React, { FC } from 'react';
 
+import { Web3Provider } from '@ethersproject/providers';
+import { useWeb3React } from '@web3-react/core';
 import classNames from 'classnames';
 
 import IconButton from '../../compositions/IconButton/IconButton';
@@ -32,6 +34,10 @@ const WalletInfo: FC<WalletInfoProps> = ({
     'wallet-info--is-menu': !isBanner,
   }, className);
 
+  // Check if the supplied ID is the active user
+  const { account } = useWeb3React<Web3Provider>();
+  const isActiveUser = !address || address === account;
+
   return (
     <div className={walletInfoClassName}>
       <Avatar className={`wallet-info__avatar ${avatarClassName}`} avatarUrl={avatarUrl} />
@@ -47,13 +53,15 @@ const WalletInfo: FC<WalletInfoProps> = ({
           iconClassName="wallet-info__icon"
         />
       )}
-      <IconButton
-        hideLabel
-        icon="logout"
-        text="logout"
-        iconClassName="wallet-info__icon"
-        onClick={onLogoutButtonClick}
-      />
+      {isActiveUser && (
+        <IconButton
+          hideLabel
+          icon="logout"
+          text="logout"
+          iconClassName="wallet-info__icon"
+          onClick={onLogoutButtonClick}
+        />
+      )}
     </div>
   );
 };
