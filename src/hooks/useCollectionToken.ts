@@ -5,13 +5,14 @@ import { Web3Provider } from '@ethersproject/providers';
 import { useWeb3React } from '@web3-react/core';
 
 import { getCollectionToken } from '../entities/CollectionToken/CollectionTokenHelpers';
+import { AppErrorType } from '../errors/appError';
 
-const useCollectionToken = (address: string, tokenId: number): [CollectionTokenInfo | undefined, boolean] => {
+const useCollectionToken = (address: string, tokenId: number): [CollectionTokenInfo | AppErrorType.nftNotFound | undefined, boolean] => {
   const { library } = useWeb3React<Web3Provider>();
 
   const [isContractCalled, setIsContractCalled] = useState(false);
   const [isContractLoading, setIsContractLoading] = useState(false);
-  const [collectionToken, setCollectionToken] = useState<CollectionTokenInfo>();
+  const [collectionToken, setCollectionToken] = useState<CollectionTokenInfo | AppErrorType.nftNotFound>();
 
   useEffect((): void => {
     setIsContractCalled(false);

@@ -13,6 +13,7 @@ export enum AppErrorType {
   invalidInput = 'invalidInput',
   invalidRequest = 'invalidRequest',
   invalidValue = 'invalidValue',
+  nftNotFound = 'nftNotFound',
   nonceAlreadyUsed = 'nonceAlreadyUsed',
   rejectedByUser = 'rejectedByUser',
   senderAllowanceLow = 'senderAllowanceLow',
