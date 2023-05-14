@@ -1,19 +1,19 @@
 import { useMemo } from 'react';
 
+import { NftApprovalTransaction } from '../entities/SubmittedTransaction/SubmittedTransaction';
 import { useAppSelector } from '../redux/hooks';
-import { selectApprovals, SubmittedApproval } from '../redux/stores/transactions/transactionsSlice';
+import { selectNftApprovalTransactions } from '../redux/stores/transactions/transactionsSlice';
 
-const useApproveNftTransaction = (): SubmittedApproval | undefined => {
-  const { collectionToken } = useAppSelector(state => state.config);
-  const pendingTransactions = useAppSelector(selectApprovals);
+const useApproveNftTransaction = (hash?: string): NftApprovalTransaction | undefined => {
+  const transactions = useAppSelector(selectNftApprovalTransactions);
 
   return useMemo(() => {
-    if (!pendingTransactions.length) {
+    if (!transactions.length || !hash) {
       return undefined;
     }
 
-    return pendingTransactions.find(transaction => transaction.tokenAddress === collectionToken);
-  }, [pendingTransactions]);
+    return transactions.find(transaction => transaction.hash === hash);
+  }, [transactions, hash]);
 };
 
 export default useApproveNftTransaction;

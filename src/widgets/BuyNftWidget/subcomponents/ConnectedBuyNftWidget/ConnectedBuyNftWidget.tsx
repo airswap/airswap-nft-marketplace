@@ -61,10 +61,11 @@ const BuyNftWidget: FC<ConnectedBuyNftWidgetProps> = ({
   const { error } = useAppSelector(state => state.orders);
 
   const [widgetState, setWidgetState] = useState<BuyNftState>(BuyNftState.details);
+  const [approvalTransactionHash, setApprovalTransactionHash] = useState<string>();
 
   const hasInsufficientBalance = useInsufficientBalance(fullOrder.sender.amount);
   const hasSufficientCurrencyAllowance = useSufficientErc20Allowance(fullOrder);
-  const approveTransaction = useApproveCurrencyTokenTransaction();
+  const approveTransaction = useApproveCurrencyTokenTransaction(approvalTransactionHash);
   const orderTransaction = useOrderTransaction(fullOrder.nonce);
   const isOrderExpired = useFullOrderExpired(fullOrder.expiry);
   const ownerIsAccount = fullOrder.signer.wallet.toLowerCase() === account.toLowerCase();
@@ -81,8 +82,10 @@ const BuyNftWidget: FC<ConnectedBuyNftWidgetProps> = ({
         chainId,
       }))
         .unwrap()
-        .then(() => {
-          setWidgetState(BuyNftState.approving);
+        .then((transactionHash) => {
+          if (typeof transactionHash === 'string') {
+            setApprovalTransactionHash(transactionHash);
+          }
         })
         .catch((e) => {
           if (isAppError(e) && e.type === AppErrorType.rejectedByUser) {
@@ -109,11 +112,15 @@ const BuyNftWidget: FC<ConnectedBuyNftWidgetProps> = ({
   };
 
   useEffect(() => {
-    if (approveTransaction?.status === 'succeeded' && widgetState === BuyNftState.approving) {
+    if (approveTransaction?.status === 'processing') {
+      setWidgetState(BuyNftState.approving);
+    }
+
+    if (approveTransaction?.status === 'succeeded') {
       dispatch(addInfoToast('Approved', `Approved ${currencyTokenInfo.symbol} to be spend.`));
       setWidgetState(BuyNftState.details);
     }
-  }, [widgetState, approveTransaction]);
+  }, [approveTransaction]);
 
   useEffect(() => {
     if (orderTransaction?.status === 'processing') {
@@ -123,7 +130,7 @@ const BuyNftWidget: FC<ConnectedBuyNftWidgetProps> = ({
     if (orderTransaction?.status === 'succeeded') {
       setWidgetState(BuyNftState.success);
     }
-  }, [orderTransaction?.status]);
+  }, [orderTransaction]);
 
   useEffect(() => {
     if (!error) {

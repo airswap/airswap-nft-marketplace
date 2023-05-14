@@ -62,9 +62,9 @@ CreateOrderParams
       );
 
       if (isAppError(signature)) {
-        dispatch(setError(signature));
+        dispatch(setError({ type: signature.type }));
 
-        return rejectWithValue(signature);
+        return rejectWithValue({ type: signature.type });
       }
 
       const fullOrder: FullOrder = {
