@@ -3,12 +3,21 @@ import React, { FC } from 'react';
 import LoadingSpinner from '../../../../components/LoadingSpinner/LoadingSpinner';
 
 interface DisconnectedNftDetailWidgetProps {
+  isLoading: boolean;
+  isNftNotFound: boolean;
+  id?: string;
   className?: string;
 }
 
-const DisconnectedNftDetailWidget: FC<DisconnectedNftDetailWidgetProps> = ({ className = '' }) => (
+const DisconnectedNftDetailWidget: FC<DisconnectedNftDetailWidgetProps> = ({
+  isLoading,
+  isNftNotFound,
+  id,
+  className = '',
+}) => (
   <div className={`nft-detail-widget ${className}`}>
-    <LoadingSpinner className="nft-detail-widget__loading-spinner" />
+    {isLoading && <LoadingSpinner className="nft-detail-widget__loading-spinner" />}
+    {isNftNotFound && `NFT with id ${id || '?'} not found`}
   </div>
 );
 

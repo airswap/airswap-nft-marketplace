@@ -10,7 +10,7 @@ interface fetchNFTMetadataParams {
   tokenIds: number[],
 }
 
-export const fetchCollectionTokens = createAsyncThunk<(
+export const fetchCollectionToken = createAsyncThunk<(
 CollectionTokenInfo | undefined)[], fetchNFTMetadataParams>(
   'collection/fetchNFTMetadata',
   async ({ library, collectionToken, tokenIds }) => {

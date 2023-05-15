@@ -2,9 +2,7 @@ import { getCollectionTokenInfo } from '@airswap/metadata';
 import { CollectionTokenInfo } from '@airswap/types';
 import * as ethers from 'ethers';
 
-import { AppErrorType } from '../../errors/appError';
-
-export const getCollectionToken = async (library: ethers.providers.BaseProvider, address: string, tokenId: number): Promise<CollectionTokenInfo | AppErrorType.nftNotFound> => {
+export const getCollectionToken = async (library: ethers.providers.BaseProvider, address: string, tokenId: number): Promise<CollectionTokenInfo | undefined> => {
   let tokenInfo: CollectionTokenInfo;
 
   try {
@@ -12,8 +10,18 @@ export const getCollectionToken = async (library: ethers.providers.BaseProvider,
   } catch (e) {
     console.error(new Error(`Unable to fetch data for ${address} with id ${tokenId}`));
 
-    return AppErrorType.nftNotFound;
+    return undefined;
   }
 
   return tokenInfo;
 };
+
+export const isCollectionTokenInfo = (resource: any): resource is CollectionTokenInfo => (
+  resource
+    && typeof resource.chainId === 'number'
+    && typeof resource.kind === 'string'
+    && typeof resource.address === 'string'
+    && typeof resource.id === 'number'
+    && typeof resource.uri === 'string'
+    && resource.attributes && Array.isArray(resource.attributes)
+);

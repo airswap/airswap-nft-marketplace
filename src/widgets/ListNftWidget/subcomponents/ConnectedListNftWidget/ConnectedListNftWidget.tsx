@@ -9,6 +9,7 @@ import { TokenInfo } from '@airswap/types';
 import { Web3Provider } from '@ethersproject/providers';
 
 import { expiryAmounts } from '../../../../constants/expiry';
+import { isCollectionTokenInfo } from '../../../../entities/CollectionToken/CollectionTokenHelpers';
 import { SubmittedTransactionStatus } from '../../../../entities/SubmittedTransaction/SubmittedTransaction';
 import { AppErrorType, isAppError } from '../../../../errors/appError';
 import useApproveNftTransaction from '../../../../hooks/useApproveNftTransaction';
@@ -114,7 +115,7 @@ const ConnectedListNftWidget: FC<ListNftWidgetProps> = ({
 
     if (
       widgetState === ListNftState.review
-      && collectionTokenInfo
+      && isCollectionTokenInfo(collectionTokenInfo)
       && hasCollectionTokenApproval
       && currencyTokenAmountMinusProtocolFee
     ) {
@@ -159,8 +160,8 @@ const ConnectedListNftWidget: FC<ListNftWidgetProps> = ({
       setWidgetState(ListNftState.approving);
     }
 
-    if (approveTransaction?.status === SubmittedTransactionStatus.succeeded) {
-      dispatch(addInfoToast('Approved', `Approved ${collectionTokenInfo?.name} to be spend.`));
+    if (approveTransaction?.status === SubmittedTransactionStatus.succeeded && isCollectionTokenInfo(collectionTokenInfo)) {
+      dispatch(addInfoToast('Approved', `Approved ${collectionTokenInfo.name} to be spend.`));
       setWidgetState(ListNftState.review);
     }
   }, [approveTransaction]);
