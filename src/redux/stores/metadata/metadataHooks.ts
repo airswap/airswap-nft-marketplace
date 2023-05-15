@@ -14,14 +14,14 @@ export const useMetadata = (): void => {
 
   const { library } = useWeb3React<Web3Provider>();
   const { chainId } = useAppSelector(state => state.web3);
-  const { collectionToken, currencyToken, chainId: configChainId } = useAppSelector(state => state.config);
+  const { collectionToken, currencyToken } = useAppSelector(state => state.config);
 
   useEffect(() => {
     dispatch(setCollectionTokens(getLocalStorageCollectionTokens(collectionToken)));
   }, [collectionToken]);
 
   useEffect(() => {
-    if (configChainId !== chainId || !library) {
+    if (!library || !chainId) {
       return;
     }
 

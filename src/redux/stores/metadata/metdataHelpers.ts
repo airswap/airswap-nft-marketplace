@@ -24,5 +24,5 @@ export const getLocalStorageCollectionTokens = (collectionAddress: string): { [i
     .reduce((total, tokenInfo) => ({
       ...total,
       [tokenInfo.id]: tokenInfo,
-    }));
+    }), {});
 };
