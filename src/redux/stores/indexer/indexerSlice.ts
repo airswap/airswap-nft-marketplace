@@ -1,18 +1,22 @@
+import { Server } from '@airswap/libraries';
+import { FullOrder } from '@airswap/types';
 import { createSlice } from '@reduxjs/toolkit';
 
 import { RootState } from '../../store';
-import { fetchIndexerUrls } from './indexerApi';
+import { initializeIndexers } from './indexerApi';
 
 export interface IndexerState {
-  /** List of indexer urls for servers that have responded successfully to
-   * the healthcheck within the allowed time. Null during initial fetch. */
-  indexerUrls: string[] | null;
-  noIndexersFound: boolean;
+  servers: Server[];
+  orders: FullOrder[];
+  isLoading: boolean;
+  isActive: boolean;
 }
 
 const initialState: IndexerState = {
-  indexerUrls: null,
-  noIndexersFound: false,
+  servers: [],
+  orders: [],
+  isLoading: false,
+  isActive: false,
 };
 
 export const indexerSlice = createSlice({
@@ -20,13 +24,11 @@ export const indexerSlice = createSlice({
   initialState,
   reducers: {},
   extraReducers: (builder) => {
-    builder.addCase(fetchIndexerUrls.fulfilled, (state, action): IndexerState => (
-      state.indexerUrls?.length && !action.payload.length
-      ? { ...state }
-      : {
+    builder.addCase(initializeIndexers.fulfilled, (state, action): IndexerState => (
+      {
         ...state,
-        indexerUrls: action.payload,
-        ...(!action.payload.length && { noIndexersFound: true }),
+        ...(!!action.payload.length && { isActive: true }),
+        servers: action.payload,
       }
     ));
   },
