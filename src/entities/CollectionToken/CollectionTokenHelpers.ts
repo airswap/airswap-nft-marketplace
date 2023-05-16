@@ -13,9 +13,15 @@ export const getCollectionToken = async (library: ethers.providers.BaseProvider,
     return undefined;
   }
 
-  if (!tokenInfo) {
-    console.error(new Error(`Unable to parse data for ${address} with id ${tokenId}`));
-  }
-
   return tokenInfo;
 };
+
+export const isCollectionTokenInfo = (resource: any): resource is CollectionTokenInfo => (
+  resource
+    && typeof resource.chainId === 'number'
+    && typeof resource.kind === 'string'
+    && typeof resource.address === 'string'
+    && typeof resource.id === 'number'
+    && typeof resource.uri === 'string'
+    && resource.attributes && Array.isArray(resource.attributes)
+);

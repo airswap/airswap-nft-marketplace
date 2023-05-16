@@ -1,30 +1,24 @@
 import React, { FC } from 'react';
 
-import { useAppSelector } from '../../../../redux/hooks';
-import NftDetailMainInfo from '../NftDetailMainInfo/NftDetailMainInfo';
-import NftDetailPortrait from '../NftDetailPortrait/NftDetailPortrait';
+import LoadingSpinner from '../../../../components/LoadingSpinner/LoadingSpinner';
 
 interface DisconnectedNftDetailWidgetProps {
+  isLoading: boolean;
+  isNftNotFound: boolean;
+  id?: string;
   className?: string;
 }
 
-const DisconnectedNftDetailWidget: FC<DisconnectedNftDetailWidgetProps> = ({ className = '' }) => {
-  const { collection } = useAppSelector((state: any) => state);
-  const { collectionImage } = collection;
-
-  return (
-    <div className={`nft-detail-widget ${className}`}>
-      <NftDetailMainInfo
-        owner="sjnivo12345"
-        title="Wallet Disconnected"
-        className="nft-detail-widget__main-info"
-      />
-      <NftDetailPortrait
-        backgroundImage={collectionImage}
-        className="nft-detail-widget__portrait"
-      />
-    </div>
-  );
-};
+const DisconnectedNftDetailWidget: FC<DisconnectedNftDetailWidgetProps> = ({
+  isLoading,
+  isNftNotFound,
+  id,
+  className = '',
+}) => (
+  <div className={`nft-detail-widget ${className}`}>
+    {isLoading && <LoadingSpinner className="nft-detail-widget__loading-spinner" />}
+    {isNftNotFound && `NFT with id ${id || '?'} not found`}
+  </div>
+);
 
 export default DisconnectedNftDetailWidget;

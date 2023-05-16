@@ -3,7 +3,6 @@ import React, { FC } from 'react';
 import { useWeb3React } from '@web3-react/core';
 
 import { useAppSelector } from '../../redux/hooks';
-import { selectCurrencyTokenInfo } from '../../redux/stores/metadata/metadataSlice';
 import ConnectedListNftWidget from './subcomponents/ConnectedListNftWidget/ConnectedListNftWidget';
 import DisconnectedListNftWidget from './subcomponents/DisconnectedListNftWidget/DisconnectedListNftWidget';
 
@@ -14,16 +13,15 @@ interface ListNftWidgetProps {
 const ListNftWidget: FC<ListNftWidgetProps> = ({ className = '' }) => {
   const { account, library, chainId } = useWeb3React();
   const { tokens: userTokens } = useAppSelector(state => state.balances);
-  const { isLoading: isMetadataLoading } = useAppSelector(state => state.metadata);
+  const { isLoading: isMetadataLoading, currencyTokenInfo } = useAppSelector(state => state.metadata);
   const { isInitialized: isBalancesInitialized } = useAppSelector(state => state.balances);
-  const currencyToken = useAppSelector(selectCurrencyTokenInfo);
   const isLoading = !isBalancesInitialized || isMetadataLoading;
 
   if (
     !isLoading
     && account
     && chainId
-    && currencyToken
+    && currencyTokenInfo
     && library
     && userTokens.length
   ) {
@@ -31,7 +29,7 @@ const ListNftWidget: FC<ListNftWidgetProps> = ({ className = '' }) => {
       <ConnectedListNftWidget
         account={account}
         chainId={chainId}
-        currencyTokenInfo={currencyToken}
+        currencyTokenInfo={currencyTokenInfo}
         library={library}
         userTokens={userTokens}
         className={className}
