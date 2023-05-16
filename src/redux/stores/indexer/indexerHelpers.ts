@@ -1,6 +1,8 @@
 import { Server } from '@airswap/libraries';
 import { FullOrder } from '@airswap/types';
 
+import { INDEXER_ORDER_RESPONSE_TIME_MS } from '../../../constants/configParams';
+
 export const sendOrderToIndexers = async (
   order: FullOrder,
   servers: Server[],
@@ -20,6 +22,6 @@ export const sendOrderToIndexers = async (
   Promise.race([
     Promise.allSettled(addOrderPromises),
     // eslint-disable-next-line no-promise-executor-return
-    new Promise((res) => setTimeout(res, 4000)),
+    new Promise((res) => setTimeout(res, INDEXER_ORDER_RESPONSE_TIME_MS)),
   ]);
 };
