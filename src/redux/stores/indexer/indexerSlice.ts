@@ -3,7 +3,7 @@ import { FullOrder } from '@airswap/types';
 import { createSlice } from '@reduxjs/toolkit';
 
 import { RootState } from '../../store';
-import { initializeIndexers } from './indexerApi';
+import { getFilteredOrders, initializeIndexers } from './indexerApi';
 
 export interface IndexerState {
   servers: Server[];
@@ -31,6 +31,19 @@ export const indexerSlice = createSlice({
         servers: action.payload,
       }
     ));
+    builder.addCase(getFilteredOrders.fulfilled, (state, action) => ({
+      ...state,
+      orders: action.payload,
+      isLoading: false,
+    }));
+    builder.addCase(getFilteredOrders.pending, (state) => ({
+      ...state,
+      isLoading: true,
+    }));
+    builder.addCase(getFilteredOrders.rejected, (state) => ({
+      ...state,
+      isLoading: false,
+    }));
   },
 });
 
