@@ -1,22 +1,21 @@
 import { Server } from '@airswap/libraries';
 import { FullOrder } from '@airswap/types';
-import { createSlice } from '@reduxjs/toolkit';
+import { createSlice, PayloadAction } from '@reduxjs/toolkit';
 
-import { RootState } from '../../store';
 import { getFilteredOrders, initializeIndexers } from './indexerApi';
 
 export interface IndexerState {
   servers: Server[];
   orders: FullOrder[];
   isLoading: boolean;
-  isActive: boolean;
+  isInitialized: boolean;
 }
 
 const initialState: IndexerState = {
   servers: [],
   orders: [],
   isLoading: false,
-  isActive: false,
+  isInitialized: false,
 };
 
 export const indexerSlice = createSlice({
@@ -24,12 +23,11 @@ export const indexerSlice = createSlice({
   initialState,
   reducers: {},
   extraReducers: (builder) => {
-    builder.addCase(initializeIndexers.fulfilled, (state, action): IndexerState => (
-      {
-        ...state,
-        ...(!!action.payload.length && { isActive: true }),
-        servers: action.payload,
-      }
+    builder.addCase(initializeIndexers.fulfilled, (state, action: PayloadAction<Server[]>): IndexerState => ({
+      ...state,
+      isInitialized: !!action.payload.length,
+      servers: action.payload,
+    }
     ));
     builder.addCase(getFilteredOrders.fulfilled, (state, action) => ({
       ...state,
@@ -47,5 +45,4 @@ export const indexerSlice = createSlice({
   },
 });
 
-export const selectIndexerReducer = (state: RootState) => state.indexer;
 export default indexerSlice.reducer;

@@ -40,7 +40,7 @@ FullOrder[],
 >('indexer/getFilteredOrders', async ({ filter }, { getState }) => {
   const { indexer: indexerState } = getState();
   let orders: Record<string, IndexedOrder<FullOrder>> = {};
-  if (!indexerState.isActive) return [];
+  if (!indexerState.isInitialized) return [];
 
   const orderPromises = indexerState.servers.map(async (server) => {
     try {
@@ -48,7 +48,7 @@ FullOrder[],
       const ordersToAdd = orderResponse.orders;
       orders = { ...orders, ...ordersToAdd };
     } catch (e: any) {
-      console.log(
+      console.error(
         `[indexerSlice] Order indexing failed for ${server.locator}`,
         e.message || '',
       );

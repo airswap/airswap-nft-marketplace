@@ -17,7 +17,6 @@ import useCollectionToken from '../../../../hooks/useCollectionToken';
 import useInsufficientAmount from '../../../../hooks/useInsufficientAmount';
 import useNftTokenApproval from '../../../../hooks/useNftTokenApproval';
 import { useAppDispatch, useAppSelector } from '../../../../redux/hooks';
-import { initializeIndexers } from '../../../../redux/stores/indexer/indexerApi';
 import { createNftOrder } from '../../../../redux/stores/listNft/listNftActions';
 import { approve as approveNft } from '../../../../redux/stores/orders/ordersActions';
 import { addInfoToast, addUserRejectedToast } from '../../../../redux/stores/toasts/toastsActions';
@@ -172,10 +171,6 @@ const ConnectedListNftWidget: FC<ListNftWidgetProps> = ({
       setSelectedTokenId(userTokens[0]);
     }
   }, [userTokens]);
-
-  useEffect(() => {
-    dispatch(initializeIndexers({ chainId, provider: library }));
-  }, [dispatch, library]);
 
   return (
     <div className={`list-nft-widget ${className}`}>
