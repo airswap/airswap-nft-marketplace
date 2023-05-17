@@ -18,6 +18,10 @@
         height: 100%;
     }
 
+    &[aria-disabled="true"] {
+        pointer-events: none;
+    }
+
     &__icon {
         margin-right: .5rem;
         aspect-ratio: 1;

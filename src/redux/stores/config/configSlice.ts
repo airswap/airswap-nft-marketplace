@@ -8,7 +8,6 @@ export interface ConfigState {
   collectionImage: string;
   ipfcGatewayURL: string;
 }
-
 const initialState: ConfigState = {
   chainId: process.env.REACT_APP_CHAIN_ID ? parseInt(process.env.REACT_APP_CHAIN_ID, 10) : 1,
   currencyToken: (process.env.REACT_APP_CURRENCY_TOKEN || '').toLowerCase(),
@@ -17,6 +16,8 @@ const initialState: ConfigState = {
   collectionImage: process.env.REACT_APP_COLLECTION_IMAGE || '',
   ipfcGatewayURL: process.env.REACT_APP_IPFC_GATEWAY_URL || 'https://ipfs.io/ipfs/',
 };
+
+console.log(initialState);
 
 const configSlice = createSlice({
   name: 'config',

@@ -4,6 +4,7 @@ import { Toast } from '../../../entities/Toast/Toast';
 
 interface ToastsState {
   toasts: Toast[];
+  lastToastActionButtonIdClicked?: string;
 }
 
 const initialState: ToastsState = {
@@ -14,13 +15,17 @@ const toastsSlice = createSlice({
   name: 'toasts',
   initialState,
   reducers: {
-    setToasts: (state, action: PayloadAction<Toast[]>) => ({
+    setLastToastActionButtonIdClicked: (state, action: PayloadAction<string | undefined>): ToastsState => ({
+      ...state,
+      lastToastActionButtonIdClicked: action.payload,
+    }),
+    setToasts: (state, action: PayloadAction<Toast[]>): ToastsState => ({
       ...state,
       toasts: action.payload,
     }),
   },
 });
 
-export const { setToasts } = toastsSlice.actions;
+export const { setLastToastActionButtonIdClicked, setToasts } = toastsSlice.actions;
 
 export default toastsSlice.reducer;
