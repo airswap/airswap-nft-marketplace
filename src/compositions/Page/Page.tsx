@@ -33,7 +33,7 @@ const Page: FC<PageProps> = ({ className = '', contentClassName = '', children }
   const { isInitialized } = useAppSelector((state) => state.web3);
   const { avatarUrl } = useAppSelector((state) => state.user);
 
-  const userChainIdIsCorrect = !!chainId && chainId === config.chainId;
+  const chainIdIsCorrect = !!chainId && chainId === config.chainId;
 
   const [mobileMenuIsVisible, setMobileMenuIsVisible] = useState(false);
   const [showWalletConnector, toggleShowWalletConnector] = useToggle(!active);
@@ -55,11 +55,11 @@ const Page: FC<PageProps> = ({ className = '', contentClassName = '', children }
   return (
     <div className={pageClassName}>
       <TopBar
-        listButtonIsDisabled={!userChainIdIsCorrect || !account}
+        listButtonIsDisabled={!chainIdIsCorrect || !account}
         mobileMenuIsVisible={mobileMenuIsVisible}
         showDesktopConnectButton={isInitialized && !active}
         showDesktopUserButton={isInitialized && active}
-        userWalletButtonIsDisabled={!userChainIdIsCorrect}
+        userWalletButtonIsDisabled={!chainIdIsCorrect}
         avatarUrl={avatarUrl}
         account={account}
         ensAddress={ensAddress}
