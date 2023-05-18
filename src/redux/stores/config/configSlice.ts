@@ -17,8 +17,6 @@ const initialState: ConfigState = {
   ipfcGatewayURL: process.env.REACT_APP_IPFC_GATEWAY_URL || 'https://ipfs.io/ipfs/',
 };
 
-console.log(initialState);
-
 const configSlice = createSlice({
   name: 'config',
   initialState,

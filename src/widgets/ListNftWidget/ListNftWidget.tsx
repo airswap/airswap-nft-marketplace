@@ -22,7 +22,6 @@ const ListNftWidget: FC<ListNftWidgetProps> = ({ className = '' }) => {
   if (
     !isLoading
     && account
-    && chainId
     && currencyTokenInfo
     && library
     && userTokens.length
