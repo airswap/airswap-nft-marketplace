@@ -57,6 +57,10 @@
             background-color: var(--c-grey);
             color: #fff;
         }
+
+        &--is-uppercase {
+            text-transform: uppercase;
+        }
     }
 
     &__content {
@@ -65,19 +69,16 @@
 
     &__search-bar-container {
         position: relative;
-        padding: 1.5rem 0rem;
+        padding: 1.5rem 0;
     }
 
     &__search-bar-icon {
         position: absolute;
-        top: 2.2rem;
+        top: 2.25rem;
         left: 1rem;
         width: 1.125rem;
         height: 1.125rem;
-
-        & svg {
-            fill: var(--c-light-grey);
-        }
+        fill: var(--c-light-grey);
     }
 
     &__search-bar {
@@ -107,6 +108,13 @@
             column-gap: 1.5rem;
             row-gap: 1.5rem;
         }
+    }
+
+    &__collections-title {
+        font-size: 0.75rem;
+        font-weight: var(--fw-700);
+        color: var(--c-light-grey);
+        padding-bottom: 0.75rem;
     }
 
 }

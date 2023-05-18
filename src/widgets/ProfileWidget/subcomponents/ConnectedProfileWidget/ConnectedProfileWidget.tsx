@@ -1,11 +1,12 @@
-import React, { FC, useEffect, useState } from 'react';
+import React, {
+  FC, useEffect, useMemo, useState,
+} from 'react';
 
 import { CollectionTokenInfo } from '@airswap/types';
 import { Web3Provider } from '@ethersproject/providers';
 import { useWeb3React } from '@web3-react/core';
 import { useParams } from 'react-router-dom';
 
-import Accordion from '../../../../components/Accordion/Accordion';
 import Button from '../../../../components/Button/Button';
 import { IconSearch } from '../../../../components/Icon/icons';
 import Input from '../../../../components/Input/Input';
@@ -18,34 +19,20 @@ import ProfileHeader from '../ProfileHeader/ProfileHeader';
 
 import '../../ProfileWidget.scss';
 
-const filterNftsBySearchValue = (sValue: string, toFilter: CollectionTokenInfo[]) => {
-  // If the search query is empty return all nfts
-  if (sValue === '') return toFilter;
-  const filteredNfts: CollectionTokenInfo[] = [];
+const filterNftsBySearchValue = (sValue: string, nft: CollectionTokenInfo) => {
+  // If the search query is empty keep the nft.
+  if (sValue === '') return true;
   // We can search by id, name, description & attribute values.
-  for (let i = 0; i < toFilter.length; i += 1) {
-    const nft = toFilter[i];
-    if (nft.name && nft.name.toLowerCase().includes(sValue.toLowerCase())) {
-      filteredNfts.push(nft);
-    }
-    if (nft.description && nft.description.toLowerCase().includes(sValue.toLowerCase())) {
-      filteredNfts.push(nft);
-    }
-    if (nft.id.toString().toLowerCase().includes(sValue.toLowerCase())) {
-      filteredNfts.push(nft);
-    }
-    if (nft.attributes) {
-      for (let j = 0; j < nft.attributes.length; j += 1) {
-        const attribute = nft.attributes[j];
-        if (attribute.value.toString().toLowerCase().includes(sValue.toLowerCase())) {
-          filteredNfts.push(nft);
-        }
-      }
+  if (nft.name && nft.name.toLowerCase().includes(sValue.toLowerCase())) return true;
+  if (nft.description && nft.description.toLowerCase().includes(sValue.toLowerCase())) return true;
+  if (nft.id.toString().toLowerCase().includes(sValue.toLowerCase())) return true;
+  if (nft.attributes) {
+    for (let j = 0; j < nft.attributes.length; j += 1) {
+      const attribute = nft.attributes[j];
+      if (attribute.value.toString().toLowerCase().includes(sValue.toLowerCase())) return true;
     }
   }
-  // Remove duplicates
-  const uniqueNfts = filteredNfts.filter((nft, index) => filteredNfts.indexOf(nft) === index);
-  return uniqueNfts;
+  return false;
 };
 
 interface ConnectedProfileWidgetProps {
@@ -68,6 +55,8 @@ const ConnectedProfileWidget: FC<ConnectedProfileWidgetProps> = ({ library, clas
 
   const dispatch = useAppDispatch();
   const ensAddress = useEnsAddress(account || '');
+
+  const filteredNfts = useMemo(() => ownedNfts.filter(nft => filterNftsBySearchValue(searchValue, nft)), [ownedNfts, searchValue]);
 
   useEffect(() => {
     if (tokens) {
@@ -98,38 +87,30 @@ const ConnectedProfileWidget: FC<ConnectedProfileWidgetProps> = ({ library, clas
       <div className="profile-widget__button-group-container">
         <div className="profile-widget__button-group">
           <Button text="NFTs" className="profile-widget__button-group__button profile-widget__button-group__button--is-active" />
-          <Button text="ACTIVITY" className="profile-widget__button-group__button" disabled />
-          <Button text="LISTED" className="profile-widget__button-group__button" disabled />
+          <Button text="Activity" className="profile-widget__button-group__button profile-widget__button-group__button--is-uppercase" disabled />
+          <Button text="Listed" className="profile-widget__button-group__button profile-widget__button-group__button--is-uppercase" disabled />
         </div>
       </div>
       <div className="profile-widget__content">
         <div className="profile-widget__search-bar-container">
-          <i className="profile-widget__search-bar-icon">
-            <IconSearch />
-          </i>
+          <IconSearch className="profile-widget__search-bar-icon" />
           <Input className="profile-widget__search-bar" placeholder="Search NFT" onChange={e => setSearchValue(e.target.value)} />
         </div>
         <div className="profile-widget__collections">
-          <Accordion
-            label={collectionName}
-            content={(
-              <div className="profile-widget__nfts-container">
-                {ownedNfts && filterNftsBySearchValue(searchValue, ownedNfts).map((nft) => (
-                  <NftCard
-                    key={nft.id}
-                    imageURI={nft.image}
-                    name={nft.name}
-                    price="12345"
-                    to={`/${AppRoutes.nftDetail}/${nft.id}`}
-                    className="profile-widget__nft-card"
-                    symbol="AST" // TODO: remove the backup symbol
-                  />
-                ))}
-              </div>
-            )}
-            isDefaultOpen
-          />
-
+          <p className="profile-widget__collections-title">{collectionName}</p>
+          <div className="profile-widget__nfts-container">
+            {filteredNfts.map((nft) => (
+              <NftCard
+                key={nft.id}
+                imageURI={nft.image}
+                name={nft.name}
+                price="12345"
+                to={`/${AppRoutes.nftDetail}/${nft.id}`}
+                className="profile-widget__nft-card"
+                symbol="AST" // TODO: remove the backup symbol
+              />
+            ))}
+          </div>
         </div>
       </div>
     </div>

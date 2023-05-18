@@ -6,7 +6,7 @@ interface DisconnectedProfileWidgetProps {
 
 const DisconnectedProfileWidget: FC<DisconnectedProfileWidgetProps> = ({ className = '' }) => {
   console.log('DisconnectedProfileWidget');
-  return <div className={`disconnected-profile-widget ${className}`}>DisconnectedProfileWidget</div>;
+  return <div className={`profile-widget ${className}`}>DisconnectedProfileWidget</div>;
 };
 
 export default DisconnectedProfileWidget;
