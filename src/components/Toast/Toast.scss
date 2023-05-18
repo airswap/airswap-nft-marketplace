@@ -5,6 +5,8 @@ $component: toast;
 .#{$component} {
     will-change: transform, height, margin-top;
     display: flex;
+    border: 1px solid var(--c-dark-border);
+    border-radius: .25rem;
     margin-bottom: 1rem;
     overflow: hidden;
     transition: transform 0.2s ease-in, height 0.3s ease-in, margin-bottom 0.3s ease-in;
@@ -24,6 +26,7 @@ $component: toast;
     }
 
     &--is-deny,
+    &--is-warning,
     &--is-fail {
 
         .#{$component}__icon-wrapper-background {
@@ -36,6 +39,14 @@ $component: toast;
         }
     }
 
+    &--is-fail {
+
+        .#{$component}__icon {
+            width: 1rem;
+            height: 1rem;
+        }
+    }
+
     &--is-hidden {
         height: 0 !important;
         margin-bottom: 0;
@@ -44,7 +55,7 @@ $component: toast;
 
     &__inner {
         display: flex;
-        align-items: center;
+        align-items: flex-start;
         width: 100%;
         border-radius: .25rem;
         padding: 1rem;
@@ -73,19 +84,36 @@ $component: toast;
     }
 
     &__icon {
-        width: 1.25rem;
-        aspect-ratio: 1;
+        width: 1.5rem;
+        height: 1.5rem;
     }
 
     &__title-text-wrapper {
         display: flex;
         flex-direction: column;
-        margin: 0 1rem;
+        margin: 0 .75rem;
     }
 
     &__title {
         font-size: 1rem;
         font-weight: var(--fw-700);
+    }
+
+    &__title + &__text {
+        margin-top: .5rem;
+    }
+
+    &__text {
+        color: var(--c-text-grey);
+    }
+
+    &__action-button {
+        display: block;
+        margin: 1rem 0 .5rem;
+        padding: 0;
+        text-align: left;
+        text-decoration: underline;
+        font-size: 1rem;
     }
 
     &__close-button {

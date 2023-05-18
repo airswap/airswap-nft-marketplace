@@ -44,6 +44,10 @@ const balancesSlice = createSlice({
       ...state,
       currencyTokenBalance: action.payload,
     }),
+    setTokens: (state, action: PayloadAction<number[]>): BalancesState => ({
+      ...state,
+      tokens: action.payload,
+    }),
   },
   extraReducers: builder => {
     builder.addCase(fetchCurrencyTokenBalance.pending, (state): BalancesState => ({
@@ -91,6 +95,7 @@ export const {
   setIsLoading,
   setAllowance,
   setBalance,
+  setTokens,
   setIsInitialized,
 } = balancesSlice.actions;
 

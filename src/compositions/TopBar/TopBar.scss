@@ -99,6 +99,10 @@ $component: top-bar;
             border: 1px solid var(--c-primary);
         }
 
+        &[aria-disabled="true"] {
+            opacity: 0.5;
+        }
+
         @include for-size(tablet-portrait-up) {
             padding: 0 1.25rem;
         }

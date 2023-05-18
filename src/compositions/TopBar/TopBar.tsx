@@ -19,9 +19,11 @@ import DesktopNav from './subcomponents/DesktopNav/DesktopNav';
 import './TopBar.scss';
 
 interface TopBarProps {
+  listButtonIsDisabled: boolean;
   mobileMenuIsVisible: boolean;
   showDesktopConnectButton: boolean;
   showDesktopUserButton: boolean;
+  userWalletButtonIsDisabled: boolean;
   avatarUrl?: string;
   account: string | null | undefined;
   ensAddress: string | undefined;
@@ -32,9 +34,11 @@ interface TopBarProps {
 }
 
 const TopBar: FC<TopBarProps> = ({
+  listButtonIsDisabled,
   mobileMenuIsVisible,
   showDesktopConnectButton,
   showDesktopUserButton,
+  userWalletButtonIsDisabled,
   avatarUrl,
   account,
   ensAddress,
@@ -94,6 +98,7 @@ const TopBar: FC<TopBarProps> = ({
       <DesktopNav className="top-bar__desktop-nav" />
       <div className="top-bar__list-button-and-wallet-button-wrapper">
         <IconNavLink
+          aria-disabled={listButtonIsDisabled}
           icon="plus"
           text="List"
           to={`/${AppRoutes.listNft}`}
@@ -110,6 +115,7 @@ const TopBar: FC<TopBarProps> = ({
         {showDesktopUserButton
           && (
             <Button
+              disabled={userWalletButtonIsDisabled}
               ref={userButtonRef}
               text={truncateAddress(ensAddress || account || '')}
               onClick={() => setIsPopupOpen(!isPopupOpen)}

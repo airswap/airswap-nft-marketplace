@@ -18,5 +18,9 @@ export const getToastIcon = (toastType: ToastType): keyof typeof icons => {
     return 'deny';
   }
 
+  if (toastType === ToastType.warning) {
+    return 'information-circle-outline';
+  }
+
   return 'airswap';
 };

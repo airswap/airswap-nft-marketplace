@@ -2,7 +2,12 @@ import { SubmittedTransactionType } from '../../../entities/SubmittedTransaction
 import { getLibrary } from '../../../helpers/ethers';
 import { store } from '../../store';
 import { fetchCurrencyTokenAllowance, fetchCurrencyTokenBalance, fetchUserTokens } from './balancesApi';
-import { setIsInitialized } from './balancesSlice';
+import {
+  setAllowance,
+  setBalance,
+  setIsInitialized,
+  setTokens,
+} from './balancesSlice';
 
 export const configureBalancesSubscriber = () => {
   let account: string;
@@ -14,6 +19,17 @@ export const configureBalancesSubscriber = () => {
 
     const lastTransaction = transactions.transactions[0];
     const lastSucceededTransaction = lastTransaction?.status === 'succeeded' ? lastTransaction : undefined;
+
+    if (web3.chainId && chainId !== web3.chainId && web3.chainId !== config.chainId) {
+      chainId = web3.chainId;
+
+      store.dispatch(setIsInitialized(false));
+      store.dispatch(setAllowance('0'));
+      store.dispatch(setBalance('0'));
+      store.dispatch(setTokens([]));
+
+      return;
+    }
 
     if (!web3.chainId || !web3.account) {
       return;

@@ -5,6 +5,7 @@ import { Web3ReactProvider } from '@web3-react/core';
 import Routes from './compositions/Routes/Routes';
 import { setLibrary } from './helpers/ethers';
 import useMapWeb3ReactToStore from './hooks/useMapWeb3ReactToStore';
+import useSwitchChain from './hooks/useSwitchChain';
 import { useIndexers } from './redux/stores/indexer/indexerHooks';
 import { useMetadata } from './redux/stores/metadata/metadataHooks';
 import { useTransactions } from './redux/stores/transactions/transactionsHooks';
@@ -15,6 +16,7 @@ const ConnectedApp = () => {
   useTransactions();
   useMetadata();
   useIndexers();
+  useSwitchChain();
 
   return (
     <Routes />
