@@ -11,6 +11,7 @@ import debounce from 'lodash.debounce';
 import Toast from '../../components/Toast/Toast';
 import { useAppDispatch, useAppSelector } from '../../redux/hooks';
 import { hideToast, removeHiddenToasts } from '../../redux/stores/toasts/toastsActions';
+import { setLastToastActionButtonIdClicked } from '../../redux/stores/toasts/toastsSlice';
 
 import './ToastsWidget.scss';
 
@@ -26,6 +27,10 @@ const ToastsWidget: FC = (): ReactElement => {
     debounce(cleanupToasts, 1000),
     [],
   );
+
+  const handleActionButtonClick = async (toastId: string) => {
+    dispatch(setLastToastActionButtonIdClicked(toastId));
+  };
 
   const handleToastHide = async (toastId: string) => {
     dispatch(hideToast(toastId));
@@ -45,6 +50,7 @@ const ToastsWidget: FC = (): ReactElement => {
             <Toast
               key={toast.id}
               toast={toast}
+              onActionButtonClick={handleActionButtonClick}
               onHide={handleToastHide}
               className="toasts-widget__toast"
             />

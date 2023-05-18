@@ -12,18 +12,20 @@ interface ListNftWidgetProps {
 
 const ListNftWidget: FC<ListNftWidgetProps> = ({ className = '' }) => {
   const { account, library, chainId } = useWeb3React();
+  const { config } = useAppSelector(state => state);
   const { tokens: userTokens } = useAppSelector(state => state.balances);
   const { isLoading: isMetadataLoading, currencyTokenInfo } = useAppSelector(state => state.metadata);
   const { isInitialized: isBalancesInitialized } = useAppSelector(state => state.balances);
   const isLoading = !isBalancesInitialized || isMetadataLoading;
+  const chainIdIsCorrect = !!chainId && chainId === config.chainId;
 
   if (
     !isLoading
     && account
-    && chainId
     && currencyTokenInfo
     && library
     && userTokens.length
+    && chainIdIsCorrect
   ) {
     return (
       <ConnectedListNftWidget
@@ -40,7 +42,7 @@ const ListNftWidget: FC<ListNftWidgetProps> = ({ className = '' }) => {
   return (
     <DisconnectedListNftWidget
       hasNoUserTokens={!userTokens.length}
-      isLoading={isLoading}
+      isLoading={isLoading || !chainIdIsCorrect}
       className={className}
     />
   );

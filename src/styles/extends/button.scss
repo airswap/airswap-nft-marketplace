@@ -21,6 +21,7 @@
     &:disabled {
         color: var(--c-disabled-grey);
         cursor: not-allowed;
+        opacity: 0.65;
     }
 }
 
@@ -43,7 +44,6 @@
 
     &:disabled {
         opacity: .65;
-        pointer-events: none;
     }
 }
 

@@ -8,7 +8,6 @@ export interface ConfigState {
   collectionImage: string;
   ipfcGatewayURL: string;
 }
-
 const initialState: ConfigState = {
   chainId: process.env.REACT_APP_CHAIN_ID ? parseInt(process.env.REACT_APP_CHAIN_ID, 10) : 1,
   currencyToken: (process.env.REACT_APP_CURRENCY_TOKEN || '').toLowerCase(),

@@ -106,15 +106,21 @@ export async function getNftTokenApproved(
   provider: ethers.providers.Web3Provider,
   tokenKind: TokenKinds.ERC1155 | TokenKinds.ERC721,
 ): Promise<boolean> {
-  const contract = new ethers.Contract(
-    baseToken,
-    tokenKind === TokenKinds.ERC1155 ? erc1155Interface : erc721Interface,
-    provider.getSigner(),
-  );
+  try {
+    const contract = new ethers.Contract(
+      baseToken,
+      tokenKind === TokenKinds.ERC1155 ? erc1155Interface : erc721Interface,
+      provider.getSigner(),
+    );
 
-  const response = await contract.getApproved(tokenId);
+    const response = await contract.getApproved(tokenId);
 
-  return response === Swap.getAddress(5);
+    return response === Swap.getAddress(5);
+  } catch (error: any) {
+    console.error(error);
+
+    return false;
+  }
 }
 
 export async function getErc20TokenAllowance(
