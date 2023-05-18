@@ -5,7 +5,6 @@ import { useWeb3React } from '@web3-react/core';
 import useCollectionToken from '../../hooks/useCollectionToken';
 import useFullOrderNonceUsed from '../../hooks/useFullOrderNonceUsed';
 import { useAppSelector } from '../../redux/hooks';
-import { selectCurrencyTokenInfo } from '../../redux/stores/metadata/metadataSlice';
 import ConnectedBuyNftWidget from './subcomponents/ConnectedBuyNftWidget/ConnectedBuyNftWidget';
 import DisconnectedBuyNftWidget from './subcomponents/DisconnectedBuyNftWidget/DisconnectedBuyNftWidget';
 
@@ -17,11 +16,10 @@ interface BuyNftWidgetProps {
 
 const BuyNftWidget: FC<BuyNftWidgetProps> = ({ className = '' }) => {
   const { account, chainId, library } = useWeb3React();
-  const { isLoading: isMetadataLoading } = useAppSelector(state => state.metadata);
+  const { isLoading: isMetadataLoading, currencyTokenInfo } = useAppSelector(state => state.metadata);
   const { lastUserOrder } = useAppSelector((state) => state.listNft);
   const { collectionToken } = useAppSelector((state) => state.config);
 
-  const currencyTokenInfo = useAppSelector(selectCurrencyTokenInfo);
   const id = lastUserOrder ? parseInt(lastUserOrder?.signer.id, 10) : 1;
   const [collectionTokenInfo, isCollectionTokenInfoLoading] = useCollectionToken(collectionToken, id);
   const [isNonceUsed, isNonceUsedLoading] = useFullOrderNonceUsed(lastUserOrder);

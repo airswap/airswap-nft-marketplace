@@ -22,12 +22,20 @@ interface PageProps {
 }
 
 const Page: FC<PageProps> = ({ className = '', contentClassName = '', children }) => {
-  const { active, account, deactivate } = useWeb3React<Web3Provider>();
+  const {
+    active,
+    account,
+    chainId,
+    deactivate,
+  } = useWeb3React<Web3Provider>();
   const ensAddress = useEnsAddress(account || '');
+  const { config } = useAppSelector((state) => state);
   const { isInitialized } = useAppSelector((state) => state.web3);
   const { avatarUrl } = useAppSelector((state) => state.user);
 
-  const [mobileMenuIsVisible, setMobileMenuIsVisible] = useState<boolean>(false);
+  const chainIdIsCorrect = !!chainId && chainId === config.chainId;
+
+  const [mobileMenuIsVisible, setMobileMenuIsVisible] = useState(false);
   const [showWalletConnector, toggleShowWalletConnector] = useToggle(!active);
 
   const pageClassName = classNames('page', {
@@ -47,9 +55,11 @@ const Page: FC<PageProps> = ({ className = '', contentClassName = '', children }
   return (
     <div className={pageClassName}>
       <TopBar
+        listButtonIsDisabled={!chainIdIsCorrect || !account}
         mobileMenuIsVisible={mobileMenuIsVisible}
         showDesktopConnectButton={isInitialized && !active}
         showDesktopUserButton={isInitialized && active}
+        userWalletButtonIsDisabled={!chainIdIsCorrect}
         avatarUrl={avatarUrl}
         account={account}
         ensAddress={ensAddress}

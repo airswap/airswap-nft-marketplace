@@ -5,6 +5,7 @@ import { CollectionTokenInfo } from '@airswap/types';
 import { Web3Provider } from '@ethersproject/providers';
 import { useWeb3React } from '@web3-react/core';
 
+import { isCollectionTokenInfo } from '../entities/CollectionToken/CollectionTokenHelpers';
 import { getNftTokenApproved } from '../redux/stores/orders/ordersApi';
 
 const useNftTokenApproval = (
@@ -17,7 +18,12 @@ const useNftTokenApproval = (
   useEffect((): () => void => {
     let timer: NodeJS.Timeout;
 
-    if (!tokenInfo || !library || !chainId) {
+    if (
+      !tokenInfo
+      || !library
+      || !chainId
+      || !isCollectionTokenInfo(tokenInfo)
+    ) {
       return () => clearTimeout(timer);
     }
 

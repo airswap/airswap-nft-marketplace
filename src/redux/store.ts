@@ -8,12 +8,9 @@ import {
 
 import balancesReducer from './stores/balances/balancesSlice';
 import { configureBalancesSubscriber } from './stores/balances/balancesSubscriber';
-import collectionReducer from './stores/collection/collectionSlice';
 import configReducer from './stores/config/configSlice';
 import listNftReducer from './stores/listNft/listNftSlice';
 import metadataReducer from './stores/metadata/metadataSlice';
-import { configureMetadataSubscriber } from './stores/metadata/metadataSubscriber';
-import nftDetailReducer from './stores/nftDetail/nftDetailSlice';
 import ordersReducer from './stores/orders/ordersSlice';
 import profileReducer from './stores/profile/profileSlice';
 import toastsReducer from './stores/toasts/toastsSlice';
@@ -25,11 +22,9 @@ import web3Reducer from './stores/web3/web3Slice';
 export const store = configureStore({
   reducer: {
     balances: balancesReducer,
-    collection: collectionReducer,
     config: configReducer,
     listNft: listNftReducer,
     metadata: metadataReducer,
-    nftDetail: nftDetailReducer,
     orders: ordersReducer,
     profile: profileReducer,
     toasts: toastsReducer,
@@ -40,7 +35,6 @@ export const store = configureStore({
 });
 
 configureBalancesSubscriber();
-configureMetadataSubscriber();
 configureUserSubscriber();
 
 export type RootState = ReturnType<typeof store.getState>;

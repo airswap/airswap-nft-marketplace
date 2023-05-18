@@ -1,24 +1,25 @@
-import { TokenInfo } from '@airswap/types';
+import { CollectionTokenInfo, TokenInfo } from '@airswap/types';
 import { createSlice, PayloadAction } from '@reduxjs/toolkit';
 
-import { RootState } from '../../store';
 import { fetchProtocolFee } from './metadataActions';
 import { getCurrencyTokenInfo } from './metadataApi';
+import { getCollectionTokensLocalStorageKey } from './metdataHelpers';
 
 export interface MetadataState {
   isLoading: boolean;
   projectFee: number;
   protocolFee: number;
-  tokens: {
-    [address: string]: TokenInfo;
-  },
+  currencyTokenInfo?: TokenInfo;
+  collectionTokens: {
+    [id: number]: CollectionTokenInfo;
+  }
 }
 
 const initialState: MetadataState = {
   isLoading: false,
   projectFee: 0,
   protocolFee: 7,
-  tokens: {},
+  collectionTokens: {},
 };
 
 const metadataSlice = createSlice({
@@ -29,6 +30,18 @@ const metadataSlice = createSlice({
       ...state,
       isLoading: action.payload,
     }),
+    setCollectionTokens: (state, action: PayloadAction<{ [id: number]: CollectionTokenInfo }>) => {
+      const values = Object.values(action.payload);
+
+      if (values.length) {
+        localStorage.setItem(getCollectionTokensLocalStorageKey(values[0].address), JSON.stringify(action.payload));
+      }
+
+      return {
+        ...state,
+        collectionTokens: action.payload,
+      };
+    },
   },
   extraReducers: builder => {
     builder.addCase(getCurrencyTokenInfo.pending, (state) => ({
@@ -39,10 +52,7 @@ const metadataSlice = createSlice({
     builder.addCase(getCurrencyTokenInfo.fulfilled, (state, action) => ({
       ...state,
       isLoading: false,
-      tokens: {
-        ...state.tokens,
-        [action.payload.address]: action.payload,
-      },
+      currencyTokenInfo: action.payload,
     }));
 
     builder.addCase(getCurrencyTokenInfo.rejected, (state, action) => {
@@ -62,8 +72,7 @@ const metadataSlice = createSlice({
 
 export const {
   setIsLoading,
+  setCollectionTokens,
 } = metadataSlice.actions;
-
-export const selectCurrencyTokenInfo = (state: RootState): TokenInfo | undefined => state.metadata.tokens[state.config.currencyToken];
 
 export default metadataSlice.reducer;

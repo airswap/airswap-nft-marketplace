@@ -17,6 +17,7 @@ interface ActionButtonsProps {
   fullOrder?: FullOrder;
   state: ListNftState;
   onActionButtonClick: () => void;
+  onBackButtonClick: () => void;
   className?: string;
 }
 
@@ -28,6 +29,7 @@ const ListActionButtons: FC<ActionButtonsProps> = ({
   fullOrder,
   state,
   onActionButtonClick,
+  onBackButtonClick,
   className = '',
 }) => {
   const getReviewButtonText = () => {
@@ -69,11 +71,18 @@ const ListActionButtons: FC<ActionButtonsProps> = ({
 
     if (state === ListNftState.review) {
       return (
-        <Button
-          text={getReviewButtonText()}
-          onClick={onActionButtonClick}
-          className="list-action-buttons__action-button"
-        />
+        <>
+          <Button
+            text={getReviewButtonText()}
+            onClick={onActionButtonClick}
+            className="list-action-buttons__action-button"
+          />
+          <Button
+            text="Back"
+            onClick={onBackButtonClick}
+            className="list-action-buttons__back-button"
+          />
+        </>
       );
     }
 

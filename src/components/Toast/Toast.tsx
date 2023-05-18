@@ -9,6 +9,7 @@ import classnames from 'classnames';
 
 import IconButton from '../../compositions/IconButton/IconButton';
 import { Toast as ToastInterface } from '../../entities/Toast/Toast';
+import Button from '../Button/Button';
 import Icon from '../Icon/Icon';
 import { getToastIcon } from './helpers/getToastIcon';
 
@@ -16,11 +17,17 @@ import './Toast.scss';
 
 interface ToastProps {
   toast: ToastInterface;
+  onActionButtonClick: (toastId: string) => void;
   onHide: (id: string) => void;
   className?: string;
 }
 
-const Toast: FC<ToastProps> = ({ toast, onHide, className = '' }): ReactElement => {
+const Toast: FC<ToastProps> = ({
+  toast,
+  onActionButtonClick,
+  onHide,
+  className = '',
+}): ReactElement => {
   const [height, setHeight] = useState(0);
 
   const elementRef = useRef<HTMLDivElement>(null);
@@ -31,6 +38,10 @@ const Toast: FC<ToastProps> = ({ toast, onHide, className = '' }): ReactElement 
   }, className);
 
   const iconName = getToastIcon(toast.type);
+
+  const handleActionButtonClick = () => {
+    onActionButtonClick(toast.id);
+  };
 
   useEffect(() => {
     let timeoutId: NodeJS.Timeout | undefined;
@@ -65,14 +76,23 @@ const Toast: FC<ToastProps> = ({ toast, onHide, className = '' }): ReactElement 
               {toast.text}
             </p>
           )}
+          {toast.actionButtonText && (
+            <Button
+              text={toast.actionButtonText}
+              onClick={handleActionButtonClick}
+              className="toast__action-button"
+            />
+          )}
         </div>
-        <IconButton
-          hideLabel
-          icon="button-x"
-          text="close"
-          className="toast__close-button"
-          onClick={() => onHide(toast.id)}
-        />
+        {!toast.hideCloseButton && (
+          <IconButton
+            hideLabel
+            icon="button-x"
+            text="close"
+            className="toast__close-button"
+            onClick={() => onHide(toast.id)}
+          />
+        )}
       </div>
     </div>
   );

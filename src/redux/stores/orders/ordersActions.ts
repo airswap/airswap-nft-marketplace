@@ -13,11 +13,10 @@ import {
 import transformUnknownErrorToAppError from '../../../errors/transformUnknownErrorToAppError';
 import { AppDispatch, RootState } from '../../store';
 import {
-  mineTransaction,
-  revertTransaction,
-  submitTransaction,
-} from '../transactions/transactionActions';
-import { SubmittedApproval, SubmittedTransactionWithOrder } from '../transactions/transactionsSlice';
+  addERC20ApprovalTransaction,
+  addNftApprovalTransaction,
+  addOrderTransaction,
+} from '../transactions/transactionsActions';
 import {
   approveErc20Token,
   approveNftToken,
@@ -33,8 +32,10 @@ interface ApproveParams {
   tokenId?: number;
 }
 
+type TransactionHash = Transaction['hash'];
+
 export const approve = createAsyncThunk<
-Transaction | AppError,
+TransactionHash | AppError,
 ApproveParams,
 {
   dispatch: AppDispatch;
@@ -66,46 +67,13 @@ ApproveParams,
       tx = await approveErc20Token(tokenInfo.address, library);
     }
 
-    if (tx.hash) {
-      const transaction: SubmittedApproval = {
-        type: 'Approval',
-        hash: tx.hash,
-        status: 'processing',
-        tokenAddress: params.tokenInfo.address,
-        timestamp: Date.now(),
-      };
-      dispatch(submitTransaction(transaction));
-      library.once(tx.hash, async () => {
-        // @ts-ignore
-        const receipt = await library.getTransactionReceipt(tx.hash);
-        // const state: RootState = getState() as RootState;
-        // const tokens = Object.values(state.metadata.tokens.all);
-        if (receipt.status === 1) {
-          dispatch(mineTransaction({ hash: receipt.transactionHash }));
-          // TODO: Add toasts to app
-          // notifyTransaction(
-          //   'Approval',
-          //   transaction,
-          //   tokens,
-          //   false,
-          //   params.chainId,
-          // );
-        } else {
-          // @ts-ignore
-          dispatch(revertTransaction(receipt.transactionHash));
-          // TODO: Add toasts to app
-          // notifyTransaction(
-          //   'Approval',
-          //   transaction,
-          //   tokens,
-          //   true,
-          //   params.chainId,
-          // );
-        }
-      });
+    if (tx.hash && tokenKind === TokenKinds.ERC20) {
+      dispatch(addERC20ApprovalTransaction(tx.hash));
+    } else if (tx.hash && tokenId) {
+      dispatch(addNftApprovalTransaction(tx.hash, tokenId));
     }
 
-    return tx;
+    return tx.hash;
   } catch (e: any) {
     console.error(e);
     const error = transformUnknownErrorToAppError(e);
@@ -151,19 +119,8 @@ TakeParams,
     throw tx;
   }
 
-  const transaction: SubmittedTransactionWithOrder = {
-    type: 'Order',
-    hash: tx.hash,
-    status: 'processing',
-    order,
-    timestamp: Date.now(),
-  };
-  dispatch(submitTransaction(transaction));
-  library.once(tx.hash, async () => {
-    const receipt = await library.getTransactionReceipt(tx.hash);
-    if (receipt.status === 1) {
-      dispatch(mineTransaction({ hash: receipt.transactionHash }));
-    }
-  });
+  if (tx.hash) {
+    dispatch(addOrderTransaction(tx.hash, order));
+  }
 });
 

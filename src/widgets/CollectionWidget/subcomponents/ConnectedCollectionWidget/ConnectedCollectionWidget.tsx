@@ -1,5 +1,6 @@
 import React, { FC, useState } from 'react';
 
+import { CollectionTokenInfo } from '@airswap/types';
 import { Web3Provider } from '@ethersproject/providers';
 
 import NftCard from '../../../../components/NftCard/NftCard';
@@ -15,14 +16,13 @@ interface ConnectedCollectionWidgetProps {
 
 // eslint-disable-next-line @typescript-eslint/no-unused-vars, no-unused-vars
 const ConnectedCollectionWidget: FC<ConnectedCollectionWidgetProps> = ({ library, className = '' }) => {
-  const {
-    collectionImage, collectionName,
-  } = useAppSelector((state) => state.config);
-  const {
-    isLoading, tokensData,
-  } = useAppSelector((state) => state.collection);
+  const { collectionImage, collectionName } = useAppSelector((state) => state.config);
 
   const [searchInput, setSearchInput] = useState<string>('');
+
+  // TODO: Get tokens from indexed orders store
+  const tokens: CollectionTokenInfo[] = [];
+  const isLoading = false;
 
   return (
     <div className={`collection-widget ${className}`}>
@@ -42,7 +42,7 @@ const ConnectedCollectionWidget: FC<ConnectedCollectionWidgetProps> = ({ library
         <div className="collection-widget__subtitle">NFTs for sale</div>
         <div className="collection-widget__filter-button" />
         <div className="collection-widget__nfts-container">
-          {tokensData.map((token) => (
+          {tokens.map((token) => (
             <NftCard
               key={token.id}
               imageURI={token.image}

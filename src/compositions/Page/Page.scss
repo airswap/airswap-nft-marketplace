@@ -19,7 +19,7 @@ $component: page;
     }
 
     &__top-bar {
-        z-index: 3;
+        z-index: 5;
     }
 
     &__mobile-menu {
@@ -28,7 +28,7 @@ $component: page;
         top: var(--top-bar-height);
         width: 100vw;
         height: calc(100svh - var(--top-bar-height));
-        z-index: 3;
+        z-index: 5;
 
         @include for-size(tablet-portrait-up) {
             display: none;
@@ -46,7 +46,7 @@ $component: page;
         left: 0;
         width: 100%;
         height: calc(100svh - var(--top-bar-height));
-        z-index: 2;
+        z-index: 4;
         overflow-y: auto;
         visibility: hidden;
         pointer-events: none;

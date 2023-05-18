@@ -6,10 +6,10 @@ import './NftDetailList.scss';
 
 interface NftDetailListProps {
   address: string;
-  id: string;
+  id: number;
   chain: string;
   standard: string;
-  fee: string;
+  fee: number;
   className?: string;
 }
 

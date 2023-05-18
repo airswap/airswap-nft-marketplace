@@ -1,7 +1,8 @@
 export enum ToastType {
-  info = 'info',
-  fail = 'fail',
   deny = 'deny',
+  fail = 'fail',
+  info = 'info',
   pending = 'pending',
   success = 'success',
+  warning = 'warning',
 }

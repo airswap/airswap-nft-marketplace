@@ -1,12 +1,12 @@
 import React, { FC } from 'react';
 
 import Icon from '../../../../components/Icon/Icon';
-import { EventLog } from '../../../../redux/stores/nftDetail/nftDetailSlice';
+import { CollectionTokenEvent } from '../../../../entities/CollectionTokenEvent/CollectionTokenEvent';
 
 import './NftDetailActivity.scss';
 
 interface NftDetailActivityTransferProps {
-  log: EventLog;
+  log: CollectionTokenEvent;
 }
 
 const NftDetailActivityTransfer: FC<NftDetailActivityTransferProps> = ({ log }) => (
@@ -17,13 +17,13 @@ const NftDetailActivityTransfer: FC<NftDetailActivityTransferProps> = ({ log }) 
 );
 
 interface NftDetailActivityProps {
-  logs: Array<EventLog>;
+  logs: CollectionTokenEvent[];
   className?: string;
 }
 
 const NftDetailActivity: FC<NftDetailActivityProps> = ({ logs, className = '' }) => (
   <div className={`nft-detail-widget__activities-container ${className}`}>
-    {logs.map((log: EventLog) => (
+    {logs.map(log => (
       <NftDetailActivityTransfer
         key={`${log.type}:${log.tokenId}:${log.from}:${log.to}`}
         log={log}

@@ -1,15 +1,27 @@
 @import "src/styles/index";
 
 .nft-detail-portrait {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    position: relative;
     border-radius: var(--portrait-border-radius);
-    background-size: cover;
-    background-position: 50% 50%;
-    filter: drop-shadow(0px 1px 2px rgba(0, 0, 0, 0.25));
     margin-bottom: var(--page-padding);
     width: 100%;
     aspect-ratio: 1;
 
     @include for-size(desktop-up) {
         margin-bottom: 2rem;
+    }
+
+    &__image {
+        position: absolute;
+        top: 0;
+        left: 0;
+        width: 100%;
+        height: 100%;
+        background-size: cover;
+        background-position: 50% 50%;
+        filter: drop-shadow(0px 1px 2px rgba(0, 0, 0, 0.25));
     }
 }

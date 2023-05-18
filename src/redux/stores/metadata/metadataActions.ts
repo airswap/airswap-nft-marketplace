@@ -1,7 +1,10 @@
+import { CollectionTokenInfo } from '@airswap/types';
 import { Web3Provider } from '@ethersproject/providers';
 import { createAsyncThunk } from '@reduxjs/toolkit';
 
+import { AppDispatch, RootState } from '../../store';
 import { getProtocolFee } from './metadataApi';
+import { setCollectionTokens } from './metadataSlice';
 
 export const fetchProtocolFee = createAsyncThunk<
 number,
@@ -17,3 +20,12 @@ number,
     return 7;
   }
 });
+
+export const addCollectionTokenInfo = (tokenInfo: CollectionTokenInfo) => async (dispatch: AppDispatch, getState: () => RootState): Promise<void> => {
+  const { collectionTokens } = getState().metadata;
+
+  dispatch(setCollectionTokens({
+    ...collectionTokens,
+    [tokenInfo.id]: tokenInfo,
+  }));
+};

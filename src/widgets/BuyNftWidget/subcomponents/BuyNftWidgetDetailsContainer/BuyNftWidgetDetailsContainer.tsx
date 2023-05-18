@@ -10,8 +10,8 @@ import TradeDetails from '../../../../components/TradeDetails/TradeDetails';
 import TradeNftDetails, { TradeNftDetailsProps } from '../../../../components/TradeNftDetails/TradeNftDetails';
 import TransactionLink from '../../../../compositions/TransactionLink/TransactionLink';
 import { getFullOrderSenderAmountPlusTotalFees } from '../../../../entities/FullOrder/FullOrderHelpers';
+import { Erc20ApprovalTransaction, OrderTransaction } from '../../../../entities/SubmittedTransaction/SubmittedTransaction';
 import { AppError } from '../../../../errors/appError';
-import { SubmittedApproval, SubmittedOrder } from '../../../../redux/stores/transactions/transactionsSlice';
 import { getNftDetailsIcon } from '../../helpers';
 import { BuyNftState } from '../ConnectedBuyNftWidget/ConnectedBuyNftWidget';
 
@@ -25,8 +25,8 @@ interface BuyNftWidgetDetailsContainerProps {
   currencyTokenInfo: TokenInfo;
   error?: AppError;
   fullOrder: FullOrder,
-  submittedApproval?: SubmittedApproval;
-  submittedOrder?: SubmittedOrder;
+  submittedApproval?: Erc20ApprovalTransaction;
+  submittedOrder?: OrderTransaction;
   widgetState: BuyNftState;
   className?: string;
 }

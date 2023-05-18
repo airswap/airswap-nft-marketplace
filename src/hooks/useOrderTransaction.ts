@@ -1,10 +1,11 @@
 import { useMemo } from 'react';
 
+import { OrderTransaction } from '../entities/SubmittedTransaction/SubmittedTransaction';
 import { useAppSelector } from '../redux/hooks';
-import { selectOrders, SubmittedOrder } from '../redux/stores/transactions/transactionsSlice';
+import { selectOrderTransactions } from '../redux/stores/transactions/transactionsSlice';
 
-const useOrderTransaction = (orderNonce: string): SubmittedOrder | undefined => {
-  const pendingOrders = useAppSelector(selectOrders);
+const useOrderTransaction = (orderNonce: string): OrderTransaction | undefined => {
+  const pendingOrders = useAppSelector(selectOrderTransactions);
 
   return useMemo(() => {
     if (!orderNonce || !pendingOrders.length) {

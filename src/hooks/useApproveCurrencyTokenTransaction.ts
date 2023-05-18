@@ -1,19 +1,19 @@
 import { useMemo } from 'react';
 
+import { Erc20ApprovalTransaction } from '../entities/SubmittedTransaction/SubmittedTransaction';
 import { useAppSelector } from '../redux/hooks';
-import { selectApprovals, SubmittedApproval } from '../redux/stores/transactions/transactionsSlice';
+import { selectErc20ApprovalTransactions } from '../redux/stores/transactions/transactionsSlice';
 
-const useApproveCurrencyTokenTransaction = (): SubmittedApproval | undefined => {
-  const { currencyToken } = useAppSelector(state => state.config);
-  const pendingTransactions = useAppSelector(selectApprovals);
+const useApproveCurrencyTokenTransaction = (hash?: string): Erc20ApprovalTransaction | undefined => {
+  const transactions = useAppSelector(selectErc20ApprovalTransactions);
 
   return useMemo(() => {
-    if (!pendingTransactions.length) {
+    if (!transactions.length || !hash) {
       return undefined;
     }
 
-    return pendingTransactions.find(transaction => transaction.tokenAddress === currencyToken);
-  }, [pendingTransactions]);
+    return transactions.find(transaction => transaction.hash === hash);
+  }, [transactions, hash]);
 };
 
 export default useApproveCurrencyTokenTransaction;
