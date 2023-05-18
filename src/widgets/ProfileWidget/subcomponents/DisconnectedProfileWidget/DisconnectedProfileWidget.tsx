@@ -5,6 +5,7 @@ interface DisconnectedProfileWidgetProps {
 }
 
 const DisconnectedProfileWidget: FC<DisconnectedProfileWidgetProps> = ({ className = '' }) => {
+  // TODO: Implement this component or redirect to the connect wallet page.
   console.log('DisconnectedProfileWidget');
   return <div className={`profile-widget ${className}`}>DisconnectedProfileWidget</div>;
 };
