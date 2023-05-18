@@ -1,32 +1,23 @@
 import { Protocols } from '@airswap/constants';
-import { Registry, Server } from '@airswap/libraries';
+import { Registry } from '@airswap/libraries';
 import { FullOrder, IndexedOrder, RequestFilter } from '@airswap/types';
 import { createAsyncThunk } from '@reduxjs/toolkit';
 import { providers } from 'ethers';
 
 import { INDEXER_ORDER_RESPONSE_TIME_MS } from '../../../constants/configParams';
 import { AppDispatch, RootState } from '../../store';
+import { getServers } from './indexerHelpers';
 
 interface InitializeIndexersParams {
   chainId: number,
   provider: providers.Web3Provider,
 }
 
-export const initializeIndexers = createAsyncThunk<Server[], InitializeIndexersParams>(
+export const initializeIndexers = createAsyncThunk<string[], InitializeIndexersParams>(
   'indexer/initializeIndexers',
   async ({ chainId, provider }) => {
     console.log('fetching urls');
-    const indexerUrls = await Registry.getServerURLs(provider, chainId, Protocols.Indexing);
-
-    const serverPromises = await Promise.allSettled(
-      indexerUrls.map((url) => Server.at(url)),
-    );
-
-    return serverPromises
-      .filter(
-        (value): value is PromiseFulfilledResult<Server> => value.status === 'fulfilled',
-      )
-      .map((value) => value.value);
+    return Registry.getServerURLs(provider, chainId, Protocols.Indexing);
   },
 );
 
@@ -42,7 +33,9 @@ FullOrder[],
   let orders: Record<string, IndexedOrder<FullOrder>> = {};
   if (!indexerState.isInitialized) return [];
 
-  const orderPromises = indexerState.servers.map(async (server) => {
+  const servers = await getServers(indexerState.urls);
+
+  const orderPromises = servers.map(async (server) => {
     try {
       const orderResponse = await server.getOrdersBy(filter);
       const ordersToAdd = orderResponse.orders;

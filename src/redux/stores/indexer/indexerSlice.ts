@@ -1,18 +1,17 @@
-import { Server } from '@airswap/libraries';
 import { FullOrder } from '@airswap/types';
 import { createSlice, PayloadAction } from '@reduxjs/toolkit';
 
 import { getFilteredOrders, initializeIndexers } from './indexerApi';
 
 export interface IndexerState {
-  servers: Server[];
+  urls: string[];
   orders: FullOrder[];
   isLoading: boolean;
   isInitialized: boolean;
 }
 
 const initialState: IndexerState = {
-  servers: [],
+  urls: [],
   orders: [],
   isLoading: false,
   isInitialized: false,
@@ -23,22 +22,21 @@ export const indexerSlice = createSlice({
   initialState,
   reducers: {},
   extraReducers: (builder) => {
-    builder.addCase(initializeIndexers.fulfilled, (state, action: PayloadAction<Server[]>): IndexerState => ({
+    builder.addCase(initializeIndexers.fulfilled, (state, action: PayloadAction<string[]>): IndexerState => ({
       ...state,
       isInitialized: !!action.payload.length,
-      servers: action.payload,
-    }
-    ));
-    builder.addCase(getFilteredOrders.fulfilled, (state, action) => ({
+      urls: action.payload,
+    }));
+    builder.addCase(getFilteredOrders.fulfilled, (state, action: PayloadAction<FullOrder[]>): IndexerState => ({
       ...state,
       orders: action.payload,
       isLoading: false,
     }));
-    builder.addCase(getFilteredOrders.pending, (state) => ({
+    builder.addCase(getFilteredOrders.pending, (state): IndexerState => ({
       ...state,
       isLoading: true,
     }));
-    builder.addCase(getFilteredOrders.rejected, (state) => ({
+    builder.addCase(getFilteredOrders.rejected, (state): IndexerState => ({
       ...state,
       isLoading: false,
     }));
