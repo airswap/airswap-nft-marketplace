@@ -6,7 +6,7 @@ import { useWeb3React } from '@web3-react/core';
 
 import { useAppDispatch, useAppSelector } from '../../hooks';
 import { clearLastUserOrder } from '../listNft/listNftSlice';
-import { initializeIndexers } from './indexerApi';
+import { initialize } from './indexerApi';
 import { sendOrderToIndexers } from './indexerHelpers';
 
 export const useIndexers = (): void => {
@@ -17,17 +17,17 @@ export const useIndexers = (): void => {
   const { chainId } = useAppSelector(state => state.config);
   const { isInitialized, urls } = useAppSelector(state => state.indexer);
 
-  const sendAndClearOrder = async (order: FullOrder) => {
+  const sendAndClearLastOrder = async (lastOrder: FullOrder) => {
     if (!isInitialized) return;
-    await sendOrderToIndexers(order, urls);
+    await sendOrderToIndexers(lastOrder, urls);
     dispatch(clearLastUserOrder());
   };
 
   useEffect(() => {
-    dispatch(initializeIndexers({ chainId, provider: library }));
+    dispatch(initialize({ chainId, provider: library }));
   }, [library]);
 
   useEffect(() => {
-    if (lastUserOrder) sendAndClearOrder(lastUserOrder);
+    if (lastUserOrder) sendAndClearLastOrder(lastUserOrder);
   }, [lastUserOrder]);
 };

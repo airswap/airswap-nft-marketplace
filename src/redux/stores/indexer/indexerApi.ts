@@ -8,17 +8,18 @@ import { INDEXER_ORDER_RESPONSE_TIME_MS } from '../../../constants/configParams'
 import { AppDispatch, RootState } from '../../store';
 import { getServers } from './indexerHelpers';
 
-interface InitializeIndexersParams {
+interface InitializeParams {
   chainId: number,
   provider: providers.Web3Provider,
 }
 
-export const initializeIndexers = createAsyncThunk<string[], InitializeIndexersParams>(
-  'indexer/initializeIndexers',
-  async ({ chainId, provider }) => {
-    console.log('fetching urls');
-    return Registry.getServerURLs(provider, chainId, Protocols.Indexing);
-  },
+export const initialize = createAsyncThunk<string[], InitializeParams>(
+  'indexer/initialize',
+  async ({ chainId, provider }) => Registry.getServerURLs(
+    provider,
+    chainId,
+    Protocols.Indexing,
+  ),
 );
 
 export const getFilteredOrders = createAsyncThunk<

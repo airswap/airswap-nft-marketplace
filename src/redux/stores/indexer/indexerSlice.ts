@@ -1,7 +1,7 @@
 import { FullOrder } from '@airswap/types';
 import { createSlice, PayloadAction } from '@reduxjs/toolkit';
 
-import { getFilteredOrders, initializeIndexers } from './indexerApi';
+import { getFilteredOrders, initialize } from './indexerApi';
 
 export interface IndexerState {
   urls: string[];
@@ -22,7 +22,7 @@ export const indexerSlice = createSlice({
   initialState,
   reducers: {},
   extraReducers: (builder) => {
-    builder.addCase(initializeIndexers.fulfilled, (state, action: PayloadAction<string[]>): IndexerState => ({
+    builder.addCase(initialize.fulfilled, (state, action: PayloadAction<string[]>): IndexerState => ({
       ...state,
       isInitialized: !!action.payload.length,
       urls: action.payload,
