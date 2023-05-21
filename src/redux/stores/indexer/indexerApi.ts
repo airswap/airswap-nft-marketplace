@@ -1,6 +1,6 @@
 import { Protocols } from '@airswap/constants';
-import { Registry } from '@airswap/libraries';
-import { FullOrder, IndexedOrder, RequestFilter } from '@airswap/types';
+import { RegistryV4 } from '@airswap/libraries';
+import { FullOrder, IndexedOrder, OrderFilter } from '@airswap/types';
 import { createAsyncThunk } from '@reduxjs/toolkit';
 import { providers } from 'ethers';
 
@@ -15,16 +15,16 @@ interface InitializeParams {
 
 export const initialize = createAsyncThunk<string[], InitializeParams>(
   'indexer/initialize',
-  async ({ chainId, provider }) => Registry.getServerURLs(
+  async ({ chainId, provider }) => RegistryV4.getServerURLs(
     provider,
     chainId,
-    Protocols.Indexing,
+    Protocols.Storage,
   ),
 );
 
 export const getFilteredOrders = createAsyncThunk<
 FullOrder[],
-{ filter: RequestFilter },
+{ filter: OrderFilter },
 {
   dispatch: AppDispatch;
   state: RootState;
@@ -38,7 +38,7 @@ FullOrder[],
 
   const orderPromises = servers.map(async (server) => {
     try {
-      const orderResponse = await server.getOrdersBy(filter);
+      const orderResponse = await server.getOrders(filter);
       const ordersToAdd = orderResponse.orders;
       orders = { ...orders, ...ordersToAdd };
     } catch (e: any) {

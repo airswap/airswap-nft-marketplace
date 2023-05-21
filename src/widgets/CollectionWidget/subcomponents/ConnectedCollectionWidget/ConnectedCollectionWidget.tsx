@@ -41,7 +41,8 @@ const ConnectedCollectionWidget: FC<ConnectedCollectionWidgetProps> = ({ library
     if (isInitialized) {
       dispatch(getFilteredOrders({
         filter: {
-          page: 1,
+          offset: 0,
+          limit: 100,
         },
       }));
     }
