@@ -5,7 +5,7 @@ import React, {
 import { CollectionTokenInfo } from '@airswap/types';
 import { Web3Provider } from '@ethersproject/providers';
 import { useWeb3React } from '@web3-react/core';
-import { useParams } from 'react-router-dom';
+import { useNavigate, useParams } from 'react-router-dom';
 
 import Button from '../../../../components/Button/Button';
 import { IconSearch } from '../../../../components/Icon/icons';
@@ -50,8 +50,15 @@ const ConnectedProfileWidget: FC<ConnectedProfileWidgetProps> = ({ library, clas
   const [searchValue, setSearchValue] = useState('');
 
   const { account, deactivate } = useWeb3React<Web3Provider>();
-  // If there is no id param, then we should display the current user's profile
   const { id } = useParams();
+  const navigate = useNavigate();
+  // If there is no id param then we should navigate to the current user.
+  // This is useful when the user logs out as we can continue to show them their profile.
+  useEffect(() => {
+    if (!id && account) {
+      navigate(`/${AppRoutes.profile}/${account}`);
+    }
+  }, [id, account]);
 
   const dispatch = useAppDispatch();
   const ensAddress = useEnsAddress(account || '');
