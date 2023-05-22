@@ -11,6 +11,7 @@ import Button from '../../components/Button/Button';
 import { IconSearch } from '../../components/Icon/icons';
 import Input from '../../components/Input/Input';
 import NftCard from '../../components/NftCard/NftCard';
+import filterNftBySearchValue from '../../helpers/filterNftBySearchValue';
 import useEnsAddress from '../../hooks/useEnsAddress';
 import { useAppDispatch, useAppSelector } from '../../redux/hooks';
 import { fetchOwnedTokenMeta } from '../../redux/stores/profile/profileApi';
@@ -18,22 +19,6 @@ import { AppRoutes } from '../../routes';
 import ProfileHeader from './subcomponents/ProfileHeader/ProfileHeader';
 
 import './ProfileWidget.scss';
-
-const filterNftsBySearchValue = (sValue: string, nft: CollectionTokenInfo) => {
-  // If the search query is empty keep the nft.
-  if (sValue === '') return true;
-  // We can search by id, name, description & attribute values.
-  if (nft.name && nft.name.toLowerCase().includes(sValue.toLowerCase())) return true;
-  if (nft.description && nft.description.toLowerCase().includes(sValue.toLowerCase())) return true;
-  if (nft.id.toString().toLowerCase().includes(sValue.toLowerCase())) return true;
-  if (nft.attributes) {
-    for (let j = 0; j < nft.attributes.length; j += 1) {
-      const attribute = nft.attributes[j];
-      if (attribute.value.toString().toLowerCase().includes(sValue.toLowerCase())) return true;
-    }
-  }
-  return false;
-};
 
 interface ProfileWidgetProps {
   className?: string;
@@ -67,7 +52,7 @@ const ProfileWidget: FC<ProfileWidgetProps> = ({ className = '' }) => {
   const dispatch = useAppDispatch();
   const ensAddress = useEnsAddress(account || '');
 
-  const filteredNfts = useMemo(() => ownedNfts.filter(nft => filterNftsBySearchValue(searchValue, nft)), [ownedNfts, searchValue]);
+  const filteredNfts = useMemo(() => ownedNfts.filter(nft => filterNftBySearchValue(searchValue, nft)), [ownedNfts, searchValue]);
 
   useEffect(() => {
     // TODO: support loading the tokens of other users
