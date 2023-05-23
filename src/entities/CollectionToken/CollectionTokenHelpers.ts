@@ -26,10 +26,8 @@ export const isCollectionTokenInfo = (resource: any): resource is CollectionToke
     && resource.attributes && Array.isArray(resource.attributes)
 );
 
-export const getCollectionTokensInfoFromOrders = async (library: ethers.providers.BaseProvider, orders: FullOrder[]) => {
-  const tokensInfoPromises = orders.map(order => getCollectionToken(library, order.signer.token, parseInt(order.signer.id, 10)));
-  const tokensInfo = await Promise.all(tokensInfoPromises);
+export const getCollectionTokensInfoFromOrders = async (library: ethers.providers.BaseProvider, orders: FullOrder[]): Promise<CollectionTokenInfo[]> => {
+  const results = await Promise.all(orders.map(order => getCollectionToken(library, order.signer.token, +order.signer.id)));
 
-  /* Filter array to not contain undefined values */
-  return tokensInfo.filter((token): token is CollectionTokenInfo => !!token);
+  return results.filter(isCollectionTokenInfo) as CollectionTokenInfo[];
 };

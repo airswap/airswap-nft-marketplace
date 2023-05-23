@@ -1,18 +1,38 @@
 import { Server } from '@airswap/libraries';
-import { FullOrder } from '@airswap/types';
+import { FullOrder, OrderFilter, OrderResponse } from '@airswap/types';
 
 import { INDEXER_ORDER_RESPONSE_TIME_MS } from '../../../constants/configParams';
 
+export const isPromiseFulfilledResult = <T>(result: any): result is PromiseFulfilledResult<T> => result && result.status === 'fulfilled' && 'value' in result;
+
+export const isOrderResponse = <T>(resource: any): resource is OrderResponse<T> => ('orders' in resource);
+
+export const getUndefinedAfterTimeout = (time: number): Promise<undefined> => new Promise<undefined>((resolve) => {
+  setTimeout(() => resolve(undefined), time);
+});
+
+
+export const getOrdersFromServer = async (server: Server, filter: OrderFilter): Promise<OrderResponse<FullOrder> | undefined> => {
+  try {
+    return server.getOrders(filter);
+  } catch (e: any) {
+    console.error(
+      `[indexerSlice] Order indexing failed for ${server.locator}`,
+      e.message || '',
+    );
+
+    return undefined;
+  }
+};
+
 export const getServers = async (indexerUrls: string[]): Promise<Server[]> => {
-  const serverPromises = await Promise.allSettled(
+  const results: PromiseSettledResult<Server>[] = await Promise.allSettled(
     indexerUrls.map((url) => Server.at(url)),
   );
 
-  return serverPromises
-    .filter(
-      (value): value is PromiseFulfilledResult<Server> => value.status === 'fulfilled',
-    )
-    .map((value) => value.value);
+  const fulfilledResults = results.filter(isPromiseFulfilledResult) as PromiseFulfilledResult<Server>[];
+
+  return fulfilledResults.map((result) => result.value);
 };
 
 export const sendOrderToIndexers = async (
@@ -25,9 +45,8 @@ export const sendOrderToIndexers = async (
 
   const addOrderPromises = servers.map((server) => server
     .addOrder(order)
-    .then(() => console.log(`Order added to ${server.locator}`))
     .catch((e: any) => {
-      console.log(
+      console.error(
         `[indexerSlice] Order indexing failed for ${server.locator}`,
         e.message || '',
       );
@@ -35,7 +54,6 @@ export const sendOrderToIndexers = async (
 
   Promise.race([
     Promise.allSettled(addOrderPromises),
-    // eslint-disable-next-line no-promise-executor-return
-    new Promise((res) => setTimeout(res, INDEXER_ORDER_RESPONSE_TIME_MS)),
+    getUndefinedAfterTimeout(INDEXER_ORDER_RESPONSE_TIME_MS),
   ]);
 };

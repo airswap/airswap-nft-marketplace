@@ -6,7 +6,12 @@ import { providers } from 'ethers';
 
 import { INDEXER_ORDER_RESPONSE_TIME_MS } from '../../../constants/configParams';
 import { AppDispatch, RootState } from '../../store';
-import { getServers } from './indexerHelpers';
+import {
+  getOrdersFromServer,
+  getServers,
+  getUndefinedAfterTimeout,
+  isOrderResponse,
+} from './indexerHelpers';
 
 interface InitializeParams {
   chainId: number,
@@ -30,30 +35,25 @@ FullOrder[],
   state: RootState;
 }
 >('indexer/getFilteredOrders', async ({ filter }, { getState }) => {
-  const { indexer: indexerState } = getState();
-  let orders: Record<string, IndexedOrder<FullOrder>> = {};
-  if (!indexerState.isInitialized) return [];
+  const { indexer } = getState();
 
-  const servers = await getServers(indexerState.urls);
+  if (!indexer.isInitialized) return [];
 
-  const orderPromises = servers.map(async (server) => {
-    try {
-      const orderResponse = await server.getOrders(filter);
-      const ordersToAdd = orderResponse.orders;
-      orders = { ...orders, ...ordersToAdd };
-    } catch (e: any) {
-      console.error(
-        `[indexerSlice] Order indexing failed for ${server.locator}`,
-        e.message || '',
-      );
-    }
-  });
+  const servers = await getServers(indexer.urls);
 
-  await Promise.race([
-    orderPromises && Promise.allSettled(orderPromises),
-    // eslint-disable-next-line no-promise-executor-return
-    new Promise((res) => setTimeout(res, INDEXER_ORDER_RESPONSE_TIME_MS)),
-  ]);
+  const orderResponses = await Promise.all(
+    servers.map(server => Promise.race([
+      getOrdersFromServer(server, filter),
+      getUndefinedAfterTimeout(INDEXER_ORDER_RESPONSE_TIME_MS),
+    ])),
+  );
+
+  const orders: Record<string, IndexedOrder<FullOrder>> = orderResponses
+    .filter(isOrderResponse<FullOrder>)
+    .reduce((total, orderResponse) => ({
+      ...total,
+      ...orderResponse.orders,
+    }), {});
 
   return Object.entries(orders).map(([, order]) => order.order);
 });
