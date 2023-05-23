@@ -48,12 +48,12 @@ FullOrder[],
     ])),
   );
 
-  const orders: Record<string, IndexedOrder<FullOrder>> = orderResponses
+  const indexedOrders: Record<string, IndexedOrder<FullOrder>> = orderResponses
     .filter(isOrderResponse<FullOrder>)
     .reduce((total, orderResponse) => ({
       ...total,
       ...orderResponse.orders,
     }), {});
 
-  return Object.entries(orders).map(([, order]) => order.order);
+  return Object.values(indexedOrders).map(indexedOrder => indexedOrder.order);
 });
