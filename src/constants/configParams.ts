@@ -1,1 +1,0 @@
-export const INDEXER_ORDER_RESPONSE_TIME_MS = 4000;

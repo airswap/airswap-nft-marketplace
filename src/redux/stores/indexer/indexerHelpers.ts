@@ -1,8 +1,6 @@
 import { Server } from '@airswap/libraries';
 import { FullOrder, OrderFilter, OrderResponse } from '@airswap/types';
 
-import { INDEXER_ORDER_RESPONSE_TIME_MS } from '../../../constants/configParams';
-
 export const isPromiseFulfilledResult = <T>(result: any): result is PromiseFulfilledResult<T> => result && result.status === 'fulfilled' && 'value' in result;
 
 export const isOrderResponse = <T>(resource: any): resource is OrderResponse<T> => ('orders' in resource);
@@ -10,7 +8,6 @@ export const isOrderResponse = <T>(resource: any): resource is OrderResponse<T> 
 export const getUndefinedAfterTimeout = (time: number): Promise<undefined> => new Promise<undefined>((resolve) => {
   setTimeout(() => resolve(undefined), time);
 });
-
 
 export const getOrdersFromServer = async (server: Server, filter: OrderFilter): Promise<OrderResponse<FullOrder> | undefined> => {
   try {
@@ -52,8 +49,5 @@ export const sendOrderToIndexers = async (
       );
     }));
 
-  Promise.race([
-    Promise.allSettled(addOrderPromises),
-    getUndefinedAfterTimeout(INDEXER_ORDER_RESPONSE_TIME_MS),
-  ]);
+  Promise.allSettled(addOrderPromises);
 };
