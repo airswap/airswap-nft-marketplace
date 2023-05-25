@@ -1,4 +1,4 @@
-import BalanceChecker from '@airswap/balances/build/contracts/BalanceChecker.json';
+import BalanceChecker from '@airswap/balances/build/contracts/BalanceChecker.sol/BalanceChecker.json';
 import balancesDeploys from '@airswap/balances/deploys';
 import { Swap } from '@airswap/libraries';
 import { createAsyncThunk } from '@reduxjs/toolkit';
