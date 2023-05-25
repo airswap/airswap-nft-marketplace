@@ -19,10 +19,10 @@ interface ConnectedCollectionWidgetProps {
 // eslint-disable-next-line @typescript-eslint/no-unused-vars, no-unused-vars
 const ConnectedCollectionWidget: FC<ConnectedCollectionWidgetProps> = ({ library, className = '' }) => {
   const dispatch = useAppDispatch();
-
-  const { collectionImage, collectionName } = useAppSelector((state) => state.config);
+  const {
+    collectionImage, collectionToken, collectionName, currencyToken,
+  } = useAppSelector((state) => state.config);
   const { isInitialized, orders, isLoading: isLoadingOrders } = useAppSelector((state) => state.indexer);
-
   const [searchInput, setSearchInput] = useState<string>('');
   const [tokens, setTokens] = useState<CollectionTokenInfo[]>([]);
   const [isLoadingMetadata, setIsLoadingMetadata] = useState(false);
@@ -41,6 +41,8 @@ const ConnectedCollectionWidget: FC<ConnectedCollectionWidgetProps> = ({ library
     if (isInitialized) {
       dispatch(getFilteredOrders({
         filter: {
+          signerTokens: [collectionToken],
+          senderTokens: [currencyToken],
           offset: 0,
           limit: 100,
         },
