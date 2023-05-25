@@ -19,7 +19,9 @@ export const useIndexers = (): void => {
 
   const sendAndClearLastOrder = async (lastOrder: FullOrder) => {
     if (!isInitialized) return;
-    await sendOrderToIndexers(lastOrder, urls);
+
+    sendOrderToIndexers(lastOrder, urls);
+
     dispatch(clearLastUserOrder());
   };
 

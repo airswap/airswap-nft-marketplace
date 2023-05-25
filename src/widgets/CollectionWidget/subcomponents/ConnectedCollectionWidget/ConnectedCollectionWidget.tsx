@@ -20,7 +20,10 @@ interface ConnectedCollectionWidgetProps {
 const ConnectedCollectionWidget: FC<ConnectedCollectionWidgetProps> = ({ library, className = '' }) => {
   const dispatch = useAppDispatch();
   const {
-    collectionImage, collectionToken, collectionName, currencyToken,
+    collectionImage,
+    collectionToken,
+    collectionName,
+    currencyToken,
   } = useAppSelector((state) => state.config);
   const { isInitialized, orders, isLoading: isLoadingOrders } = useAppSelector((state) => state.indexer);
   const [searchInput, setSearchInput] = useState<string>('');

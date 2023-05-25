@@ -4,10 +4,12 @@ import { FullOrder, IndexedOrder, OrderFilter } from '@airswap/types';
 import { createAsyncThunk } from '@reduxjs/toolkit';
 import { providers } from 'ethers';
 
+import { INDEXER_ORDER_RESPONSE_TIME_MS } from '../../../constants/indexer';
 import { AppDispatch, RootState } from '../../store';
 import {
   getOrdersFromServer,
   getServers,
+  getUndefinedAfterTimeout,
   isOrderResponse,
 } from './indexerHelpers';
 
@@ -39,7 +41,12 @@ FullOrder[],
 
   const servers = await getServers(indexer.urls);
 
-  const orderResponses = await Promise.all(servers.map(server => getOrdersFromServer(server, filter)));
+  const orderResponses = await Promise.all(
+    servers.map(server => Promise.race([
+      getOrdersFromServer(server, filter),
+      getUndefinedAfterTimeout(INDEXER_ORDER_RESPONSE_TIME_MS),
+    ])),
+  );
 
   const indexedOrders: Record<string, IndexedOrder<FullOrder>> = orderResponses
     .filter(isOrderResponse<FullOrder>)

@@ -14,7 +14,7 @@ export const getOrdersFromServer = async (server: Server, filter: OrderFilter): 
     return server.getOrders(filter);
   } catch (e: any) {
     console.error(
-      `[indexerSlice] Order indexing failed for ${server.locator}`,
+      `[getOrdersFromServer] Order indexing failed for ${server.locator}`,
       e.message || '',
     );
 
@@ -35,19 +35,19 @@ export const getServers = async (indexerUrls: string[]): Promise<Server[]> => {
 export const sendOrderToIndexers = async (
   order: FullOrder,
   indexerUrls: string[],
-) => {
+): Promise<void> => {
   const servers = await getServers(indexerUrls);
 
-  if (!servers.length) throw new Error('No indexer servers provided');
+  if (!servers.length) {
+    console.error('[sendOrderToIndexers] No indexer servers provided');
+  }
 
-  const addOrderPromises = servers.map((server) => server
+  servers.forEach((server) => server
     .addOrder(order)
     .catch((e: any) => {
       console.error(
-        `[indexerSlice] Order indexing failed for ${server.locator}`,
+        `[sendOrderToIndexers] Order indexing failed for ${server.locator}`,
         e.message || '',
       );
     }));
-
-  Promise.allSettled(addOrderPromises);
 };
