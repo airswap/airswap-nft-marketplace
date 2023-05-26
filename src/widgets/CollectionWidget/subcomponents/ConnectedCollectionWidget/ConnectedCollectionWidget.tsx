@@ -1,57 +1,53 @@
-import React, { FC, useEffect, useState } from 'react';
+import React, {
+  FC,
+  useEffect,
+  useMemo,
+  useState,
+} from 'react';
 
-import { CollectionTokenInfo } from '@airswap/types';
+import { TokenInfo } from '@airswap/types';
 import { Web3Provider } from '@ethersproject/providers';
 
 import NftCard from '../../../../components/NftCard/NftCard';
 import SearchInput from '../../../../components/SearchInput/SearchInput';
-import { getCollectionTokensInfoFromOrders } from '../../../../entities/CollectionToken/CollectionTokenHelpers';
+import {
+  getFullOrderReadableSenderAmountPlusTotalFees,
+} from '../../../../entities/FullOrder/FullOrderHelpers';
+import useCollectionTokens from '../../../../hooks/useCollectionTokens';
 import { useAppDispatch, useAppSelector } from '../../../../redux/hooks';
 import { getFilteredOrders } from '../../../../redux/stores/indexer/indexerApi';
 import { AppRoutes } from '../../../../routes';
 import CollectionPortrait from '../CollectionPortrait/CollectionPortrait';
 
 interface ConnectedCollectionWidgetProps {
+  currencyTokenInfo: TokenInfo;
   library: Web3Provider
   className?: string;
 }
 
 // eslint-disable-next-line @typescript-eslint/no-unused-vars, no-unused-vars
-const ConnectedCollectionWidget: FC<ConnectedCollectionWidgetProps> = ({ library, className = '' }) => {
+const ConnectedCollectionWidget: FC<ConnectedCollectionWidgetProps> = ({ currencyTokenInfo, library, className = '' }) => {
   const dispatch = useAppDispatch();
-  const {
-    collectionImage,
-    collectionToken,
-    collectionName,
-    currencyToken,
-  } = useAppSelector((state) => state.config);
+  const { collectionImage, collectionToken, collectionName } = useAppSelector((state) => state.config);
   const { isInitialized, orders, isLoading: isLoadingOrders } = useAppSelector((state) => state.indexer);
   const [searchInput, setSearchInput] = useState<string>('');
-  const [tokens, setTokens] = useState<CollectionTokenInfo[]>([]);
-  const [isLoadingMetadata, setIsLoadingMetadata] = useState(false);
-  const isLoading = isLoadingOrders && isLoadingMetadata;
-
-  useEffect(() => {
-    setIsLoadingMetadata(true);
-    getCollectionTokensInfoFromOrders(library, orders)
-      .then(value => {
-        setTokens(value);
-        setIsLoadingMetadata(false);
-      });
-  }, [orders]);
+  const isLoading = isLoadingOrders;
 
   useEffect(() => {
     if (isInitialized) {
       dispatch(getFilteredOrders({
         filter: {
           signerTokens: [collectionToken],
-          senderTokens: [currencyToken],
+          senderTokens: [currencyTokenInfo.address],
           offset: 0,
           limit: 100,
         },
       }));
     }
   }, [isInitialized]);
+
+  const tokenIds = useMemo(() => orders.map(order => +order.signer.id), [orders]);
+  const [tokens] = useCollectionTokens(collectionToken, tokenIds);
 
   return (
     <div className={`collection-widget ${className}`}>
@@ -64,26 +60,36 @@ const ConnectedCollectionWidget: FC<ConnectedCollectionWidgetProps> = ({ library
       <div className="collection-widget__content">
         <SearchInput
           placeholder="Search Collection"
+          onChange={e => setSearchInput(e.target.value)}
+          value={searchInput || ''}
           className="collection-widget__search-input"
-          onChange={(e) => setSearchInput(e.target.value)}
-          value={searchInput}
         />
         <div className="collection-widget__subtitle">NFTs for sale</div>
         <div className="collection-widget__filter-button" />
         <div className="collection-widget__nfts-container">
-          {tokens.map((token) => (
-            <NftCard
-              key={token.id}
-              imageURI={token.image}
-              name={token.name}
-              price="0"
-              to={`${AppRoutes.nftDetail}/${token.id}`}
-              className="collection-widget__nft-card"
-              symbol={token.name || 'AST'} // TODO: remove the backup symbol
-            />
-          ))}
+          {orders.map((order) => {
+            const orderToken = tokens.find(token => token.id === +order.signer.id);
+
+            if (!orderToken) {
+              return null;
+            }
+
+            const price = getFullOrderReadableSenderAmountPlusTotalFees(order, currencyTokenInfo);
+
+            return (
+              <NftCard
+                key={orderToken.id}
+                imageURI={orderToken.image}
+                price={price.toString()}
+                name={orderToken.name}
+                symbol={currencyTokenInfo.symbol}
+                to={`${AppRoutes.nftDetail}/${orderToken.id}`}
+                className="collection-widget__nft-card"
+              />
+            );
+          })}
         </div>
-        {isLoading && <div className="collection-widget__nft-loader">Fetching colelction NFTs ...</div>}
+        {isLoading && <div className="collection-widget__nft-loader">Fetching colllection orders ...</div>}
       </div>
     </div>
   );

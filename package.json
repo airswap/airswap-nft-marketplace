@@ -17,7 +17,7 @@
     "@airswap/utils": "4.0.6",
     "@ethersproject/abi": "^5.7.0",
     "@ethersproject/providers": "^5.7.2",
-    "@greypixel_/nicenumbers": "^0.0.17",
+    "@greypixel_/nicenumbers": "^0.0.18",
     "@openzeppelin/contracts": "^4.8.2",
     "@react-hookz/web": "^14.2.2",
     "@reduxjs/toolkit": "^1.9.1",

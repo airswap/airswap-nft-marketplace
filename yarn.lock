@@ -1637,10 +1637,10 @@
   resolved "https://registry.yarnpkg.com/@gar/promisify/-/promisify-1.1.3.tgz#555193ab2e3bb3b6adc3d551c9c030d9e860daf6"
   integrity sha512-k2Ty1JcVojjJFwrg/ThKi2ujJ7XNLYaFGNB/bWT9wGR+oSMJHMa5w+CUq6p/pVrKeNNgA7pCqEcjSnHVoqJQFw==
 
-"@greypixel_/nicenumbers@^0.0.17":
-  version "0.0.17"
-  resolved "https://registry.yarnpkg.com/@greypixel_/nicenumbers/-/nicenumbers-0.0.17.tgz#0f403afacf6169e1f0c9a49a8eb47bd98cf2979d"
-  integrity sha512-ans31W0ByV0EKO5tQJFrTVKnqXISQ9ycSkR4z9pQKOSRmbfZg62jLEvuCLQKFmNwZ4Jb5hYQYt2Qe7CmkiuZTg==
+"@greypixel_/nicenumbers@^0.0.18":
+  version "0.0.18"
+  resolved "https://registry.yarnpkg.com/@greypixel_/nicenumbers/-/nicenumbers-0.0.18.tgz#59b60cb68fe4e5d4e6c8b5ae5978e8978be63fc9"
+  integrity sha512-i1pK9UGuhBac6FOJc9N79LuYXiancKrLmLYqYdaBMO368+zjlQWDDUXzlmyvQaAu/kXGL7FHkWpSOR0R5vKyYw==
 
 "@hapi/address@2.x.x":
   version "2.1.4"
