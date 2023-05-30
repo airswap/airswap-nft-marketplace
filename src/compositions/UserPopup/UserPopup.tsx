@@ -36,10 +36,10 @@ const UserPopup: FC<UserPopupWithRefProps> = forwardRef(({
       className="user-popup__wallet-info"
       avatarClassName="user-popup__wallet-info-avatar"
     />
-    <NavLink to={`/${AppRoutes.profile}`} className="user-popup__nav-link">Profile</NavLink>
-    <NavLink to={`/${AppRoutes.profile}`} className="user-popup__nav-link">NFTs</NavLink>
-    <NavLink to={`/${AppRoutes.profile}`} className="user-popup__nav-link">Listed</NavLink>
-    <NavLink to={`/${AppRoutes.profile}`} className="user-popup__nav-link">Activity</NavLink>
+    <NavLink to={`/${AppRoutes.profile}/${address}`} className="user-popup__nav-link">Profile</NavLink>
+    <NavLink to={`/${AppRoutes.profile}/${address}`} className="user-popup__nav-link">NFTs</NavLink>
+    <NavLink to={`/${AppRoutes.profile}/${address}`} className="user-popup__nav-link">Listed</NavLink>
+    <NavLink to={`/${AppRoutes.profile}/${address}`} className="user-popup__nav-link">Activity</NavLink>
   </div>
 ));
 
