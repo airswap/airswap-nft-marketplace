@@ -90,8 +90,8 @@ const ProfileWidget: FC<ProfileWidgetProps> = ({ className = '' }) => {
                 name={nft.name}
                 price="12345"
                 to={`/${AppRoutes.nftDetail}/${nft.id}`}
+                symbol={currencyTokenInfo?.symbol}
                 className="profile-widget__nft-card"
-                symbol="AST" // TODO: remove the backup symbol
               />
             ))}
           </div>
