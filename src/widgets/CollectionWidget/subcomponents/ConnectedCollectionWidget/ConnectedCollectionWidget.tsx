@@ -9,10 +9,9 @@ import { TokenInfo } from '@airswap/types';
 import { Web3Provider } from '@ethersproject/providers';
 
 import NftCard from '../../../../components/NftCard/NftCard';
+import NftCardSkeleton from '../../../../components/NftCardSkeleton/NftCardSkeleton';
 import SearchInput from '../../../../components/SearchInput/SearchInput';
-import {
-  getFullOrderReadableSenderAmountPlusTotalFees,
-} from '../../../../entities/FullOrder/FullOrderHelpers';
+import { getFullOrderReadableSenderAmountPlusTotalFees } from '../../../../entities/FullOrder/FullOrderHelpers';
 import useCollectionTokens from '../../../../hooks/useCollectionTokens';
 import { useAppDispatch, useAppSelector } from '../../../../redux/hooks';
 import { getFilteredOrders } from '../../../../redux/stores/indexer/indexerApi';
@@ -40,7 +39,7 @@ const ConnectedCollectionWidget: FC<ConnectedCollectionWidgetProps> = ({ currenc
           signerTokens: [collectionToken],
           senderTokens: [currencyTokenInfo.address],
           offset: 0,
-          limit: 100,
+          limit: 4,
         },
       }));
     }
@@ -67,23 +66,30 @@ const ConnectedCollectionWidget: FC<ConnectedCollectionWidgetProps> = ({ currenc
         <div className="collection-widget__subtitle">NFTs for sale</div>
         <div className="collection-widget__filter-button" />
         <div className="collection-widget__nfts-container">
-          {orders.map((order) => {
+          {orders.map(order => {
             const orderToken = tokens.find(token => token.id === +order.signer.id);
+            const price = getFullOrderReadableSenderAmountPlusTotalFees(order, currencyTokenInfo);
 
             if (!orderToken) {
-              return null;
+              return (
+                <NftCardSkeleton
+                  key={order.nonce}
+                  price={price.toString()}
+                  symbol={currencyTokenInfo.symbol}
+                  to={`${AppRoutes.nftDetail}/${order.signer.id}`}
+                  className="collection-widget__nft-card"
+                />
+              );
             }
-
-            const price = getFullOrderReadableSenderAmountPlusTotalFees(order, currencyTokenInfo);
 
             return (
               <NftCard
-                key={orderToken.id}
+                key={order.nonce}
                 imageURI={orderToken.image}
                 price={price.toString()}
                 name={orderToken.name}
                 symbol={currencyTokenInfo.symbol}
-                to={`${AppRoutes.nftDetail}/${orderToken.id}`}
+                to={`${AppRoutes.nftDetail}/${order.signer.id}`}
                 className="collection-widget__nft-card"
               />
             );
