@@ -12,17 +12,8 @@ export const fetchOwnedTokenMeta = createAsyncThunk<
 CollectionTokenInfo[], FetchOwnedTokenMetaParams>(
   'nftDetail/fetchNftMeta',
   async ({ library, collectionToken, tokenIds }) => {
-    const tokenInfo: CollectionTokenInfo[] = [];
-    // eslint-disable-next-line no-restricted-syntax
-    for (const tokenId of tokenIds) {
-      try {
-        // eslint-disable-next-line no-await-in-loop
-        const tokenMeta = await getCollectionTokenInfo(library, collectionToken, tokenId.toString());
-        tokenInfo.push(tokenMeta);
-      } catch (e) {
-        throw new Error(`Unable to fetch data for ${collectionToken} with id ${tokenIds}`);
-      }
-    }
-    return tokenInfo;
+    const responses = await Promise.all(tokenIds.map(tokenId => getCollectionToken(library, collectionToken, tokenId)));
+
+    return responses.filter(token => token !== undefined) as CollectionTokenInfo[];
   },
 );
