@@ -37,17 +37,6 @@ const ProfileWidget: FC<ProfileWidgetProps> = ({ className = '' }) => {
   const { id } = useParams();
   const navigate = useNavigate();
 
-  useEffect(() => {
-    // If there is no id param then we should navigate to the current user.
-    // This is useful when the user logs out as we can continue to show them their profile.
-    if (!id && account) {
-      navigate(`/${AppRoutes.profile}/${account}`);
-    }
-    // If there is no id param & no user then we have nothing to show, redirect home.
-    if (!id && !account) {
-      navigate('/');
-    }
-  }, [id, account]);
 
   const dispatch = useAppDispatch();
   const ensAddress = useEnsAddress(account || '');
