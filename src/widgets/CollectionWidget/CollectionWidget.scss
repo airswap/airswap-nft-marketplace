@@ -58,7 +58,7 @@
     }
 
     &__nfts-container {
-        @extend %flex-align-center;
+        @extend %nfts-grid;
     }
 
     &__loader {
