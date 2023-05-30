@@ -61,6 +61,10 @@
         &--is-uppercase {
             text-transform: uppercase;
         }
+        
+        &:disabled {
+            opacity: 1;
+        }
     }
 
     &__content {
