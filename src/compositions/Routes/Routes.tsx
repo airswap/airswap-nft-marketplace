@@ -32,11 +32,12 @@ const Routes: FC = () => {
     },
     {
       path: `/${AppRoutes.profile}`,
-      element: <ProfilePage />,
-    },
-    {
-      path: `/${AppRoutes.profile}/:id`,
-      element: <ProfilePage />,
+      children: [
+        {
+          path: ':account',
+          element: <ProfilePage />,
+        },
+      ],
     },
     {
       path: `/${AppRoutes.swap}`,
