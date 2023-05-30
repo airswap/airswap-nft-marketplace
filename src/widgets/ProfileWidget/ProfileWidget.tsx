@@ -82,7 +82,6 @@ const ProfileWidget: FC<ProfileWidgetProps> = ({ className = '' }) => {
           <Input className="profile-widget__search-bar" placeholder="Search NFT" onChange={e => setSearchValue(e.target.value)} />
         </div>
         <div className="profile-widget__collections">
-          <p className="profile-widget__collections-title">{collectionName}</p>
           <div className="profile-widget__nfts-container">
             {filteredNfts.map((nft) => (
               <NftCard
