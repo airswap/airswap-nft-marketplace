@@ -1,5 +1,5 @@
 import { getCollectionTokenInfo } from '@airswap/metadata';
-import { CollectionTokenInfo } from '@airswap/types';
+import { CollectionTokenInfo, FullOrder } from '@airswap/types';
 import * as ethers from 'ethers';
 
 export const getCollectionToken = async (library: ethers.providers.BaseProvider, address: string, tokenId: number): Promise<CollectionTokenInfo | undefined> => {
@@ -25,3 +25,9 @@ export const isCollectionTokenInfo = (resource: any): resource is CollectionToke
     && typeof resource.uri === 'string'
     && resource.attributes && Array.isArray(resource.attributes)
 );
+
+export const getCollectionTokensInfoFromOrders = async (library: ethers.providers.BaseProvider, orders: FullOrder[]): Promise<CollectionTokenInfo[]> => {
+  const results = await Promise.all(orders.map(order => getCollectionToken(library, order.signer.token, +order.signer.id)));
+
+  return results.filter(isCollectionTokenInfo) as CollectionTokenInfo[];
+};
