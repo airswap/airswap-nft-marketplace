@@ -38,7 +38,7 @@ const ProfileWidget: FC<ProfileWidgetProps> = ({ className = '' }) => {
   const [searchValue, setSearchValue] = useState('');
 
   const { library, account, deactivate } = useWeb3React<Web3Provider>();
-  const { id } = useParams();
+  const { account: accountId } = useParams();
 
   const dispatch = useAppDispatch();
   const ensAddress = useEnsAddress(account || '');
@@ -68,7 +68,8 @@ const ProfileWidget: FC<ProfileWidgetProps> = ({ className = '' }) => {
         avatarUrl={avatarUrl}
         backgroundImage={collectionImage}
         ensAddress={ensAddress}
-        address={id || account || ''}
+        address={account || ''}
+        showLogOutButton={account === accountId}
         onLogoutButtonClick={handleDisconnectClick}
       />
       <div className="profile-widget__button-group-container">

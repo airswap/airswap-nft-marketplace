@@ -1,7 +1,5 @@
 import React, { FC } from 'react';
 
-import { Web3Provider } from '@ethersproject/providers';
-import { useWeb3React } from '@web3-react/core';
 import classNames from 'classnames';
 
 import IconButton from '../../compositions/IconButton/IconButton';
@@ -15,7 +13,8 @@ interface WalletInfoProps {
   avatarUrl?: string;
   address?: string;
   ensAddress?: string;
-  onLogoutButtonClick: () => void;
+  showLogOutButton?: boolean;
+  onLogoutButtonClick?: () => void;
   className?: string;
   avatarClassName?: string;
 }
@@ -25,6 +24,7 @@ const WalletInfo: FC<WalletInfoProps> = ({
   avatarUrl = '',
   address = '',
   ensAddress = '',
+  showLogOutButton = false,
   onLogoutButtonClick,
   className = '',
   avatarClassName = '',
@@ -33,10 +33,6 @@ const WalletInfo: FC<WalletInfoProps> = ({
     'wallet-info--is-banner': isBanner,
     'wallet-info--is-menu': !isBanner,
   }, className);
-
-  // Check if the supplied ID is the active user
-  const { account } = useWeb3React<Web3Provider>();
-  const isActiveUser = !address || address === account;
 
   return (
     <div className={walletInfoClassName}>
@@ -53,7 +49,7 @@ const WalletInfo: FC<WalletInfoProps> = ({
           iconClassName="wallet-info__icon"
         />
       )}
-      {isActiveUser && (
+      {showLogOutButton && (
         <IconButton
           hideLabel
           icon="logout"

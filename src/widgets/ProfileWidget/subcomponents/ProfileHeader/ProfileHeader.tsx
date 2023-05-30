@@ -9,6 +9,7 @@ interface ProfileHeaderProp {
   address?: string;
   ensAddress?: string;
   backgroundImage?: string;
+  showLogOutButton?: boolean;
   onLogoutButtonClick: () => void;
   className?: string;
 }
@@ -18,6 +19,7 @@ const ProfileHeader: FC<ProfileHeaderProp> = ({
   ensAddress,
   address,
   backgroundImage,
+  showLogOutButton = false,
   onLogoutButtonClick,
   className = '',
 }) => (
@@ -27,6 +29,7 @@ const ProfileHeader: FC<ProfileHeaderProp> = ({
       avatarUrl={avatarUrl}
       ensAddress={ensAddress}
       address={address}
+      showLogOutButton={showLogOutButton}
       onLogoutButtonClick={onLogoutButtonClick}
       className="profile-header__wallet-info"
     />
