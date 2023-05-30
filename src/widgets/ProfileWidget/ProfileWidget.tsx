@@ -1,5 +1,8 @@
 import React, {
-  FC, useEffect, useMemo, useState,
+  FC,
+  useEffect,
+  useMemo,
+  useState,
 } from 'react';
 
 import { CollectionTokenInfo } from '@airswap/types';
