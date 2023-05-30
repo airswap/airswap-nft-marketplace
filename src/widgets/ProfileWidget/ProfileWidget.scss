@@ -95,10 +95,4 @@
         @extend %flex-align-center;
     }
 
-    &__collections-title {
-        font-size: 0.75rem;
-        font-weight: var(--fw-700);
-        color: var(--c-light-grey);
-        padding-bottom: 0.75rem;
-    }
 }
