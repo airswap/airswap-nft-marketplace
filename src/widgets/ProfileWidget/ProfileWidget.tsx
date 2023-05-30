@@ -5,7 +5,7 @@ import React, {
 import { CollectionTokenInfo } from '@airswap/types';
 import { Web3Provider } from '@ethersproject/providers';
 import { useWeb3React } from '@web3-react/core';
-import { useNavigate, useParams } from 'react-router-dom';
+import { useParams } from 'react-router-dom';
 
 import Button from '../../components/Button/Button';
 import { IconSearch } from '../../components/Icon/icons';
@@ -25,18 +25,17 @@ interface ProfileWidgetProps {
 }
 
 const ProfileWidget: FC<ProfileWidgetProps> = ({ className = '' }) => {
-  const { collectionToken, collectionImage, collectionName } = useAppSelector((state) => state.config);
+  const { collectionToken, collectionImage } = useAppSelector((state) => state.config);
   const { avatarUrl } = useAppSelector((state) => state.user);
   const { tokens } = useAppSelector((state) => state.balances);
   const { isLoading, ownedTokenMeta } = useAppSelector((state) => state.profile);
+  const { currencyTokenInfo } = useAppSelector((state) => state.metadata);
 
   const [ownedNfts, setOwnedNfts] = useState<CollectionTokenInfo[]>([]);
   const [searchValue, setSearchValue] = useState('');
 
   const { library, account, deactivate } = useWeb3React<Web3Provider>();
   const { id } = useParams();
-  const navigate = useNavigate();
-
 
   const dispatch = useAppDispatch();
   const ensAddress = useEnsAddress(account || '');
