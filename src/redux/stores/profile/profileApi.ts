@@ -1,7 +1,8 @@
-import { getCollectionTokenInfo } from '@airswap/metadata';
 import { CollectionTokenInfo } from '@airswap/types';
 import { Web3Provider } from '@ethersproject/providers';
 import { createAsyncThunk } from '@reduxjs/toolkit';
+
+import { getCollectionToken } from '../../../entities/CollectionToken/CollectionTokenHelpers';
 
 interface FetchOwnedTokenMetaParams {
   library: Web3Provider;

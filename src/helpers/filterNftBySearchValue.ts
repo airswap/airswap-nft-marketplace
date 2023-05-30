@@ -1,7 +1,5 @@
 import { CollectionTokenInfo } from '@airswap/types';
 
-import { CollectionTokenInfo } from '@airswap/types';
-
 const filterNftBySearchValue = (value: string, nft: CollectionTokenInfo): boolean => {
   if (value === '') return true;
 
