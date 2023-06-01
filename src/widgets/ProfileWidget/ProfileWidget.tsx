@@ -11,9 +11,10 @@ import { useWeb3React } from '@web3-react/core';
 import { useParams } from 'react-router-dom';
 
 import Button from '../../components/Button/Button';
-import { IconSearch } from '../../components/Icon/icons';
-import Input from '../../components/Input/Input';
+// import { IconSearch } from '../../components/Icon/icons';
+// import Input from '../../components/Input/Input';
 import NftCard from '../../components/NftCard/NftCard';
+import SearchInput from '../../components/SearchInput/SearchInput';
 import filterNftBySearchValue from '../../helpers/filterNftBySearchValue';
 import useEnsAddress from '../../hooks/useEnsAddress';
 import { useAppDispatch, useAppSelector } from '../../redux/hooks';
@@ -80,10 +81,12 @@ const ProfileWidget: FC<ProfileWidgetProps> = ({ className = '' }) => {
         </div>
       </div>
       <div className="profile-widget__content">
-        <div className="profile-widget__search-bar-container">
-          <IconSearch className="profile-widget__search-bar-icon" />
-          <Input className="profile-widget__search-bar" placeholder="Search NFT" onChange={e => setSearchValue(e.target.value)} />
-        </div>
+        <SearchInput
+          placeholder="Search NFT"
+          onChange={(e) => setSearchValue(e.target.value)}
+          value={searchValue}
+          className="profile-widget__search-input"
+        />
         <div className="profile-widget__collections">
           <div className="profile-widget__nfts-container">
             {filteredNfts.map((nft) => (

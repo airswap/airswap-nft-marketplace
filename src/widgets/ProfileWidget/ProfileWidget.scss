@@ -21,7 +21,7 @@
 
         @include for-size(desktop-up) {
             width: 19.5rem;
-            transform: translateY(-2.56rem);
+            margin-top: -2.5rem;
         }
     }
 
@@ -67,32 +67,20 @@
         }
     }
 
+    &__search-input {
+        max-width: 23.5rem;
+        margin: 1rem 0 3rem;
+
+        @include for-size(phone-only) {
+            max-width: 100%;
+        }
+    }
 
     &__content {
 
         @include for-size(phone-only) {
             padding: 0 var(--page-padding);
         }
-    }
-
-    &__search-bar-container {
-        position: relative;
-        padding: 1.5rem 0;
-    }
-
-    &__search-bar-icon {
-        position: absolute;
-        top: 2.25rem;
-        left: 1rem;
-        width: 1.125rem;
-        height: 1.125rem;
-        fill: var(--c-light-grey);
-    }
-
-    &__search-bar {
-        height: 2.5rem;
-        width: 100%;
-        padding-left: 3rem;
     }
 
     &__nfts-container {
