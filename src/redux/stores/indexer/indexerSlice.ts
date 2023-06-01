@@ -3,15 +3,15 @@ import { createSlice, PayloadAction } from '@reduxjs/toolkit';
 import { initialize } from './indexerApi';
 
 export interface IndexerState {
-  urls: string[];
-  isLoading: boolean;
   isInitialized: boolean;
+  isLoading: boolean;
+  urls: string[];
 }
 
 const initialState: IndexerState = {
-  urls: [],
-  isLoading: false,
   isInitialized: false,
+  isLoading: false,
+  urls: [],
 };
 
 export const indexerSlice = createSlice({
@@ -21,6 +21,7 @@ export const indexerSlice = createSlice({
   extraReducers: (builder) => {
     builder.addCase(initialize.fulfilled, (state, action: PayloadAction<string[]>): IndexerState => ({
       ...state,
+      // TODO: Remove this when merge branch
       isInitialized: true,
       urls: [...action.payload, 'http://localhost:4001'],
     }));

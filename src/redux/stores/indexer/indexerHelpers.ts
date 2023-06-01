@@ -1,5 +1,12 @@
 import { Server } from '@airswap/libraries';
-import { FullOrder, OrderFilter, OrderResponse } from '@airswap/types';
+import {
+  FullOrder,
+  IndexedOrder,
+  OrderFilter,
+  OrderResponse,
+} from '@airswap/types';
+
+import { INDEXER_ORDER_RESPONSE_TIME_MS } from '../../../constants/indexer';
 
 export const isPromiseFulfilledResult = <T>(result: any): result is PromiseFulfilledResult<T> => result && result.status === 'fulfilled' && 'value' in result;
 
@@ -50,4 +57,28 @@ export const sendOrderToIndexers = async (
         e.message || '',
       );
     }));
+};
+
+export const getOrdersFromIndexers = async (filter: OrderFilter, indexerUrls: string[]): Promise<FullOrder[]> => {
+  if (!indexerUrls.length) {
+    console.error('[getOrdersFromIndexers] No indexer urls provided');
+  }
+
+  const servers = await getServers(indexerUrls);
+
+  const orderResponses = await Promise.all(
+    servers.map(server => Promise.race([
+      getOrdersFromServer(server, filter),
+      getUndefinedAfterTimeout(INDEXER_ORDER_RESPONSE_TIME_MS),
+    ])),
+  );
+
+  const indexedOrders: Record<string, IndexedOrder<FullOrder>> = orderResponses
+    .filter(isOrderResponse<FullOrder>)
+    .reduce((total, orderResponse) => ({
+      ...total,
+      ...orderResponse.orders,
+    }), {});
+
+  return Object.values(indexedOrders).map(indexedOrder => indexedOrder.order);
 };

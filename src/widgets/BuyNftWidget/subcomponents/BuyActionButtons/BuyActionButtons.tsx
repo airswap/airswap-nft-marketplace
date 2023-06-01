@@ -15,6 +15,7 @@ interface ActionButtonsProps {
   isOrderExpired: boolean;
   isOrderNonceUsed: boolean;
   ownerIsAccount: boolean;
+  account: string;
   collectionTokenInfo: CollectionTokenInfo;
   currencyTokenSymbol: string;
   state: BuyNftState;
@@ -28,6 +29,7 @@ const BuyActionButtons: FC<ActionButtonsProps> = ({
   isOrderExpired,
   isOrderNonceUsed,
   ownerIsAccount,
+  account,
   collectionTokenInfo,
   currencyTokenSymbol,
   state,
@@ -99,7 +101,7 @@ const BuyActionButtons: FC<ActionButtonsProps> = ({
     if (state === BuyNftState.success) {
       return (
         <NavLink
-          to={`/${AppRoutes.profile}`}
+          to={`/${AppRoutes.profile}/${account}`}
           className="buy-action-buttons__action-button"
         >
           View in my profile

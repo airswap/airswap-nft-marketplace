@@ -1,10 +1,12 @@
-import React, { FC } from 'react';
+import React, { FC, useEffect } from 'react';
 
 import { useWeb3React } from '@web3-react/core';
+import { useParams } from 'react-router-dom';
 
 import useCollectionToken from '../../hooks/useCollectionToken';
 import useFullOrderNonceUsed from '../../hooks/useFullOrderNonceUsed';
-import { useAppSelector } from '../../redux/hooks';
+import { useAppDispatch, useAppSelector } from '../../redux/hooks';
+import { getNftOrder } from '../../redux/stores/nftDetail/nftDetailApi';
 import ConnectedBuyNftWidget from './subcomponents/ConnectedBuyNftWidget/ConnectedBuyNftWidget';
 import DisconnectedBuyNftWidget from './subcomponents/DisconnectedBuyNftWidget/DisconnectedBuyNftWidget';
 
@@ -15,23 +17,38 @@ interface BuyNftWidgetProps {
 }
 
 const BuyNftWidget: FC<BuyNftWidgetProps> = ({ className = '' }) => {
-  const { account, chainId, library } = useWeb3React();
-  const { isLoading: isMetadataLoading, currencyTokenInfo } = useAppSelector(state => state.metadata);
-  const { lastUserOrder } = useAppSelector((state) => state.listNft);
-  const { collectionToken } = useAppSelector((state) => state.config);
+  const dispatch = useAppDispatch();
 
-  const id = lastUserOrder ? parseInt(lastUserOrder?.signer.id, 10) : 1;
-  const [collectionTokenInfo, isCollectionTokenInfoLoading] = useCollectionToken(collectionToken, id);
-  const [isNonceUsed, isNonceUsedLoading] = useFullOrderNonceUsed(lastUserOrder);
-  const isLoading = isMetadataLoading || isCollectionTokenInfoLoading || isNonceUsedLoading;
+  const { account, chainId, library } = useWeb3React();
+  const { id: paramsId } = useParams<{ id: string }>();
+  const tokenId = paramsId ? +paramsId : 0;
+
+  const { collectionToken } = useAppSelector((state) => state.config);
+  const { isInitialized } = useAppSelector(state => state.indexer);
+  const { isLoading: isMetadataLoading, currencyTokenInfo } = useAppSelector(state => state.metadata);
+  const { order, isLoading: isNftDetailLoading, isOrderNotFound } = useAppSelector((state) => state.nftDetail);
+
+  const [collectionTokenInfo, isCollectionTokenInfoLoading] = useCollectionToken(collectionToken, tokenId);
+  const [isNonceUsed, isNonceUsedLoading] = useFullOrderNonceUsed(order);
+  const isLoading = isMetadataLoading || isCollectionTokenInfoLoading || isNonceUsedLoading || isNftDetailLoading;
+
+  useEffect(() => {
+    if (!isInitialized || !tokenId) {
+      return;
+    }
+
+    dispatch(getNftOrder({ tokenId: +tokenId }));
+  }, [isInitialized]);
 
   if (
     !isLoading
+    && !isOrderNotFound
     && account
     && chainId
     && collectionTokenInfo
     && currencyTokenInfo
-    && lastUserOrder
+    && order
+    && +order.signer.id === tokenId
     && library
   ) {
     return (
@@ -41,7 +58,7 @@ const BuyNftWidget: FC<BuyNftWidgetProps> = ({ className = '' }) => {
         chainId={chainId}
         collectionTokenInfo={collectionTokenInfo}
         currencyTokenInfo={currencyTokenInfo}
-        fullOrder={lastUserOrder}
+        fullOrder={order}
         library={library}
         className={className}
       />
@@ -51,7 +68,8 @@ const BuyNftWidget: FC<BuyNftWidgetProps> = ({ className = '' }) => {
   return (
     <DisconnectedBuyNftWidget
       isLoading={isLoading}
-      nftId={id}
+      isOrderNotFound={isOrderNotFound}
+      nftId={tokenId}
       className={className}
     />
   );

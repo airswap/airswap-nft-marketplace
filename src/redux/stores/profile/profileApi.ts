@@ -1,20 +1,18 @@
-import { CollectionTokenInfo } from '@airswap/types';
-import { Web3Provider } from '@ethersproject/providers';
+import { FullOrder, OrderFilter } from '@airswap/types';
 import { createAsyncThunk } from '@reduxjs/toolkit';
 
-import { getCollectionToken } from '../../../entities/CollectionToken/CollectionTokenHelpers';
+import { AppDispatch, RootState } from '../../store';
+import { getOrdersFromIndexers } from '../indexer/indexerHelpers';
 
-interface FetchOwnedTokenMetaParams {
-  library: Web3Provider;
-  collectionToken: string;
-  tokenIds: number[];
+export const getProfileOrders = createAsyncThunk<
+FullOrder[],
+OrderFilter,
+{
+  dispatch: AppDispatch;
+  state: RootState;
 }
-export const fetchOwnedTokenMeta = createAsyncThunk<
-CollectionTokenInfo[], FetchOwnedTokenMetaParams>(
-  'nftDetail/fetchNftMeta',
-  async ({ library, collectionToken, tokenIds }) => {
-    const responses = await Promise.all(tokenIds.map(tokenId => getCollectionToken(library, collectionToken, tokenId)));
+>('profile/getProfileOrders', async (filter, { getState }) => {
+  const { indexer } = getState();
 
-    return responses.filter(token => token !== undefined) as CollectionTokenInfo[];
-  },
-);
+  return getOrdersFromIndexers(filter, indexer.urls);
+});

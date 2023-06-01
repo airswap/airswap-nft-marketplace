@@ -24,11 +24,9 @@ const NftCard = ({
     <img className="nft-card__img" src={imageURI} alt={name} />
     <div className="nft-card__info-wrapper">
       <h3 className="nft-card__name">{name}</h3>
-      {(price && symbol) && (
-        <h4 className="nft-card__price">
-          {`${price} ${symbol}`}
-        </h4>
-      )}
+      <h4 className="nft-card__price">
+        {(price && symbol) ? `${price} ${symbol}` : <>&nbsp;</>}
+      </h4>
     </div>
   </NavLink>
 );

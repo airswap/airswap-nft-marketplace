@@ -2,7 +2,7 @@ import { FullOrder } from '@airswap/types';
 import { createSlice, PayloadAction } from '@reduxjs/toolkit';
 
 import { INDEXER_ORDERS_OFFSET } from '../../../constants/indexer';
-import { getFilteredOrders } from './collectionApi';
+import { getCollectionOrders } from './collectionApi';
 
 export interface CollectionState {
   isTotalOrdersReached: boolean;
@@ -31,7 +31,7 @@ export const collectionSlice = createSlice({
     }),
   },
   extraReducers: (builder) => {
-    builder.addCase(getFilteredOrders.fulfilled, (state, action: PayloadAction<FullOrder[]>): CollectionState => {
+    builder.addCase(getCollectionOrders.fulfilled, (state, action: PayloadAction<FullOrder[]>): CollectionState => {
       const newOrders = [
         ...state.orders,
         ...action.payload,
@@ -45,11 +45,11 @@ export const collectionSlice = createSlice({
         orders: newOrders,
       };
     });
-    builder.addCase(getFilteredOrders.pending, (state): CollectionState => ({
+    builder.addCase(getCollectionOrders.pending, (state): CollectionState => ({
       ...state,
       isLoading: true,
     }));
-    builder.addCase(getFilteredOrders.rejected, (state): CollectionState => ({
+    builder.addCase(getCollectionOrders.rejected, (state): CollectionState => ({
       ...state,
       isLoading: false,
     }));

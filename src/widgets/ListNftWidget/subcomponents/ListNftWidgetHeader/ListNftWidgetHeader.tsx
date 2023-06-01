@@ -1,7 +1,6 @@
 import React, { FC } from 'react';
 
 import IconNavLink from '../../../../compositions/IconNavLink/IconNavLink';
-import { AppRoutes } from '../../../../routes';
 
 import './ListNftWidgetHeader.scss';
 
@@ -17,7 +16,7 @@ const ListNftWidgetHeader: FC<ListNftWidgetHeaderProps> = ({ title, className = 
       hideLabel
       icon="close"
       text="Back"
-      to={`/${AppRoutes.nftDetail}`}
+      to="/"
       className="list-nft-widget-header__back-button"
     />
   </div>

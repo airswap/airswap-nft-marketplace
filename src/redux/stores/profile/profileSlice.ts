@@ -1,54 +1,40 @@
-import { CollectionTokenInfo } from '@airswap/types';
-import { createSlice, PayloadAction } from '@reduxjs/toolkit';
+import { FullOrder } from '@airswap/types';
+import { createSlice } from '@reduxjs/toolkit';
 
-import { fetchOwnedTokenMeta } from './profileApi';
+import { getProfileOrders } from './profileApi';
 
 export interface ProfileState {
   isLoading: boolean;
-  ownedTokenMeta: CollectionTokenInfo[];
+  orders: FullOrder[];
 }
 
 const initialState: ProfileState = {
   isLoading: false,
-  ownedTokenMeta: [],
+  orders: [],
 };
 
 const profileSlice = createSlice({
   name: 'profile',
   initialState,
-  reducers: {
-    setOwnedTokenMeta: (state, action: PayloadAction<string>) => ({
-      ...state,
-      selectedTokenId: action.payload,
-    }),
-    setError: (state, action: PayloadAction<string>) => ({
-      ...state,
-      error: {
-        hasError: true,
-        message: action.payload,
-      },
-    }),
-  },
+  reducers: {},
   extraReducers: builder => {
-    builder.addCase(fetchOwnedTokenMeta.pending, state => ({
+    builder.addCase(getProfileOrders.pending, (state): ProfileState => ({
       ...state,
       isLoading: true,
     }));
 
-    builder.addCase(fetchOwnedTokenMeta.fulfilled, (state, action) => ({
+    builder.addCase(getProfileOrders.fulfilled, (state, action): ProfileState => ({
       ...state,
       isLoading: false,
-      ownedTokenMeta: action.payload,
+      orders: action.payload,
     }));
 
-    builder.addCase(fetchOwnedTokenMeta.rejected, (_state, action) => {
+    builder.addCase(getProfileOrders.rejected, (state, action): ProfileState => {
       console.error('fetchNftMeta.rejected', action);
+
+      return state;
     });
   },
 });
-
-export const {
-  setOwnedTokenMeta, setError,
-} = profileSlice.actions;
 
 export default profileSlice.reducer;

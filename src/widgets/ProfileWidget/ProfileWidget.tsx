@@ -5,20 +5,19 @@ import React, {
   useState,
 } from 'react';
 
-import { CollectionTokenInfo } from '@airswap/types';
 import { Web3Provider } from '@ethersproject/providers';
 import { useWeb3React } from '@web3-react/core';
 import { useParams } from 'react-router-dom';
 
 import Button from '../../components/Button/Button';
-// import { IconSearch } from '../../components/Icon/icons';
-// import Input from '../../components/Input/Input';
 import NftCard from '../../components/NftCard/NftCard';
 import SearchInput from '../../components/SearchInput/SearchInput';
-import filterNftBySearchValue from '../../helpers/filterNftBySearchValue';
+import { filterCollectionTokenBySearchValue } from '../../entities/CollectionToken/CollectionTokenHelpers';
+import { getFullOrderReadableSenderAmountPlusTotalFees } from '../../entities/FullOrder/FullOrderHelpers';
+import useCollectionTokens from '../../hooks/useCollectionTokens';
 import useEnsAddress from '../../hooks/useEnsAddress';
 import { useAppDispatch, useAppSelector } from '../../redux/hooks';
-import { fetchOwnedTokenMeta } from '../../redux/stores/profile/profileApi';
+import { getProfileOrders } from '../../redux/stores/profile/profileApi';
 import { AppRoutes } from '../../routes';
 import ProfileHeader from './subcomponents/ProfileHeader/ProfileHeader';
 
@@ -29,35 +28,37 @@ interface ProfileWidgetProps {
 }
 
 const ProfileWidget: FC<ProfileWidgetProps> = ({ className = '' }) => {
+  const dispatch = useAppDispatch();
+
+  const { account, deactivate } = useWeb3React<Web3Provider>();
+  const { account: paramsAccount } = useParams();
+
+  const { isInitialized } = useAppSelector((state) => state.indexer);
   const { collectionToken, collectionImage } = useAppSelector((state) => state.config);
   const { avatarUrl } = useAppSelector((state) => state.user);
-  const { tokens } = useAppSelector((state) => state.balances);
-  const { isLoading, ownedTokenMeta } = useAppSelector((state) => state.profile);
+  const { tokens: ownedTokenIds } = useAppSelector((state) => state.balances);
   const { currencyTokenInfo } = useAppSelector((state) => state.metadata);
+  const { orders } = useAppSelector((state) => state.profile);
 
-  const [ownedNfts, setOwnedNfts] = useState<CollectionTokenInfo[]>([]);
   const [searchValue, setSearchValue] = useState('');
-
-  const { library, account, deactivate } = useWeb3React<Web3Provider>();
-  const { account: accountId } = useParams();
-
-  const dispatch = useAppDispatch();
   const ensAddress = useEnsAddress(account || '');
-
-  const filteredNfts = useMemo(() => ownedNfts.filter(nft => filterNftBySearchValue(searchValue, nft)), [ownedNfts, searchValue]);
-
-  useEffect(() => {
-    // TODO: support loading the tokens of other users
-    if (tokens && library) {
-      dispatch(fetchOwnedTokenMeta({ library, collectionToken, tokenIds: tokens }));
-    }
-  }, [library, collectionToken, tokens]);
+  const [tokens] = useCollectionTokens(collectionToken, ownedTokenIds);
+  const filteredTokens = useMemo(() => (
+    tokens.filter(nft => filterCollectionTokenBySearchValue(nft, searchValue))
+  ), [tokens, searchValue]);
 
   useEffect(() => {
-    if (ownedTokenMeta) {
-      setOwnedNfts(ownedTokenMeta);
+    if (!isInitialized) {
+      return;
     }
-  }, [ownedTokenMeta, isLoading]);
+
+    dispatch(getProfileOrders({
+      signerTokens: [collectionToken],
+      signerWallet: paramsAccount,
+      offset: 0,
+      limit: 9999,
+    }));
+  }, [isInitialized]);
 
   const handleDisconnectClick = () => {
     deactivate();
@@ -70,7 +71,7 @@ const ProfileWidget: FC<ProfileWidgetProps> = ({ className = '' }) => {
         backgroundImage={collectionImage}
         ensAddress={ensAddress}
         address={account || ''}
-        showLogOutButton={account === accountId}
+        showLogOutButton={account === paramsAccount}
         onLogoutButtonClick={handleDisconnectClick}
       />
       <div className="profile-widget__button-group-container">
@@ -89,17 +90,22 @@ const ProfileWidget: FC<ProfileWidgetProps> = ({ className = '' }) => {
         />
         <div className="profile-widget__collections">
           <div className="profile-widget__nfts-container">
-            {filteredNfts.map((nft) => (
-              <NftCard
-                key={nft.id}
-                imageURI={nft.image}
-                name={nft.name}
-                price="12345"
-                to={`/${AppRoutes.nftDetail}/${nft.id}`}
-                symbol={currencyTokenInfo?.symbol}
-                className="profile-widget__nft-card"
-              />
-            ))}
+            {filteredTokens.map((nft) => {
+              const tokenOrder = orders.find(order => +order.signer.id === nft.id);
+              const price = (tokenOrder && currencyTokenInfo) ? getFullOrderReadableSenderAmountPlusTotalFees(tokenOrder, currencyTokenInfo) : undefined;
+
+              return (
+                <NftCard
+                  key={nft.id}
+                  imageURI={nft.image}
+                  name={nft.name}
+                  price={price}
+                  to={`/${AppRoutes.nftDetail}/${nft.id}`}
+                  symbol={currencyTokenInfo?.symbol}
+                  className="profile-widget__nft-card"
+                />
+              );
+            })}
           </div>
         </div>
       </div>
