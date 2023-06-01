@@ -15,8 +15,6 @@
 	}
 
 	@include for-size(tablet-landscape-up) {
-		grid-template-columns: repeat(auto-fill, minmax(16.25rem, 1fr));
-		column-gap: 1.5rem;
-		row-gap: 1.5rem;
+		gap: 1.5rem;
 	}
 }
