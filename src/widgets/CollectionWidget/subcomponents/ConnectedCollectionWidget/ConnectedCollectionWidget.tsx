@@ -6,44 +6,65 @@ import React, {
 } from 'react';
 
 import { TokenInfo } from '@airswap/types';
-import { Web3Provider } from '@ethersproject/providers';
 
+import LoadingSpinner from '../../../../components/LoadingSpinner/LoadingSpinner';
 import NftCard from '../../../../components/NftCard/NftCard';
 import NftCardSkeleton from '../../../../components/NftCardSkeleton/NftCardSkeleton';
 import SearchInput from '../../../../components/SearchInput/SearchInput';
+import { INDEXER_ORDERS_OFFSET } from '../../../../constants/indexer';
 import { getFullOrderReadableSenderAmountPlusTotalFees } from '../../../../entities/FullOrder/FullOrderHelpers';
 import useCollectionTokens from '../../../../hooks/useCollectionTokens';
+import useScrollToBottom from '../../../../hooks/useScrollToBottom';
 import { useAppDispatch, useAppSelector } from '../../../../redux/hooks';
-import { getFilteredOrders } from '../../../../redux/stores/indexer/indexerApi';
+import { getFilteredOrders } from '../../../../redux/stores/collection/collectionApi';
+import { reset } from '../../../../redux/stores/collection/collectionSlice';
 import { AppRoutes } from '../../../../routes';
 import CollectionPortrait from '../CollectionPortrait/CollectionPortrait';
 
 interface ConnectedCollectionWidgetProps {
   currencyTokenInfo: TokenInfo;
-  library: Web3Provider
   className?: string;
 }
 
-// eslint-disable-next-line @typescript-eslint/no-unused-vars, no-unused-vars
-const ConnectedCollectionWidget: FC<ConnectedCollectionWidgetProps> = ({ currencyTokenInfo, library, className = '' }) => {
+const ConnectedCollectionWidget: FC<ConnectedCollectionWidgetProps> = ({ currencyTokenInfo, className = '' }) => {
   const dispatch = useAppDispatch();
+  const scrolledToBottom = useScrollToBottom();
   const { collectionImage, collectionToken, collectionName } = useAppSelector((state) => state.config);
-  const { isInitialized, orders, isLoading: isLoadingOrders } = useAppSelector((state) => state.indexer);
+  const {
+    isLoading,
+    isTotalOrdersReached,
+    offset,
+    orders,
+  } = useAppSelector((state) => state.collection);
+
   const [searchInput, setSearchInput] = useState<string>('');
-  const isLoading = isLoadingOrders;
+
+  const getOrders = () => {
+    if (isLoading || isTotalOrdersReached) {
+      return;
+    }
+
+    dispatch(getFilteredOrders({
+      filter: {
+        signerTokens: [collectionToken],
+        senderTokens: [currencyTokenInfo.address],
+        offset,
+        limit: INDEXER_ORDERS_OFFSET,
+      },
+    }));
+  };
+
+  useEffect((): () => void => {
+    getOrders();
+
+    return () => dispatch(reset());
+  }, []);
 
   useEffect(() => {
-    if (isInitialized) {
-      dispatch(getFilteredOrders({
-        filter: {
-          signerTokens: [collectionToken],
-          senderTokens: [currencyTokenInfo.address],
-          offset: 0,
-          limit: 4,
-        },
-      }));
+    if (scrolledToBottom) {
+      getOrders();
     }
-  }, [isInitialized]);
+  }, [scrolledToBottom]);
 
   const tokenIds = useMemo(() => orders.map(order => +order.signer.id), [orders]);
   const [tokens] = useCollectionTokens(collectionToken, tokenIds);
@@ -95,7 +116,9 @@ const ConnectedCollectionWidget: FC<ConnectedCollectionWidgetProps> = ({ currenc
             );
           })}
         </div>
-        {isLoading && <div className="collection-widget__nft-loader">Fetching colllection orders ...</div>}
+      </div>
+      <div className="collection-widget__bottom">
+        {isLoading && <LoadingSpinner className="collection-widget__loader" />}
       </div>
     </div>
   );

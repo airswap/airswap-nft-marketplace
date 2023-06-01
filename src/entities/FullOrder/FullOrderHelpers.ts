@@ -15,6 +15,6 @@ export const getFullOrderReadableSenderAmountPlusTotalFees = (fullOrder: FullOrd
 
   return format(amount, {
     tokenDecimals: token.decimals,
-    significantFigures: 6,
+    omitTrailingZeroes: true,
   });
 };

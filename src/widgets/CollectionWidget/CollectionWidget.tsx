@@ -1,7 +1,5 @@
 import React, { FC } from 'react';
 
-import { useWeb3React } from '@web3-react/core';
-
 import { useAppSelector } from '../../redux/hooks';
 import ConnectedCollectionWidget from './subcomponents/ConnectedCollectionWidget/ConnectedCollectionWidget';
 import DisconnectedCollectionWidget from './subcomponents/DisconnectedCollectionWidget/DisconnectedCollectionWidget';
@@ -9,15 +7,13 @@ import DisconnectedCollectionWidget from './subcomponents/DisconnectedCollection
 import './CollectionWidget.scss';
 
 const CollectionWidget: FC = () => {
-  const { library } = useWeb3React();
-
   const { currencyTokenInfo } = useAppSelector((state) => state.metadata);
+  const { isInitialized } = useAppSelector((state) => state.indexer);
 
-  if (library && currencyTokenInfo) {
+  if (currencyTokenInfo && isInitialized) {
     return (
       <ConnectedCollectionWidget
         currencyTokenInfo={currencyTokenInfo}
-        library={library}
       />
     );
   }

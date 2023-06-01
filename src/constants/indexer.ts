@@ -1,1 +1,2 @@
 export const INDEXER_ORDER_RESPONSE_TIME_MS = 4000;
+export const INDEXER_ORDERS_OFFSET = 4;

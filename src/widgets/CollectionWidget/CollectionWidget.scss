@@ -1,6 +1,7 @@
 @import "src/styles/index";
 
 .collection-widget {
+    position: relative;
 
     &__portrait {
         width: 100%;
@@ -61,11 +62,15 @@
         @extend %nfts-grid;
     }
 
+    &__bottom {
+        display: flex;
+        margin: 2rem auto;
+        width: 2rem;
+        aspect-ratio: 1;
+    }
+
     &__loader {
-        text-align: center;
-        font-size: 1rem;
-        font-weight: 700;
-        color: var(--c-white);
+        border: 0;
     }
 }
 
