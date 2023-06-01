@@ -13,7 +13,8 @@ interface WalletInfoProps {
   avatarUrl?: string;
   address?: string;
   ensAddress?: string;
-  onLogoutButtonClick: () => void;
+  showLogOutButton?: boolean;
+  onLogoutButtonClick?: () => void;
   className?: string;
   avatarClassName?: string;
 }
@@ -23,6 +24,7 @@ const WalletInfo: FC<WalletInfoProps> = ({
   avatarUrl = '',
   address = '',
   ensAddress = '',
+  showLogOutButton = false,
   onLogoutButtonClick,
   className = '',
   avatarClassName = '',
@@ -47,13 +49,15 @@ const WalletInfo: FC<WalletInfoProps> = ({
           iconClassName="wallet-info__icon"
         />
       )}
-      <IconButton
-        hideLabel
-        icon="logout"
-        text="logout"
-        iconClassName="wallet-info__icon"
-        onClick={onLogoutButtonClick}
-      />
+      {showLogOutButton && (
+        <IconButton
+          hideLabel
+          icon="logout"
+          text="logout"
+          iconClassName="wallet-info__icon"
+          onClick={onLogoutButtonClick}
+        />
+      )}
     </div>
   );
 };

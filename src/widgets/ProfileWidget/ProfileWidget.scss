@@ -21,7 +21,7 @@
 
         @include for-size(desktop-up) {
             width: 19.5rem;
-            transform: translateY(-2.56rem);
+            margin-top: -2.5rem;
         }
     }
 
@@ -57,5 +57,34 @@
             background-color: var(--c-grey);
             color: #fff;
         }
+
+        &--is-uppercase {
+            text-transform: uppercase;
+        }
+        
+        &:disabled {
+            opacity: 1;
+        }
     }
+
+    &__search-input {
+        max-width: 23.5rem;
+        margin: 1rem 0 3rem;
+
+        @include for-size(phone-only) {
+            max-width: 100%;
+        }
+    }
+
+    &__content {
+
+        @include for-size(phone-only) {
+            padding: 0 var(--page-padding);
+        }
+    }
+
+    &__nfts-container {
+        @extend %nfts-grid;
+    }
+
 }
