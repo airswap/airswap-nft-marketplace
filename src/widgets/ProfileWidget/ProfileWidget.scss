@@ -67,8 +67,12 @@
         }
     }
 
+
     &__content {
-        padding: 0 var(--page-padding);
+
+        @include for-size(phone-only) {
+            padding: 0 var(--page-padding);
+        }
     }
 
     &__search-bar-container {
