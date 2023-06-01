@@ -1,17 +1,18 @@
 import { useEffect, useMemo, useState } from 'react';
 
 import { CollectionTokenInfo } from '@airswap/types';
-import { Web3Provider } from '@ethersproject/providers';
-import { useWeb3React } from '@web3-react/core';
 
 import { getCollectionToken } from '../entities/CollectionToken/CollectionTokenHelpers';
 import { useAppDispatch, useAppSelector } from '../redux/hooks';
 import { addCollectionTokenInfo } from '../redux/stores/metadata/metadataActions';
+import useDefaultLibrary from './useDefaultProvider';
 
 const useCollectionTokens = (address: string, tokenIds: number[]): [CollectionTokenInfo[], boolean] => {
-  const dispatch = useAppDispatch();
-  const { library } = useWeb3React<Web3Provider>();
+  const { chainId } = useAppSelector((state) => state.config);
   const { metadata } = useAppSelector(state => state);
+
+  const dispatch = useAppDispatch();
+  const library = useDefaultLibrary(chainId);
 
   const [isContractCalled, setIsContractCalled] = useState(false);
   const [isContractLoading, setIsContractLoading] = useState(true);
