@@ -12,13 +12,11 @@ interface GetCurrencyTokenInfoParams {
 }
 
 export const getCurrencyTokenInfo = createAsyncThunk<
-TokenInfo, GetCurrencyTokenInfoParams>(
-  'metadata/getCurrencyTokenInfo',
-  ({
-    currencyToken,
-    library,
-  }) => getTokenInfo(library, currencyToken),
-);
+TokenInfo,
+GetCurrencyTokenInfoParams
+>('metadata/getCurrencyTokenInfo', ({ currencyToken, library }) => (
+  getTokenInfo(library, currencyToken)
+));
 
 export const getProtocolFee = async (
   chainId: number,

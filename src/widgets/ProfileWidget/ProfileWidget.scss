@@ -2,21 +2,18 @@
 
 .profile-widget {
 
-    &__button-group-container {
-        margin-top: 1.625rem;
-
-        @include for-size(phone-only) {
-            margin-left: 1.5rem;
-            margin-right: 1.5rem;
-        }
+    &__navlink-group-container {
+        margin: var(--page-padding) var(--page-padding) 0;
 
         @include for-size(desktop-up) {
             display: flex;
             justify-content: center;
+            margin-left: 0;
+            margin-right: 0;
         }
     }
 
-    &__button-group {
+    &__navlink-group {
         display: flex;
 
         @include for-size(desktop-up) {
@@ -25,8 +22,9 @@
         }
     }
 
-    &__button-group__button {
+    &__navlink {
         @extend %button-border-style;
+        @extend %flex-align-center;
 
         border: solid 1px var(--c-grey);
         margin-left: -1px;
@@ -62,15 +60,14 @@
             text-transform: uppercase;
         }
         
-        &:disabled {
-            color: var(--c-light-grey);
-            opacity: 1;
+        &[aria-disabled="true"] {
+            color: var(--c-grey);
+            cursor: not-allowed;
         }
     }
 
     &__search-input {
         max-width: 23.5rem;
-        margin: 1rem 0 3rem;
 
         @include for-size(phone-only) {
             max-width: 100%;
@@ -78,13 +75,17 @@
     }
 
     &__content {
+        margin-top: var(--page-padding);
+        padding: 0 var(--page-padding);
 
-        @include for-size(phone-only) {
-            padding: 0 var(--page-padding);
+        @include for-size(desktop-up) {
+            padding: 0;
         }
     }
 
     &__nfts-container {
+        margin-top: var(--page-padding);
+
         @extend %nfts-grid;
     }
 

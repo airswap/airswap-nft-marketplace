@@ -8,11 +8,13 @@ interface InitializeParams {
   provider: providers.Web3Provider,
 }
 
-export const initialize = createAsyncThunk<string[], InitializeParams>(
-  'indexer/initialize',
-  async ({ chainId, provider }) => RegistryV4.getServerURLs(
+export const initialize = createAsyncThunk<
+string[],
+InitializeParams
+>('indexer/initialize', async ({ chainId, provider }) => (
+  RegistryV4.getServerURLs(
     provider,
     chainId,
     Protocols.Storage,
-  ),
-);
+  )
+));

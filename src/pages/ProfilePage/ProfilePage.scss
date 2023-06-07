@@ -3,9 +3,6 @@
 .profile-page {
 
 	&__content {
-		
-		@include for-size(phone-only) {
-			padding: 0;
-		}
+		padding: 0;
 	}
 }

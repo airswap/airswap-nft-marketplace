@@ -45,6 +45,7 @@ configureUserSubscriber();
 
 export type RootState = ReturnType<typeof store.getState>;
 export type AppDispatch = ThunkDispatch<RootState, unknown, AnyAction>;
+export type AppThunkApiConfig = { dispatch: AppDispatch; state: RootState }
 export type AppThunk<ReturnType = void> = ThunkAction<
 ReturnType,
 RootState,

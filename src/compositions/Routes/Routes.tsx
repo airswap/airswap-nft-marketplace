@@ -37,6 +37,10 @@ const Routes: FC = () => {
           path: ':account',
           element: <ProfilePage />,
         },
+        {
+          path: ':account/orders',
+          element: <>orders</>,
+        },
       ],
     },
     {

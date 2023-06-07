@@ -1,16 +1,20 @@
 import { FullOrder } from '@airswap/types';
 import { createSlice } from '@reduxjs/toolkit';
 
-import { getProfileOrders } from './profileApi';
+import { getProfileOrders, getProfileTokens } from './profileApi';
 
 export interface ProfileState {
-  isLoading: boolean;
+  isLoadingOrders: boolean;
+  isLoadingTokens: boolean;
   orders: FullOrder[];
+  tokens: number[];
 }
 
 const initialState: ProfileState = {
-  isLoading: false,
+  isLoadingOrders: false,
+  isLoadingTokens: false,
   orders: [],
+  tokens: [],
 };
 
 const profileSlice = createSlice({
@@ -20,19 +24,42 @@ const profileSlice = createSlice({
   extraReducers: builder => {
     builder.addCase(getProfileOrders.pending, (state): ProfileState => ({
       ...state,
-      isLoading: true,
+      isLoadingOrders: true,
     }));
 
     builder.addCase(getProfileOrders.fulfilled, (state, action): ProfileState => ({
       ...state,
-      isLoading: false,
+      isLoadingOrders: false,
       orders: action.payload,
     }));
 
     builder.addCase(getProfileOrders.rejected, (state, action): ProfileState => {
-      console.error('fetchNftMeta.rejected', action);
+      console.error('profile/getProfileOrders', action);
 
-      return state;
+      return {
+        ...state,
+        isLoadingOrders: false,
+      };
+    });
+
+    builder.addCase(getProfileTokens.pending, (state): ProfileState => ({
+      ...state,
+      isLoadingTokens: true,
+    }));
+
+    builder.addCase(getProfileTokens.fulfilled, (state, action): ProfileState => ({
+      ...state,
+      isLoadingTokens: false,
+      tokens: action.payload,
+    }));
+
+    builder.addCase(getProfileTokens.rejected, (state, action): ProfileState => {
+      console.error('profile/getProfileTokens', action);
+
+      return {
+        ...state,
+        isLoadingTokens: false,
+      };
     });
   },
 });

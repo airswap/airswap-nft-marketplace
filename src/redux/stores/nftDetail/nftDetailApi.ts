@@ -1,7 +1,7 @@
 import { FullOrder } from '@airswap/types';
 import { createAsyncThunk } from '@reduxjs/toolkit';
 
-import { AppDispatch, RootState } from '../../store';
+import { AppThunkApiConfig } from '../../store';
 import { getOrdersFromIndexers } from '../indexer/indexerHelpers';
 import { setTokenId } from './nftDetailSlice';
 
@@ -12,10 +12,7 @@ interface getNftOrderParams {
 export const getNftOrder = createAsyncThunk<
 FullOrder | undefined,
 getNftOrderParams,
-{
-  dispatch: AppDispatch;
-  state: RootState;
-}
+AppThunkApiConfig
 >('nftDetail/getNftOrder', async ({ tokenId }, { dispatch, getState }) => {
   const { config, indexer } = getState();
 
@@ -29,8 +26,6 @@ getNftOrderParams,
     },
     indexer.urls,
   );
-
-  console.log(orders);
 
   return orders.find((order) => order.signer.id === tokenId.toString());
 });

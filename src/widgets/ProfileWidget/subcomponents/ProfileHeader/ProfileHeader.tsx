@@ -5,6 +5,7 @@ import WalletInfo from '../../../../components/WalletInfo/WalletInfo';
 import './ProfileHeader.scss';
 
 interface ProfileHeaderProp {
+  accountUrl?: string;
   avatarUrl?: string;
   address?: string;
   ensAddress?: string;
@@ -15,6 +16,7 @@ interface ProfileHeaderProp {
 }
 
 const ProfileHeader: FC<ProfileHeaderProp> = ({
+  accountUrl,
   avatarUrl,
   ensAddress,
   address,
@@ -26,6 +28,7 @@ const ProfileHeader: FC<ProfileHeaderProp> = ({
   <div className={`profile-header ${className}`} style={{ backgroundImage: `url("${backgroundImage}")` }}>
     <WalletInfo
       isBanner
+      accountUrl={accountUrl}
       avatarUrl={avatarUrl}
       ensAddress={ensAddress}
       address={address}
