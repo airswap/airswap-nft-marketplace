@@ -30,6 +30,7 @@ const ConnectedProfileWidget: FC<ConnectedProfileWidgetProps> = ({
         backgroundImage={collectionImage}
         ensAddress={ensAddress}
         address={profileAccount}
+        className="profile-widget__header"
       />
     </div>
   );

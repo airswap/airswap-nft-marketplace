@@ -63,8 +63,9 @@ const WalletInfo: FC<WalletInfoProps> = ({
           hideLabel
           icon="logout"
           text="logout"
-          iconClassName="wallet-info__icon"
           onClick={onLogoutButtonClick}
+          iconClassName="wallet-info__icon"
+          className="wallet-info__button"
         />
       )}
     </div>

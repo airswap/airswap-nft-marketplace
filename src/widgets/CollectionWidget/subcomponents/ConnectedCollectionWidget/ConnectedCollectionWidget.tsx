@@ -47,8 +47,6 @@ const ConnectedCollectionWidget: FC<ConnectedCollectionWidgetProps> = ({ currenc
     }
 
     dispatch(getCollectionOrders({
-      signerTokens: [collectionToken],
-      senderTokens: [currencyTokenInfo.address],
       offset,
       limit: INDEXER_ORDERS_OFFSET,
     }));
@@ -91,7 +89,6 @@ const ConnectedCollectionWidget: FC<ConnectedCollectionWidgetProps> = ({ currenc
           className="collection-widget__search-input"
         />
         <div className="collection-widget__subtitle">NFTs for sale</div>
-        <div className="collection-widget__filter-button" />
         <div className="collection-widget__nfts-container">
           {filteredTokens
             .map(order => {

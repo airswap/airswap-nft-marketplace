@@ -14,6 +14,10 @@
         margin-top: var(--page-padding);
         padding: 0 var(--page-padding);
 
+        @include for-size(tablet-portrait-up) {
+            margin-top: 2.5rem;
+        }
+
         @include for-size(desktop-up) {
             margin-top: 3rem;
             padding: 0;

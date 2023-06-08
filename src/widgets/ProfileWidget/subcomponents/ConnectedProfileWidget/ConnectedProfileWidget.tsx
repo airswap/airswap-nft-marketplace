@@ -80,12 +80,13 @@ const ConnectedProfileWidget: FC<ConnectedProfileWidgetProps> = ({
         backgroundImage={collectionImage}
         ensAddress={ensAddress}
         onLogoutButtonClick={handleDisconnectClick}
+        className="profile-widget__header"
       />
       <div className="profile-widget__content">
         <SearchInput
           placeholder="Search NFT"
-          onChange={(e) => setSearchValue(e.target.value)}
           value={searchValue}
+          onChange={(e) => setSearchValue(e.target.value)}
           className="profile-widget__search-input"
         />
         <div className="profile-widget__collections">

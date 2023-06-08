@@ -7,12 +7,18 @@ import { setOffset } from './collectionSlice';
 
 export const getCollectionOrders = createAsyncThunk<
 FullOrder[],
-OrderFilter,
+Pick<OrderFilter, 'limit' | 'offset'>,
 AppThunkApiConfig
 >('collection/getCollectionOrders', async (filter, { dispatch, getState }) => {
-  const { indexer } = getState();
+  const { config, indexer } = getState();
+
+  const { collectionToken, currencyToken } = config;
 
   dispatch(setOffset(filter.limit + filter.offset));
 
-  return getOrdersFromIndexers(filter, indexer.urls);
+  return getOrdersFromIndexers({
+    ...filter,
+    signerTokens: [collectionToken],
+    senderTokens: [currencyToken],
+  }, indexer.urls);
 });
