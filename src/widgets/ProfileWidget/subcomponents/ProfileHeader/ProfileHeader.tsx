@@ -11,7 +11,7 @@ interface ProfileHeaderProp {
   ensAddress?: string;
   backgroundImage?: string;
   showLogOutButton?: boolean;
-  onLogoutButtonClick: () => void;
+  onLogoutButtonClick?: () => void;
   className?: string;
 }
 
