@@ -8,7 +8,6 @@ import {
 import { TokenInfo } from '@airswap/types';
 import { Web3Provider } from '@ethersproject/providers';
 import { useWeb3React } from '@web3-react/core';
-import { NavLink } from 'react-router-dom';
 
 import NftCard from '../../../../components/NftCard/NftCard';
 import SearchInput from '../../../../components/SearchInput/SearchInput';
@@ -74,37 +73,14 @@ const ConnectedProfileWidget: FC<ConnectedProfileWidgetProps> = ({
   return (
     <div className={`profile-widget ${className}`}>
       <ProfileHeader
+        showLogOutButton={account === profileAccount}
         accountUrl={accountUrl}
+        address={profileAccount}
         avatarUrl={avatarUrl}
         backgroundImage={collectionImage}
         ensAddress={ensAddress}
-        address={profileAccount}
-        showLogOutButton={account === profileAccount}
         onLogoutButtonClick={handleDisconnectClick}
       />
-      <div className="profile-widget__navlink-group-container">
-        <div className="profile-widget__navlink-group">
-          <NavLink
-            to=""
-            className="profile-widget__navlink profile-widget__navlink--is-active"
-          >
-            NFT&apos;s
-          </NavLink>
-          <NavLink
-            to=""
-            aria-disabled
-            className="profile-widget__navlink profile-widget__navlink--is-uppercase"
-          >
-            Actvity
-          </NavLink>
-          <NavLink
-            to="listed"
-            className="profile-widget__navlink profile-widget__navlink--is-uppercase"
-          >
-            Listed
-          </NavLink>
-        </div>
-      </div>
       <div className="profile-widget__content">
         <SearchInput
           placeholder="Search NFT"
