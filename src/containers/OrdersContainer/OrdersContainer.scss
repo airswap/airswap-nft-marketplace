@@ -1,0 +1,5 @@
+@import "src/styles";
+
+.orders-container {
+    @extend %nfts-grid;
+}

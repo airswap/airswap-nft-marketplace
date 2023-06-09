@@ -8,18 +8,15 @@ import React, {
 import { TokenInfo } from '@airswap/types';
 
 import LoadingSpinner from '../../../../components/LoadingSpinner/LoadingSpinner';
-import NftCard from '../../../../components/NftCard/NftCard';
-import NftCardSkeleton from '../../../../components/NftCardSkeleton/NftCardSkeleton';
 import SearchInput from '../../../../components/SearchInput/SearchInput';
 import { INDEXER_ORDERS_OFFSET } from '../../../../constants/indexer';
+import OrdersContainer from '../../../../containers/OrdersContainer/OrdersContainer';
 import { filterCollectionTokenBySearchValue } from '../../../../entities/CollectionToken/CollectionTokenHelpers';
-import { getFullOrderReadableSenderAmountPlusTotalFees } from '../../../../entities/FullOrder/FullOrderHelpers';
 import useCollectionTokens from '../../../../hooks/useCollectionTokens';
 import useScrollToBottom from '../../../../hooks/useScrollToBottom';
 import { useAppDispatch, useAppSelector } from '../../../../redux/hooks';
 import { getCollectionOrders } from '../../../../redux/stores/collection/collectionApi';
 import { reset } from '../../../../redux/stores/collection/collectionSlice';
-import { AppRoutes } from '../../../../routes';
 import CollectionPortrait from '../CollectionPortrait/CollectionPortrait';
 
 interface ConnectedCollectionWidgetProps {
@@ -88,38 +85,13 @@ const ConnectedCollectionWidget: FC<ConnectedCollectionWidgetProps> = ({ currenc
           value={searchInput || ''}
           className="collection-widget__search-input"
         />
-        <div className="collection-widget__subtitle">NFTs for sale</div>
-        <div className="collection-widget__nfts-container">
-          {filteredTokens
-            .map(order => {
-              const orderToken = tokens.find(token => token.id === +order.signer.id);
-              const price = getFullOrderReadableSenderAmountPlusTotalFees(order, currencyTokenInfo);
-
-              if (!orderToken) {
-                return (
-                  <NftCardSkeleton
-                    key={order.nonce}
-                    price={price.toString()}
-                    symbol={currencyTokenInfo.symbol}
-                    to={`${AppRoutes.nftDetail}/${order.signer.id}`}
-                    className="collection-widget__nft-card"
-                  />
-                );
-              }
-
-              return (
-                <NftCard
-                  key={order.nonce}
-                  imageURI={orderToken.image}
-                  price={price.toString()}
-                  name={orderToken.name}
-                  symbol={currencyTokenInfo.symbol}
-                  to={`${AppRoutes.nftDetail}/${order.signer.id}`}
-                  className="collection-widget__nft-card"
-                />
-              );
-            })}
-        </div>
+        <h2 className="collection-widget__subtitle">NFTs for sale</h2>
+        <OrdersContainer
+          currencyTokenInfo={currencyTokenInfo}
+          orders={filteredTokens}
+          tokens={tokens}
+          className="collection-widget__nfts-container"
+        />
       </div>
       <div className="collection-widget__bottom">
         {isLoading && <LoadingSpinner className="collection-widget__loader" />}
