@@ -18,6 +18,7 @@ import useCollectionTokens from '../../../../hooks/useCollectionTokens';
 import useEnsAddress from '../../../../hooks/useEnsAddress';
 import { useAppDispatch, useAppSelector } from '../../../../redux/hooks';
 import { getProfileOrders, getProfileTokens } from '../../../../redux/stores/profile/profileApi';
+import { reset } from '../../../../redux/stores/profile/profileSlice';
 import { AppRoutes } from '../../../../routes';
 import ProfileHeader from '../ProfileHeader/ProfileHeader';
 
@@ -55,7 +56,7 @@ const ConnectedProfileWidget: FC<ConnectedProfileWidgetProps> = ({
     tokens.filter(nft => filterCollectionTokenBySearchValue(nft, searchValue))
   ), [tokens, searchValue]);
 
-  useEffect(() => {
+  useEffect((): () => void => {
     dispatch(getProfileOrders({
       signerTokens: [collectionToken],
       signerWallet: profileAccount,
@@ -64,7 +65,11 @@ const ConnectedProfileWidget: FC<ConnectedProfileWidgetProps> = ({
     }));
 
     dispatch(getProfileTokens({ account: profileAccount, provider: library }));
-  }, []);
+
+    return () => {
+      dispatch(reset());
+    };
+  }, [profileAccount]);
 
   const handleDisconnectClick = () => {
     deactivate();

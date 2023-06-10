@@ -1,37 +1,59 @@
 import { FullOrder } from '@airswap/types';
-import { createSlice } from '@reduxjs/toolkit';
+import { createSlice, PayloadAction } from '@reduxjs/toolkit';
 
+import { INDEXER_ORDERS_OFFSET } from '../../../constants/indexer';
 import { getProfileOrders, getProfileTokens } from './profileApi';
 
 export interface ProfileState {
   isLoadingOrders: boolean;
   isLoadingTokens: boolean;
+  isTotalOrdersReached: boolean;
   orders: FullOrder[];
+  ordersOffset: number;
   tokens: number[];
 }
 
 const initialState: ProfileState = {
   isLoadingOrders: false,
   isLoadingTokens: false,
+  isTotalOrdersReached: false,
   orders: [],
+  ordersOffset: 0,
   tokens: [],
 };
 
 const profileSlice = createSlice({
   name: 'profile',
   initialState,
-  reducers: {},
+  reducers: {
+    reset: (): ProfileState => ({
+      ...initialState,
+    }),
+    setOrdersOffset: (state, action: PayloadAction<number>): ProfileState => ({
+      ...state,
+      ordersOffset: action.payload,
+    }),
+  },
   extraReducers: builder => {
     builder.addCase(getProfileOrders.pending, (state): ProfileState => ({
       ...state,
       isLoadingOrders: true,
     }));
 
-    builder.addCase(getProfileOrders.fulfilled, (state, action): ProfileState => ({
-      ...state,
-      isLoadingOrders: false,
-      orders: action.payload,
-    }));
+    builder.addCase(getProfileOrders.fulfilled, (state, action): ProfileState => {
+      const newOrders = [
+        ...state.orders,
+        ...action.payload,
+      ];
+      const isTotalOrdersReached = action.payload.length < INDEXER_ORDERS_OFFSET;
+
+      return {
+        ...state,
+        isLoadingOrders: false,
+        isTotalOrdersReached,
+        orders: newOrders,
+      };
+    });
 
     builder.addCase(getProfileOrders.rejected, (state, action): ProfileState => {
       console.error('profile/getProfileOrders', action);
@@ -63,5 +85,10 @@ const profileSlice = createSlice({
     });
   },
 });
+
+export const {
+  reset,
+  setOrdersOffset,
+} = profileSlice.actions;
 
 export default profileSlice.reducer;

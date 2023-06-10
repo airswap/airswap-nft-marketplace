@@ -7,7 +7,6 @@ import React, {
 
 import { TokenInfo } from '@airswap/types';
 
-import LoadingSpinner from '../../../../components/LoadingSpinner/LoadingSpinner';
 import SearchInput from '../../../../components/SearchInput/SearchInput';
 import { INDEXER_ORDERS_OFFSET } from '../../../../constants/indexer';
 import OrdersContainer from '../../../../containers/OrdersContainer/OrdersContainer';
@@ -36,7 +35,7 @@ const ConnectedCollectionWidget: FC<ConnectedCollectionWidgetProps> = ({ currenc
     orders,
   } = useAppSelector((state) => state.collection);
 
-  const [searchInput, setSearchInput] = useState<string>('');
+  const [searchValue, setSearchValue] = useState<string>('');
 
   const getOrders = () => {
     if (isLoading || isTotalOrdersReached) {
@@ -63,12 +62,12 @@ const ConnectedCollectionWidget: FC<ConnectedCollectionWidgetProps> = ({ currenc
 
   const tokenIds = useMemo(() => orders.map(order => +order.signer.id), [orders]);
   const [tokens] = useCollectionTokens(collectionToken, tokenIds);
-  const filteredTokens = useMemo(() => (
+  const filteredOrders = useMemo(() => (
     orders.filter(order => {
       const orderToken = tokens.find(token => token.id === +order.signer.id);
 
-      return orderToken ? filterCollectionTokenBySearchValue(orderToken, searchInput) : true;
-    })), [orders, tokens, searchInput]);
+      return orderToken ? filterCollectionTokenBySearchValue(orderToken, searchValue) : true;
+    })), [orders, tokens, searchValue]);
 
   return (
     <div className={`collection-widget ${className}`}>
@@ -81,20 +80,19 @@ const ConnectedCollectionWidget: FC<ConnectedCollectionWidgetProps> = ({ currenc
       <div className="collection-widget__content">
         <SearchInput
           placeholder="Search Collection"
-          onChange={e => setSearchInput(e.target.value)}
-          value={searchInput || ''}
+          onChange={e => setSearchValue(e.target.value)}
+          value={searchValue || ''}
           className="collection-widget__search-input"
         />
         <h2 className="collection-widget__subtitle">NFTs for sale</h2>
         <OrdersContainer
+          isEndOfOrders={isTotalOrdersReached}
+          isLoading={isLoading}
           currencyTokenInfo={currencyTokenInfo}
-          orders={filteredTokens}
+          orders={filteredOrders}
           tokens={tokens}
           className="collection-widget__nfts-container"
         />
-      </div>
-      <div className="collection-widget__bottom">
-        {isLoading && <LoadingSpinner className="collection-widget__loader" />}
       </div>
     </div>
   );

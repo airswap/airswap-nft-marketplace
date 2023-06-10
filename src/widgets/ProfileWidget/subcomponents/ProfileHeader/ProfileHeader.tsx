@@ -46,7 +46,12 @@ const ProfileHeader: FC<ProfileHeaderProp> = ({
     </div>
 
     <div className="profile-header__navigation-container">
-      <ProfileNavigation className="profile-header__navigation" />
+      {address && (
+        <ProfileNavigation
+          account={address}
+          className="profile-header__navigation"
+        />
+      )}
     </div>
   </div>
 );

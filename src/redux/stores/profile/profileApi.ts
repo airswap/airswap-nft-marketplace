@@ -2,19 +2,19 @@ import { FullOrder, OrderFilter } from '@airswap/types';
 import { createAsyncThunk } from '@reduxjs/toolkit';
 import { ethers } from 'ethers';
 
-import { AppDispatch, AppThunkApiConfig, RootState } from '../../store';
+import { AppThunkApiConfig } from '../../store';
 import { getOwnedTokenIdsOfWallet } from '../balances/balancesHelpers';
 import { getOrdersFromIndexers } from '../indexer/indexerHelpers';
+import { setOrdersOffset } from './profileSlice';
 
 export const getProfileOrders = createAsyncThunk<
 FullOrder[],
 OrderFilter,
-{
-  dispatch: AppDispatch;
-  state: RootState;
-}
->('profile/getProfileOrders', async (filter, { getState }) => {
+AppThunkApiConfig
+>('profile/getProfileOrders', async (filter, { dispatch, getState }) => {
   const { indexer } = getState();
+
+  dispatch(setOrdersOffset(filter.limit + filter.offset));
 
   return getOrdersFromIndexers(filter, indexer.urls);
 });

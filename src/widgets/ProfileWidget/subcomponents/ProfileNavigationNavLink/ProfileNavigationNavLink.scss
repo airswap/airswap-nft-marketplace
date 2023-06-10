@@ -40,6 +40,6 @@
 
     &[aria-disabled="true"] {
         color: var(--c-grey);
-        cursor: not-allowed;
+        pointer-events: none;
     }
 }

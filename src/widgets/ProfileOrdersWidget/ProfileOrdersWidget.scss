@@ -1,0 +1,31 @@
+@import "src/styles/index";
+
+.profile-orders-widget {
+    position: relative;
+
+    &__content {
+        margin-top: var(--page-padding);
+        padding: 0 var(--page-padding);
+
+        @include for-size(tablet-portrait-up) {
+            margin-top: 2.5rem;
+        }
+
+        @include for-size(desktop-up) {
+            margin-top: 3rem;
+            padding: 0;
+        }
+    }
+
+    &__search-input {
+        max-width: 23.5rem;
+
+        @include for-size(phone-only) {
+            max-width: 100%;
+        }
+    }
+
+    &__nfts-container {
+        margin-top: var(--page-padding);
+    }
+}
