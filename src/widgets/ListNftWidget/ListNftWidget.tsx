@@ -1,6 +1,7 @@
 import React, { FC } from 'react';
 
 import { useWeb3React } from '@web3-react/core';
+import { useLocation } from 'react-router-dom';
 
 import { useAppSelector } from '../../redux/hooks';
 import ConnectedListNftWidget from './subcomponents/ConnectedListNftWidget/ConnectedListNftWidget';
@@ -12,6 +13,7 @@ interface ListNftWidgetProps {
 
 const ListNftWidget: FC<ListNftWidgetProps> = ({ className = '' }) => {
   const { account, library, chainId } = useWeb3React();
+  const { key } = useLocation();
   const { config } = useAppSelector(state => state);
   const { tokens: userTokens } = useAppSelector(state => state.balances);
   const { isLoading: isMetadataLoading, currencyTokenInfo } = useAppSelector(state => state.metadata);
@@ -29,6 +31,7 @@ const ListNftWidget: FC<ListNftWidgetProps> = ({ className = '' }) => {
   ) {
     return (
       <ConnectedListNftWidget
+        key={key}
         account={account}
         chainId={chainId}
         currencyTokenInfo={currencyTokenInfo}

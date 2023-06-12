@@ -21,9 +21,8 @@ export const indexerSlice = createSlice({
   extraReducers: (builder) => {
     builder.addCase(initialize.fulfilled, (state, action: PayloadAction<string[]>): IndexerState => ({
       ...state,
-      // TODO: Remove this when merge branch
       isInitialized: true,
-      urls: [...action.payload, 'http://localhost:4001'],
+      urls: action.payload,
     }));
   },
 });
