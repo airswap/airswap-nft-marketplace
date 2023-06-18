@@ -2,6 +2,12 @@
   "name": "airswap-marketplace",
   "version": "0.1.0",
   "private": true,
+  "scripts": {
+    "start": "craco start",
+    "build": "craco build",
+    "test": "craco test",
+    "eject": "react-scripts eject"
+  },
   "dependencies": {
     "@airswap/balances": "4.0.1",
     "@airswap/constants": "4.0.4",
@@ -42,25 +48,6 @@
     "walletconnect": "^1.7.8",
     "web-vitals": "^2.1.0"
   },
-  "scripts": {
-    "start": "craco start",
-    "build": "craco build",
-    "test": "craco test",
-    "eject": "react-scripts eject"
-  },
-  "eslintConfig": {
-    "extends": [
-      "react-app",
-      "react-app/jest"
-    ]
-  },
-  "browserslist": [
-    ">0.2%",
-    "not ie <= 99",
-    "not android <= 4.4.4",
-    "not dead",
-    "not op_mini all"
-  ],
   "devDependencies": {
     "@craco/craco": "^6.4.1",
     "@types/jest": "^27.0.1",
@@ -79,11 +66,25 @@
     "eslint-plugin-react": "^7.31.11",
     "eslint-plugin-react-hooks": "^4.6.0",
     "eslint-plugin-simple-import-sort": "^8.0.0",
+    "express": "^4.18.2",
     "postcss-import": "^12.0.1",
     "sass": "^1.57.1"
   },
   "resolutions": {
     "//": "See https://github.com/facebook/create-react-app/issues/11773",
     "react-error-overlay": "6.0.9"
-  }
+  },
+  "eslintConfig": {
+    "extends": [
+      "react-app",
+      "react-app/jest"
+    ]
+  },
+  "browserslist": [
+    ">0.2%",
+    "not ie <= 99",
+    "not android <= 4.4.4",
+    "not dead",
+    "not op_mini all"
+  ]
 }
