@@ -8,7 +8,7 @@ import useAddressOrEnsName from '../../../../hooks/useAddressOrEnsName';
 import useNftTokenOwner from '../../../../hooks/useNftTokenOwner';
 import { useAppDispatch, useAppSelector } from '../../../../redux/hooks';
 import { getNftOrder } from '../../../../redux/stores/nftDetail/nftDetailApi';
-import { AppRoutes } from '../../../../routes';
+import { AppRoutes, routes } from '../../../../routes';
 import NftDetailAttributes from '../NftDetailAttributes/NftDetailAttributes';
 import NftDetailContentContainer from '../NftDetailContentContainer/NftDetailContentContainer';
 import NftDetailList from '../NftDetailList/NftDetailList';
@@ -34,6 +34,7 @@ const ConnectedNftDetailWidget: FC<ConnectedNftDetailWidgetProps> = ({ collectio
   const owner = useNftTokenOwner(collectionTokenInfo);
   const readableOwnerAddress = useAddressOrEnsName(owner, true);
   const accountRoute = owner ? `/${AppRoutes.profile}/${owner}` : undefined;
+  const buyRoute = order ? routes.orderDetail(order.signer.wallet, order.nonce) : undefined;
 
   useEffect(() => {
     dispatch(getNftOrder({ tokenId: collectionTokenInfo.id }));
@@ -66,7 +67,7 @@ const ConnectedNftDetailWidget: FC<ConnectedNftDetailWidgetProps> = ({ collectio
           className="nft-detail-widget__description-accordion"
           isDefaultOpen
         />
-        {order && <NftDetailProceedButton />}
+        {buyRoute && <NftDetailProceedButton route={buyRoute} />}
         <Accordion
           label="Properties"
           content={(
@@ -128,7 +129,7 @@ const ConnectedNftDetailWidget: FC<ConnectedNftDetailWidgetProps> = ({ collectio
             symbol={currencyTokenInfo.symbol}
             className="nft-detail-widget__price"
           />
-          {order && <NftDetailProceedButton />}
+          {buyRoute && <NftDetailProceedButton route={buyRoute} />}
         </div>
       </NftDetailContentContainer>
     </div>

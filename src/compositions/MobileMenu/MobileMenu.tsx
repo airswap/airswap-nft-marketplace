@@ -4,7 +4,7 @@ import classNames from 'classnames';
 import { NavLink } from 'react-router-dom';
 
 import WalletInfo from '../../components/WalletInfo/WalletInfo';
-import { AppRoutes } from '../../routes';
+import { routes } from '../../routes';
 
 import './MobileMenu.scss';
 
@@ -65,7 +65,7 @@ const MobileMenu: FC<MobileMenuProp> = ({
         </NavLink>
         <NavLink
           className="mobile-menu__nav-link"
-          to={`/${AppRoutes.listNft}`}
+          to={routes.listNft()}
           onClick={onNavLinkClick}
         >
           List NFT

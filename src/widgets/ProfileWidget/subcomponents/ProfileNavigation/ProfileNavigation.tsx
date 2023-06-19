@@ -1,6 +1,6 @@
 import { FC, ReactElement } from 'react';
 
-import { AppRoutes, ProfileRoutes } from '../../../../routes';
+import { routes } from '../../../../routes';
 import ProfileNavigationNavLink from '../ProfileNavigationNavLink/ProfileNavigationNavLink';
 
 import './ProfileNavigation.scss';
@@ -12,7 +12,7 @@ interface ProfileNavigationProps {
 
 const ProfileNavigation: FC<ProfileNavigationProps> = ({ account, className = '' }): ReactElement => (
   <div className={`profile-navigation ${className}`}>
-    <ProfileNavigationNavLink to={`/${AppRoutes.profile}/${account}`}>
+    <ProfileNavigationNavLink to={routes.profile(account)}>
       NFT&apos;s
     </ProfileNavigationNavLink>
     <ProfileNavigationNavLink
@@ -24,7 +24,7 @@ const ProfileNavigation: FC<ProfileNavigationProps> = ({ account, className = ''
     </ProfileNavigationNavLink>
     <ProfileNavigationNavLink
       isUpperCase
-      to={`/${AppRoutes.profile}/${account}/${ProfileRoutes.orders}`}
+      to={routes.userOrders(account)}
     >
       Listed
     </ProfileNavigationNavLink>

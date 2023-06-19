@@ -19,7 +19,7 @@ import useEnsAddress from '../../../../hooks/useEnsAddress';
 import { useAppDispatch, useAppSelector } from '../../../../redux/hooks';
 import { getProfileOrders, getProfileTokens } from '../../../../redux/stores/profile/profileApi';
 import { reset } from '../../../../redux/stores/profile/profileSlice';
-import { AppRoutes } from '../../../../routes';
+import { routes } from '../../../../routes';
 import ProfileHeader from '../ProfileHeader/ProfileHeader';
 
 interface ConnectedProfileWidgetProps {
@@ -106,7 +106,7 @@ const ConnectedProfileWidget: FC<ConnectedProfileWidgetProps> = ({
                   imageURI={nft.image}
                   name={nft.name}
                   price={price}
-                  to={`/${AppRoutes.nftDetail}/${nft.id}`}
+                  to={routes.nftDetail(nft.id)}
                   symbol={currencyTokenInfo?.symbol}
                   className="profile-widget__nft-card"
                 />

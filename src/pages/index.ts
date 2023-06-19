@@ -4,7 +4,6 @@ import ListNftPage from './ListNftPage/ListNftPage';
 import NftDetailPage from './NftDetailPage/NftDetailPage';
 import ProfileOrdersPage from './ProfileOrdersPage/ProfileOrdersPage';
 import ProfilePage from './ProfilePage/ProfilePage';
-import SwapPage from './SwapPage/SwapPage';
 
 export {
   BuyNftPage,
@@ -13,5 +12,4 @@ export {
   NftDetailPage,
   ProfileOrdersPage,
   ProfilePage,
-  SwapPage,
 };

@@ -1,7 +1,7 @@
 import React, { FC } from 'react';
 
 import IconNavLink from '../../../../compositions/IconNavLink/IconNavLink';
-import { AppRoutes } from '../../../../routes';
+import { routes } from '../../../../routes';
 
 import './BuyNftWidgetHeader.scss';
 
@@ -18,7 +18,7 @@ const BuyNftWidgetHeader: FC<BuyNftWidgetHeaderProps> = ({ nftId, title, classNa
       hideLabel
       icon="close"
       text="Back"
-      to={`/${AppRoutes.nftDetail}/${nftId}`}
+      to={routes.nftDetail(nftId)}
       className="buy-nft-widget-header__back-button"
     />
   </div>

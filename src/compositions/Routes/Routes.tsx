@@ -1,6 +1,6 @@
 import React, { FC } from 'react';
 
-import { createHashRouter, RouterProvider } from 'react-router-dom';
+import { createHashRouter, Navigate, RouterProvider } from 'react-router-dom';
 
 import {
   BuyNftPage,
@@ -9,7 +9,6 @@ import {
   NftDetailPage,
   ProfileOrdersPage,
   ProfilePage,
-  SwapPage,
 } from '../../pages';
 import { AppRoutes, ProfileRoutes } from '../../routes';
 
@@ -24,29 +23,29 @@ const Routes: FC = () => {
       element: <ListNftPage />,
     },
     {
-      path: `/${AppRoutes.nftDetail}/:id`,
+      path: `/${AppRoutes.nftDetail}/:tokenId`,
       element: <NftDetailPage />,
     },
     {
-      path: `/${AppRoutes.nftDetail}/:id/buy`,
+      path: `/${AppRoutes.orderDetail}/:orderNonce`,
       element: <BuyNftPage />,
     },
     {
-      path: `/${AppRoutes.profile}`,
+      path: `/${AppRoutes.profile}/:account`,
       children: [
         {
-          path: ':account',
           element: <ProfilePage />,
+          path: ProfileRoutes.ownedNfts,
         },
         {
-          path: `:account/${ProfileRoutes.orders}`,
+          path: ProfileRoutes.orders,
           element: <ProfileOrdersPage />,
         },
+        {
+          element: <Navigate to={ProfileRoutes.ownedNfts} />,
+          index: true,
+        },
       ],
-    },
-    {
-      path: `/${AppRoutes.swap}`,
-      element: <SwapPage />,
     },
   ]);
 
