@@ -1,0 +1,45 @@
+@import "src/styles/index";
+
+.profile-navigation-nav-link {
+    @extend %button-border-style;
+    @extend %flex-align-center;
+
+    border: solid 1px var(--c-grey);
+    margin-left: -1px;
+    width: -webkit-fill-available;
+    height: 2rem;
+    font-weight: 700;
+    font-size: .75rem;
+    line-height: 1.5rem;
+    color: var(--c-light-grey);
+    background: var(--c-dark);
+    z-index: 1;
+
+    &:focus {
+        z-index: 2;
+    }
+
+    &:first-child {
+        border-top-left-radius: .25rem;
+        border-bottom-left-radius: .25rem;
+    }
+
+    &:last-child {
+        border-top-right-radius: .25rem;
+        border-bottom-right-radius: .25rem;
+    }
+
+    &--is-uppercase {
+        text-transform: uppercase;
+    }
+
+    &.active {
+        background-color: var(--c-grey);
+        color: #fff;
+    }
+
+    &[aria-disabled="true"] {
+        color: var(--c-grey);
+        pointer-events: none;
+    }
+}

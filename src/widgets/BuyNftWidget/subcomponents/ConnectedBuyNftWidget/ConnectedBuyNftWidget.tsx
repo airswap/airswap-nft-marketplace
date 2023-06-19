@@ -176,6 +176,7 @@ const BuyNftWidget: FC<ConnectedBuyNftWidgetProps> = ({
         isOrderExpired={isOrderExpired}
         isOrderNonceUsed={isOrderNonceUsed}
         ownerIsAccount={ownerIsAccount}
+        account={account}
         collectionTokenInfo={collectionTokenInfo}
         currencyTokenSymbol={currencyTokenInfo.symbol}
         state={widgetState}

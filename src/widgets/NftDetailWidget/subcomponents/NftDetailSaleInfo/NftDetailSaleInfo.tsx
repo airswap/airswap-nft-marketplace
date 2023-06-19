@@ -1,25 +1,30 @@
 import React, { FC } from 'react';
 
-import { format } from '@greypixel_/nicenumbers';
-import { BigNumber } from 'ethers';
+import LoadingSpinner from '../../../../components/LoadingSpinner/LoadingSpinner';
 
 import './NftDetailSaleInfo.scss';
 
 interface NftDetailSaleInfoProps {
-  price?: BigNumber;
-  symbol?: string;
+  isLoading?: boolean;
+  price?: string;
+  symbol: string;
   className?: string;
 }
 
 const NftDetailSaleInfo: FC<NftDetailSaleInfoProps> = ({
+  isLoading,
   price,
-  symbol = 'undefined',
+  symbol,
   className = '',
 }) => (
   <div className={`nft-detail-sale-info ${className}`}>
-    <h3 className="nft-detail-sale-info__price">
-      {price ? `${format(price)} ${symbol}` : null}
-    </h3>
+    {isLoading ? (
+      <LoadingSpinner className="nft-detail-sale-info__loading-spinner" />
+    ) : (
+      <h3 className="nft-detail-sale-info__price">
+        {price ? `${price} ${symbol}` : null}
+      </h3>
+    )}
   </div>
 );
 

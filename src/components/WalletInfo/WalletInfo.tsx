@@ -5,13 +5,15 @@ import classNames from 'classnames';
 import IconButton from '../../compositions/IconButton/IconButton';
 import { truncateAddress } from '../../helpers/stringUtils';
 import Avatar from '../Avatar/Avatar';
+import Icon from '../Icon/Icon';
 
 import './WalletInfo.scss';
 
 interface WalletInfoProps {
   isBanner?: boolean;
-  avatarUrl?: string;
+  accountUrl?: string;
   address?: string;
+  avatarUrl?: string;
   ensAddress?: string;
   showLogOutButton?: boolean;
   onLogoutButtonClick?: () => void;
@@ -21,8 +23,9 @@ interface WalletInfoProps {
 
 const WalletInfo: FC<WalletInfoProps> = ({
   isBanner = false,
-  avatarUrl = '',
+  accountUrl,
   address = '',
+  avatarUrl = '',
   ensAddress = '',
   showLogOutButton = false,
   onLogoutButtonClick,
@@ -41,21 +44,28 @@ const WalletInfo: FC<WalletInfoProps> = ({
         <span className="wallet-info__address">{truncateAddress(ensAddress || address)}</span>
         {ensAddress && <span className="wallet-info__address-secondary">{truncateAddress(address)}</span>}
       </div>
-      {isBanner && (
-        <IconButton
-          hideLabel
-          icon="launch"
-          text="wallet"
-          iconClassName="wallet-info__icon"
-        />
+      {accountUrl && (
+        <a
+          aria-label="address"
+          href={accountUrl}
+          rel="noreferrer"
+          target="_blank"
+          className="wallet-info__link"
+        >
+          <Icon
+            name="launch"
+            className="wallet-info__icon"
+          />
+        </a>
       )}
       {showLogOutButton && (
         <IconButton
           hideLabel
           icon="logout"
           text="logout"
-          iconClassName="wallet-info__icon"
           onClick={onLogoutButtonClick}
+          iconClassName="wallet-info__icon"
+          className="wallet-info__button"
         />
       )}
     </div>

@@ -1,13 +1,12 @@
 import { useEffect, useState } from 'react';
 
 import { FullOrder } from '@airswap/types';
-import { Web3Provider } from '@ethersproject/providers';
-import { useWeb3React } from '@web3-react/core';
 
 import { getNonceUsed } from '../redux/stores/orders/ordersApi';
+import useDefaultProvider from './useDefaultProvider';
 
 const useFullOrderNonceUsed = (fullOrder?: FullOrder): [boolean, boolean] => {
-  const { library } = useWeb3React<Web3Provider>();
+  const library = useDefaultProvider(fullOrder?.chainId);
   const [isLoading, setIsLoading] = useState(true);
   const [isNonceUsed, setIsNonceUsed] = useState(false);
 

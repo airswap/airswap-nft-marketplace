@@ -1,5 +1,9 @@
+import { TokenKinds } from '@airswap/constants';
 import { getCollectionTokenInfo } from '@airswap/metadata';
-import { CollectionTokenInfo, FullOrder } from '@airswap/types';
+import { CollectionTokenInfo } from '@airswap/types';
+import erc721AbiContract from '@openzeppelin/contracts/build/contracts/ERC721.json';
+import erc721AbiEnumerableContract from '@openzeppelin/contracts/build/contracts/ERC721Enumerable.json';
+import erc1155AbiContract from '@openzeppelin/contracts/build/contracts/ERC1155.json';
 import * as ethers from 'ethers';
 
 export const getCollectionToken = async (library: ethers.providers.BaseProvider, address: string, tokenId: number): Promise<CollectionTokenInfo | undefined> => {
@@ -16,6 +20,27 @@ export const getCollectionToken = async (library: ethers.providers.BaseProvider,
   return tokenInfo;
 };
 
+export const getCollectionTokenContractAbi = (kind: CollectionTokenInfo['kind']): ethers.ContractInterface => {
+  if (kind === TokenKinds.ERC721) {
+    return erc721AbiContract.abi;
+  }
+
+  if (kind === TokenKinds.ERC1155) {
+    return erc1155AbiContract.abi;
+  }
+
+  return erc721AbiEnumerableContract.abi;
+};
+
+export const getCollectionTokenOwner = async (library: ethers.providers.BaseProvider, token: CollectionTokenInfo): Promise<string | undefined> => {
+  const contractAbi = getCollectionTokenContractAbi(token.kind);
+  const contract = new ethers.Contract(token.address, contractAbi, library);
+
+  return contract.functions.ownerOf(token.id)
+    .then((owner: [string]) => owner[0])
+    .catch(() => undefined);
+};
+
 export const isCollectionTokenInfo = (resource: any): resource is CollectionTokenInfo => (
   resource
     && typeof resource.chainId === 'number'
@@ -26,8 +51,10 @@ export const isCollectionTokenInfo = (resource: any): resource is CollectionToke
     && resource.attributes && Array.isArray(resource.attributes)
 );
 
-export const getCollectionTokensInfoFromOrders = async (library: ethers.providers.BaseProvider, orders: FullOrder[]): Promise<CollectionTokenInfo[]> => {
-  const results = await Promise.all(orders.map(order => getCollectionToken(library, order.signer.token, +order.signer.id)));
+export const filterCollectionTokenBySearchValue = (token: CollectionTokenInfo, value: string): boolean => {
+  if (value === '') return true;
 
-  return results.filter(isCollectionTokenInfo) as CollectionTokenInfo[];
+  if (token.name && token.name.toLowerCase().includes(value.toLowerCase())) return true;
+
+  return token.id.toString().toLowerCase().includes(value.toLowerCase());
 };

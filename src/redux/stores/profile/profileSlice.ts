@@ -1,54 +1,94 @@
-import { CollectionTokenInfo } from '@airswap/types';
+import { FullOrder } from '@airswap/types';
 import { createSlice, PayloadAction } from '@reduxjs/toolkit';
 
-import { fetchOwnedTokenMeta } from './profileApi';
+import { INDEXER_ORDERS_OFFSET } from '../../../constants/indexer';
+import { getProfileOrders, getProfileTokens } from './profileApi';
 
 export interface ProfileState {
-  isLoading: boolean;
-  ownedTokenMeta: CollectionTokenInfo[];
+  isLoadingOrders: boolean;
+  isLoadingTokens: boolean;
+  isTotalOrdersReached: boolean;
+  orders: FullOrder[];
+  ordersOffset: number;
+  tokens: number[];
 }
 
 const initialState: ProfileState = {
-  isLoading: false,
-  ownedTokenMeta: [],
+  isLoadingOrders: false,
+  isLoadingTokens: false,
+  isTotalOrdersReached: false,
+  orders: [],
+  ordersOffset: 0,
+  tokens: [],
 };
 
 const profileSlice = createSlice({
   name: 'profile',
   initialState,
   reducers: {
-    setOwnedTokenMeta: (state, action: PayloadAction<string>) => ({
-      ...state,
-      selectedTokenId: action.payload,
+    reset: (): ProfileState => ({
+      ...initialState,
     }),
-    setError: (state, action: PayloadAction<string>) => ({
+    setOrdersOffset: (state, action: PayloadAction<number>): ProfileState => ({
       ...state,
-      error: {
-        hasError: true,
-        message: action.payload,
-      },
+      ordersOffset: action.payload,
     }),
   },
   extraReducers: builder => {
-    builder.addCase(fetchOwnedTokenMeta.pending, state => ({
+    builder.addCase(getProfileOrders.pending, (state): ProfileState => ({
       ...state,
-      isLoading: true,
+      isLoadingOrders: true,
     }));
 
-    builder.addCase(fetchOwnedTokenMeta.fulfilled, (state, action) => ({
+    builder.addCase(getProfileOrders.fulfilled, (state, action): ProfileState => {
+      const newOrders = [
+        ...state.orders,
+        ...action.payload,
+      ];
+      const isTotalOrdersReached = action.payload.length < INDEXER_ORDERS_OFFSET;
+
+      return {
+        ...state,
+        isLoadingOrders: false,
+        isTotalOrdersReached,
+        orders: newOrders,
+      };
+    });
+
+    builder.addCase(getProfileOrders.rejected, (state, action): ProfileState => {
+      console.error('profile/getProfileOrders', action);
+
+      return {
+        ...state,
+        isLoadingOrders: false,
+      };
+    });
+
+    builder.addCase(getProfileTokens.pending, (state): ProfileState => ({
       ...state,
-      isLoading: false,
-      ownedTokenMeta: action.payload,
+      isLoadingTokens: true,
     }));
 
-    builder.addCase(fetchOwnedTokenMeta.rejected, (_state, action) => {
-      console.error('fetchNftMeta.rejected', action);
+    builder.addCase(getProfileTokens.fulfilled, (state, action): ProfileState => ({
+      ...state,
+      isLoadingTokens: false,
+      tokens: action.payload,
+    }));
+
+    builder.addCase(getProfileTokens.rejected, (state, action): ProfileState => {
+      console.error('profile/getProfileTokens', action);
+
+      return {
+        ...state,
+        isLoadingTokens: false,
+      };
     });
   },
 });
 
 export const {
-  setOwnedTokenMeta, setError,
+  reset,
+  setOrdersOffset,
 } = profileSlice.actions;
 
 export default profileSlice.reducer;

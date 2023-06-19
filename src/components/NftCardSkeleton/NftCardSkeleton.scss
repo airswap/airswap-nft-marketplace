@@ -1,0 +1,27 @@
+@import "src/styles/index";
+
+.nft-card-skeleton {
+    @extend %nft-card;
+
+    &__loader-wrapper {
+        @extend %flex-align-center;
+
+        width: 100%;
+        aspect-ratio: 1;
+        object-fit: contain;
+    }
+
+    &__info-wrapper {
+        @extend %nft-card-info-wrapper;
+    }
+
+    &__name {
+        @extend %nft-card-name;
+
+        opacity: 0;
+    }
+
+    &__price {
+        @extend %nft-card-price;
+    }
+}

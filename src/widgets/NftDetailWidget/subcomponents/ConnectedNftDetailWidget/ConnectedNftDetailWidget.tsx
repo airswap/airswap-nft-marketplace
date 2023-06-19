@@ -1,10 +1,14 @@
-import React, { FC } from 'react';
+import React, { FC, useEffect, useMemo } from 'react';
 
 import { CollectionTokenInfo, TokenInfo } from '@airswap/types';
-import { BigNumber } from 'ethers';
 
 import Accordion from '../../../../components/Accordion/Accordion';
-import { useAppSelector } from '../../../../redux/hooks';
+import { getFullOrderReadableSenderAmountPlusTotalFees } from '../../../../entities/FullOrder/FullOrderHelpers';
+import useAddressOrEnsName from '../../../../hooks/useAddressOrEnsName';
+import useNftTokenOwner from '../../../../hooks/useNftTokenOwner';
+import { useAppDispatch, useAppSelector } from '../../../../redux/hooks';
+import { getNftOrder } from '../../../../redux/stores/nftDetail/nftDetailApi';
+import { AppRoutes } from '../../../../routes';
 import NftDetailAttributes from '../NftDetailAttributes/NftDetailAttributes';
 import NftDetailContentContainer from '../NftDetailContentContainer/NftDetailContentContainer';
 import NftDetailList from '../NftDetailList/NftDetailList';
@@ -20,14 +24,27 @@ interface ConnectedNftDetailWidgetProps {
 }
 
 const ConnectedNftDetailWidget: FC<ConnectedNftDetailWidgetProps> = ({ collectionTokenInfo, currencyTokenInfo, className = '' }) => {
+  const dispatch = useAppDispatch();
+
+  const { chainId, collectionToken, collectionImage } = useAppSelector((state) => state.config);
   const { protocolFee } = useAppSelector(state => state.metadata);
-  const { collectionToken, collectionImage } = useAppSelector((state) => state.config);
+  const { isLoading, order } = useAppSelector(state => state.nftDetail);
+
+  const price = useMemo(() => (order ? getFullOrderReadableSenderAmountPlusTotalFees(order, currencyTokenInfo) : undefined), [order]);
+  const owner = useNftTokenOwner(collectionTokenInfo);
+  const readableOwnerAddress = useAddressOrEnsName(owner, true);
+  const accountRoute = owner ? `/${AppRoutes.profile}/${owner}` : undefined;
+
+  useEffect(() => {
+    dispatch(getNftOrder({ tokenId: collectionTokenInfo.id }));
+  }, [collectionTokenInfo]);
 
   return (
     <div className={`nft-detail-widget ${className}`}>
       <NftDetailContentContainer className="nft-detail-widget__mobile-view">
         <NftDetailMainInfo
-          owner="sjnivo12345"
+          accountRoute={accountRoute}
+          owner={readableOwnerAddress}
           title={collectionTokenInfo.name}
           className="nft-detail-widget__main-info"
         />
@@ -36,8 +53,9 @@ const ConnectedNftDetailWidget: FC<ConnectedNftDetailWidgetProps> = ({ collectio
           className="nft-detail-widget__portrait"
         />
         <NftDetailSaleInfo
-          price={BigNumber.from('0')}
-          symbol={collectionTokenInfo.name}
+          isLoading={isLoading}
+          price={price}
+          symbol={currencyTokenInfo.symbol}
           className="nft-detail-widget__price"
         />
         <Accordion
@@ -48,7 +66,7 @@ const ConnectedNftDetailWidget: FC<ConnectedNftDetailWidgetProps> = ({ collectio
           className="nft-detail-widget__description-accordion"
           isDefaultOpen
         />
-        <NftDetailProceedButton />
+        {order && <NftDetailProceedButton />}
         <Accordion
           label="Properties"
           content={(
@@ -63,8 +81,8 @@ const ConnectedNftDetailWidget: FC<ConnectedNftDetailWidgetProps> = ({ collectio
             <NftDetailList
               address={collectionToken}
               id={collectionTokenInfo.id}
-              chain="Unknown"
-              standard="Unknown"
+              chain={chainId.toString()}
+              standard={collectionTokenInfo.kind}
               fee={protocolFee / 100}
             />
           )}
@@ -83,8 +101,8 @@ const ConnectedNftDetailWidget: FC<ConnectedNftDetailWidgetProps> = ({ collectio
               <NftDetailList
                 address={collectionToken}
                 id={collectionTokenInfo.id}
-                chain="Unknown"
-                standard="Unknown"
+                chain={chainId.toString()}
+                standard={collectionTokenInfo.kind}
                 fee={protocolFee / 100}
               />
             </div>
@@ -95,7 +113,8 @@ const ConnectedNftDetailWidget: FC<ConnectedNftDetailWidgetProps> = ({ collectio
         </div>
         <div className="nft-detail-widget__column">
           <NftDetailMainInfo
-            owner="sjnivo12345"
+            accountRoute={accountRoute}
+            owner={readableOwnerAddress}
             title={collectionTokenInfo.name}
             className="nft-detail-widget__main-info"
           />
@@ -104,11 +123,12 @@ const ConnectedNftDetailWidget: FC<ConnectedNftDetailWidgetProps> = ({ collectio
             <p>{collectionTokenInfo.description}</p>
           </div>
           <NftDetailSaleInfo
-            price={BigNumber.from('0')}
+            isLoading={isLoading}
+            price={price}
             symbol={currencyTokenInfo.symbol}
             className="nft-detail-widget__price"
           />
-          <NftDetailProceedButton />
+          {order && <NftDetailProceedButton />}
         </div>
       </NftDetailContentContainer>
     </div>

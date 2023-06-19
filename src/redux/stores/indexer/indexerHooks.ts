@@ -26,7 +26,9 @@ export const useIndexers = (): void => {
   };
 
   useEffect(() => {
-    dispatch(initialize({ chainId, provider: library }));
+    if (library) {
+      dispatch(initialize({ chainId, provider: library }));
+    }
   }, [library]);
 
   useEffect(() => {

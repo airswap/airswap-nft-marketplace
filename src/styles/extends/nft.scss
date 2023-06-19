@@ -1,0 +1,53 @@
+@import './button';
+@import '../mixins';
+
+%nft-card {
+    @extend %button;
+    @extend %button-border-style;
+
+    content-visibility: auto;
+    contain-intrinsic-size: 10rem;
+    flex-direction: column;
+    border-radius: .25rem;
+    padding: 0;
+    text-align: left;
+    overflow: hidden;
+    background-color: var(--c-dark);
+
+    @include for-size(tablet-landscape-up) {
+        contain-intrinsic-size: 15rem;
+        border-radius: .5rem;
+    }
+
+    @include for-size(desktop-up) {
+        contain-intrinsic-size: 20.875rem;
+    }
+}
+
+%nft-card-info-wrapper {
+    width: 100%;
+    padding: .5rem .75rem .75rem;
+    font-size: .875rem;
+    background-color: var(--c-grey);
+
+    @include for-size(desktop-up) {
+        padding: .75rem 1.25rem 1rem;
+        font-size: 1rem;
+    }
+}
+
+%nft-card-name {
+    font-weight: var(--fw-700);
+    color: var(--c-white);
+}
+
+%nft-card-price {
+    margin-top: .5rem;
+    font-weight: var(--fw-400);
+    font-family: var(--f-mono);
+    color: var(--c-light-grey);
+
+    @include for-size(desktop-up) {
+        margin-top: .75rem;
+    }
+}

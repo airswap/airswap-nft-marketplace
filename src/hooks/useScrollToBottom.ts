@@ -1,6 +1,6 @@
 import { useEffect, useState } from 'react';
 
-const useInfiniteScroll = (): boolean => {
+const useScrollToBottom = (): boolean => {
   const [scrolledToBottom, setIsScrolledToBottom] = useState(false);
 
   const handleScroll = async () => {
@@ -20,4 +20,4 @@ const useInfiniteScroll = (): boolean => {
   return scrolledToBottom;
 };
 
-export default useInfiniteScroll;
+export default useScrollToBottom;

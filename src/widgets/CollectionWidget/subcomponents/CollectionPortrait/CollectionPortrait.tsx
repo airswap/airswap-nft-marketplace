@@ -19,7 +19,7 @@ const CollectionPortrait: FC<CollectionPortraitProps> = ({
     style={{ backgroundImage: `url("${backgroundImage}")` }}
     className={`collection-portrait ${className}`}
   >
-    <h1>{title}</h1>
+    <h1 className="collection-portrait__title">{title}</h1>
     <h2 className="collection-portrait__sub-title">{subTitle}</h2>
   </div>
 );

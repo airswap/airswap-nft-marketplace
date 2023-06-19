@@ -1,4 +1,4 @@
-import React, { FC } from 'react';
+import React, { FC, useEffect } from 'react';
 
 import { useParams } from 'react-router-dom';
 
@@ -16,15 +16,21 @@ interface NftDetailWidgetProps {
 const NftDetailWidget: FC<NftDetailWidgetProps> = ({ className = '' }) => {
   const { id } = useParams<{ id: string }>();
 
-  const { currencyTokenInfo, isLoading: isMetadataLoading } = useAppSelector(state => state.metadata);
   const { collectionToken } = useAppSelector(state => state.config);
+  const { isInitialized } = useAppSelector(state => state.indexer);
+  const { currencyTokenInfo, isLoading: isMetadataLoading } = useAppSelector(state => state.metadata);
 
   const [collectionTokenInfo, isLoadingCollectionTokenInfo] = useCollectionToken(collectionToken, id ? Number(id) : 1);
   const isLoading = isMetadataLoading || isLoadingCollectionTokenInfo;
 
+  useEffect(() => {
+    window.scrollTo(0, 0);
+  }, []);
+
   if (id
     && !isLoadingCollectionTokenInfo
     && !isMetadataLoading
+    && isInitialized
     && collectionTokenInfo
     && currencyTokenInfo
   ) {

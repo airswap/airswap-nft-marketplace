@@ -1,0 +1,28 @@
+@import "src/styles";
+
+.orders-container {
+
+    &__orders {
+        @extend %nfts-grid;
+
+        width: 100%;
+    }
+
+    &__bottom {
+        display: flex;
+        margin: 2rem auto;
+        width: 2rem;
+        aspect-ratio: 1;
+    }
+
+    &__loader {
+        border: 0;
+    }
+
+    &__end-of-orders-icon {
+        min-width: 1.75rem;
+        min-height: 1.75rem;
+        color: var(--c-white);
+        opacity: 0.5;
+    }
+}

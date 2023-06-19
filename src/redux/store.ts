@@ -8,12 +8,15 @@ import {
 
 import balancesReducer from './stores/balances/balancesSlice';
 import { configureBalancesSubscriber } from './stores/balances/balancesSubscriber';
+import collectionReducer from './stores/collection/collectionSlice';
 import configReducer from './stores/config/configSlice';
 import indexerReducer from './stores/indexer/indexerSlice';
 import listNftReducer from './stores/listNft/listNftSlice';
 import metadataReducer from './stores/metadata/metadataSlice';
+import nftDetailReducer from './stores/nftDetail/nftDetailSlice';
 import ordersReducer from './stores/orders/ordersSlice';
 import profileReducer from './stores/profile/profileSlice';
+import profileOrdersReducer from './stores/profileOrders/profileOrdersSlice';
 import toastsReducer from './stores/toasts/toastsSlice';
 import transactionsReducer from './stores/transactions/transactionsSlice';
 import userReducer from './stores/user/userSlice';
@@ -23,12 +26,15 @@ import web3Reducer from './stores/web3/web3Slice';
 export const store = configureStore({
   reducer: {
     balances: balancesReducer,
+    collection: collectionReducer,
     config: configReducer,
     indexer: indexerReducer,
     listNft: listNftReducer,
     metadata: metadataReducer,
+    nftDetail: nftDetailReducer,
     orders: ordersReducer,
     profile: profileReducer,
+    profileOrders: profileOrdersReducer,
     toasts: toastsReducer,
     transactions: transactionsReducer,
     user: userReducer,
@@ -41,6 +47,7 @@ configureUserSubscriber();
 
 export type RootState = ReturnType<typeof store.getState>;
 export type AppDispatch = ThunkDispatch<RootState, unknown, AnyAction>;
+export type AppThunkApiConfig = { dispatch: AppDispatch; state: RootState }
 export type AppThunk<ReturnType = void> = ThunkAction<
 ReturnType,
 RootState,

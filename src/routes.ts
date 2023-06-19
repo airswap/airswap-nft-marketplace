@@ -5,3 +5,8 @@ export enum AppRoutes {
   swap = 'swap',
   profile = 'profile'
 }
+
+export enum ProfileRoutes {
+  activity = 'activity',
+  orders = 'orders',
+}

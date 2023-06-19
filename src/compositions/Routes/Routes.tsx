@@ -3,14 +3,15 @@ import React, { FC } from 'react';
 import { createHashRouter, RouterProvider } from 'react-router-dom';
 
 import {
+  BuyNftPage,
   CollectionPage,
   ListNftPage,
   NftDetailPage,
+  ProfileOrdersPage,
   ProfilePage,
   SwapPage,
 } from '../../pages';
-import BuyNftPage from '../../pages/BuyNftPage/BuyNftPage';
-import { AppRoutes } from '../../routes';
+import { AppRoutes, ProfileRoutes } from '../../routes';
 
 const Routes: FC = () => {
   const router = createHashRouter([
@@ -36,6 +37,10 @@ const Routes: FC = () => {
         {
           path: ':account',
           element: <ProfilePage />,
+        },
+        {
+          path: `:account/${ProfileRoutes.orders}`,
+          element: <ProfileOrdersPage />,
         },
       ],
     },
