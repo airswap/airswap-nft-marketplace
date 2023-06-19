@@ -3,17 +3,23 @@ import { BigNumber } from 'bignumber.js';
 // This helper function is used to round the number string to the nearest possible decimal allowed.
 // To prevent the NUMERIC_FAULT error from bignumber.js when creating orders or approving spend amounts.
 
-const toMaxAllowedDecimalsNumberString = (
-  value: string,
-  decimals = 18,
-): string => {
+export const toMaxAllowedDecimalsNumberString = (value: string, decimals = 18): string => {
+  const firstCharacter = value[0];
   const lastCharacter = value[value.length - 1];
+  const firstCharacterIsNonZero = !(firstCharacter === '0' || firstCharacter === '.');
+  const firstCharacterIsPeriod = firstCharacter === '.';
+
+  if (firstCharacterIsNonZero) {
+    return value;
+  }
 
   if (
     value === ''
+    || value === '.'
     || lastCharacter === '.'
     || lastCharacter === '0'
-    || new BigNumber(value).toNumber() === 0
+    || (firstCharacter === '.' && (value.length - 1) <= decimals)
+    || (firstCharacter === '0' && (value.length) <= decimals)
   ) {
     return value;
   }
@@ -31,10 +37,8 @@ const toMaxAllowedDecimalsNumberString = (
       .dividedBy(10 ** decimals)
       .toString();
 
-    return minimalAllowedValue;
+    return firstCharacterIsPeriod ? minimalAllowedValue.substring(1) : minimalAllowedValue;
   }
 
-  return number;
+  return firstCharacterIsPeriod ? number.substring(1) : number;
 };
-
-export default toMaxAllowedDecimalsNumberString;

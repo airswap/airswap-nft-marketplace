@@ -12,7 +12,7 @@ import { expiryAmounts } from '../../../../constants/expiry';
 import { isCollectionTokenInfo } from '../../../../entities/CollectionToken/CollectionTokenHelpers';
 import { SubmittedTransactionStatus } from '../../../../entities/SubmittedTransaction/SubmittedTransaction';
 import { AppErrorType, isAppError } from '../../../../errors/appError';
-import toMaxAllowedDecimalsNumberString from '../../../../helpers/input';
+import { toMaxAllowedDecimalsNumberString } from '../../../../helpers/input';
 import useApproveNftTransaction from '../../../../hooks/useApproveNftTransaction';
 import useCollectionToken from '../../../../hooks/useCollectionToken';
 import useInsufficientAmount from '../../../../hooks/useInsufficientAmount';
