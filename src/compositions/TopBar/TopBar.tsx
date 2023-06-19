@@ -9,7 +9,7 @@ import classNames from 'classnames';
 
 import Avatar from '../../components/Avatar/Avatar';
 import Button from '../../components/Button/Button';
-import { truncateAddress } from '../../helpers/stringUtils';
+import { truncateAddress } from '../../helpers/string';
 import { AppRoutes } from '../../routes';
 import IconButton from '../IconButton/IconButton';
 import IconNavLink from '../IconNavLink/IconNavLink';

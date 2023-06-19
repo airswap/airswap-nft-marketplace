@@ -14,7 +14,7 @@ import SearchInput from '../../../../components/SearchInput/SearchInput';
 import { INDEXER_ORDERS_OFFSET } from '../../../../constants/indexer';
 import OrdersContainer from '../../../../containers/OrdersContainer/OrdersContainer';
 import { filterCollectionTokenBySearchValue } from '../../../../entities/CollectionToken/CollectionTokenHelpers';
-import { getOwnedTokensByAccountUrl } from '../../../../helpers/airswap';
+import getOwnedTokensByAccountUrl from '../../../../helpers/airswap/getOwnedTokensByAccountUrl';
 import useCollectionTokens from '../../../../hooks/useCollectionTokens';
 import useEnsAddress from '../../../../hooks/useEnsAddress';
 import useScrollToBottom from '../../../../hooks/useScrollToBottom';

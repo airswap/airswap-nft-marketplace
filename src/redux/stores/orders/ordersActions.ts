@@ -26,10 +26,11 @@ import {
 import { setError } from './ordersSlice';
 
 interface ApproveParams {
-  tokenInfo: TokenInfo | CollectionTokenInfo;
-  library: Web3Provider;
+  amount?: number;
   chainId: number;
+  library: Web3Provider;
   tokenId?: number;
+  tokenInfo: TokenInfo | CollectionTokenInfo;
 }
 
 type TransactionHash = Transaction['hash'];
@@ -46,7 +47,12 @@ ApproveParams,
 
   try {
     let tx: Transaction;
-    const { tokenInfo, library, tokenId } = params;
+    const {
+      amount,
+      library,
+      tokenId,
+      tokenInfo,
+    } = params;
 
     const tokenKind = 'kind' in tokenInfo ? tokenInfo.kind : TokenKinds.ERC20;
 
@@ -64,7 +70,11 @@ ApproveParams,
         tokenKind,
       );
     } else {
-      tx = await approveErc20Token(tokenInfo.address, library);
+      tx = await approveErc20Token(
+        tokenInfo as TokenInfo,
+        library,
+        amount,
+      );
     }
 
     if (tx.hash && tokenKind === TokenKinds.ERC20) {

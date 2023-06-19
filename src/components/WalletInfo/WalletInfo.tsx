@@ -3,7 +3,7 @@ import React, { FC } from 'react';
 import classNames from 'classnames';
 
 import IconButton from '../../compositions/IconButton/IconButton';
-import { truncateAddress } from '../../helpers/stringUtils';
+import { truncateAddress } from '../../helpers/string';
 import Avatar from '../Avatar/Avatar';
 import Icon from '../Icon/Icon';
 
