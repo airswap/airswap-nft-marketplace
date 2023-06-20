@@ -1,6 +1,6 @@
 import { FC, useMemo } from 'react';
 
-import { getOwnedTokensByAccountUrl } from '../../../../helpers/airswap';
+import getOwnedTokensByAccountUrl from '../../../../helpers/airswap/getOwnedTokensByAccountUrl';
 import useEnsAddress from '../../../../hooks/useEnsAddress';
 import { useAppSelector } from '../../../../redux/hooks';
 import ProfileHeader from '../ProfileHeader/ProfileHeader';

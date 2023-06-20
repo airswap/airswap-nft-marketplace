@@ -1,12 +1,13 @@
 import { TokenKinds } from '@airswap/constants';
 import { Swap } from '@airswap/libraries';
 import { CollectionTokenInfo, FullOrder, TokenInfo } from '@airswap/types';
-import { createOrder, toAtomicString } from '@airswap/utils';
+import { createOrder } from '@airswap/utils';
 import { Web3Provider } from '@ethersproject/providers';
 import { createAsyncThunk } from '@reduxjs/toolkit';
 
 import { nativeCurrencyAddress } from '../../../constants/nativeCurrency';
 import { AppError, AppErrorType, isAppError } from '../../../errors/appError';
+import toRoundedAtomicString from '../../../helpers/airswap/getRoundedAtomicString';
 import { createOrderSignature } from '../../../helpers/createOrderSignature';
 import { setError, setUserOrder } from './listNftSlice';
 
@@ -30,7 +31,7 @@ CreateOrderParams
     dispatch(setError(undefined));
 
     try {
-      const senderAmount = toAtomicString(
+      const senderAmount = toRoundedAtomicString(
         params.senderAmount,
         params.senderTokenInfo.decimals,
       );

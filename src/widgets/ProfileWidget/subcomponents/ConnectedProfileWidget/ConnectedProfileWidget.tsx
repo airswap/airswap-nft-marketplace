@@ -13,7 +13,7 @@ import NftCard from '../../../../components/NftCard/NftCard';
 import SearchInput from '../../../../components/SearchInput/SearchInput';
 import { filterCollectionTokenBySearchValue } from '../../../../entities/CollectionToken/CollectionTokenHelpers';
 import { getFullOrderReadableSenderAmountPlusTotalFees } from '../../../../entities/FullOrder/FullOrderHelpers';
-import { getOwnedTokensByAccountUrl } from '../../../../helpers/airswap';
+import getOwnedTokensByAccountUrl from '../../../../helpers/airswap/getOwnedTokensByAccountUrl';
 import useCollectionTokens from '../../../../hooks/useCollectionTokens';
 import useEnsAddress from '../../../../hooks/useEnsAddress';
 import { useAppDispatch, useAppSelector } from '../../../../redux/hooks';

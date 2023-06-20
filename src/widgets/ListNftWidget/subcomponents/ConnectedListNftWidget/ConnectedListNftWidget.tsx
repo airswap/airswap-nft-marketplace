@@ -12,6 +12,7 @@ import { expiryAmounts } from '../../../../constants/expiry';
 import { isCollectionTokenInfo } from '../../../../entities/CollectionToken/CollectionTokenHelpers';
 import { SubmittedTransactionStatus } from '../../../../entities/SubmittedTransaction/SubmittedTransaction';
 import { AppErrorType, isAppError } from '../../../../errors/appError';
+import { toMaxAllowedDecimalsNumberString } from '../../../../helpers/input';
 import useApproveNftTransaction from '../../../../hooks/useApproveNftTransaction';
 import useCollectionToken from '../../../../hooks/useCollectionToken';
 import useInsufficientAmount from '../../../../hooks/useInsufficientAmount';
@@ -151,8 +152,8 @@ const ConnectedListNftWidget: FC<ListNftWidgetProps> = ({
     setWidgetState(ListNftState.details);
   };
 
-  const handleSelectedNftChange = (value: number) => {
-    setSelectedTokenId(value);
+  const handleTradeTokenInputChange = (value: string) => {
+    setCurrencyTokenAmount(toMaxAllowedDecimalsNumberString(value, currencyTokenInfo.decimals));
   };
 
   useEffect(() => {
@@ -200,8 +201,8 @@ const ConnectedListNftWidget: FC<ListNftWidgetProps> = ({
         widgetState={widgetState}
         onExpiryAmountChange={setExpiryAmount}
         onExpiryTimeUnitChange={setExpiryTimeUnit}
-        onSelectedNftChange={handleSelectedNftChange}
-        onTradeTokenInputChange={setCurrencyTokenAmount}
+        onSelectedNftChange={setSelectedTokenId}
+        onTradeTokenInputChange={handleTradeTokenInputChange}
         className="list-nft-widget__trade-details-container"
       />
 

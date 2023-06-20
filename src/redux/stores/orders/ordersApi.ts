@@ -1,12 +1,11 @@
 import { TokenKinds } from '@airswap/constants';
 import { Swap } from '@airswap/libraries';
-import { FullOrder } from '@airswap/types';
+import { FullOrder, TokenInfo } from '@airswap/types';
 import { checkResultToErrors } from '@airswap/utils';
 import erc20Contract from '@openzeppelin/contracts/build/contracts/ERC20.json';
 import erc721Contract from '@openzeppelin/contracts/build/contracts/ERC721.json';
 import erc1155Contract from '@openzeppelin/contracts/build/contracts/ERC1155.json';
 import {
-  BigNumber,
   constants,
   ContractTransaction,
   ethers,
@@ -22,17 +21,21 @@ const erc721Interface = new ethers.utils.Interface(erc721Contract.abi);
 const erc1155Interface = new ethers.utils.Interface(erc1155Contract.abi);
 
 export async function approveErc20Token(
-  baseToken: string,
+  tokenInfo: TokenInfo,
   provider: ethers.providers.Web3Provider,
+  amount?: number,
 ): Promise<Transaction> {
   const contract = new ethers.Contract(
-    baseToken,
+    tokenInfo.address,
     erc20Interface,
     provider.getSigner(),
   );
+
+  const approveAmount = amount || constants.MaxUint256.toNumber();
+
   return contract.approve(
     Swap.getAddress(provider.network.chainId),
-    constants.MaxUint256,
+    approveAmount,
   );
 }
 
@@ -128,7 +131,7 @@ export async function getErc20TokenAllowance(
   account: string,
   spenderAddress: string,
   provider: ethers.providers.Web3Provider,
-): Promise<BigNumber> {
+): Promise<ethers.BigNumber> {
   const contract = new ethers.Contract(
     address,
     erc20Interface,

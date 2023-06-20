@@ -20,7 +20,7 @@ const useCollectionTokens = (address: string, tokenIds: number[]): [CollectionTo
 
   const collectionTokensFromStore = useMemo(() => tokenIds
     .filter(tokenId => !!metadata.collectionTokens[tokenId])
-    .map(tokenId => metadata.collectionTokens[tokenId]), [tokenIds]);
+    .map(tokenId => metadata.collectionTokens[tokenId]), [tokenIds, metadata.collectionTokens]);
   const tokenIdsToFetch = tokenIds.filter(tokenId => !metadata.collectionTokens[tokenId]);
 
   useEffect((): void => {

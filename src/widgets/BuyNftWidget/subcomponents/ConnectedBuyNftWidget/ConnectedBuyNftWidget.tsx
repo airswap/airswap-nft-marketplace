@@ -8,6 +8,7 @@ import React, {
 import { CollectionTokenInfo, FullOrder, TokenInfo } from '@airswap/types';
 import { Web3Provider } from '@ethersproject/providers';
 
+import { getFullOrderSenderAmountPlusTotalFees } from '../../../../entities/FullOrder/FullOrderHelpers';
 import { AppErrorType, isAppError } from '../../../../errors/appError';
 import useApproveCurrencyTokenTransaction from '../../../../hooks/useApproveCurrencyTokenTransaction';
 import useFullOrderExpired from '../../../../hooks/useFullOrderExpired';
@@ -77,6 +78,7 @@ const BuyNftWidget: FC<ConnectedBuyNftWidgetProps> = ({
       setWidgetState(BuyNftState.approve);
 
       dispatch(approveErc20({
+        amount: getFullOrderSenderAmountPlusTotalFees(fullOrder).toNumber(),
         tokenInfo: currencyTokenInfo,
         library,
         chainId,
