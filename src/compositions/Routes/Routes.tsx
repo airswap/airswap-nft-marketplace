@@ -3,10 +3,10 @@ import React, { FC } from 'react';
 import { createHashRouter, Navigate, RouterProvider } from 'react-router-dom';
 
 import {
-  BuyNftPage,
   CollectionPage,
   ListNftPage,
   NftDetailPage,
+  OrderDetailPage,
   ProfileOrdersPage,
   ProfilePage,
 } from '../../pages';
@@ -27,8 +27,8 @@ const Routes: FC = () => {
       element: <NftDetailPage />,
     },
     {
-      path: `/${AppRoutes.orderDetail}/:orderNonce`,
-      element: <BuyNftPage />,
+      path: `/${AppRoutes.orderDetail}/:account/:orderNonce`,
+      element: <OrderDetailPage />,
     },
     {
       path: `/${AppRoutes.profile}/:account`,

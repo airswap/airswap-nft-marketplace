@@ -5,14 +5,12 @@ import BuyNftWidgetHeader from '../BuyNftWidgetHeader/BuyNftWidgetHeader';
 
 interface DisconnectedBuyNftWidgetProps {
   isLoading: boolean;
-  isOrderNotFound: boolean;
   nftId: number;
   className?: string;
 }
 
 const DisconnectedBuyNftWidget: FC<DisconnectedBuyNftWidgetProps> = ({
   isLoading,
-  isOrderNotFound,
   nftId,
   className = '',
 }) => (
@@ -22,7 +20,6 @@ const DisconnectedBuyNftWidget: FC<DisconnectedBuyNftWidgetProps> = ({
       nftId={nftId}
       className="buy-nft-widget__header"
     />
-    {isOrderNotFound && <>Order not found</>}
     {isLoading && <LoadingSpinner className="buy-nft-widget__loading-spinner" />}
   </div>
 );

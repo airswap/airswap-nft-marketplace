@@ -5,7 +5,7 @@ import LoadingSpinner from '../../../../components/LoadingSpinner/LoadingSpinner
 interface DisconnectedNftDetailWidgetProps {
   isLoading: boolean;
   isNftNotFound: boolean;
-  id?: string;
+  id: number;
   className?: string;
 }
 
@@ -17,7 +17,7 @@ const DisconnectedNftDetailWidget: FC<DisconnectedNftDetailWidgetProps> = ({
 }) => (
   <div className={`nft-detail-widget ${className}`}>
     {isLoading && <LoadingSpinner className="nft-detail-widget__loading-spinner" />}
-    {isNftNotFound && `NFT with id ${id || '?'} not found`}
+    {isNftNotFound && `NFT with id ${id} not found`}
   </div>
 );
 

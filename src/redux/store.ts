@@ -14,6 +14,7 @@ import indexerReducer from './stores/indexer/indexerSlice';
 import listNftReducer from './stores/listNft/listNftSlice';
 import metadataReducer from './stores/metadata/metadataSlice';
 import nftDetailReducer from './stores/nftDetail/nftDetailSlice';
+import orderDetailReducer from './stores/orderDetail/orderDetailSlice';
 import ordersReducer from './stores/orders/ordersSlice';
 import profileReducer from './stores/profile/profileSlice';
 import profileOrdersReducer from './stores/profileOrders/profileOrdersSlice';
@@ -33,6 +34,7 @@ export const store = configureStore({
     metadata: metadataReducer,
     nftDetail: nftDetailReducer,
     orders: ordersReducer,
+    orderDetail: orderDetailReducer,
     profile: profileReducer,
     profileOrders: profileOrdersReducer,
     toasts: toastsReducer,

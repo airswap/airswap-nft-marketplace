@@ -7,8 +7,9 @@ import { getFullOrderReadableSenderAmountPlusTotalFees } from '../../../../entit
 import useAddressOrEnsName from '../../../../hooks/useAddressOrEnsName';
 import useNftTokenOwner from '../../../../hooks/useNftTokenOwner';
 import { useAppDispatch, useAppSelector } from '../../../../redux/hooks';
-import { getNftOrder } from '../../../../redux/stores/nftDetail/nftDetailApi';
-import { AppRoutes, routes } from '../../../../routes';
+import { getNftOrderByTokenId } from '../../../../redux/stores/nftDetail/nftDetailApi';
+import { reset } from '../../../../redux/stores/nftDetail/nftDetailSlice';
+import { routes } from '../../../../routes';
 import NftDetailAttributes from '../NftDetailAttributes/NftDetailAttributes';
 import NftDetailContentContainer from '../NftDetailContentContainer/NftDetailContentContainer';
 import NftDetailList from '../NftDetailList/NftDetailList';
@@ -33,11 +34,15 @@ const ConnectedNftDetailWidget: FC<ConnectedNftDetailWidgetProps> = ({ collectio
   const price = useMemo(() => (order ? getFullOrderReadableSenderAmountPlusTotalFees(order, currencyTokenInfo) : undefined), [order]);
   const owner = useNftTokenOwner(collectionTokenInfo);
   const readableOwnerAddress = useAddressOrEnsName(owner, true);
-  const accountRoute = owner ? `/${AppRoutes.profile}/${owner}` : undefined;
+  const accountRoute = owner ? routes.profile(owner) : undefined;
   const buyRoute = order ? routes.orderDetail(order.signer.wallet, order.nonce) : undefined;
 
   useEffect(() => {
-    dispatch(getNftOrder({ tokenId: collectionTokenInfo.id }));
+    dispatch(getNftOrderByTokenId(collectionTokenInfo.id));
+
+    return () => {
+      dispatch(reset());
+    };
   }, [collectionTokenInfo]);
 
   return (
