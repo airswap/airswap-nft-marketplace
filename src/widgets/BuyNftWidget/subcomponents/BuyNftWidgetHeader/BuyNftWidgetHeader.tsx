@@ -6,7 +6,7 @@ import { routes } from '../../../../routes';
 import './BuyNftWidgetHeader.scss';
 
 interface BuyNftWidgetHeaderProps {
-  nftId: number;
+  nftId?: number;
   title: string;
   className?: string;
 }
@@ -18,7 +18,7 @@ const BuyNftWidgetHeader: FC<BuyNftWidgetHeaderProps> = ({ nftId, title, classNa
       hideLabel
       icon="close"
       text="Back"
-      to={routes.nftDetail(nftId)}
+      to={nftId ? routes.nftDetail(nftId) : routes.collection()}
       className="buy-nft-widget-header__back-button"
     />
   </div>

@@ -5,7 +5,7 @@ import BuyNftWidgetHeader from '../BuyNftWidgetHeader/BuyNftWidgetHeader';
 
 interface DisconnectedBuyNftWidgetProps {
   isLoading: boolean;
-  nftId: number;
+  nftId?: number;
   className?: string;
 }
 

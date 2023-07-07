@@ -2,8 +2,8 @@ import React, { FC, ReactElement, useEffect } from 'react';
 
 import { useAppDispatch, useAppSelector } from '../../redux/hooks';
 import { getNftOrderByOrderNonce } from '../../redux/stores/orderDetail/orderDetailApi';
-import BuyNftWidget from '../BuyNftWidget/BuyNftWidget';
-import NftDetailWidget from '../NftDetailWidget/NftDetailWidget';
+import ConnectedOrderDetailWidget from './subcomponents/ConnectedOrderDetailWidget/ConnectedOrderDetailWidget';
+import DisconnectedOrderDetailWidget from './subcomponents/DisconnectedOrderDetailWidget/DisconnectedOrderDetailWidget';
 
 import './OrderDetailWidget.scss';
 
@@ -16,37 +16,32 @@ const OrderDetailWidget: FC<OrderDetailWidgetProps> = ({ orderNonce, className =
   const dispatch = useAppDispatch();
 
   const { isInitialized } = useAppSelector(state => state.indexer);
-  const { order, isLoading } = useAppSelector(state => state.orderDetail);
+  const { isOrderNotFound, isLoading, order } = useAppSelector(state => state.orderDetail);
+  console.log(isOrderNotFound);
 
   useEffect(() => {
-    if (!isInitialized) {
+    if (!isInitialized || !orderNonce) {
       return;
     }
 
     dispatch(getNftOrderByOrderNonce(orderNonce));
-  }, [isInitialized]);
+  }, [isInitialized, orderNonce]);
 
-  if (!isInitialized || isLoading || !order) {
+  if (
+    isInitialized
+    && !isLoading
+    && order
+  ) {
     return (
-      <div className={`order-detail-widget ${className}`}>
-        loader
-      </div>
+      <ConnectedOrderDetailWidget
+        order={order}
+        className={className}
+      />
     );
   }
 
   return (
-    <div className={`order-detail-widget ${className}`}>
-      <NftDetailWidget
-        tokenId={+order.signer.id}
-        className="order-detail-widget__nft-detail-widget"
-      />
-      <div className="order-detail-widget__buy-nft-widget-container">
-        <BuyNftWidget
-          order={order}
-          className="order-detail-widget__buy-nft-widget"
-        />
-      </div>
-    </div>
+    <DisconnectedOrderDetailWidget className={className} />
   );
 };
 
