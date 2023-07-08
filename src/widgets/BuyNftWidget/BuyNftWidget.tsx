@@ -3,11 +3,11 @@ import React, { FC } from 'react';
 import { FullOrder } from '@airswap/types';
 import { useWeb3React } from '@web3-react/core';
 
+import DisconnectedOrderDetail from '../../compositions/DisconnectedOrderDetail/DisconnectedOrderDetail';
 import useCollectionToken from '../../hooks/useCollectionToken';
 import useFullOrderNonceUsed from '../../hooks/useFullOrderNonceUsed';
 import { useAppSelector } from '../../redux/hooks';
 import ConnectedBuyNftWidget from './subcomponents/ConnectedBuyNftWidget/ConnectedBuyNftWidget';
-import DisconnectedBuyNftWidget from './subcomponents/DisconnectedBuyNftWidget/DisconnectedBuyNftWidget';
 
 import './BuyNftWidget.scss';
 
@@ -50,7 +50,7 @@ const BuyNftWidget: FC<BuyNftWidgetProps> = ({ order, className = '' }) => {
   }
 
   return (
-    <DisconnectedBuyNftWidget
+    <DisconnectedOrderDetail
       isLoading={isLoading}
       nftId={tokenId}
       className={className}

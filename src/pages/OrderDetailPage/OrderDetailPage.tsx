@@ -2,6 +2,7 @@ import React, { FC } from 'react';
 
 import { useParams } from 'react-router-dom';
 
+import DisconnectedOrderDetail from '../../compositions/DisconnectedOrderDetail/DisconnectedOrderDetail';
 import Page from '../../compositions/Page/Page';
 import OrderDetailWidget from '../../widgets/OrderDetailWidget/OrderDetailWidget';
 
@@ -13,7 +14,7 @@ const OrderDetailPage: FC = () => {
   if (!orderNonce) {
     return (
       <Page className="order-detail-page">
-        Order not defined
+        <DisconnectedOrderDetail isOrderNonceUndefined />
       </Page>
     );
   }

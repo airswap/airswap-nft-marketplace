@@ -1,0 +1,28 @@
+@import "src/styles";
+
+.disconnected-order-detail {
+    @extend %widget-over-widget-container;
+
+    &__widget {
+        @extend %widget-over-widget;
+
+        display: flex;
+        flex-direction: column;
+        height: 100%;
+
+        @include for-size(tablet-portrait-up) {
+            border: 1px solid var(--c-dark-border);
+            border-radius: .5rem;
+            padding: 2rem var(--page-padding) var(--page-padding);
+            background: var(--c-dark);
+        }
+    }
+
+    &__header {
+        margin-bottom: 1rem;
+    }
+
+    &__loading-spinner {
+        margin: 0 auto;
+    }
+}

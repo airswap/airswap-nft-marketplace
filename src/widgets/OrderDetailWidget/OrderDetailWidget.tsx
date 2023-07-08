@@ -1,9 +1,11 @@
 import React, { FC, ReactElement, useEffect } from 'react';
 
+import { useWeb3React } from '@web3-react/core';
+
+import DisconnectedOrderDetail from '../../compositions/DisconnectedOrderDetail/DisconnectedOrderDetail';
 import { useAppDispatch, useAppSelector } from '../../redux/hooks';
 import { getNftOrderByOrderNonce } from '../../redux/stores/orderDetail/orderDetailApi';
 import ConnectedOrderDetailWidget from './subcomponents/ConnectedOrderDetailWidget/ConnectedOrderDetailWidget';
-import DisconnectedOrderDetailWidget from './subcomponents/DisconnectedOrderDetailWidget/DisconnectedOrderDetailWidget';
 
 import './OrderDetailWidget.scss';
 
@@ -14,10 +16,11 @@ interface OrderDetailWidgetProps {
 
 const OrderDetailWidget: FC<OrderDetailWidgetProps> = ({ orderNonce, className = '' }): ReactElement => {
   const dispatch = useAppDispatch();
+  const { account } = useWeb3React();
 
-  const { isInitialized } = useAppSelector(state => state.indexer);
-  const { isOrderNotFound, isLoading, order } = useAppSelector(state => state.orderDetail);
-  console.log(isOrderNotFound);
+  const { isInitialized, isLoading: isIndexerLoading } = useAppSelector(state => state.indexer);
+  const { isOrderNotFound, isLoading: isOrderLoading, order } = useAppSelector(state => state.orderDetail);
+  const isLoading = isIndexerLoading || isOrderLoading;
 
   useEffect(() => {
     if (!isInitialized || !orderNonce) {
@@ -34,6 +37,7 @@ const OrderDetailWidget: FC<OrderDetailWidgetProps> = ({ orderNonce, className =
   ) {
     return (
       <ConnectedOrderDetailWidget
+        account={account || undefined}
         order={order}
         className={className}
       />
@@ -41,7 +45,12 @@ const OrderDetailWidget: FC<OrderDetailWidgetProps> = ({ orderNonce, className =
   }
 
   return (
-    <DisconnectedOrderDetailWidget className={className} />
+    <DisconnectedOrderDetail
+      isLoading={isLoading}
+      isOrderNotFound={isOrderNotFound}
+      orderNonce={orderNonce}
+      className={className}
+    />
   );
 };
 
