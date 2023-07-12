@@ -6,7 +6,7 @@ import { Web3Provider } from '@ethersproject/providers';
 import { createAsyncThunk } from '@reduxjs/toolkit';
 
 import { nativeCurrencyAddress } from '../../../constants/nativeCurrency';
-import { AppError, AppErrorType, isAppError } from '../../../errors/appError';
+import { AppErrorType, isAppError } from '../../../errors/appError';
 import toRoundedAtomicString from '../../../helpers/airswap/getRoundedAtomicString';
 import { createOrderSignature } from '../../../helpers/createOrderSignature';
 import { setError, setUserOrder } from './listNftSlice';
@@ -23,7 +23,7 @@ interface CreateOrderParams {
 }
 
 export const createNftOrder = createAsyncThunk<
-FullOrder | AppError,
+FullOrder,
 CreateOrderParams
 >(
   'make-otc/createOtcOrder',

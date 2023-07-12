@@ -5,15 +5,11 @@ import { AppThunkApiConfig } from '../../store';
 import { getOrdersFromIndexers } from '../indexer/indexerHelpers';
 import { setTokenId } from './nftDetailSlice';
 
-interface getNftOrderParams {
-  tokenId: number;
-}
-
-export const getNftOrder = createAsyncThunk<
+export const getNftOrderByTokenId = createAsyncThunk<
 FullOrder | undefined,
-getNftOrderParams,
+number,
 AppThunkApiConfig
->('nftDetail/getNftOrder', async ({ tokenId }, { dispatch, getState }) => {
+>('nftDetail/getNftOrderByTokenId', async (tokenId, { dispatch, getState }) => {
   const { config, indexer } = getState();
 
   dispatch(setTokenId(tokenId));

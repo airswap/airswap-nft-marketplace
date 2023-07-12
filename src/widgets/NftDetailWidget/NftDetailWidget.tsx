@@ -1,7 +1,5 @@
 import React, { FC, useEffect } from 'react';
 
-import { useParams } from 'react-router-dom';
-
 import useCollectionToken from '../../hooks/useCollectionToken';
 import { useAppSelector } from '../../redux/hooks';
 import ConnectedNftDetailWidget from './subcomponents/ConnectedNftDetailWidget/ConnectedNftDetailWidget';
@@ -10,25 +8,23 @@ import DisconnectedNftDetailWidget from './subcomponents/DisconnectedNftDetailWi
 import './NftDetailWidget.scss';
 
 interface NftDetailWidgetProps {
+  tokenId: number;
   className?: string;
 }
 
-const NftDetailWidget: FC<NftDetailWidgetProps> = ({ className = '' }) => {
-  const { id } = useParams<{ id: string }>();
-
+const NftDetailWidget: FC<NftDetailWidgetProps> = ({ tokenId, className = '' }) => {
   const { collectionToken } = useAppSelector(state => state.config);
   const { isInitialized } = useAppSelector(state => state.indexer);
   const { currencyTokenInfo, isLoading: isMetadataLoading } = useAppSelector(state => state.metadata);
 
-  const [collectionTokenInfo, isLoadingCollectionTokenInfo] = useCollectionToken(collectionToken, id ? Number(id) : 1);
+  const [collectionTokenInfo, isLoadingCollectionTokenInfo] = useCollectionToken(collectionToken, tokenId);
   const isLoading = isMetadataLoading || isLoadingCollectionTokenInfo;
 
   useEffect(() => {
     window.scrollTo(0, 0);
   }, []);
 
-  if (id
-    && !isLoadingCollectionTokenInfo
+  if (!isLoadingCollectionTokenInfo
     && !isMetadataLoading
     && isInitialized
     && collectionTokenInfo
@@ -47,7 +43,7 @@ const NftDetailWidget: FC<NftDetailWidgetProps> = ({ className = '' }) => {
     <DisconnectedNftDetailWidget
       isLoading={isLoading}
       isNftNotFound={!isLoading && !collectionTokenInfo}
-      id={id}
+      id={tokenId}
       className={className}
     />
   );

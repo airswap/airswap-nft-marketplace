@@ -1,0 +1,31 @@
+@import "src/styles";
+
+.order-detail-widget {
+    position: relative;
+
+    &__nft-detail-widget {
+        @extend %widget-under-widget;
+    }
+
+    &__buy-nft-widget-container {
+        @extend %widget-over-widget-container;
+    }
+
+    &__buy-nft-widget,
+    &__buy-nft-widget-loader {
+        @extend %widget-over-widget;
+    }
+
+    &__buy-nft-widget-loader {
+        display: flex;
+        flex-direction: column;
+        height: 100%;
+
+        @include for-size(tablet-portrait-up) {
+            border: 1px solid var(--c-dark-border);
+            border-radius: .5rem;
+            padding: 2rem var(--page-padding) var(--page-padding);
+            background: var(--c-dark);
+        }
+    }
+}

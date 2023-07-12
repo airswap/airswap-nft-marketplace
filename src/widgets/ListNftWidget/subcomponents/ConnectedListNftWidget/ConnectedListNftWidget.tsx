@@ -5,7 +5,7 @@ import React, {
   useState,
 } from 'react';
 
-import { TokenInfo } from '@airswap/types';
+import { FullOrder, TokenInfo } from '@airswap/types';
 import { Web3Provider } from '@ethersproject/providers';
 
 import { expiryAmounts } from '../../../../constants/expiry';
@@ -77,6 +77,7 @@ const ConnectedListNftWidget: FC<ListNftWidgetProps> = ({
   const [collectionTokenInfo] = useCollectionToken(collectionToken, selectedTokenId);
   const [currencyTokenAmountMinusProtocolFee, protocolFeeInCurrencyToken] = useTokenAmountAndFee(currencyTokenAmount);
   const [approvalTransactionHash, setApprovalTransactionHash] = useState<string>();
+  const [order, setOrder] = useState<FullOrder>();
   const hasInsufficientAmount = useInsufficientAmount(currencyTokenAmount);
   const hasInsufficientExpiryAmount = !expiryAmount || expiryAmount < 0;
   const hasCollectionTokenApproval = useNftTokenApproval(collectionTokenInfo, selectedTokenId);
@@ -134,7 +135,8 @@ const ConnectedListNftWidget: FC<ListNftWidgetProps> = ({
         senderAmount: currencyTokenAmountMinusProtocolFee,
         tokenId: selectedTokenId,
       })).unwrap()
-        .then(() => {
+        .then((result) => {
+          setOrder(result);
           setWidgetState(ListNftState.success);
         })
         .catch((e) => {
@@ -211,9 +213,11 @@ const ConnectedListNftWidget: FC<ListNftWidgetProps> = ({
           hasNoCollectionTokenApproval={!hasCollectionTokenApproval}
           hasInsufficientAmount={hasInsufficientAmount}
           hasInsufficientExpiryAmount={hasInsufficientExpiryAmount}
+          account={account}
           currencyToken={currencyTokenInfo}
-          state={widgetState}
           tokenId={selectedTokenId}
+          orderNonce={order?.nonce}
+          state={widgetState}
           onActionButtonClick={handleActionButtonClick}
           onBackButtonClick={handleBackButtonClick}
           className="list-nft-widget__action-buttons"

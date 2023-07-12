@@ -1,7 +1,7 @@
 import { FullOrder } from '@airswap/types';
 import { createSlice, PayloadAction } from '@reduxjs/toolkit';
 
-import { getNftOrder } from './nftDetailApi';
+import { getNftOrderByTokenId } from './nftDetailApi';
 
 export interface NftDetailState {
   isLoading: boolean;
@@ -28,18 +28,18 @@ export const nftDetailSlice = createSlice({
     }),
   },
   extraReducers: (builder) => {
-    builder.addCase(getNftOrder.fulfilled, (state, action: PayloadAction<FullOrder | undefined>): NftDetailState => ({
+    builder.addCase(getNftOrderByTokenId.fulfilled, (state, action: PayloadAction<FullOrder | undefined>): NftDetailState => ({
       ...state,
       isLoading: false,
       isOrderNotFound: !action.payload,
       order: action.payload,
     }));
-    builder.addCase(getNftOrder.pending, (state): NftDetailState => ({
+    builder.addCase(getNftOrderByTokenId.pending, (state): NftDetailState => ({
       ...state,
       isLoading: true,
       isOrderNotFound: false,
     }));
-    builder.addCase(getNftOrder.rejected, (state): NftDetailState => ({
+    builder.addCase(getNftOrderByTokenId.rejected, (state): NftDetailState => ({
       ...state,
       isLoading: false,
     }));

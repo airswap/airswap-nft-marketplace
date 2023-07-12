@@ -4,7 +4,7 @@ import { CollectionTokenInfo } from '@airswap/types';
 import { NavLink } from 'react-router-dom';
 
 import Button from '../../../../components/Button/Button';
-import { AppRoutes } from '../../../../routes';
+import { routes } from '../../../../routes';
 import { BuyNftState } from '../ConnectedBuyNftWidget/ConnectedBuyNftWidget';
 
 import './BuyActionButtons.scss';
@@ -101,7 +101,7 @@ const BuyActionButtons: FC<ActionButtonsProps> = ({
     if (state === BuyNftState.success) {
       return (
         <NavLink
-          to={`/${AppRoutes.profile}/${account}`}
+          to={routes.profile(account)}
           className="buy-action-buttons__action-button"
         >
           View in my profile
@@ -112,7 +112,7 @@ const BuyActionButtons: FC<ActionButtonsProps> = ({
     if (state === BuyNftState.failed) {
       return (
         <NavLink
-          to={`/${AppRoutes.nftDetail}/${collectionTokenInfo.id}`}
+          to={routes.nftDetail(collectionTokenInfo.id)}
           onClick={onActionButtonClick}
           className="buy-action-buttons__action-button"
         >
@@ -128,6 +128,7 @@ const BuyActionButtons: FC<ActionButtonsProps> = ({
     isOrderExpired,
     isOrderNonceUsed,
     ownerIsAccount,
+    account,
     collectionTokenInfo,
     currencyTokenSymbol,
     state,

@@ -1,17 +1,17 @@
 import React, { FC } from 'react';
 
-import IconNavLink from '../../../../compositions/IconNavLink/IconNavLink';
 import { routes } from '../../../../routes';
+import IconNavLink from '../../../IconNavLink/IconNavLink';
 
-import './BuyNftWidgetHeader.scss';
+import './DisconnectedOrderDetailHeader.scss';
 
-interface BuyNftWidgetHeaderProps {
+interface DisconnectedOrderDetailHeaderProps {
   nftId?: number;
   title: string;
   className?: string;
 }
 
-const BuyNftWidgetHeader: FC<BuyNftWidgetHeaderProps> = ({ nftId, title, className = '' }) => (
+const DisconnectedOrderDetailHeader: FC<DisconnectedOrderDetailHeaderProps> = ({ nftId, title, className = '' }) => (
   <div className={`buy-nft-widget-header ${className}`}>
     <h1 className="buy-nft-widget-header__title">{title}</h1>
     <IconNavLink
@@ -24,4 +24,4 @@ const BuyNftWidgetHeader: FC<BuyNftWidgetHeaderProps> = ({ nftId, title, classNa
   </div>
 );
 
-export default BuyNftWidgetHeader;
+export default DisconnectedOrderDetailHeader;

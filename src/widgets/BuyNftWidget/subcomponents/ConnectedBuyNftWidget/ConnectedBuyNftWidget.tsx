@@ -24,8 +24,6 @@ import BuyActionButtons from '../BuyActionButtons/BuyActionButtons';
 import BuyNftWidgetDetailsContainer from '../BuyNftWidgetDetailsContainer/BuyNftWidgetDetailsContainer';
 import BuyNftWidgetHeader from '../BuyNftWidgetHeader/BuyNftWidgetHeader';
 
-import '../../BuyNftWidget.scss';
-
 export enum BuyNftState {
   details = 'details',
   approve = 'approve',

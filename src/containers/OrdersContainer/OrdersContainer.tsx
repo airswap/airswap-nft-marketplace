@@ -7,7 +7,7 @@ import LoadingSpinner from '../../components/LoadingSpinner/LoadingSpinner';
 import NftCard from '../../components/NftCard/NftCard';
 import NftCardSkeleton from '../../components/NftCardSkeleton/NftCardSkeleton';
 import { getFullOrderReadableSenderAmountPlusTotalFees } from '../../entities/FullOrder/FullOrderHelpers';
-import { AppRoutes } from '../../routes';
+import { routes } from '../../routes';
 
 import './OrdersContainer.scss';
 
@@ -41,7 +41,7 @@ const OrdersContainer: FC<OrdersContainerProps> = ({
                 key={order.nonce}
                 price={price.toString()}
                 symbol={currencyTokenInfo.symbol}
-                to={`${AppRoutes.nftDetail}/${order.signer.id}`}
+                to={routes.nftDetail(+order.signer.id)}
                 className="collection-widget__nft-card"
               />
             );
@@ -54,7 +54,7 @@ const OrdersContainer: FC<OrdersContainerProps> = ({
               price={price.toString()}
               name={orderToken.name}
               symbol={currencyTokenInfo.symbol}
-              to={`${AppRoutes.nftDetail}/${order.signer.id}`}
+              to={routes.nftDetail(+order.signer.id)}
               className="collection-widget__nft-card"
             />
           );

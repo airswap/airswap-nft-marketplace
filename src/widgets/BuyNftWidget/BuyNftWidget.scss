@@ -1,8 +1,6 @@
 @import "src/styles";
 
-$component: buy-nft-widget;
-
-.#{$component} {
+.buy-nft-widget {
     display: flex;
     flex-direction: column;
     height: 100%;

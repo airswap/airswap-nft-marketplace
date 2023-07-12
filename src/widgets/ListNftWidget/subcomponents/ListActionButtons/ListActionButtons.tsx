@@ -4,7 +4,7 @@ import { TokenInfo } from '@airswap/types';
 import { NavLink } from 'react-router-dom';
 
 import Button from '../../../../components/Button/Button';
-import { AppRoutes } from '../../../../routes';
+import { routes } from '../../../../routes';
 import { ListNftState } from '../ConnectedListNftWidget/ConnectedListNftWidget';
 
 import './ListActionButtons.scss';
@@ -13,9 +13,11 @@ interface ActionButtonsProps {
   hasInsufficientAmount: boolean;
   hasInsufficientExpiryAmount: boolean;
   hasNoCollectionTokenApproval: boolean;
+  account: string;
   currencyToken: TokenInfo;
+  tokenId: number;
+  orderNonce?: string;
   state: ListNftState;
-  tokenId?: number;
   onActionButtonClick: () => void;
   onBackButtonClick: () => void;
   className?: string;
@@ -25,9 +27,11 @@ const ListActionButtons: FC<ActionButtonsProps> = ({
   hasInsufficientAmount,
   hasInsufficientExpiryAmount,
   hasNoCollectionTokenApproval,
+  account,
   currencyToken,
-  state,
   tokenId,
+  orderNonce,
+  state,
   onActionButtonClick,
   onBackButtonClick,
   className = '',
@@ -97,10 +101,10 @@ const ListActionButtons: FC<ActionButtonsProps> = ({
       );
     }
 
-    if (state === ListNftState.success) {
+    if (state === ListNftState.success && orderNonce) {
       return (
         <NavLink
-          to={`/${AppRoutes.nftDetail}/${tokenId}/buy`}
+          to={routes.orderDetail(account, orderNonce)}
           className="list-action-buttons__action-button"
         >
           View listing
@@ -111,7 +115,7 @@ const ListActionButtons: FC<ActionButtonsProps> = ({
     if (state === ListNftState.failed) {
       return (
         <NavLink
-          to={`/${AppRoutes.nftDetail}/1`}
+          to={routes.nftDetail(tokenId)}
           className="list-action-buttons__action-button"
         >
           Go back

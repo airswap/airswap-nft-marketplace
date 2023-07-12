@@ -10,7 +10,7 @@ import classNames from 'classnames';
 import Avatar from '../../components/Avatar/Avatar';
 import Button from '../../components/Button/Button';
 import { truncateAddress } from '../../helpers/string';
-import { AppRoutes } from '../../routes';
+import { routes } from '../../routes';
 import IconButton from '../IconButton/IconButton';
 import IconNavLink from '../IconNavLink/IconNavLink';
 import UserPopup from '../UserPopup/UserPopup';
@@ -101,7 +101,7 @@ const TopBar: FC<TopBarProps> = ({
           aria-disabled={listButtonIsDisabled}
           icon="plus"
           text="List"
-          to={`/${AppRoutes.listNft}`}
+          to={routes.listNft()}
           className="top-bar__list-button"
           iconClassName="top-bar__list-button-icon"
         />

@@ -1,17 +1,15 @@
-import BuyNftPage from './BuyNftPage/BuyNftPage';
 import CollectionPage from './CollectionPage/CollectionPage';
 import ListNftPage from './ListNftPage/ListNftPage';
 import NftDetailPage from './NftDetailPage/NftDetailPage';
+import OrderDetailPage from './OrderDetailPage/OrderDetailPage';
 import ProfileOrdersPage from './ProfileOrdersPage/ProfileOrdersPage';
 import ProfilePage from './ProfilePage/ProfilePage';
-import SwapPage from './SwapPage/SwapPage';
 
 export {
-  BuyNftPage,
   CollectionPage,
   ListNftPage,
   NftDetailPage,
+  OrderDetailPage,
   ProfileOrdersPage,
   ProfilePage,
-  SwapPage,
 };
