@@ -137,7 +137,7 @@ We divide our components very similar to [Atomic design from Brad Frost](https:/
 - Widget
 - Page
 
-The `component` is the smallest. Then when a component has one or more components it's a `composition`. A `widget` is where all components are gathered and connected to the store and actions dispatched. A `widget` is standalone; it should always work without a parent giving it props.
+The `component` is the smallest. Then when a component has one or more components it's a `composition`. A `widget` is where all components are gathered and connected to the store and actions dispatched.
 
 A `page` is connected to the routing of the app and should direct the user to one or more widgets.
 

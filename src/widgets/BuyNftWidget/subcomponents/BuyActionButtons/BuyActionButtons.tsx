@@ -128,6 +128,7 @@ const BuyActionButtons: FC<ActionButtonsProps> = ({
     isOrderExpired,
     isOrderNonceUsed,
     ownerIsAccount,
+    account,
     collectionTokenInfo,
     currencyTokenSymbol,
     state,
