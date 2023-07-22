@@ -1,7 +1,7 @@
 import React, { FC } from 'react';
 
 import LoadingSpinner from '../../components/LoadingSpinner/LoadingSpinner';
-import DisconnectedOrderDetailHeader from './subcomponents/DisconnectedOrderDetailHeader/DisconnectedOrderDetailHeader';
+import OrderWidgetHeader from '../OrderWidgetHeader/OrderWidgetHeader';
 
 import './DisconnectedOrderDetail.scss';
 
@@ -24,8 +24,8 @@ const DisconnectedOrderDetail: FC<DisconnectedBuyNftWidgetProps> = ({
 }) => (
   <div className={`disconnected-order-detail ${className}`}>
     <div className="disconnected-order-detail__widget">
-      <DisconnectedOrderDetailHeader
-        title="Buy NFT"
+      <OrderWidgetHeader
+        title=""
         nftId={nftId}
         className="disconnected-order-detail__header"
       />

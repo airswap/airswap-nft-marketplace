@@ -1,0 +1,32 @@
+@import "src/styles/index";
+
+.expiry-date-info {
+    @extend %trade-window;
+
+    height: 2.5rem;
+    background: var(--c-black);
+
+    &__title {
+        @extend %trade-window-title;
+
+        justify-self: flex-start;
+        margin-right: auto;
+        width: inherit;
+
+        @include for-size(tiny-phone-only) {
+            min-width: 2.5rem;
+            text-overflow: ellipsis;
+            white-space: nowrap;
+            overflow: hidden;
+        }
+    }
+
+    &__date {
+        @extend %trade-window-amount;
+
+        margin-left: 1rem;
+        min-width: 60%;
+        font-size: .875rem;
+        color: var(--c-white);
+    }
+}
