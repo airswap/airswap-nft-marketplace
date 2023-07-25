@@ -36,6 +36,7 @@ export interface OrderTransaction extends Transaction {
 
 export interface CancelOrderTransaction extends Transaction {
   type: SubmittedTransactionType.cancelOrder,
+  order: Order;
 }
 
 export type SubmittedTransaction =

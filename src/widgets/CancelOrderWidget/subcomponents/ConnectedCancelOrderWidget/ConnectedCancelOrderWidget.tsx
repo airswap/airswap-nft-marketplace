@@ -1,8 +1,7 @@
-/* eslint-disable @typescript-eslint/no-unused-vars,no-unused-vars */
-
 import {
   FC,
   ReactElement,
+  useEffect,
   useMemo,
   useState,
 } from 'react';
@@ -11,7 +10,11 @@ import { CollectionTokenInfo, FullOrder, TokenInfo } from '@airswap/types';
 import { Web3Provider } from '@ethersproject/providers';
 
 import OrderWidgetHeader from '../../../../compositions/OrderWidgetHeader/OrderWidgetHeader';
-import { useAppSelector } from '../../../../redux/hooks';
+import { AppErrorType, isAppError } from '../../../../errors/appError';
+import useCancelOrderTransaction from '../../../../hooks/useCancelOrderTransaction';
+import { useAppDispatch, useAppSelector } from '../../../../redux/hooks';
+import { cancel } from '../../../../redux/stores/orders/ordersActions';
+import { addUserRejectedToast } from '../../../../redux/stores/toasts/toastsActions';
 import { getTitle } from '../../helpers';
 import CancelActionButtons from '../CancelActionButtons/CancelActionButtons';
 import CancelDetailsContainer from '../CancelDetailsContainer/CancelDetailsContainer';
@@ -25,7 +28,6 @@ export enum CancelOrderState {
 }
 
 interface ConnectedCancelOrderWidgetProps {
-  account: string;
   chainId: number
   collectionTokenInfo: CollectionTokenInfo;
   currencyTokenInfo: TokenInfo;
@@ -35,7 +37,6 @@ interface ConnectedCancelOrderWidgetProps {
 }
 
 const ConnectedCancelOrderWidget: FC<ConnectedCancelOrderWidgetProps> = ({
-  account,
   chainId,
   collectionTokenInfo,
   currencyTokenInfo,
@@ -43,21 +44,50 @@ const ConnectedCancelOrderWidget: FC<ConnectedCancelOrderWidgetProps> = ({
   library,
   className = '',
 }): ReactElement => {
-  const [widgetState, setWidgetState] = useState<CancelOrderState>(CancelOrderState.failed);
-  const { collectionImage, collectionName } = useAppSelector(state => state.config);
+  const dispatch = useAppDispatch();
+  const [widgetState, setWidgetState] = useState<CancelOrderState>(CancelOrderState.details);
+  const [cancelTransactionHash, setCancelTransactionHash] = useState<string>();
+
+  const { collectionImage } = useAppSelector(state => state.config);
   const { protocolFee, projectFee } = useAppSelector(state => state.metadata);
+  const cancelOrderTransaction = useCancelOrderTransaction(cancelTransactionHash);
 
   const title = useMemo(() => getTitle(widgetState), [widgetState]);
 
   const handleActionButtonClick = async () => {
     if (widgetState === CancelOrderState.details) {
       setWidgetState(CancelOrderState.sign);
+      dispatch(cancel({ order: fullOrder, chainId, library }))
+        .unwrap()
+        .then((transactionHash) => {
+          if (typeof transactionHash === 'string') {
+            setCancelTransactionHash(transactionHash);
+          }
+        })
+        .catch((e) => {
+          if (isAppError(e) && e.type === AppErrorType.rejectedByUser) {
+            dispatch(addUserRejectedToast());
+            setWidgetState(CancelOrderState.details);
+          } else {
+            setWidgetState(CancelOrderState.failed);
+          }
+        });
     }
 
     if (widgetState === CancelOrderState.failed) {
       setWidgetState(CancelOrderState.details);
     }
   };
+
+  useEffect(() => {
+    if (cancelOrderTransaction?.status === 'processing') {
+      setWidgetState(CancelOrderState.canceling);
+    }
+
+    if (cancelOrderTransaction?.status === 'succeeded') {
+      setWidgetState(CancelOrderState.success);
+    }
+  }, [cancelOrderTransaction]);
 
   return (
     <div className={`cancel-order-widget ${className}`}>
@@ -84,7 +114,5 @@ const ConnectedCancelOrderWidget: FC<ConnectedCancelOrderWidgetProps> = ({
     </div>
   );
 };
-
-/* eslint-enable @typescript-eslint/no-unused-vars,no-unused-vars */
 
 export default ConnectedCancelOrderWidget;

@@ -1,6 +1,7 @@
 import { Order } from '@airswap/types';
 
 import {
+  CancelOrderTransaction,
   Erc20ApprovalTransaction,
   NftApprovalTransaction,
   OrderTransaction,
@@ -63,6 +64,23 @@ export const addOrderTransaction = (hash: string, order: Order) => async (dispat
 
   const transaction: OrderTransaction = {
     type: SubmittedTransactionType.order,
+    hash,
+    order,
+    status: SubmittedTransactionStatus.processing,
+    timestamp: Date.now(),
+  };
+
+  dispatch(setTransactions([
+    transaction,
+    ...transactions,
+  ]));
+};
+
+export const addCancelTransaction = (hash: string, order: Order) => async (dispatch: AppDispatch, getState: () => RootState): Promise<void> => {
+  const { transactions } = getState().transactions;
+
+  const transaction: CancelOrderTransaction = {
+    type: SubmittedTransactionType.cancelOrder,
     hash,
     order,
     status: SubmittedTransactionStatus.processing,

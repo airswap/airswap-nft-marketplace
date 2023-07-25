@@ -89,6 +89,7 @@ const BuyNftWidget: FC<ConnectedBuyNftWidgetProps> = ({
         })
         .catch((e) => {
           if (isAppError(e) && e.type === AppErrorType.rejectedByUser) {
+            dispatch(addUserRejectedToast());
             setWidgetState(BuyNftState.details);
           } else {
             setWidgetState(BuyNftState.failed);

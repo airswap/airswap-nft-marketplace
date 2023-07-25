@@ -17,7 +17,7 @@ interface CancelOrderWidgetProps {
 }
 
 const CancelOrderWidget: FC<CancelOrderWidgetProps> = ({ order, className = '' }): ReactElement => {
-  const { account, chainId, library } = useWeb3React();
+  const { chainId, library } = useWeb3React();
   const tokenId = +order.signer.id;
 
   const { collectionToken } = useAppSelector((state) => state.config);
@@ -29,7 +29,6 @@ const CancelOrderWidget: FC<CancelOrderWidgetProps> = ({ order, className = '' }
 
   if (
     !isLoading
-    && account
     && chainId
     && collectionTokenInfo
     && currencyTokenInfo
@@ -37,7 +36,6 @@ const CancelOrderWidget: FC<CancelOrderWidgetProps> = ({ order, className = '' }
   ) {
     return (
       <ConnectedCancelOrderWidget
-        account={account}
         chainId={chainId}
         collectionTokenInfo={collectionTokenInfo}
         currencyTokenInfo={currencyTokenInfo}
