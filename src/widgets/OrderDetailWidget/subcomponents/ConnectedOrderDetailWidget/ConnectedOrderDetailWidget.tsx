@@ -25,7 +25,7 @@ const ConnectedOrderDetailWidget: FC<ConnectedOrderDetailWidgetProps> = ({ accou
         {userIsOwner ? (
           <CancelOrderWidget
             order={order}
-            className="order-detail-widget__buy-nft-widget"
+            className="order-detail-widget__cancel-order-widget"
           />
         ) : (
           <BuyNftWidget

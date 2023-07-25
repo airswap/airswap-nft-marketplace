@@ -47,13 +47,6 @@ $component: buy-nft-details-container;
     }
 
     &__message {
-        justify-self: center;
-        margin: 1rem auto 0;
-        width: 50%;
-        min-width: 12rem;
-        text-align: center;
-        font-size: .875rem;
-        font-weight: var(--fw-400);
-        color: var(--c-text-grey);
+        @extend %trade-window-message;
     }
 }

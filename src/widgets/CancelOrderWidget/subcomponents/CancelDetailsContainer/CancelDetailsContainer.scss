@@ -1,14 +1,30 @@
 @import "src/styles";
 
-.cancel-order-widget-details-container {
+.cancel-details-container {
     display: flex;
     flex-direction: column;
+    justify-content: center;
     align-items: center;
+
+    @include for-size(tablet-portrait-up) {
+        font-size: 1.25rem;
+    }
+
+    &--has-sign-state {
+        flex-grow: 1;
+    }
+
+    &__loading-spinner {
+        margin: 0 auto 1.75rem;
+
+        &--is-hidden {
+            visibility: hidden;
+        }
+    }
 
     &__intro {
         display: flex;
         align-items: center;
-        margin-top: 1rem;
         font-size: .875rem;
         color: var(--c-text-grey);
     }
@@ -23,5 +39,13 @@
 
     &__review-nft-details {
         margin-top: 1.5rem;
+    }
+
+    &__expiry-date-info {
+        margin-top: .5rem;
+    }
+
+    &__message {
+        @extend %trade-window-message;
     }
 }

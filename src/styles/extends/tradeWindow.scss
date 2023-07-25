@@ -72,3 +72,14 @@
     background-color: var(--c-dark-border);
     overflow: hidden;
 }
+
+%trade-window-message {
+    justify-self: center;
+    margin: 1rem auto 0;
+    width: 50%;
+    min-width: 12rem;
+    text-align: center;
+    font-size: .875rem;
+    font-weight: var(--fw-400);
+    color: var(--c-text-grey);
+}

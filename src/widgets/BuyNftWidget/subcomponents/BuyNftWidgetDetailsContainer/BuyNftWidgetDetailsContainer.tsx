@@ -4,7 +4,6 @@ import { CollectionTokenInfo, FullOrder, TokenInfo } from '@airswap/types';
 import { getReceiptUrl } from '@airswap/utils';
 import classNames from 'classnames';
 
-import Icon from '../../../../components/Icon/Icon';
 import LoadingSpinner from '../../../../components/LoadingSpinner/LoadingSpinner';
 import TradeDetails from '../../../../components/TradeDetails/TradeDetails';
 import TradeNftDetails, { TradeNftDetailsProps } from '../../../../components/TradeNftDetails/TradeNftDetails';
@@ -12,6 +11,7 @@ import TransactionLink from '../../../../compositions/TransactionLink/Transactio
 import { getFullOrderSenderAmountPlusTotalFees } from '../../../../entities/FullOrder/FullOrderHelpers';
 import { Erc20ApprovalTransaction, OrderTransaction } from '../../../../entities/SubmittedTransaction/SubmittedTransaction';
 import { AppError } from '../../../../errors/appError';
+import SwapIcon from '../../../ListNftWidget/subcomponents/SwapIcon/SwapIcon';
 import { getNftDetailsIcon } from '../../helpers';
 import { BuyNftState } from '../ConnectedBuyNftWidget/ConnectedBuyNftWidget';
 
@@ -66,9 +66,7 @@ const BuyNftWidgetDetailsContainer: FC<BuyNftWidgetDetailsContainerProps> = ({
           />
           {widgetState === BuyNftState.details && (
             <>
-              <div className="buy-nft-details-container__swap-icon-container">
-                <Icon className="buy-nft-details-container__swap-icon" name="swap" />
-              </div>
+              <SwapIcon />
               <TradeDetails
                 amount={pricePlusFees}
                 logoURI={currencyTokenInfo.logoURI}
@@ -130,9 +128,7 @@ const BuyNftWidgetDetailsContainer: FC<BuyNftWidgetDetailsContainerProps> = ({
             token={currencyTokenInfo}
             className="buy-nft-details-container__trade-details"
           />
-          <div className="buy-nft-details-container__swap-icon-container">
-            <Icon className="buy-nft-details-container__swap-icon" name="swap" />
-          </div>
+          <SwapIcon />
           <TradeDetails
             logoURI={collectionTokenInfo ? collectionTokenInfo.image : collectionImage}
             title="Buy"

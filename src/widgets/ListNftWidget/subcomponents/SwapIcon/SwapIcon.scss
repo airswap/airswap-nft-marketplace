@@ -1,6 +1,8 @@
 @import "../../../../styles/index";
 
 .swap-icon {
+    display: flex;
+    justify-content: center;
     position: relative;
     margin-top: -.5rem;
     height: 1rem;

@@ -13,7 +13,8 @@ import { Web3Provider } from '@ethersproject/providers';
 import OrderWidgetHeader from '../../../../compositions/OrderWidgetHeader/OrderWidgetHeader';
 import { useAppSelector } from '../../../../redux/hooks';
 import { getTitle } from '../../helpers';
-import CancelOrderWidgetDetailsContainer from '../CancelOrderWidgetDetailsContainer/CancelOrderWidgetDetailsContainer';
+import CancelActionButtons from '../CancelActionButtons/CancelActionButtons';
+import CancelDetailsContainer from '../CancelDetailsContainer/CancelDetailsContainer';
 
 export enum CancelOrderState {
   details = 'details',
@@ -42,11 +43,21 @@ const ConnectedCancelOrderWidget: FC<ConnectedCancelOrderWidgetProps> = ({
   library,
   className = '',
 }): ReactElement => {
-  const [widgetState, setWidgetState] = useState<CancelOrderState>(CancelOrderState.details);
+  const [widgetState, setWidgetState] = useState<CancelOrderState>(CancelOrderState.failed);
   const { collectionImage, collectionName } = useAppSelector(state => state.config);
   const { protocolFee, projectFee } = useAppSelector(state => state.metadata);
 
   const title = useMemo(() => getTitle(widgetState), [widgetState]);
+
+  const handleActionButtonClick = async () => {
+    if (widgetState === CancelOrderState.details) {
+      setWidgetState(CancelOrderState.sign);
+    }
+
+    if (widgetState === CancelOrderState.failed) {
+      setWidgetState(CancelOrderState.details);
+    }
+  };
 
   return (
     <div className={`cancel-order-widget ${className}`}>
@@ -54,7 +65,7 @@ const ConnectedCancelOrderWidget: FC<ConnectedCancelOrderWidgetProps> = ({
         nftId={+fullOrder.signer.id}
         title={title}
       />
-      <CancelOrderWidgetDetailsContainer
+      <CancelDetailsContainer
         collectionImage={collectionImage}
         collectionTokenInfo={collectionTokenInfo}
         currencyTokenInfo={currencyTokenInfo}
@@ -62,6 +73,13 @@ const ConnectedCancelOrderWidget: FC<ConnectedCancelOrderWidgetProps> = ({
         projectFee={projectFee}
         protocolFee={protocolFee}
         widgetState={widgetState}
+        className="cancel-order-widget__trade-details-container"
+      />
+      <CancelActionButtons
+        nftId={+fullOrder.signer.id}
+        state={widgetState}
+        onActionButtonClick={handleActionButtonClick}
+        className="cancel-order-widget__action-buttons"
       />
     </div>
   );
