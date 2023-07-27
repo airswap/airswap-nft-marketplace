@@ -42,7 +42,7 @@ const CancelActionButtons: FC<CancelActionButtonsProps> = ({
             Back
           </NavLink>
           <NavLink
-            to={routes.listNft()}
+            to={routes.listNft(nftId)}
             className="cancel-action-buttons__action-button"
           >
             Re-list NFT

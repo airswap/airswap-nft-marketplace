@@ -87,6 +87,10 @@ const ConnectedCancelOrderWidget: FC<ConnectedCancelOrderWidgetProps> = ({
     if (cancelOrderTransaction?.status === 'succeeded') {
       setWidgetState(CancelOrderState.success);
     }
+
+    if (cancelOrderTransaction?.status === 'failed') {
+      setWidgetState(CancelOrderState.failed);
+    }
   }, [cancelOrderTransaction]);
 
   return (
@@ -96,12 +100,14 @@ const ConnectedCancelOrderWidget: FC<ConnectedCancelOrderWidgetProps> = ({
         title={title}
       />
       <CancelDetailsContainer
+        chainId={chainId}
         collectionImage={collectionImage}
         collectionTokenInfo={collectionTokenInfo}
         currencyTokenInfo={currencyTokenInfo}
         fullOrder={fullOrder}
         projectFee={projectFee}
         protocolFee={protocolFee}
+        submittedTransaction={cancelOrderTransaction}
         widgetState={widgetState}
         className="cancel-order-widget__trade-details-container"
       />

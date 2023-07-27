@@ -1,7 +1,7 @@
 import React, { FC } from 'react';
 
 import { useWeb3React } from '@web3-react/core';
-import { useLocation } from 'react-router-dom';
+import { useLocation, useSearchParams } from 'react-router-dom';
 
 import { useAppSelector } from '../../redux/hooks';
 import ConnectedListNftWidget from './subcomponents/ConnectedListNftWidget/ConnectedListNftWidget';
@@ -13,11 +13,15 @@ interface ListNftWidgetProps {
 
 const ListNftWidget: FC<ListNftWidgetProps> = ({ className = '' }) => {
   const { account, library, chainId } = useWeb3React();
+  const [searchParams] = useSearchParams();
   const { key } = useLocation();
+
   const { config } = useAppSelector(state => state);
   const { tokens: userTokens } = useAppSelector(state => state.balances);
   const { isLoading: isMetadataLoading, currencyTokenInfo } = useAppSelector(state => state.metadata);
   const { isInitialized: isBalancesInitialized } = useAppSelector(state => state.balances);
+
+  const tokenId = searchParams.get('tokenId');
   const isLoading = !isBalancesInitialized || isMetadataLoading;
   const chainIdIsCorrect = !!chainId && chainId === config.chainId;
 
@@ -36,6 +40,7 @@ const ListNftWidget: FC<ListNftWidgetProps> = ({ className = '' }) => {
         chainId={chainId}
         currencyTokenInfo={currencyTokenInfo}
         library={library}
+        defaultSelectedTokenId={tokenId ? +tokenId : undefined}
         userTokens={userTokens}
         className={className}
       />

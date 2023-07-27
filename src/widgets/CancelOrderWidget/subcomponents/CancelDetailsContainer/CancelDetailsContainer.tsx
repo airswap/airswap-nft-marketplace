@@ -1,6 +1,7 @@
 import React, { FC, ReactElement, useMemo } from 'react';
 
 import { CollectionTokenInfo, FullOrder, TokenInfo } from '@airswap/types';
+import { getReceiptUrl } from '@airswap/utils';
 import classNames from 'classnames';
 
 import ExpiryDateInfo from '../../../../components/ExpiryDateInfo/ExpiryDateInfo';
@@ -15,31 +16,34 @@ import {
   getFullOrderReadableSenderAmount,
   getFullOrderReadableSenderAmountPlusTotalFees,
 } from '../../../../entities/FullOrder/FullOrderHelpers';
+import { SubmittedTransaction } from '../../../../entities/SubmittedTransaction/SubmittedTransaction';
 import SwapIcon from '../../../ListNftWidget/subcomponents/SwapIcon/SwapIcon';
 import { CancelOrderState } from '../ConnectedCancelOrderWidget/ConnectedCancelOrderWidget';
 
 import './CancelDetailsContainer.scss';
 
 interface CancelDetailsContainerProps {
-  approvalUrl?: string;
+  chainId: number;
   collectionImage: string;
   collectionTokenInfo: CollectionTokenInfo;
   currencyTokenInfo: TokenInfo;
   fullOrder: FullOrder;
   projectFee: number;
   protocolFee: number;
+  submittedTransaction?: SubmittedTransaction;
   widgetState: CancelOrderState;
   className?: string;
 }
 
 const CancelDetailsContainer: FC<CancelDetailsContainerProps> = ({
-  approvalUrl,
+  chainId,
   collectionImage,
   collectionTokenInfo,
   currencyTokenInfo,
   fullOrder,
   projectFee,
   protocolFee,
+  submittedTransaction,
   widgetState,
   className = '',
 }): ReactElement => {
@@ -47,6 +51,7 @@ const CancelDetailsContainer: FC<CancelDetailsContainerProps> = ({
     [`cancel-details-container--has-${widgetState}-state`]: widgetState,
   }, className);
 
+  const transactionUrl = useMemo(() => (submittedTransaction?.hash ? getReceiptUrl(chainId, submittedTransaction.hash) : undefined), [submittedTransaction]);
   const expiryDate = useMemo(() => getFullOrderExpiryDate(fullOrder), [fullOrder]);
   const readableSenderAmountPlusFees = useMemo(() => getFullOrderReadableSenderAmountPlusTotalFees(fullOrder, currencyTokenInfo), [fullOrder, currencyTokenInfo]);
   const readableSenderAmount = useMemo(() => getFullOrderReadableSenderAmount(fullOrder, currencyTokenInfo), [fullOrder, currencyTokenInfo]);
@@ -98,9 +103,9 @@ const CancelDetailsContainer: FC<CancelDetailsContainerProps> = ({
             title="Canceling"
             token={collectionTokenInfo}
           />
-          {approvalUrl && (
+          {transactionUrl && (
             <TransactionLink
-              to={approvalUrl}
+              to={transactionUrl}
               className="cancel-details-container__transaction-link"
             />
           )}
@@ -115,9 +120,9 @@ const CancelDetailsContainer: FC<CancelDetailsContainerProps> = ({
             title={widgetState === CancelOrderState.success ? 'Canceled' : 'Failed transaction'}
             token={collectionTokenInfo}
           />
-          {approvalUrl && (
+          {transactionUrl && (
             <TransactionLink
-              to={approvalUrl}
+              to={transactionUrl}
               className="cancel-details-container__transaction-link"
             />
           )}

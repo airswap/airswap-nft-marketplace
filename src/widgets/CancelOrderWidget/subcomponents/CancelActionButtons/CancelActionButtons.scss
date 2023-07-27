@@ -19,13 +19,6 @@
 
     &__back-button {
         @extend %button--is-secondary;
-
-        background: none;
-
-        &:hover,
-        &:focus {
-            background: none;
-        }
     }
 
     &__cancel-button {

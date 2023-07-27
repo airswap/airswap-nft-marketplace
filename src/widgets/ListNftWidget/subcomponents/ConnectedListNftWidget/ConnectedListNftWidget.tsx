@@ -44,6 +44,7 @@ interface ListNftWidgetProps {
   account: string;
   chainId: number;
   currencyTokenInfo: TokenInfo;
+  defaultSelectedTokenId?: number;
   library: Web3Provider
   userTokens: number[];
   className?: string;
@@ -53,6 +54,7 @@ const ConnectedListNftWidget: FC<ListNftWidgetProps> = ({
   account,
   chainId,
   currencyTokenInfo,
+  defaultSelectedTokenId,
   library,
   userTokens,
   className = '',
@@ -68,7 +70,7 @@ const ConnectedListNftWidget: FC<ListNftWidgetProps> = ({
 
   // User input states
   const [widgetState, setWidgetState] = useState<ListNftState>(ListNftState.details);
-  const [selectedTokenId, setSelectedTokenId] = useState(userTokens[0]);
+  const [selectedTokenId, setSelectedTokenId] = useState(defaultSelectedTokenId || userTokens[0]);
   const [currencyTokenAmount, setCurrencyTokenAmount] = useState('0');
   const [expiryTimeUnit, setExpiryTimeUnit] = useState(ExpiryTimeUnit.minutes);
   const [expiryAmount, setExpiryAmount] = useState<number | undefined>(60);

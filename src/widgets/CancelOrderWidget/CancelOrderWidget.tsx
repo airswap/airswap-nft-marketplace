@@ -24,11 +24,12 @@ const CancelOrderWidget: FC<CancelOrderWidgetProps> = ({ order, className = '' }
   const { isLoading: isMetadataLoading, currencyTokenInfo } = useAppSelector(state => state.metadata);
 
   const [collectionTokenInfo, isCollectionTokenInfoLoading] = useCollectionToken(collectionToken, tokenId);
-  const [isNonceUsed, isNonceUsedLoading] = useFullOrderNonceUsed(order);
+  const [isNonceUsed, isNonceUsedLoading] = useFullOrderNonceUsed(order, false);
   const isLoading = isMetadataLoading || isCollectionTokenInfoLoading || isNonceUsedLoading;
 
   if (
     !isLoading
+    && !isNonceUsed
     && chainId
     && collectionTokenInfo
     && currencyTokenInfo
