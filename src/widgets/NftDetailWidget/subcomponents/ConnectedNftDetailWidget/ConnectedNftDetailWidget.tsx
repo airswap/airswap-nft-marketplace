@@ -74,7 +74,7 @@ const ConnectedNftDetailWidget: FC<ConnectedNftDetailWidgetProps> = ({ collectio
           className="nft-detail-widget__description-accordion"
           isDefaultOpen
         />
-        {orderRoute && (
+        {(orderRoute && owner) && (
           <NftDetailProceedButton
             accountIsOwner={account === owner}
             route={orderRoute}
@@ -141,7 +141,7 @@ const ConnectedNftDetailWidget: FC<ConnectedNftDetailWidgetProps> = ({ collectio
             symbol={currencyTokenInfo.symbol}
             className="nft-detail-widget__price"
           />
-          {orderRoute && (
+          {(orderRoute && owner) && (
             <NftDetailProceedButton
               accountIsOwner={account === owner}
               route={orderRoute}

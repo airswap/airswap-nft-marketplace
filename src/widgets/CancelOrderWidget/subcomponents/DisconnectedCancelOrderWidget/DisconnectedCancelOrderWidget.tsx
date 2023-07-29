@@ -23,7 +23,9 @@ const DisconnectedCancelOrderWidget: FC<DisconnectedCancelOrderWidgetProps> = ({
       nftId={+fullOrder.signer.id}
       title="Are you sure you want to cancel?"
     />
-    {isOrderNonceUsed && 'Order nonce already used'}
+    <div className="cancel-order-widget__fail-details">
+      {isOrderNonceUsed && 'Order nonce already used'}
+    </div>
     {isLoading && <LoadingSpinner className="cancel-order-widget__loading-spinner" />}
   </div>
 );

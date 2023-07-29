@@ -28,11 +28,12 @@ $widget-height: 34.125rem;
         &:after {
             display: block;
             content: '';
-            position: absolute;
-            top: -1rem;
-            left: -1rem;
-            width: calc(100% + 2rem);
-            height: calc(100% + 2rem);
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100vw;
+            height: 100vh;
+            height: 100dvh;
             background: rgba(0, 0, 0, 0.75);
             backdrop-filter: blur(2px);
         }
