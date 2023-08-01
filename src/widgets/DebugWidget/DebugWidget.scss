@@ -1,0 +1,10 @@
+@import "src/styles/index";
+
+.debug-widget {
+    padding: var(--page-padding);
+
+    &__title,
+    &__intro {
+        margin-bottom: 1rem;
+    }
+}
