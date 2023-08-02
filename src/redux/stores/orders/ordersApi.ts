@@ -76,6 +76,23 @@ export async function takeOrder(
   }
 }
 
+export async function cancelOrder(
+  orderNonce: string,
+  provider: ethers.providers.Web3Provider,
+): Promise<ContractTransaction | AppError> {
+  try {
+    const { chainId } = provider.network;
+    const result = await Swap.getContract(provider.getSigner(), chainId).cancel(
+      [orderNonce],
+    );
+
+    return result;
+  } catch (error: any) {
+    console.error(error);
+    return transformUnknownErrorToAppError(error);
+  }
+}
+
 export async function checkOrder(
   order: FullOrder,
   senderWallet: string,

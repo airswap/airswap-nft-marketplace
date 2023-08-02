@@ -11,6 +11,7 @@
         @extend %widget-over-widget-container;
     }
 
+    &__cancel-order-widget,
     &__buy-nft-widget,
     &__buy-nft-widget-loader {
         @extend %widget-over-widget;

@@ -13,14 +13,15 @@ import {
 import transformUnknownErrorToAppError from '../../../errors/transformUnknownErrorToAppError';
 import { AppDispatch, RootState } from '../../store';
 import {
+  addCancelTransaction,
   addERC20ApprovalTransaction,
   addNftApprovalTransaction,
   addOrderTransaction,
 } from '../transactions/transactionsActions';
 import {
   approveErc20Token,
-  approveNftToken,
-  checkOrder,
+  approveNftToken, cancelOrder,
+  checkOrder, getNonceUsed,
   takeOrder,
 } from './ordersApi';
 import { setError } from './ordersSlice';
@@ -132,5 +133,36 @@ TakeParams,
   if (tx.hash) {
     dispatch(addOrderTransaction(tx.hash, order));
   }
+});
+
+interface CancelParams {
+  order: FullOrder;
+  chainId: number;
+  library: Web3Provider;
+}
+
+export const cancel = createAsyncThunk<
+TransactionHash | AppError,
+CancelParams,
+{
+  dispatch: AppDispatch;
+  state: RootState;
+}
+>('orders/cancel', async (params, { dispatch, rejectWithValue }) => {
+  const isNonceUsed = await getNonceUsed(params.order, params.library);
+
+  if (isNonceUsed) {
+    return rejectWithValue(transformToAppError(AppErrorType.nonceAlreadyUsed));
+  }
+
+  const tx = await cancelOrder(params.order.nonce, params.library);
+
+  if (isAppError(tx)) {
+    return rejectWithValue(tx);
+  }
+
+  dispatch(addCancelTransaction(tx.hash, params.order));
+
+  return tx.hash;
 });
 

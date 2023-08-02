@@ -21,18 +21,19 @@ $widget-height: 34.125rem;
     @include for-size(tablet-portrait-up) {
         display: block;
         position: absolute;
-        width: calc(100% - var(--page-padding) * 2);
+        width: 100%;
         height: 100%;
         overflow: hidden;
 
         &:after {
             display: block;
             content: '';
-            position: absolute;
-            top: -1rem;
-            left: -1rem;
-            width: calc(100% + 2rem);
-            height: calc(100% + 2rem);
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100vw;
+            height: 100vh;
+            height: 100dvh;
             background: rgba(0, 0, 0, 0.75);
             backdrop-filter: blur(2px);
         }
@@ -53,7 +54,7 @@ $widget-height: 34.125rem;
         align-items: center;
         justify-content: center;
         max-width: calc(#{$widget-width} + var(--page-padding) * 2);
-        min-height: calc(100svh - var(--desktop-top-bar-height) - var(--page-padding) * 3);
+        min-height: calc(100svh - var(--desktop-top-bar-height) - var(--page-padding) * 2);
         background: none;
     }
 }

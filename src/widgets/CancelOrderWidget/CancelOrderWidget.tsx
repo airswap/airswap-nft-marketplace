@@ -1,4 +1,4 @@
-import React, { FC } from 'react';
+import { FC, ReactElement } from 'react';
 
 import { FullOrder } from '@airswap/types';
 import { useWeb3React } from '@web3-react/core';
@@ -6,39 +6,37 @@ import { useWeb3React } from '@web3-react/core';
 import useCollectionToken from '../../hooks/useCollectionToken';
 import useFullOrderNonceUsed from '../../hooks/useFullOrderNonceUsed';
 import { useAppSelector } from '../../redux/hooks';
-import ConnectedBuyNftWidget from './subcomponents/ConnectedBuyNftWidget/ConnectedBuyNftWidget';
-import DisconnectedBuyNftWidget from './subcomponents/DisconnectedBuyNftWidget/DisconnectedBuyNftWidget';
+import ConnectedCancelOrderWidget from './subcomponents/ConnectedCancelOrderWidget/ConnectedCancelOrderWidget';
+import DisconnectedCancelOrderWidget from './subcomponents/DisconnectedCancelOrderWidget/DisconnectedCancelOrderWidget';
 
-import './BuyNftWidget.scss';
+import './CancelOrderWidget.scss';
 
-interface BuyNftWidgetProps {
+interface CancelOrderWidgetProps {
   order: FullOrder;
   className?: string;
 }
 
-const BuyNftWidget: FC<BuyNftWidgetProps> = ({ order, className = '' }) => {
-  const { account, chainId, library } = useWeb3React();
+const CancelOrderWidget: FC<CancelOrderWidgetProps> = ({ order, className = '' }): ReactElement => {
+  const { chainId, library } = useWeb3React();
   const tokenId = +order.signer.id;
 
   const { collectionToken } = useAppSelector((state) => state.config);
   const { isLoading: isMetadataLoading, currencyTokenInfo } = useAppSelector(state => state.metadata);
 
   const [collectionTokenInfo, isCollectionTokenInfoLoading] = useCollectionToken(collectionToken, tokenId);
-  const [isNonceUsed, isNonceUsedLoading] = useFullOrderNonceUsed(order);
+  const [isNonceUsed, isNonceUsedLoading] = useFullOrderNonceUsed(order, false);
   const isLoading = isMetadataLoading || isCollectionTokenInfoLoading || isNonceUsedLoading;
 
   if (
     !isLoading
-    && account
+    && !isNonceUsed
     && chainId
     && collectionTokenInfo
     && currencyTokenInfo
     && library
   ) {
     return (
-      <ConnectedBuyNftWidget
-        isOrderNonceUsed={isNonceUsed}
-        account={account}
+      <ConnectedCancelOrderWidget
         chainId={chainId}
         collectionTokenInfo={collectionTokenInfo}
         currencyTokenInfo={currencyTokenInfo}
@@ -50,12 +48,13 @@ const BuyNftWidget: FC<BuyNftWidgetProps> = ({ order, className = '' }) => {
   }
 
   return (
-    <DisconnectedBuyNftWidget
+    <DisconnectedCancelOrderWidget
       isLoading={isLoading}
-      nftId={tokenId}
+      isOrderNonceUsed={isNonceUsed}
+      fullOrder={order}
       className={className}
     />
   );
 };
 
-export default BuyNftWidget;
+export default CancelOrderWidget;

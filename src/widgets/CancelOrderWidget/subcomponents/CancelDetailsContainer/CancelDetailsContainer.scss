@@ -1,8 +1,6 @@
 @import "src/styles";
 
-$component: buy-nft-details-container;
-
-.#{$component} {
+.cancel-details-container {
     display: flex;
     flex-direction: column;
     justify-content: center;
@@ -12,8 +10,7 @@ $component: buy-nft-details-container;
         font-size: 1.25rem;
     }
 
-    &--has-sign-state,
-    &--has-approve-state {
+    &--has-sign-state {
         flex-grow: 1;
     }
 
@@ -25,25 +22,31 @@ $component: buy-nft-details-container;
         }
     }
 
-    &__swap-icon-container {
-        position: relative;
-        margin-top: -.5rem;
-        height: 1rem;
-        z-index: 1;
+    &__intro {
+        display: flex;
+        align-items: center;
+        font-size: .875rem;
+        color: var(--c-text-grey);
     }
 
-    &__swap-icon {
-        border: 1px solid var(--c-dark-border);
-        border-radius: 50%;
-        width: 1.5rem;
-        height: 1.5rem;
-        padding: .3125rem;
-        color: var(--c-light-grey);
-        background: var(--c-black);
+    &__info-icon {
+        margin-right: 1rem;
+        line-height: 1.25;
+        min-width: 1.5rem;
+        min-height: 1.5rem;
+        font-size: .875rem;
+    }
+
+    &__review-nft-details {
+        margin-top: 1.5rem;
     }
 
     &__transaction-link {
         margin-top: 1.25rem;
+    }
+
+    &__expiry-date-info {
+        margin-top: .5rem;
     }
 
     &__message {

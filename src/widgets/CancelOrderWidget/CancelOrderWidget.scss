@@ -1,0 +1,29 @@
+@import "src/styles";
+
+.cancel-order-widget {
+    display: flex;
+    flex-direction: column;
+    height: 100%;
+
+    @include for-size(tablet-portrait-up) {
+        border: 1px solid var(--c-dark-border);
+        border-radius: .5rem;
+        padding: 2rem var(--page-padding) var(--page-padding);
+        background: var(--c-dark);
+    }
+
+    &__fail-details,
+    &__trade-details-container {
+        margin: 1.75rem 0 1.25rem;
+    }
+
+    &__loading-spinner {
+        margin: 1.75rem auto 0;
+    }
+
+    &__action-buttons {
+        justify-self: flex-end;
+        margin-top: auto;
+        width: 100%;
+    }
+}

@@ -8,6 +8,7 @@ import React, {
 import { CollectionTokenInfo, FullOrder, TokenInfo } from '@airswap/types';
 import { Web3Provider } from '@ethersproject/providers';
 
+import OrderWidgetHeader from '../../../../compositions/OrderWidgetHeader/OrderWidgetHeader';
 import { getFullOrderSenderAmountPlusTotalFees } from '../../../../entities/FullOrder/FullOrderHelpers';
 import { AppErrorType, isAppError } from '../../../../errors/appError';
 import useApproveCurrencyTokenTransaction from '../../../../hooks/useApproveCurrencyTokenTransaction';
@@ -22,7 +23,6 @@ import { addInfoToast, addUserRejectedToast } from '../../../../redux/stores/toa
 import { getTitle } from '../../helpers';
 import BuyActionButtons from '../BuyActionButtons/BuyActionButtons';
 import BuyNftWidgetDetailsContainer from '../BuyNftWidgetDetailsContainer/BuyNftWidgetDetailsContainer';
-import BuyNftWidgetHeader from '../BuyNftWidgetHeader/BuyNftWidgetHeader';
 
 export enum BuyNftState {
   details = 'details',
@@ -89,6 +89,7 @@ const BuyNftWidget: FC<ConnectedBuyNftWidgetProps> = ({
         })
         .catch((e) => {
           if (isAppError(e) && e.type === AppErrorType.rejectedByUser) {
+            dispatch(addUserRejectedToast());
             setWidgetState(BuyNftState.details);
           } else {
             setWidgetState(BuyNftState.failed);
@@ -150,7 +151,7 @@ const BuyNftWidget: FC<ConnectedBuyNftWidgetProps> = ({
 
   return (
     <div className={`buy-nft-widget ${className}`}>
-      <BuyNftWidgetHeader
+      <OrderWidgetHeader
         nftId={collectionTokenInfo.id}
         title={title}
         className="buy-nft-widget__header"

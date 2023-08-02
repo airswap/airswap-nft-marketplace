@@ -8,6 +8,7 @@ $c-light-grey: #6E7686;
 $c-quick-silver: #9EA3AC;
 $c-green: #0ED48D;
 $c-red: #FF0000;
+$c-light-red: #FF6D64;
 
 @mixin light-mode-variables {
     --c-primary:        #{$c-primary};
@@ -29,6 +30,7 @@ $c-red: #FF0000;
     --c-text-grey: #{$c-quick-silver};
     --c-green: #{$c-green};
     --c-red: #{$c-red};
+    --c-light-red: #{$c-light-red};
 
     --f-primary: "loos-normal", sans-serif;
     --f-mono: "DM Mono", monospace;

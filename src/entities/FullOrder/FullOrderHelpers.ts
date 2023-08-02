@@ -18,3 +18,10 @@ export const getFullOrderReadableSenderAmountPlusTotalFees = (fullOrder: FullOrd
     omitTrailingZeroes: true,
   });
 };
+
+export const getFullOrderReadableSenderAmount = (fullOrder: FullOrder, token: TokenInfo): string => format(fullOrder.sender.amount, {
+  tokenDecimals: token.decimals,
+  omitTrailingZeroes: true,
+});
+
+export const getFullOrderExpiryDate = (fullOrder: FullOrder): Date => new Date(+fullOrder.expiry * 1000);

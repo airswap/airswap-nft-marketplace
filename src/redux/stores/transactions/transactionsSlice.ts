@@ -1,12 +1,14 @@
 import { createSlice, PayloadAction } from '@reduxjs/toolkit';
 
 import {
+  CancelOrderTransaction,
   Erc20ApprovalTransaction,
   NftApprovalTransaction,
   OrderTransaction,
   SubmittedTransaction,
 } from '../../../entities/SubmittedTransaction/SubmittedTransaction';
 import {
+  isCancelOrderTransaction,
   isErc20ApprovalTransaction,
   isNftApprovalTransaction,
   isOrderTransaction,
@@ -48,6 +50,9 @@ export const selectErc20ApprovalTransactions = (state: RootState): Erc20Approval
 
 export const selectNftApprovalTransactions = (state: RootState): NftApprovalTransaction[] => state.transactions.transactions
   .filter(isNftApprovalTransaction);
+
+export const selectCancelOrderTransactions = (state: RootState): CancelOrderTransaction[] => state.transactions.transactions
+  .filter(isCancelOrderTransaction);
 
 export const selectOrderTransactions = (state: RootState): OrderTransaction[] => state.transactions.transactions
   .filter(isOrderTransaction);

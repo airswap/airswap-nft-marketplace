@@ -28,6 +28,8 @@ const ConnectedNftDetailWidget: FC<ConnectedNftDetailWidgetProps> = ({ collectio
   const dispatch = useAppDispatch();
 
   const { chainId, collectionToken, collectionImage } = useAppSelector((state) => state.config);
+  const { account } = useAppSelector((state) => state.web3);
+
   const { protocolFee } = useAppSelector(state => state.metadata);
   const { isLoading, order } = useAppSelector(state => state.nftDetail);
 
@@ -35,7 +37,7 @@ const ConnectedNftDetailWidget: FC<ConnectedNftDetailWidgetProps> = ({ collectio
   const owner = useNftTokenOwner(collectionTokenInfo);
   const readableOwnerAddress = useAddressOrEnsName(owner, true);
   const accountRoute = owner ? routes.profile(owner) : undefined;
-  const buyRoute = order ? routes.orderDetail(order.signer.wallet, order.nonce) : undefined;
+  const orderRoute = order ? routes.orderDetail(order.signer.wallet, order.nonce) : undefined;
 
   useEffect(() => {
     dispatch(getNftOrderByTokenId(collectionTokenInfo.id));
@@ -72,7 +74,12 @@ const ConnectedNftDetailWidget: FC<ConnectedNftDetailWidgetProps> = ({ collectio
           className="nft-detail-widget__description-accordion"
           isDefaultOpen
         />
-        {buyRoute && <NftDetailProceedButton route={buyRoute} />}
+        {(orderRoute && owner) && (
+          <NftDetailProceedButton
+            accountIsOwner={account === owner}
+            route={orderRoute}
+          />
+        )}
         <Accordion
           label="Properties"
           content={(
@@ -134,7 +141,12 @@ const ConnectedNftDetailWidget: FC<ConnectedNftDetailWidgetProps> = ({ collectio
             symbol={currencyTokenInfo.symbol}
             className="nft-detail-widget__price"
           />
-          {buyRoute && <NftDetailProceedButton route={buyRoute} />}
+          {(orderRoute && owner) && (
+            <NftDetailProceedButton
+              accountIsOwner={account === owner}
+              route={orderRoute}
+            />
+          )}
         </div>
       </NftDetailContentContainer>
     </div>
