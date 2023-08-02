@@ -38,10 +38,10 @@ const DebugWidget: FC<DebugWidgetProps> = ({ className = '' }): ReactElement => 
       <h1 className="debug-widget__title">Debug</h1>
       <p className="debug-widget__intro">Your .env was not setup properly:</p>
       <ul>
-        {!collectionToken && <li>REACT_APP_CURRENCY_TOKEN not set</li>}
-        {(collectionToken && !collectionTokenKind) && <li>{`REACT_APP_CURRENCY_TOKEN ${collectionToken} on ${chainNames[chainId]} is not a valid ERC721 or ERC1155 token`}</li>}
-        {!currencyToken && <li>REACT_APP_COLLECTION_TOKEN not set</li>}
-        {(currencyToken && !currencyTokenKind) && <li>{`REACT_APP_COLLECTION_TOKEN ${currencyToken} on ${chainNames[chainId]} is not a valid ERC20 token`}</li>}
+        {!collectionToken && <li>REACT_APP_COLLECTION_TOKEN not set</li>}
+        {(collectionToken && !collectionTokenKind) && <li>{`REACT_APP_COLLECTION_TOKEN ${collectionToken} on ${chainNames[chainId]} is not a valid ERC721 or ERC1155 token`}</li>}
+        {!currencyToken && <li>REACT_APP_CURRENCY_TOKEN not set</li>}
+        {(currencyToken && !currencyTokenKind) && <li>{`REACT_APP_CURRENCY_TOKEN ${currencyToken} on ${chainNames[chainId]} is not a valid ERC20 token`}</li>}
       </ul>
     </div>
   );

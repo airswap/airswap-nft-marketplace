@@ -5,7 +5,6 @@ import { getCollectionTokenKind, getCurrencyTokenKind } from './configApi';
 
 export interface ConfigState {
   isFailed: boolean;
-  isLoading: boolean;
   isLoadingCollectionTokenKind: boolean;
   isLoadingCurrencyTokenKind: boolean;
   isSuccessful: boolean;
@@ -20,7 +19,6 @@ export interface ConfigState {
 }
 const initialState: ConfigState = {
   isFailed: false,
-  isLoading: false,
   isLoadingCollectionTokenKind: false,
   isLoadingCurrencyTokenKind: false,
   isSuccessful: false,
