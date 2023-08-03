@@ -1,7 +1,7 @@
+import { TokenKinds } from '@airswap/constants';
 import { createAsyncThunk } from '@reduxjs/toolkit';
 import { ethers } from 'ethers';
 
-import { SupportedTokenKind } from '../../../types/SupportedTokenKind';
 import { AppThunkApiConfig } from '../../store';
 import { getCollectionTokenTokenKind, getCurrencyTokenTokenKind } from './configHelpers';
 
@@ -11,7 +11,7 @@ interface GetTokenKindParams {
 }
 
 export const getCollectionTokenKind = createAsyncThunk<
-SupportedTokenKind | undefined,
+TokenKinds | undefined,
 GetTokenKindParams,
 AppThunkApiConfig
 >('config/getCollectionTokenKind', async ({ address, provider }) => (
@@ -19,7 +19,7 @@ AppThunkApiConfig
 ));
 
 export const getCurrencyTokenKind = createAsyncThunk<
-SupportedTokenKind | undefined,
+TokenKinds | undefined,
 GetTokenKindParams,
 AppThunkApiConfig
 >('config/getCurrencyTokenKind', async ({ address, provider }) => (

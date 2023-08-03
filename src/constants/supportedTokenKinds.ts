@@ -1,17 +1,10 @@
-import { SupportedTokenKind } from '../types/SupportedTokenKind';
+import { TokenKinds } from '@airswap/constants';
 
-export const supportedCollectionTokenKinds: SupportedTokenKind[] = [
-  SupportedTokenKind.ERC721Enumerable,
-  SupportedTokenKind.ERC721,
-  SupportedTokenKind.ERC1155,
+export const supportedCollectionTokenKinds: TokenKinds[] = [
+  TokenKinds.ERC721,
+  TokenKinds.ERC1155,
 ];
 
-export const supportedCurrencyTokenKinds: SupportedTokenKind[] = [
-  SupportedTokenKind.ERC20,
-];
-
-
-export const supportedTokenKinds = [
-  ...supportedCollectionTokenKinds,
-  ...supportedCurrencyTokenKinds,
+export const supportedCurrencyTokenKinds: TokenKinds[] = [
+  TokenKinds.ERC20,
 ];

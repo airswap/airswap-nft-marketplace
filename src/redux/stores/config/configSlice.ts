@@ -1,6 +1,6 @@
+import { TokenKinds } from '@airswap/constants';
 import { createSlice, PayloadAction } from '@reduxjs/toolkit';
 
-import { SupportedTokenKind } from '../../../types/SupportedTokenKind';
 import { getCollectionTokenKind, getCurrencyTokenKind } from './configApi';
 
 export interface ConfigState {
@@ -10,9 +10,9 @@ export interface ConfigState {
   isSuccessful: boolean;
   chainId: number;
   currencyToken: string;
-  currencyTokenKind?: SupportedTokenKind;
+  currencyTokenKind?: TokenKinds;
   collectionToken: string;
-  collectionTokenKind?: SupportedTokenKind;
+  collectionTokenKind?: TokenKinds;
   collectionName: string;
   collectionImage: string;
   ipfcGatewayURL: string;
