@@ -44,7 +44,7 @@ export const fetchCurrencyTokenAllowance = createAsyncThunk<string, WalletParams
     const response = await getErc20TokenAllowance(
       params.collectionTokenAddress,
       params.walletAddress,
-      Swap.getAddress(params.chainId),
+      Swap.getAddress(params.chainId) || '',
       params.provider,
     );
 

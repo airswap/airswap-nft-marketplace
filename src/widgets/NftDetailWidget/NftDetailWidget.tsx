@@ -1,6 +1,7 @@
 import React, { FC, useEffect } from 'react';
 
 import useCollectionToken from '../../hooks/useCollectionToken';
+import useDefaultProvider from '../../hooks/useDefaultProvider';
 import { useAppSelector } from '../../redux/hooks';
 import ConnectedNftDetailWidget from './subcomponents/ConnectedNftDetailWidget/ConnectedNftDetailWidget';
 import DisconnectedNftDetailWidget from './subcomponents/DisconnectedNftDetailWidget/DisconnectedNftDetailWidget';
@@ -13,9 +14,10 @@ interface NftDetailWidgetProps {
 }
 
 const NftDetailWidget: FC<NftDetailWidgetProps> = ({ tokenId, className = '' }) => {
-  const { collectionToken } = useAppSelector(state => state.config);
+  const { chainId, collectionToken } = useAppSelector(state => state.config);
   const { isInitialized } = useAppSelector(state => state.indexer);
   const { currencyTokenInfo, isLoading: isMetadataLoading } = useAppSelector(state => state.metadata);
+  const library = useDefaultProvider(chainId);
 
   const [collectionTokenInfo, isLoadingCollectionTokenInfo] = useCollectionToken(collectionToken, tokenId);
   const isLoading = isMetadataLoading || isLoadingCollectionTokenInfo;
@@ -29,11 +31,13 @@ const NftDetailWidget: FC<NftDetailWidgetProps> = ({ tokenId, className = '' }) 
     && isInitialized
     && collectionTokenInfo
     && currencyTokenInfo
+    && library
   ) {
     return (
       <ConnectedNftDetailWidget
         collectionTokenInfo={collectionTokenInfo}
         currencyTokenInfo={currencyTokenInfo}
+        library={library}
         className={className}
       />
     );

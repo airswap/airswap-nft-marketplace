@@ -1,13 +1,14 @@
 import React, { FC, useEffect, useMemo } from 'react';
 
 import { CollectionTokenInfo, TokenInfo } from '@airswap/types';
+import { Web3Provider } from '@ethersproject/providers';
 
 import Accordion from '../../../../components/Accordion/Accordion';
 import { getFullOrderReadableSenderAmountPlusTotalFees } from '../../../../entities/FullOrder/FullOrderHelpers';
 import useAddressOrEnsName from '../../../../hooks/useAddressOrEnsName';
 import useNftTokenOwner from '../../../../hooks/useNftTokenOwner';
 import { useAppDispatch, useAppSelector } from '../../../../redux/hooks';
-import { getNftOrderByTokenId } from '../../../../redux/stores/nftDetail/nftDetailApi';
+import { getNftOrderByTokenId, getNftTransactionReceipts } from '../../../../redux/stores/nftDetail/nftDetailApi';
 import { reset } from '../../../../redux/stores/nftDetail/nftDetailSlice';
 import { routes } from '../../../../routes';
 import NftDetailAttributes from '../NftDetailAttributes/NftDetailAttributes';
@@ -21,10 +22,16 @@ import NftDetailSaleInfo from '../NftDetailSaleInfo/NftDetailSaleInfo';
 interface ConnectedNftDetailWidgetProps {
   collectionTokenInfo: CollectionTokenInfo;
   currencyTokenInfo: TokenInfo;
+  library: Web3Provider;
   className?: string;
 }
 
-const ConnectedNftDetailWidget: FC<ConnectedNftDetailWidgetProps> = ({ collectionTokenInfo, currencyTokenInfo, className = '' }) => {
+const ConnectedNftDetailWidget: FC<ConnectedNftDetailWidgetProps> = ({
+  collectionTokenInfo,
+  currencyTokenInfo,
+  library,
+  className = '',
+}) => {
   const dispatch = useAppDispatch();
 
   const { chainId, collectionToken, collectionImage } = useAppSelector((state) => state.config);
@@ -41,6 +48,7 @@ const ConnectedNftDetailWidget: FC<ConnectedNftDetailWidgetProps> = ({ collectio
 
   useEffect(() => {
     dispatch(getNftOrderByTokenId(collectionTokenInfo.id));
+    dispatch(getNftTransactionReceipts({ provider: library, tokenId: collectionTokenInfo.id }));
 
     return () => {
       dispatch(reset());

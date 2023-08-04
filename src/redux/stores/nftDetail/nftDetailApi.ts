@@ -1,8 +1,11 @@
 import { FullOrder } from '@airswap/types';
+import { Web3Provider } from '@ethersproject/providers';
 import { createAsyncThunk } from '@reduxjs/toolkit';
 
+import { NftTransactionLog } from '../../../entities/NftTransactionLog/NftTransactionLog';
 import { AppThunkApiConfig } from '../../store';
 import { getOrdersFromIndexers } from '../indexer/indexerHelpers';
+import { getErc721Logs } from './nftDetailHelpers';
 import { setTokenId } from './nftDetailSlice';
 
 export const getNftOrderByTokenId = createAsyncThunk<
@@ -24,4 +27,24 @@ AppThunkApiConfig
   );
 
   return orders.find((order) => order.signer.id === tokenId.toString());
+});
+
+interface GetNftTransactionHistoryParams {
+  provider: Web3Provider;
+  tokenId: number;
+}
+
+export const getNftTransactionReceipts = createAsyncThunk<
+NftTransactionLog[],
+GetNftTransactionHistoryParams,
+AppThunkApiConfig
+>('nftDetail/getNftTransactionReceipts', async ({ provider, tokenId }, { getState }) => {
+  const { chainId, collectionToken } = getState().config;
+
+  return getErc721Logs(
+    chainId,
+    collectionToken,
+    provider,
+    tokenId,
+  );
 });

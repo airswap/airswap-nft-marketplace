@@ -9,12 +9,12 @@
     "eject": "react-scripts eject"
   },
   "dependencies": {
-    "@airswap/balances": "4.0.1",
-    "@airswap/constants": "4.0.8",
-    "@airswap/libraries": "4.0.13",
-    "@airswap/metadata": "4.0.9",
+    "@airswap/balances": "4.0.2",
+    "@airswap/constants": "4.0.10",
+    "@airswap/libraries": "4.0.19",
+    "@airswap/metadata": "4.0.11",
     "@airswap/types": "4.0.5",
-    "@airswap/utils": "4.0.7",
+    "@airswap/utils": "4.0.8",
     "@ethersproject/abi": "^5.7.0",
     "@ethersproject/providers": "^5.7.2",
     "@greypixel_/nicenumbers": "^0.0.18",
