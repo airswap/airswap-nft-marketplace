@@ -110,6 +110,16 @@ const ConnectedNftDetailWidget: FC<ConnectedNftDetailWidgetProps> = ({
           )}
           className="nft-detail-widget__description-accordion"
         />
+        <Accordion
+          label="Item Activity"
+          content={(
+            <NftDetailActivity
+              chainId={chainId}
+              logs={transactionLogs}
+            />
+          )}
+          className="nft-detail-widget__description-accordion"
+        />
       </NftDetailContentContainer>
       <NftDetailContentContainer className="nft-detail-widget__desktop-view">
         <div className="nft-detail-widget__column">

@@ -6,6 +6,7 @@
     font-size: 1rem;
     font-weight: var(--fw-400);
     line-height: 1;
+    padding-bottom: 1px;
 
     & + & {
         border-top: 1px solid var(--c-dark-border);
@@ -18,11 +19,13 @@
     }
 
     &__label {
+        @extend %text-ellipsis;
+
         margin-left: .75rem;
     }
 
     &__link {
-        margin-left: .25rem;
+        margin: 0 .5rem;
         text-transform: lowercase;
         color: var(--c-primary-dark);
 
@@ -32,12 +35,19 @@
         }
     }
 
-    &__meta {
+    &__transaction-icon,
+    &__time {
         justify-self: flex-end;
         margin-left: auto;
     }
 
+    &__time {
+        @extend %text-ellipsis;
+    }
+
     &__transaction-icon {
+        top: 1px;
+        margin-left: .125rem;
         width: 1.75rem;
         color: var(--c-white);
 

@@ -5,6 +5,7 @@ import { getAccountUrl, getReceiptUrl } from '@airswap/utils';
 import Icon from '../../../../components/Icon/Icon';
 import TransactionLink from '../../../../compositions/TransactionLink/TransactionLink';
 import { NftTransactionLog } from '../../../../entities/NftTransactionLog/NftTransactionLog';
+import getTimeBetweenTwoDates from '../../../../helpers/date/getTimeBetweenTwoDates';
 import useAddressOrEnsName from '../../../../hooks/useAddressOrEnsName';
 
 import './NftDetailActivityItem.scss';
@@ -17,8 +18,9 @@ interface NftDetailActivityItemProps {
 
 const NftDetailActivityItem: FC<NftDetailActivityItemProps> = ({ chainId, log, className = '' }): ReactElement => {
   const readableAddressName = useAddressOrEnsName(log.from, true);
-  const link = useMemo(() => getAccountUrl(chainId, log.from), [chainId, log]);
-  const transactionLink = useMemo(() => getReceiptUrl(chainId, log.transactionHash), [chainId, log]);
+  const link = useMemo(() => getAccountUrl(chainId, log.from), [chainId, log.from]);
+  const transactionLink = useMemo(() => getReceiptUrl(chainId, log.transactionHash), [chainId, log.transactionHash]);
+  const timeAgo = useMemo(() => getTimeBetweenTwoDates(new Date(), new Date(log.timestamp * 1000)), [log.timestamp]);
 
   return (
     <div className={`nft-detail-activity-item ${className}`}>
@@ -36,13 +38,14 @@ const NftDetailActivityItem: FC<NftDetailActivityItemProps> = ({ chainId, log, c
       >
         {readableAddressName}
       </a>
-      <div className="nft-detail-activity-item__meta">
-        <TransactionLink
-          hideLabel
-          to={transactionLink}
-          className="nft-detail-activity-item__transaction-icon"
-        />
+      <div className="nft-detail-activity-item__time">
+        {timeAgo}
       </div>
+      <TransactionLink
+        hideLabel
+        to={transactionLink}
+        className="nft-detail-activity-item__transaction-icon"
+      />
     </div>
   );
 };

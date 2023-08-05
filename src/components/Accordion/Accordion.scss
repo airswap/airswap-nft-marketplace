@@ -5,7 +5,7 @@
 
     &__header {
         display: flex;
-        font-size: .75rem; // Target size: 12px
+        font-size: .75rem;
         font-weight: var(--fw-700);
 
         &:focus {
@@ -37,12 +37,12 @@
         transition-property: height;
         overflow: hidden;
         will-change: height;
-        font-size: .75rem; // Target 12px
+        font-size: .75rem;
 
         &--has-border {
             border: 1px solid var(--c-grey);
-            border-radius: .25rem; // Target 4px
-            padding: var(--page-padding);
+            border-radius: .25rem;
+            padding: 1rem 1.25rem;
         }
     }
 }

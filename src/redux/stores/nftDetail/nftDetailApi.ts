@@ -48,7 +48,7 @@ AppThunkApiConfig
     tokenId,
   );
 
-  console.log(logs);
+  logs.reverse();
 
   return logs;
 });

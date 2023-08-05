@@ -1,5 +1,8 @@
 @import "src/styles/index";
 
 .nft-detail-activity {
+    @extend %scrollbar;
 
+    max-height: 13.5rem;
+    overflow-y: auto;
 }
