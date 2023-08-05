@@ -7,12 +7,14 @@ import IconNavLink from '../IconNavLink/IconNavLink';
 import './TransactionLink.scss';
 
 interface TransactionLinkProps extends NavLinkProps {
+  hideLabel?: boolean;
   className?: string;
 }
 
-const TransactionLink: FC<TransactionLinkProps> = ({ className = '', ...props }) => (
+const TransactionLink: FC<TransactionLinkProps> = ({ hideLabel, className = '', ...props }) => (
   <IconNavLink
     {...props}
+    hideLabel={hideLabel}
     target="_blank"
     icon="transaction-link"
     iconAlign="right"

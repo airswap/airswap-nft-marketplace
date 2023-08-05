@@ -11,6 +11,7 @@ import { useAppDispatch, useAppSelector } from '../../../../redux/hooks';
 import { getNftOrderByTokenId, getNftTransactionReceipts } from '../../../../redux/stores/nftDetail/nftDetailApi';
 import { reset } from '../../../../redux/stores/nftDetail/nftDetailSlice';
 import { routes } from '../../../../routes';
+import NftDetailActivity from '../NftDetailActivity/NftDetailActivity';
 import NftDetailAttributes from '../NftDetailAttributes/NftDetailAttributes';
 import NftDetailContentContainer from '../NftDetailContentContainer/NftDetailContentContainer';
 import NftDetailList from '../NftDetailList/NftDetailList';
@@ -38,7 +39,7 @@ const ConnectedNftDetailWidget: FC<ConnectedNftDetailWidgetProps> = ({
   const { account } = useAppSelector((state) => state.web3);
 
   const { protocolFee } = useAppSelector(state => state.metadata);
-  const { isLoading, order } = useAppSelector(state => state.nftDetail);
+  const { isLoading, order, transactionLogs } = useAppSelector(state => state.nftDetail);
 
   const price = useMemo(() => (order ? getFullOrderReadableSenderAmountPlusTotalFees(order, currencyTokenInfo) : undefined), [order]);
   const owner = useNftTokenOwner(collectionTokenInfo);
@@ -125,6 +126,15 @@ const ConnectedNftDetailWidget: FC<ConnectedNftDetailWidgetProps> = ({
                 chain={chainId.toString()}
                 standard={collectionTokenInfo.kind}
                 fee={protocolFee / 100}
+              />
+            </div>
+          </div>
+          <div className="nft-detail-widget__meta-container">
+            <h2 className="nft-detail-widget__meta-container-label">Item activity</h2>
+            <div className="accordion__content accordion__content--has-border">
+              <NftDetailActivity
+                chainId={chainId}
+                logs={transactionLogs}
               />
             </div>
           </div>

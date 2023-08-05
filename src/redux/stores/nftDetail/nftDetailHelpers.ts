@@ -13,16 +13,16 @@ export const getErc721Logs = async (
   provider: Web3Provider,
   tokenId: number,
 ): Promise<NftTransactionLog[]> => {
-  const collectionContract = new ethers.Contract(collectionToken, erc721AbiContract.abi, provider);
-  const transferFilter = collectionContract.filters.Transfer(null, null, tokenId);
+  const contract = new ethers.Contract(collectionToken, erc721AbiContract.abi, provider);
+  const transferFilter = contract.filters.Transfer(null, null, tokenId);
 
-  const events = await collectionContract.queryFilter(transferFilter, 0);
+  const events = await contract.queryFilter(transferFilter, 0);
 
   const transactionReceipts = await Promise.all(events.map(event => event.getTransactionReceipt()));
   const transactionReceiptBlocks = await Promise.all(transactionReceipts.map(receipt => provider.getBlock(receipt.blockNumber)));
 
-  return Promise.all(transactionReceipts.map((transactionReceipt, index) => transformTransactionReceiptToNftTransactionLog(
+  return transactionReceipts.map((transactionReceipt, index) => transformTransactionReceiptToNftTransactionLog(
     transactionReceipt,
     transactionReceiptBlocks[index].timestamp,
-  )));
+  ));
 };

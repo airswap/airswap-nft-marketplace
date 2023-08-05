@@ -41,10 +41,14 @@ AppThunkApiConfig
 >('nftDetail/getNftTransactionReceipts', async ({ provider, tokenId }, { getState }) => {
   const { chainId, collectionToken } = getState().config;
 
-  return getErc721Logs(
+  const logs = await getErc721Logs(
     chainId,
     collectionToken,
     provider,
     tokenId,
   );
+
+  console.log(logs);
+
+  return logs;
 });
