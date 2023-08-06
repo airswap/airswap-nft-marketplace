@@ -36,6 +36,16 @@ export const getCollectionTokenOwner = async (library: ethers.providers.BaseProv
   const contractAbi = getCollectionTokenContractAbi(token.kind);
   const contract = new ethers.Contract(token.address, contractAbi, library);
 
+  if (token.kind === TokenKinds.ERC1155) {
+    // TODO: Use NftTransactionLogs to determine the people who owns this token (can be multiple owners)
+    // https://github.com/orgs/airswap/projects/9/views/1?pane=issue&itemId=26957049
+
+    // Maybe use this or derive it all from logs:
+    // balanceOf(address account, uint256 id) → uint256
+    // Returns the amount of tokens of token type id owned by account.
+    return undefined;
+  }
+
   return contract.functions.ownerOf(token.id)
     .then((owner: [string]) => owner[0])
     .catch(() => undefined);

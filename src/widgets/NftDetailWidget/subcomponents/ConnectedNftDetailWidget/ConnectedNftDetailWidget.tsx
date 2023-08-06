@@ -103,7 +103,7 @@ const ConnectedNftDetailWidget: FC<ConnectedNftDetailWidgetProps> = ({
             <NftDetailList
               address={collectionToken}
               id={collectionTokenInfo.id}
-              chain={chainId.toString()}
+              chainId={chainId}
               standard={collectionTokenInfo.kind}
               fee={protocolFee / 100}
             />
@@ -115,6 +115,7 @@ const ConnectedNftDetailWidget: FC<ConnectedNftDetailWidgetProps> = ({
           content={(
             <NftDetailActivity
               chainId={chainId}
+              collectionToken={collectionToken}
               logs={transactionLogs}
             />
           )}
@@ -133,7 +134,7 @@ const ConnectedNftDetailWidget: FC<ConnectedNftDetailWidgetProps> = ({
               <NftDetailList
                 address={collectionToken}
                 id={collectionTokenInfo.id}
-                chain={chainId.toString()}
+                chainId={chainId}
                 standard={collectionTokenInfo.kind}
                 fee={protocolFee / 100}
               />
@@ -144,6 +145,7 @@ const ConnectedNftDetailWidget: FC<ConnectedNftDetailWidgetProps> = ({
             <div className="accordion__content accordion__content--has-border">
               <NftDetailActivity
                 chainId={chainId}
+                collectionToken={collectionToken}
                 logs={transactionLogs}
               />
             </div>

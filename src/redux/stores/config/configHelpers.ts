@@ -6,10 +6,7 @@ import { ethers } from 'ethers';
 export const getCollectionTokenTokenKind = async (provider: ethers.providers.Web3Provider, address: string): Promise<TokenKinds | undefined> => {
   const contract = new ethers.Contract(address, erc721AbiContract.abi, provider);
 
-  const [,
-    isErc721,
-    isErc1155,
-  ] = await Promise.all([
+  const [isErc721, isErc1155] = await Promise.all([
     contract.supportsInterface(TokenKinds.ERC721),
     contract.supportsInterface(TokenKinds.ERC1155),
   ]) as boolean[];

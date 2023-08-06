@@ -3,15 +3,19 @@
 .nft-detail-activity-item {
     display: flex;
     align-items: center;
-    font-size: 1rem;
     font-weight: var(--fw-400);
     line-height: 1;
     padding-bottom: 1px;
 
     & + & {
         border-top: 1px solid var(--c-dark-border);
-        margin-top: .675rem;
-        padding-top: .75rem;
+        margin-top: .375rem;
+        padding-top: .5rem;
+
+        @include for-size(desktop-up) {
+            margin-top: .675rem;
+            padding-top: .75rem;
+        }
     }
 
     &__swap-icon {
@@ -25,14 +29,9 @@
     }
 
     &__link {
-        margin: 0 .5rem;
-        text-transform: lowercase;
-        color: var(--c-primary-dark);
+        @extend %external-link;
 
-        &:hover,
-        &:focus {
-            text-decoration: underline;
-        }
+        margin: 0 .5rem;
     }
 
     &__transaction-icon,

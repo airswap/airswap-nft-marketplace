@@ -14,16 +14,24 @@
         }
     }
 
-    &__item-address {
-        display: none;
-        @include for-size(desktop-up) {
-            display: block;
+    &__item-link {
+        @extend %external-link;
+
+        text-align: right;
+    }
+
+    &__item-link-truncated-address {
+
+        @include for-size(tablet-portrait-up) {
+            display: none;
         }
-        
-        &--is-truncated {
-            @include for-size(desktop-up) {
-                display: none;
-            }
+    }
+
+    &__item-link-address {
+        display: none;
+
+        @include for-size(tablet-portrait-up) {
+            display: block;
         }
     }
 

@@ -1,3 +1,4 @@
+import { TokenKinds } from '@airswap/constants';
 import { FullOrder } from '@airswap/types';
 import { Web3Provider } from '@ethersproject/providers';
 import { createAsyncThunk } from '@reduxjs/toolkit';
@@ -5,7 +6,7 @@ import { createAsyncThunk } from '@reduxjs/toolkit';
 import { NftTransactionLog } from '../../../entities/NftTransactionLog/NftTransactionLog';
 import { AppThunkApiConfig } from '../../store';
 import { getOrdersFromIndexers } from '../indexer/indexerHelpers';
-import { getErc721Logs } from './nftDetailHelpers';
+import { getErc721Logs, getErc1155Logs } from './nftDetailHelpers';
 import { setTokenId } from './nftDetailSlice';
 
 export const getNftOrderByTokenId = createAsyncThunk<
@@ -39,16 +40,21 @@ NftTransactionLog[],
 GetNftTransactionHistoryParams,
 AppThunkApiConfig
 >('nftDetail/getNftTransactionReceipts', async ({ provider, tokenId }, { getState }) => {
-  const { chainId, collectionToken } = getState().config;
+  const { chainId, collectionToken, collectionTokenKind } = getState().config;
 
-  const logs = await getErc721Logs(
+  if (collectionTokenKind === TokenKinds.ERC1155) {
+    return getErc1155Logs(
+      chainId,
+      collectionToken,
+      provider,
+      tokenId,
+    );
+  }
+
+  return getErc721Logs(
     chainId,
     collectionToken,
     provider,
     tokenId,
   );
-
-  logs.reverse();
-
-  return logs;
 });
