@@ -30,4 +30,12 @@
         @extend %nfts-grid;
     }
 
+    &__loader,
+    &__end-of-orders-icon {
+        margin: 1rem auto;
+        min-width: 1.75rem;
+        min-height: 1.75rem;
+        color: var(--c-white);
+        opacity: 0.5;
+    }
 }

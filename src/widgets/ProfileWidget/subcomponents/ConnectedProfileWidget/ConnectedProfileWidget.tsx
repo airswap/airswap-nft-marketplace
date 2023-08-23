@@ -9,6 +9,8 @@ import { TokenInfo } from '@airswap/types';
 import { Web3Provider } from '@ethersproject/providers';
 import { useWeb3React } from '@web3-react/core';
 
+import Icon from '../../../../components/Icon/Icon';
+import LoadingSpinner from '../../../../components/LoadingSpinner/LoadingSpinner';
 import NftCard from '../../../../components/NftCard/NftCard';
 import SearchInput from '../../../../components/SearchInput/SearchInput';
 import { filterCollectionTokenBySearchValue } from '../../../../entities/CollectionToken/CollectionTokenHelpers';
@@ -16,9 +18,10 @@ import { getFullOrderReadableSenderAmountPlusTotalFees } from '../../../../entit
 import getOwnedTokensByAccountUrl from '../../../../helpers/airswap/getOwnedTokensByAccountUrl';
 import useCollectionTokens from '../../../../hooks/useCollectionTokens';
 import useEnsAddress from '../../../../hooks/useEnsAddress';
+import useScrollToBottom from '../../../../hooks/useScrollToBottom';
 import { useAppDispatch, useAppSelector } from '../../../../redux/hooks';
 import { getProfileOrders, getProfileTokens } from '../../../../redux/stores/profile/profileApi';
-import { reset } from '../../../../redux/stores/profile/profileSlice';
+import { reset, setTokensOffset, tokensOffsetInterval } from '../../../../redux/stores/profile/profileSlice';
 import { routes } from '../../../../routes';
 import ProfileHeader from '../ProfileHeader/ProfileHeader';
 
@@ -38,23 +41,26 @@ const ConnectedProfileWidget: FC<ConnectedProfileWidgetProps> = ({
   className = '',
 }) => {
   const dispatch = useAppDispatch();
-
+  const scrolledToBottom = useScrollToBottom();
   const { deactivate } = useWeb3React<Web3Provider>();
 
   const { chainId, collectionToken, collectionImage } = useAppSelector((state) => state.config);
   const { avatarUrl } = useAppSelector((state) => state.user);
-  const { tokens: ownedTokenIds, orders } = useAppSelector((state) => state.profile);
+  const { tokens: ownedTokenIds, orders, tokensOffset } = useAppSelector((state) => state.profile);
 
   const [searchValue, setSearchValue] = useState('');
 
+  const isEndOfTokens = tokensOffset >= ownedTokenIds.length;
   const ensAddress = useEnsAddress(profileAccount);
   const accountUrl = useMemo(() => (
     profileAccount ? getOwnedTokensByAccountUrl(chainId, profileAccount, collectionToken) : undefined
   ), [profileAccount, chainId, collectionToken]);
-  const [tokens] = useCollectionTokens(collectionToken, ownedTokenIds);
-  const filteredTokens = useMemo(() => (
-    tokens.filter(nft => filterCollectionTokenBySearchValue(nft, searchValue))
-  ), [tokens, searchValue]);
+  const [tokens, isLoadingTokens] = useCollectionTokens(collectionToken, ownedTokenIds);
+
+  const filteredTokens = useMemo(() => (tokens
+    .filter(nft => filterCollectionTokenBySearchValue(nft, searchValue))
+    .slice(0, tokensOffset)
+  ), [tokens, tokensOffset, searchValue]);
 
   useEffect((): () => void => {
     dispatch(getProfileOrders({
@@ -70,6 +76,12 @@ const ConnectedProfileWidget: FC<ConnectedProfileWidgetProps> = ({
       dispatch(reset());
     };
   }, [profileAccount]);
+
+  useEffect(() => {
+    if (scrolledToBottom && !isEndOfTokens) {
+      dispatch(setTokensOffset(tokensOffset + tokensOffsetInterval));
+    }
+  }, [scrolledToBottom]);
 
   const handleDisconnectClick = () => {
     deactivate();
@@ -113,6 +125,8 @@ const ConnectedProfileWidget: FC<ConnectedProfileWidgetProps> = ({
               );
             })}
           </div>
+          {isLoadingTokens && <LoadingSpinner className="profile-widget__loader" />}
+          {(!isLoadingTokens && isEndOfTokens) && <Icon name="airswap" className="profile-widget__end-of-orders-icon" />}
         </div>
       </div>
     </div>
