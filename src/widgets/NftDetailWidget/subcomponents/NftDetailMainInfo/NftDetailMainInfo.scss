@@ -22,8 +22,9 @@
     }
     
     &__owner-name {
+        @extend %external-link;
+
         width: fit-content;
-        color: var(--c-primary);
     }
 
     

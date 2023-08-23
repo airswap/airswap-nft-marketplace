@@ -1,31 +1,27 @@
 import React, { FC } from 'react';
 
-import Icon from '../../../../components/Icon/Icon';
-import { CollectionTokenEvent } from '../../../../entities/CollectionTokenEvent/CollectionTokenEvent';
+import { NftTransactionLog } from '../../../../entities/NftTransactionLog/NftTransactionLog';
+import NftDetailActivityItem from '../NftDetailActivityItem/NftDetailActivityItem';
 
 import './NftDetailActivity.scss';
 
-interface NftDetailActivityTransferProps {
-  log: CollectionTokenEvent;
-}
-
-const NftDetailActivityTransfer: FC<NftDetailActivityTransferProps> = ({ log }) => (
-  <div className="nft-detail-widget__activity">
-    <Icon name="swap-horizontal" />
-    <p className="nft-detail-widget__activity-label">{`Transfered to ${log.to}`}</p>
-  </div>
-);
-
 interface NftDetailActivityProps {
-  logs: CollectionTokenEvent[];
+  chainId: number;
+  logs: NftTransactionLog[];
   className?: string;
 }
 
-const NftDetailActivity: FC<NftDetailActivityProps> = ({ logs, className = '' }) => (
-  <div className={`nft-detail-widget__activities-container ${className}`}>
+const NftDetailActivity: FC<NftDetailActivityProps> = ({
+  chainId,
+  logs,
+  className = '',
+}) => (
+  <div className={`nft-detail-activity ${className}`}>
+    {logs.length === 0 && 'No activity found'}
     {logs.map(log => (
-      <NftDetailActivityTransfer
-        key={`${log.type}:${log.tokenId}:${log.from}:${log.to}`}
+      <NftDetailActivityItem
+        chainId={chainId}
+        key={log.transactionHash}
         log={log}
       />
     ))}

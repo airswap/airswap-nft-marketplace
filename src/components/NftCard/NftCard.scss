@@ -16,6 +16,8 @@
     &__name,
     &__price {
         @extend %text-ellipsis;
+
+        line-height: 1.25;
     }
 
     &__name {

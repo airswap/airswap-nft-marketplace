@@ -15,7 +15,7 @@ export enum ProfileRoutes {
 
 export const routes = {
   collection: () => '/',
-  listNft: (tokenId?: number) => `/${AppRoutes.listNft}?tokenId=${tokenId}`,
+  listNft: (tokenId?: number) => `/${AppRoutes.listNft}${tokenId ? `?tokenId=${tokenId}` : ''}`,
   nftDetail: (tokenId: number) => `/${AppRoutes.nftDetail}/${tokenId}`,
   orderDetail: (account: string, orderNonce: string) => `/${AppRoutes.orderDetail}/${account}/${orderNonce}`,
   profile: (account: string) => `/${AppRoutes.profile}/${account}/${ProfileRoutes.ownedNfts}`,

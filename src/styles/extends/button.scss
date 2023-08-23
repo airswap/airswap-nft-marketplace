@@ -91,3 +91,13 @@
     box-sizing: border-box;
     border-radius: 2px;
 }
+
+%external-link {
+    text-transform: lowercase;
+    color: var(--c-primary-dark);
+
+    &:hover,
+    &:focus {
+        text-decoration: underline;
+    }
+}

@@ -1,5 +1,7 @@
 import React, { FC } from 'react';
 
+import { chainNames } from '@airswap/constants';
+import { getAccountUrl } from '@airswap/utils';
 import truncateEthAddress from 'truncate-eth-address';
 
 import './NftDetailList.scss';
@@ -7,7 +9,7 @@ import './NftDetailList.scss';
 interface NftDetailListProps {
   address: string;
   id: number;
-  chain: string;
+  chainId: number;
   standard: string;
   fee: number;
   className?: string;
@@ -16,7 +18,7 @@ interface NftDetailListProps {
 const NftDetailList: FC<NftDetailListProps> = ({
   address,
   id,
-  chain,
+  chainId,
   standard,
   fee,
   className = '',
@@ -24,12 +26,19 @@ const NftDetailList: FC<NftDetailListProps> = ({
   <div className={`nft-detail-list ${className}`}>
     <div className="nft-detail-list__item">
       <p className="nft-detail-list__item-heading">Contract Address:</p>
-      <p className="nft-detail-list__item-value nft-detail-list__item-address">{address}</p>
-      <p
-        className="nft-detail-list__item-value nft-detail-list__item-address--is-truncated"
+      <a
+        href={getAccountUrl(chainId, address)}
+        rel="noreferrer"
+        target="_blank"
+        className="nft-detail-list__item-value nft-detail-list__item-link"
       >
-        {truncateEthAddress(address)}
-      </p>
+        <div className="nft-detail-list__item-link-address">
+          {address}
+        </div>
+        <div className="nft-detail-list__item-link-truncated-address">
+          {truncateEthAddress(address)}
+        </div>
+      </a>
     </div>
     <div className="nft-detail-list__item">
       <p className="nft-detail-list__item-heading">Token ID:</p>
@@ -37,7 +46,7 @@ const NftDetailList: FC<NftDetailListProps> = ({
     </div>
     <div className="nft-detail-list__item">
       <p className="nft-detail-list__item-heading">Blockchain:</p>
-      <p className="nft-detail-list__item-value">{chain}</p>
+      <p className="nft-detail-list__item-value">{chainNames[chainId] || chainId}</p>
     </div>
     <div className="nft-detail-list__item">
       <p className="nft-detail-list__item-heading">Token Standard:</p>

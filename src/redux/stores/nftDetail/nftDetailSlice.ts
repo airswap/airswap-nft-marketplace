@@ -1,18 +1,23 @@
 import { FullOrder } from '@airswap/types';
 import { createSlice, PayloadAction } from '@reduxjs/toolkit';
 
-import { getNftOrderByTokenId } from './nftDetailApi';
+import { NftTransactionLog } from '../../../entities/NftTransactionLog/NftTransactionLog';
+import { getNftOrderByTokenId, getNftTransactionReceipts } from './nftDetailApi';
 
 export interface NftDetailState {
   isLoading: boolean;
+  isLoadingTransactionReceipts: boolean;
   isOrderNotFound: boolean;
   order?: FullOrder;
   tokenId?: number;
+  transactionLogs: NftTransactionLog[];
 }
 
 const initialState: NftDetailState = {
   isLoading: false,
+  isLoadingTransactionReceipts: false,
   isOrderNotFound: false,
+  transactionLogs: [],
 };
 
 export const nftDetailSlice = createSlice({
@@ -28,20 +33,34 @@ export const nftDetailSlice = createSlice({
     }),
   },
   extraReducers: (builder) => {
-    builder.addCase(getNftOrderByTokenId.fulfilled, (state, action: PayloadAction<FullOrder | undefined>): NftDetailState => ({
-      ...state,
-      isLoading: false,
-      isOrderNotFound: !action.payload,
-      order: action.payload,
-    }));
     builder.addCase(getNftOrderByTokenId.pending, (state): NftDetailState => ({
       ...state,
       isLoading: true,
       isOrderNotFound: false,
     }));
+    builder.addCase(getNftOrderByTokenId.fulfilled, (state, action): NftDetailState => ({
+      ...state,
+      isLoading: false,
+      isOrderNotFound: !action.payload,
+      order: action.payload,
+    }));
     builder.addCase(getNftOrderByTokenId.rejected, (state): NftDetailState => ({
       ...state,
       isLoading: false,
+    }));
+    builder.addCase(getNftTransactionReceipts.pending, (state): NftDetailState => ({
+      ...state,
+      isLoadingTransactionReceipts: true,
+    }));
+    builder.addCase(getNftTransactionReceipts.fulfilled, (state, action): NftDetailState => ({
+      ...state,
+      transactionLogs: action.payload,
+      isLoadingTransactionReceipts: false,
+    }));
+    builder.addCase(getNftTransactionReceipts.rejected, (state): NftDetailState => ({
+      ...state,
+      transactionLogs: [],
+      isLoadingTransactionReceipts: false,
     }));
   },
 });

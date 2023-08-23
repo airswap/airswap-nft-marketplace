@@ -1,18 +1,12 @@
 @import "src/styles/index";
 
 .nft-detail-activity {
-	&__activity {
-		display: flex;
-		margin-bottom: 1rem;
-		border: .1rem var(--c-grey) solid;
-		padding: 1rem;
+    @extend %scrollbar;
 
-		&:last-child {
-			margin-bottom: 0;
-		}
-	}
+    max-height: 13.5rem;
+    overflow-y: auto;
 
-	&__activity-label {
-		margin-left: 1rem;
-	}
+    @include for-size(desktop-up) {
+        font-size: 1rem;
+    }
 }

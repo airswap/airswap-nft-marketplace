@@ -1,0 +1,58 @@
+@import "src/styles/index";
+
+.nft-detail-activity-item {
+    display: flex;
+    align-items: center;
+    font-weight: var(--fw-400);
+    line-height: 1;
+    padding-bottom: 1px;
+
+    & + & {
+        border-top: 1px solid var(--c-dark-border);
+        margin-top: .375rem;
+        padding-top: .5rem;
+
+        @include for-size(desktop-up) {
+            margin-top: .675rem;
+            padding-top: .75rem;
+        }
+    }
+
+    &__swap-icon {
+        width: 1.125rem;
+    }
+
+    &__label {
+        @extend %text-ellipsis;
+
+        margin-left: .75rem;
+    }
+
+    &__link {
+        @extend %external-link;
+
+        margin: 0 .5rem;
+    }
+
+    &__transaction-icon,
+    &__time {
+        justify-self: flex-end;
+        margin-left: auto;
+    }
+
+    &__time {
+        @extend %text-ellipsis;
+    }
+
+    &__transaction-icon {
+        top: 1px;
+        margin-left: .125rem;
+        width: 1.75rem;
+        color: var(--c-white);
+
+        &:hover,
+        &:focus {
+            color: var(--c-light-grey);
+        }
+    }
+}

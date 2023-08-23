@@ -58,7 +58,7 @@ CreateOrderParams
       const signature = await createOrderSignature(
         unsignedOrder,
         params.library.getSigner(),
-        Swap.getAddress(chainId),
+        Swap.getAddress(chainId) || '',
         chainId,
       );
 
@@ -72,7 +72,7 @@ CreateOrderParams
         ...unsignedOrder,
         ...signature,
         chainId,
-        swapContract: Swap.getAddress(chainId),
+        swapContract: Swap.getAddress(chainId) || '',
       };
 
       dispatch(setUserOrder(fullOrder));

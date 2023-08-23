@@ -9,3 +9,18 @@
     display: block;
     position: absolute;
 }
+
+%scrollbar {
+    padding-right: 1rem;
+
+    &::-webkit-scrollbar {
+        border-radius: 0.5rem;
+        width: 0.375rem;
+        background: var(--c-dark);
+    }
+
+    &::-webkit-scrollbar-thumb {
+        background: var(--c-light-grey);
+        border-radius: 0.5rem;
+    }
+}

@@ -9,12 +9,12 @@
     "eject": "react-scripts eject"
   },
   "dependencies": {
-    "@airswap/balances": "4.0.1",
-    "@airswap/constants": "4.0.8",
-    "@airswap/libraries": "4.0.13",
-    "@airswap/metadata": "4.0.9",
+    "@airswap/balances": "4.0.2",
+    "@airswap/constants": "4.0.10",
+    "@airswap/libraries": "4.0.19",
+    "@airswap/metadata": "4.0.11",
     "@airswap/types": "4.0.5",
-    "@airswap/utils": "4.0.7",
+    "@airswap/utils": "4.0.8",
     "@ethersproject/abi": "^5.7.0",
     "@ethersproject/providers": "^5.7.2",
     "@greypixel_/nicenumbers": "^0.0.18",
@@ -31,6 +31,7 @@
     "bignumber.js": "^9.1.1",
     "classnames": "^2.3.2",
     "craco-plugin-env": "^1.0.5",
+    "date-fns": "^2.30.0",
     "erc-20-abi": "^1.0.0",
     "erc721a": "^4.2.3",
     "eth-rpc-errors": "^4.0.3",
@@ -50,6 +51,7 @@
   },
   "devDependencies": {
     "@craco/craco": "^6.4.1",
+    "@types/date-fns": "^2.6.0",
     "@types/jest": "^27.0.1",
     "@types/lodash.debounce": "^4.0.7",
     "@types/node": "^16.7.13",

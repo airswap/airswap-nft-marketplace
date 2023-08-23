@@ -3,7 +3,7 @@ import { createAsyncThunk } from '@reduxjs/toolkit';
 import { ethers } from 'ethers';
 
 import { AppThunkApiConfig } from '../../store';
-import { getCollectionTokenTokenKind, getCurrencyTokenTokenKind } from './configHelpers';
+import { getCollectionTokenKindHelper, getCurrencyTokenKindHelper } from './configHelpers';
 
 interface GetTokenKindParams {
   address: string,
@@ -15,7 +15,7 @@ TokenKinds | undefined,
 GetTokenKindParams,
 AppThunkApiConfig
 >('config/getCollectionTokenKind', async ({ address, provider }) => (
-  getCollectionTokenTokenKind(provider, address)
+  getCollectionTokenKindHelper(provider, address)
 ));
 
 export const getCurrencyTokenKind = createAsyncThunk<
@@ -23,5 +23,5 @@ TokenKinds | undefined,
 GetTokenKindParams,
 AppThunkApiConfig
 >('config/getCurrencyTokenKind', async ({ address, provider }) => (
-  getCurrencyTokenTokenKind(provider, address)
+  getCurrencyTokenKindHelper(provider, address)
 ));

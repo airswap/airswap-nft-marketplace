@@ -1,15 +1,17 @@
 import React, { FC, useEffect, useMemo } from 'react';
 
 import { CollectionTokenInfo, TokenInfo } from '@airswap/types';
+import { Web3Provider } from '@ethersproject/providers';
 
 import Accordion from '../../../../components/Accordion/Accordion';
 import { getFullOrderReadableSenderAmountPlusTotalFees } from '../../../../entities/FullOrder/FullOrderHelpers';
 import useAddressOrEnsName from '../../../../hooks/useAddressOrEnsName';
 import useNftTokenOwner from '../../../../hooks/useNftTokenOwner';
 import { useAppDispatch, useAppSelector } from '../../../../redux/hooks';
-import { getNftOrderByTokenId } from '../../../../redux/stores/nftDetail/nftDetailApi';
+import { getNftOrderByTokenId, getNftTransactionReceipts } from '../../../../redux/stores/nftDetail/nftDetailApi';
 import { reset } from '../../../../redux/stores/nftDetail/nftDetailSlice';
 import { routes } from '../../../../routes';
+import NftDetailActivity from '../NftDetailActivity/NftDetailActivity';
 import NftDetailAttributes from '../NftDetailAttributes/NftDetailAttributes';
 import NftDetailContentContainer from '../NftDetailContentContainer/NftDetailContentContainer';
 import NftDetailList from '../NftDetailList/NftDetailList';
@@ -21,17 +23,23 @@ import NftDetailSaleInfo from '../NftDetailSaleInfo/NftDetailSaleInfo';
 interface ConnectedNftDetailWidgetProps {
   collectionTokenInfo: CollectionTokenInfo;
   currencyTokenInfo: TokenInfo;
+  library: Web3Provider;
   className?: string;
 }
 
-const ConnectedNftDetailWidget: FC<ConnectedNftDetailWidgetProps> = ({ collectionTokenInfo, currencyTokenInfo, className = '' }) => {
+const ConnectedNftDetailWidget: FC<ConnectedNftDetailWidgetProps> = ({
+  collectionTokenInfo,
+  currencyTokenInfo,
+  library,
+  className = '',
+}) => {
   const dispatch = useAppDispatch();
 
   const { chainId, collectionToken, collectionImage } = useAppSelector((state) => state.config);
   const { account } = useAppSelector((state) => state.web3);
 
   const { protocolFee } = useAppSelector(state => state.metadata);
-  const { isLoading, order } = useAppSelector(state => state.nftDetail);
+  const { isLoading, order, transactionLogs } = useAppSelector(state => state.nftDetail);
 
   const price = useMemo(() => (order ? getFullOrderReadableSenderAmountPlusTotalFees(order, currencyTokenInfo) : undefined), [order]);
   const owner = useNftTokenOwner(collectionTokenInfo);
@@ -41,6 +49,7 @@ const ConnectedNftDetailWidget: FC<ConnectedNftDetailWidgetProps> = ({ collectio
 
   useEffect(() => {
     dispatch(getNftOrderByTokenId(collectionTokenInfo.id));
+    dispatch(getNftTransactionReceipts({ provider: library, tokenId: collectionTokenInfo.id }));
 
     return () => {
       dispatch(reset());
@@ -94,9 +103,19 @@ const ConnectedNftDetailWidget: FC<ConnectedNftDetailWidgetProps> = ({ collectio
             <NftDetailList
               address={collectionToken}
               id={collectionTokenInfo.id}
-              chain={chainId.toString()}
+              chainId={chainId}
               standard={collectionTokenInfo.kind}
               fee={protocolFee / 100}
+            />
+          )}
+          className="nft-detail-widget__description-accordion"
+        />
+        <Accordion
+          label="Item Activity"
+          content={(
+            <NftDetailActivity
+              chainId={chainId}
+              logs={transactionLogs}
             />
           )}
           className="nft-detail-widget__description-accordion"
@@ -114,9 +133,18 @@ const ConnectedNftDetailWidget: FC<ConnectedNftDetailWidgetProps> = ({ collectio
               <NftDetailList
                 address={collectionToken}
                 id={collectionTokenInfo.id}
-                chain={chainId.toString()}
+                chainId={chainId}
                 standard={collectionTokenInfo.kind}
                 fee={protocolFee / 100}
+              />
+            </div>
+          </div>
+          <div className="nft-detail-widget__meta-container">
+            <h2 className="nft-detail-widget__meta-container-label">Item activity</h2>
+            <div className="accordion__content accordion__content--has-border">
+              <NftDetailActivity
+                chainId={chainId}
+                logs={transactionLogs}
               />
             </div>
           </div>

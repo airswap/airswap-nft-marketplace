@@ -3,13 +3,10 @@ import erc20AbiContract from '@openzeppelin/contracts/build/contracts/ERC20.json
 import erc721AbiContract from '@openzeppelin/contracts/build/contracts/ERC721.json';
 import { ethers } from 'ethers';
 
-export const getCollectionTokenTokenKind = async (provider: ethers.providers.Web3Provider, address: string): Promise<TokenKinds | undefined> => {
+export const getCollectionTokenKindHelper = async (provider: ethers.providers.Web3Provider, address: string): Promise<TokenKinds | undefined> => {
   const contract = new ethers.Contract(address, erc721AbiContract.abi, provider);
 
-  const [,
-    isErc721,
-    isErc1155,
-  ] = await Promise.all([
+  const [isErc721, isErc1155] = await Promise.all([
     contract.supportsInterface(TokenKinds.ERC721),
     contract.supportsInterface(TokenKinds.ERC1155),
   ]) as boolean[];
@@ -25,7 +22,7 @@ export const getCollectionTokenTokenKind = async (provider: ethers.providers.Web
   return undefined;
 };
 
-export const getCurrencyTokenTokenKind = async (provider: ethers.providers.Web3Provider, address: string): Promise<TokenKinds | undefined> => {
+export const getCurrencyTokenKindHelper = async (provider: ethers.providers.Web3Provider, address: string): Promise<TokenKinds | undefined> => {
   const contract = new ethers.Contract(address, erc20AbiContract.abi, provider);
 
   const totalSupply = await contract.totalSupply();
