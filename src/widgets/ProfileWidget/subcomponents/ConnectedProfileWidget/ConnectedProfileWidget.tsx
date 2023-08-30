@@ -13,6 +13,7 @@ import Icon from '../../../../components/Icon/Icon';
 import LoadingSpinner from '../../../../components/LoadingSpinner/LoadingSpinner';
 import NftCard from '../../../../components/NftCard/NftCard';
 import SearchInput from '../../../../components/SearchInput/SearchInput';
+import Helmet from '../../../../compositions/Helmet/Helmet';
 import { filterCollectionTokenBySearchValue } from '../../../../entities/CollectionToken/CollectionTokenHelpers';
 import { getFullOrderReadableSenderAmountPlusTotalFees } from '../../../../entities/FullOrder/FullOrderHelpers';
 import getOwnedTokensByAccountUrl from '../../../../helpers/airswap/getOwnedTokensByAccountUrl';
@@ -89,6 +90,7 @@ const ConnectedProfileWidget: FC<ConnectedProfileWidgetProps> = ({
 
   return (
     <div className={`profile-widget ${className}`}>
+      <Helmet title={`Owned nft's of ${ensAddress || profileAccount}`} />
       <ProfileHeader
         showLogOutButton={account === profileAccount}
         accountUrl={accountUrl}
