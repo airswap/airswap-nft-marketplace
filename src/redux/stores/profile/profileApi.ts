@@ -5,16 +5,13 @@ import { ethers } from 'ethers';
 import { AppThunkApiConfig } from '../../store';
 import { getOwnedTokenIdsOfWallet } from '../balances/balancesHelpers';
 import { getOrdersFromIndexers } from '../indexer/indexerHelpers';
-import { setOrdersOffset } from './profileSlice';
 
 export const getProfileOrders = createAsyncThunk<
 FullOrder[],
 OrderFilter,
 AppThunkApiConfig
->('profile/getProfileOrders', async (filter, { dispatch, getState }) => {
+>('profile/getProfileOrders', async (filter, { getState }) => {
   const { indexer } = getState();
-
-  dispatch(setOrdersOffset(filter.limit + filter.offset));
 
   return getOrdersFromIndexers(filter, indexer.urls);
 });
