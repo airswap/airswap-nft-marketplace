@@ -11,6 +11,7 @@ import { Web3Provider } from '@ethersproject/providers';
 import { useWeb3React } from '@web3-react/core';
 
 import SearchInput from '../../../../components/SearchInput/SearchInput';
+import Helmet from '../../../../compositions/Helmet/Helmet';
 import { INDEXER_ORDERS_OFFSET } from '../../../../constants/indexer';
 import OrdersContainer from '../../../../containers/OrdersContainer/OrdersContainer';
 import { filterCollectionTokenBySearchValue } from '../../../../entities/CollectionToken/CollectionTokenHelpers';
@@ -96,6 +97,7 @@ const ConnectedProfileOrdersWidget: FC<ConnectedProfileOrdersWidgetProps> = ({
 
   return (
     <div className={`profile-orders-widget ${className}`}>
+      <Helmet title={`Listed orders of ${ensAddress || profileAccount}`} />
       <ProfileHeader
         showLogOutButton={account === profileAccount}
         accountUrl={accountUrl}

@@ -1,5 +1,6 @@
 import React, { FC } from 'react';
 
+import Helmet from '../../compositions/Helmet/Helmet';
 import Page from '../../compositions/Page/Page';
 import CollectionWidget from '../../widgets/CollectionWidget/CollectionWidget';
 
@@ -10,6 +11,7 @@ const CollectionPage: FC = () => (
     className="collection-page"
     contentClassName="collection-page__content"
   >
+    <Helmet title="All listings" />
     <CollectionWidget />
   </Page>
 );

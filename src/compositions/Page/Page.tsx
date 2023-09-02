@@ -3,6 +3,7 @@ import React, { FC, ReactNode, useState } from 'react';
 import { Web3Provider } from '@ethersproject/providers';
 import { useWeb3React } from '@web3-react/core';
 import classNames from 'classnames';
+import { Helmet } from 'react-helmet';
 
 import Button from '../../components/Button/Button';
 import useEnsAddress from '../../hooks/useEnsAddress';
@@ -54,6 +55,9 @@ const Page: FC<PageProps> = ({ className = '', contentClassName = '', children }
 
   return (
     <div className={pageClassName}>
+      <Helmet>
+        <title>{config.collectionName}</title>
+      </Helmet>
       <TopBar
         listButtonIsDisabled={!chainIdIsCorrect || !account}
         mobileMenuIsVisible={mobileMenuIsVisible}
