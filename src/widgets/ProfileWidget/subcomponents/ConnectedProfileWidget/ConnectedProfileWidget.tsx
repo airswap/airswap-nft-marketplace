@@ -7,7 +7,6 @@ import {
 
 import { TokenInfo } from '@airswap/types';
 import { Web3Provider } from '@ethersproject/providers';
-import { useWeb3React } from '@web3-react/core';
 
 import Icon from '../../../../components/Icon/Icon';
 import LoadingSpinner from '../../../../components/LoadingSpinner/LoadingSpinner';
@@ -27,7 +26,6 @@ import { routes } from '../../../../routes';
 import ProfileHeader from '../ProfileHeader/ProfileHeader';
 
 interface ConnectedProfileWidgetProps {
-  account: string;
   currencyTokenInfo: TokenInfo;
   library: Web3Provider;
   profileAccount: string;
@@ -35,7 +33,6 @@ interface ConnectedProfileWidgetProps {
 }
 
 const ConnectedProfileWidget: FC<ConnectedProfileWidgetProps> = ({
-  account,
   currencyTokenInfo,
   library,
   profileAccount,
@@ -43,7 +40,6 @@ const ConnectedProfileWidget: FC<ConnectedProfileWidgetProps> = ({
 }) => {
   const dispatch = useAppDispatch();
   const scrolledToBottom = useScrollToBottom();
-  const { deactivate } = useWeb3React<Web3Provider>();
 
   const { chainId, collectionToken, collectionImage } = useAppSelector((state) => state.config);
   const { avatarUrl } = useAppSelector((state) => state.user);
@@ -84,26 +80,20 @@ const ConnectedProfileWidget: FC<ConnectedProfileWidgetProps> = ({
     }
   }, [scrolledToBottom]);
 
-  const handleDisconnectClick = () => {
-    deactivate();
-  };
-
   return (
     <div className={`profile-widget ${className}`}>
       <Helmet title={`Owned nft's of ${ensAddress || profileAccount}`} />
       <ProfileHeader
-        showLogOutButton={account === profileAccount}
         accountUrl={accountUrl}
         address={profileAccount}
         avatarUrl={avatarUrl}
         backgroundImage={collectionImage}
         ensAddress={ensAddress}
-        onLogoutButtonClick={handleDisconnectClick}
         className="profile-widget__header"
       />
       <div className="profile-widget__content">
         <SearchInput
-          placeholder="Search NFT"
+          placeholder="Search tokens"
           value={searchValue}
           onChange={(e) => setSearchValue(e.target.value)}
           className="profile-widget__search-input"

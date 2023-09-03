@@ -2,7 +2,6 @@ import React, { FC } from 'react';
 
 import classNames from 'classnames';
 
-import IconButton from '../../compositions/IconButton/IconButton';
 import { truncateAddress } from '../../helpers/string';
 import Avatar from '../Avatar/Avatar';
 import Icon from '../Icon/Icon';
@@ -15,8 +14,6 @@ interface WalletInfoProps {
   address?: string;
   avatarUrl?: string;
   ensAddress?: string;
-  showLogOutButton?: boolean;
-  onLogoutButtonClick?: () => void;
   className?: string;
   avatarClassName?: string;
 }
@@ -27,13 +24,10 @@ const WalletInfo: FC<WalletInfoProps> = ({
   address = '',
   avatarUrl = '',
   ensAddress = '',
-  showLogOutButton = false,
-  onLogoutButtonClick,
   className = '',
   avatarClassName = '',
 }) => {
   const walletInfoClassName = classNames('wallet-info', {
-    'wallet-info--is-banner': isBanner,
     'wallet-info--is-menu': !isBanner,
   }, className);
 
@@ -41,6 +35,7 @@ const WalletInfo: FC<WalletInfoProps> = ({
     <div className={walletInfoClassName}>
       <Avatar className={`wallet-info__avatar ${avatarClassName}`} avatarUrl={avatarUrl} />
       <div className="wallet-info__address-bar">
+        <h2 className="wallet-info__sub-title">Wallet</h2>
         <span className="wallet-info__address">{truncateAddress(ensAddress || address)}</span>
         {ensAddress && <span className="wallet-info__address-secondary">{truncateAddress(address)}</span>}
       </div>
@@ -57,16 +52,6 @@ const WalletInfo: FC<WalletInfoProps> = ({
             className="wallet-info__icon"
           />
         </a>
-      )}
-      {showLogOutButton && (
-        <IconButton
-          hideLabel
-          icon="logout"
-          text="logout"
-          onClick={onLogoutButtonClick}
-          iconClassName="wallet-info__icon"
-          className="wallet-info__button"
-        />
       )}
     </div>
   );

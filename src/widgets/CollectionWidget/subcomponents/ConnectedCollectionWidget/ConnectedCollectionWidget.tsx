@@ -73,18 +73,20 @@ const ConnectedCollectionWidget: FC<ConnectedCollectionWidgetProps> = ({ currenc
     <div className={`collection-widget ${className}`}>
       <CollectionPortrait
         backgroundImage={collectionImage}
-        subTitle="By Sjnivo"
+        subTitle="Collection"
         title={collectionName}
         className="collection-widget__portrait"
       />
       <div className="collection-widget__content">
         <SearchInput
-          placeholder="Search Collection"
+          placeholder="Search Listings"
           onChange={e => setSearchValue(e.target.value)}
           value={searchValue || ''}
           className="collection-widget__search-input"
         />
-        <h2 className="collection-widget__subtitle">NFTs for sale</h2>
+        <h2 className="collection-widget__subtitle">
+          {searchValue ? 'Search results' : 'All listings'}
+        </h2>
         <OrdersContainer
           isEndOfOrders={isTotalOrdersReached}
           isLoading={isLoading}

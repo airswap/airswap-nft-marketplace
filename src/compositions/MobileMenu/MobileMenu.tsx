@@ -13,7 +13,6 @@ interface MobileMenuProp {
   avatarUrl?: string;
   address?: string;
   ensAddress?: string | undefined;
-  onLogoutButtonClick: () => void;
   onNavLinkClick: () => void;
   className?: string;
 }
@@ -24,7 +23,6 @@ const MobileMenu: FC<MobileMenuProp> = ({
   address,
   ensAddress,
   onNavLinkClick,
-  onLogoutButtonClick,
   className = '',
 }) => {
   const mobileMenuClassName = classNames('mobile-menu', {
@@ -38,7 +36,6 @@ const MobileMenu: FC<MobileMenuProp> = ({
           avatarUrl={avatarUrl}
           address={address}
           ensAddress={ensAddress}
-          onLogoutButtonClick={onLogoutButtonClick}
         />
       )}
       <div className="mobile-menu__nav-links">
@@ -68,7 +65,7 @@ const MobileMenu: FC<MobileMenuProp> = ({
           to={routes.listNft()}
           onClick={onNavLinkClick}
         >
-          List NFT
+          List a token
         </NavLink>
         <a
           className="mobile-menu__nav-link"

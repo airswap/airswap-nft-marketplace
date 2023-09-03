@@ -37,3 +37,16 @@
         background: linear-gradient(180deg, rgba(0, 0, 0, 0) 0%, rgba(0, 0, 0, 0.64) 100%);
     }
 }
+
+%portrait-sub-title {
+    position: relative;
+    font-size: .75rem;
+    font-weight: var(--fw-400);
+    text-transform: uppercase;
+    z-index: 1;
+    opacity: .75;
+
+    @include for-size(tablet-portrait-up) {
+        font-size: 1rem;
+    }
+}

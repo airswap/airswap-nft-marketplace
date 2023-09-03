@@ -13,20 +13,18 @@ interface ProfileNavigationProps {
 const ProfileNavigation: FC<ProfileNavigationProps> = ({ account, className = '' }): ReactElement => (
   <div className={`profile-navigation ${className}`}>
     <ProfileNavigationNavLink to={routes.profile(account)}>
-      NFT&apos;s
+      All tokens
     </ProfileNavigationNavLink>
     <ProfileNavigationNavLink
-      isUpperCase
       to="activity"
       aria-disabled
     >
       Activity
     </ProfileNavigationNavLink>
     <ProfileNavigationNavLink
-      isUpperCase
       to={routes.userOrders(account)}
     >
-      Listed
+      For sale
     </ProfileNavigationNavLink>
   </div>
 );

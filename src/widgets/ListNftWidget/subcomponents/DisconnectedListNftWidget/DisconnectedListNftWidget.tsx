@@ -18,7 +18,7 @@ const DisconnectedListNftWidget: FC<ListNftWidgetProps> = ({
 }) => (
   <div className={`list-nft-widget ${className}`}>
     <ListNftWidgetHeader
-      title="List NFT"
+      title="List a token"
       className="list-nft-widget__header"
     />
     {isLoading && <LoadingSpinner className="list-nft-widget__loading-spinner" />}

@@ -11,8 +11,8 @@
     border-radius: 0.3125rem;
   }
 
-  &--is-banner {
-    background-color: transparent;
+  &__sub-title {
+    @extend %portrait-sub-title;
   }
 
   &__avatar {

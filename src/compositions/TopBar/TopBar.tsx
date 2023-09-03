@@ -6,6 +6,7 @@ import React, {
 } from 'react';
 
 import classNames from 'classnames';
+import { NavLink } from 'react-router-dom';
 
 import Avatar from '../../components/Avatar/Avatar';
 import Button from '../../components/Button/Button';
@@ -14,7 +15,6 @@ import { routes } from '../../routes';
 import IconButton from '../IconButton/IconButton';
 import IconNavLink from '../IconNavLink/IconNavLink';
 import UserPopup from '../UserPopup/UserPopup';
-import DesktopNav from './subcomponents/DesktopNav/DesktopNav';
 
 import './TopBar.scss';
 
@@ -95,12 +95,11 @@ const TopBar: FC<TopBarProps> = ({
         className="top-bar__menu-button"
         iconClassName="top-bar__menu-button-icon"
       />
-      <DesktopNav className="top-bar__desktop-nav" />
       <div className="top-bar__list-button-and-wallet-button-wrapper">
         <IconNavLink
           aria-disabled={listButtonIsDisabled}
           icon="plus"
-          text="List"
+          text="List a token"
           to={routes.listNft()}
           className="top-bar__list-button"
           iconClassName="top-bar__list-button-icon"
@@ -114,16 +113,14 @@ const TopBar: FC<TopBarProps> = ({
         )}
         {showDesktopUserButton
           && (
-            <Button
-              disabled={userWalletButtonIsDisabled}
-              ref={userButtonRef}
-              text={truncateAddress(ensAddress || account || '')}
-              onClick={() => setIsPopupOpen(!isPopupOpen)}
+            <NavLink
+              aria-disabled={userWalletButtonIsDisabled}
+              to={routes.profile(ensAddress || account || '')}
               className="top-bar__user-button"
             >
               <Avatar avatarUrl={avatarUrl} className="top-bar__user-button-icon" />
               {truncateAddress(ensAddress || account || '')}
-            </Button>
+            </NavLink>
           )}
       </div>
       {isPopupOpen && (
