@@ -21,14 +21,17 @@ import { useAppDispatch, useAppSelector } from '../../../../redux/hooks';
 import { getProfileOrders } from '../../../../redux/stores/profileOrders/profileOrdersApi';
 import { reset } from '../../../../redux/stores/profileOrders/profileOrdersSlice';
 import ProfileHeader from '../../../ProfileWidget/subcomponents/ProfileHeader/ProfileHeader';
+import getListCallToActionText from '../../helpers/getListCallToActionText';
 
 interface ConnectedProfileOrdersWidgetProps {
+  account: string;
   currencyTokenInfo: TokenInfo;
   profileAccount: string;
   className?: string;
 }
 
 const ConnectedProfileOrdersWidget: FC<ConnectedProfileOrdersWidgetProps> = ({
+  account,
   currencyTokenInfo,
   profileAccount,
   className = '',
@@ -38,6 +41,7 @@ const ConnectedProfileOrdersWidget: FC<ConnectedProfileOrdersWidgetProps> = ({
   const scrolledToBottom = useScrollToBottom();
 
   const { chainId, collectionToken, collectionImage } = useAppSelector((state) => state.config);
+  const { tokens: userTokens } = useAppSelector((state) => state.balances);
   const { avatarUrl } = useAppSelector((state) => state.user);
   const {
     isLoading,
@@ -60,6 +64,8 @@ const ConnectedProfileOrdersWidget: FC<ConnectedProfileOrdersWidgetProps> = ({
 
       return orderToken ? filterCollectionTokenBySearchValue(orderToken, searchValue) : true;
     })), [orders, tokens, searchValue]);
+  const userIsProfileAccount = account === profileAccount;
+  const listCallToActionText = getListCallToActionText(searchValue, !!orders.length);
 
   const getOrders = () => {
     if (isLoading || isTotalOrdersReached) {
@@ -106,9 +112,11 @@ const ConnectedProfileOrdersWidget: FC<ConnectedProfileOrdersWidgetProps> = ({
           className="profile-orders-widget__search-input"
         />
         <OrdersContainer
+          hasListCallToActionButton={!!userTokens.length && userIsProfileAccount}
           isEndOfOrders={isTotalOrdersReached}
-          isLoading={isLoading}
+          isLoading={isLoading || offset === 0}
           currencyTokenInfo={currencyTokenInfo}
+          listCallToActionText={listCallToActionText}
           orders={filteredOrders}
           tokens={tokens}
           className="profile-orders-widget__nfts-container"
