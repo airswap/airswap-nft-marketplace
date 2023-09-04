@@ -6,13 +6,11 @@ import ProfileNavigation from '../ProfileNavigation/ProfileNavigation';
 import './ProfileHeader.scss';
 
 interface ProfileHeaderProp {
-  showLogOutButton?: boolean;
   accountUrl?: string;
   avatarUrl?: string;
   address?: string;
   backgroundImage?: string;
   ensAddress?: string;
-  onLogoutButtonClick?: () => void;
   className?: string;
 }
 
@@ -22,8 +20,6 @@ const ProfileHeader: FC<ProfileHeaderProp> = ({
   ensAddress,
   address,
   backgroundImage,
-  showLogOutButton = false,
-  onLogoutButtonClick,
   className = '',
 }) => (
   <div
@@ -39,8 +35,6 @@ const ProfileHeader: FC<ProfileHeaderProp> = ({
         avatarUrl={avatarUrl}
         ensAddress={ensAddress}
         address={address}
-        showLogOutButton={showLogOutButton}
-        onLogoutButtonClick={onLogoutButtonClick}
         className="profile-header__wallet-info"
       />
     </div>

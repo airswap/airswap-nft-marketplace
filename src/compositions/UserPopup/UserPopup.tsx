@@ -25,14 +25,12 @@ export type UserPopupWithRefProps = UserPopupProps & RefAttributes<HTMLDivElemen
 const UserPopup: FC<UserPopupWithRefProps> = forwardRef(({
   address,
   ensAddress,
-  onLogoutButtonClick,
   className = '',
 }, ref: Ref<HTMLDivElement>): ReactElement => (
   <div ref={ref} className={`user-popup ${className}`}>
     <WalletInfo
       address={address}
       ensAddress={ensAddress}
-      onLogoutButtonClick={onLogoutButtonClick}
       className="user-popup__wallet-info"
       avatarClassName="user-popup__wallet-info-avatar"
     />

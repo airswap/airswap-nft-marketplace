@@ -8,7 +8,7 @@ import './ListNftPage.scss';
 
 const ListNftPage: FC = () => (
   <Page className="list-nft-page">
-    <Helmet title="List NFT" />
+    <Helmet title="List a token" />
     <div className="list-nft-page__list-nft-widget-cover">
       <div className="list-nft-page__list-nft-widget-container">
         <ListNftWidget className="list-nft-page__list-nft-widget" />

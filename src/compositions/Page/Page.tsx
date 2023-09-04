@@ -49,7 +49,6 @@ const Page: FC<PageProps> = ({ className = '', contentClassName = '', children }
 
   const handleDisconnectButtonClick = (): void => {
     deactivate();
-    // TODO: Make proper action for this.
     clearLastProvider();
   };
 
@@ -76,7 +75,6 @@ const Page: FC<PageProps> = ({ className = '', contentClassName = '', children }
         isHidden={!mobileMenuIsVisible}
         avatarUrl={avatarUrl}
         address={account || undefined}
-        onLogoutButtonClick={handleDisconnectButtonClick}
         onNavLinkClick={handleIconButtonClick}
         className="page__mobile-menu"
       />

@@ -25,5 +25,5 @@ export const getTitle = (state: ListNftState): string => {
     return 'Listing failed';
   }
 
-  return 'List NFT';
+  return 'List a token';
 };

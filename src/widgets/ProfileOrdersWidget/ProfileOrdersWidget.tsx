@@ -26,7 +26,6 @@ const ProfileOrdersWidget: FC = () => {
   ) {
     return (
       <ConnectedProfileOrdersWidget
-        account={account}
         currencyTokenInfo={currencyTokenInfo}
         profileAccount={profileAccount}
       />

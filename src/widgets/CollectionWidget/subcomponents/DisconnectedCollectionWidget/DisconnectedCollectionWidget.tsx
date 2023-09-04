@@ -14,7 +14,7 @@ const DisconnectedCollectionWidget: FC<DisconnectedCollectionWidgetProps> = ({ c
     <div className={`collection-widget ${className}`}>
       <CollectionPortrait
         backgroundImage={collectionImage}
-        subTitle="By Sjnivo"
+        subTitle="Collection"
         title={collectionName}
         className="collection-widget__portrait"
       />

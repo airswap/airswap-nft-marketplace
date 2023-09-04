@@ -7,8 +7,6 @@ import React, {
 } from 'react';
 
 import { TokenInfo } from '@airswap/types';
-import { Web3Provider } from '@ethersproject/providers';
-import { useWeb3React } from '@web3-react/core';
 
 import SearchInput from '../../../../components/SearchInput/SearchInput';
 import Helmet from '../../../../compositions/Helmet/Helmet';
@@ -25,21 +23,18 @@ import { reset } from '../../../../redux/stores/profileOrders/profileOrdersSlice
 import ProfileHeader from '../../../ProfileWidget/subcomponents/ProfileHeader/ProfileHeader';
 
 interface ConnectedProfileOrdersWidgetProps {
-  account: string;
   currencyTokenInfo: TokenInfo;
   profileAccount: string;
   className?: string;
 }
 
 const ConnectedProfileOrdersWidget: FC<ConnectedProfileOrdersWidgetProps> = ({
-  account,
   currencyTokenInfo,
   profileAccount,
   className = '',
 }): ReactElement => {
   const dispatch = useAppDispatch();
 
-  const { deactivate } = useWeb3React<Web3Provider>();
   const scrolledToBottom = useScrollToBottom();
 
   const { chainId, collectionToken, collectionImage } = useAppSelector((state) => state.config);
@@ -91,27 +86,21 @@ const ConnectedProfileOrdersWidget: FC<ConnectedProfileOrdersWidgetProps> = ({
     }
   }, [scrolledToBottom]);
 
-  const handleDisconnectClick = () => {
-    deactivate();
-  };
-
   return (
     <div className={`profile-orders-widget ${className}`}>
       <Helmet title={`Listed orders of ${ensAddress || profileAccount}`} />
       <ProfileHeader
-        showLogOutButton={account === profileAccount}
         accountUrl={accountUrl}
         address={profileAccount}
         avatarUrl={avatarUrl}
         backgroundImage={collectionImage}
         ensAddress={ensAddress}
-        onLogoutButtonClick={handleDisconnectClick}
         className="profile-widget__header"
       />
 
       <div className="profile-orders-widget__content">
         <SearchInput
-          placeholder="Search Collection"
+          placeholder="Search listings"
           onChange={e => setSearchValue(e.target.value)}
           value={searchValue || ''}
           className="profile-orders-widget__search-input"
