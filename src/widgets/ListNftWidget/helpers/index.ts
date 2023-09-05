@@ -17,6 +17,10 @@ export const getTitle = (state: ListNftState): string => {
     return 'Sign in Wallet';
   }
 
+  if (state === ListNftState.indexing) {
+    return 'Listing in Progress';
+  }
+
   if (state === ListNftState.success) {
     return 'Successfully listed';
   }

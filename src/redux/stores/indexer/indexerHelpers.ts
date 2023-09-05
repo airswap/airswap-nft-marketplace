@@ -1,4 +1,4 @@
-import { Server } from '@airswap/libraries';
+import { Server, SuccessResponse } from '@airswap/libraries';
 import {
   FullOrder,
   IndexedOrder,
@@ -8,11 +8,15 @@ import {
 
 import { INDEXER_ORDER_RESPONSE_TIME_MS } from '../../../constants/indexer';
 
-export const isPromiseFulfilledResult = <T>(result: any): result is PromiseFulfilledResult<T> => result && result.status === 'fulfilled' && 'value' in result;
+const isPromiseFulfilledResult = <T>(result: any): result is PromiseFulfilledResult<T> => result && result.status === 'fulfilled' && 'value' in result;
 
-export const isOrderResponse = <T>(resource: any): resource is OrderResponse<T> => ('orders' in resource);
+const isOrderResponse = <T>(resource: any): resource is OrderResponse<T> => ('orders' in resource);
 
-export const getUndefinedAfterTimeout = (time: number): Promise<undefined> => new Promise<undefined>((resolve) => {
+const isSuccessResponse = (response: any): response is SuccessResponse => response
+  && typeof response.message === 'string'
+  && !('code' in response);
+
+const getUndefinedAfterTimeout = (time: number): Promise<undefined> => new Promise<undefined>((resolve) => {
   setTimeout(() => resolve(undefined), time);
 });
 
@@ -39,24 +43,37 @@ export const getServers = async (indexerUrls: string[]): Promise<Server[]> => {
   return fulfilledResults.map((result) => result.value);
 };
 
+const addOrderHelper = (server: Server, order: FullOrder): Promise<SuccessResponse> => new Promise((resolve, reject) => {
+  server
+    .addOrder(order)
+    .then((response) => {
+      resolve(response);
+    })
+    .catch((e) => {
+      console.error(
+        `[addOrderHelper] Order indexing failed for ${server.locator}`,
+        e.message || '',
+      );
+      reject(e);
+    });
+});
+
 export const sendOrderToIndexers = async (
   order: FullOrder,
   indexerUrls: string[],
-): Promise<void> => {
+): Promise<boolean> => {
   const servers = await getServers(indexerUrls);
 
   if (!servers.length) {
     console.error('[sendOrderToIndexers] No indexer servers provided');
   }
 
-  servers.forEach((server) => server
-    .addOrder(order)
-    .catch((e: any) => {
-      console.error(
-        `[sendOrderToIndexers] Order indexing failed for ${server.locator}`,
-        e.message || '',
-      );
-    }));
+  const response = await Promise.any([
+    ...servers.map(server => addOrderHelper(server, order)),
+    getUndefinedAfterTimeout(INDEXER_ORDER_RESPONSE_TIME_MS),
+  ]);
+
+  return isSuccessResponse(response);
 };
 
 export const getOrdersFromIndexers = async (filter: OrderFilter, indexerUrls: string[]): Promise<FullOrder[]> => {

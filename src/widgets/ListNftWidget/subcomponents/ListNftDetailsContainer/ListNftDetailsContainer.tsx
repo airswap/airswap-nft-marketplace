@@ -18,7 +18,7 @@ import TransactionLink from '../../../../compositions/TransactionLink/Transactio
 import { NftApprovalTransaction } from '../../../../entities/SubmittedTransaction/SubmittedTransaction';
 import { AppError } from '../../../../errors/appError';
 import writeTextToClipboard from '../../../../helpers/browser';
-import { AppRoutes } from '../../../../routes';
+import { routes } from '../../../../routes';
 import { ExpiryTimeUnit } from '../../../../types/ExpiryTimeUnit';
 import { ListNftState } from '../ConnectedListNftWidget/ConnectedListNftWidget';
 import SwapIcon from '../SwapIcon/SwapIcon';
@@ -83,8 +83,10 @@ const ListNftDetailContainer: FC<ListNftDetailContainerProps> = ({
   const approvalUrl = useMemo(() => (submittedApproval?.hash ? getReceiptUrl(chainId, submittedApproval.hash) : undefined), [submittedApproval]);
 
   const handleCopyLinkClick = async () => {
-    const link = `${window.location.host}/#/${AppRoutes.nftDetail}/${fullOrder?.signer.id}/buy`;
-    await writeTextToClipboard(link);
+    if (fullOrder) {
+      const link = `${window.location.host}/#${routes.orderDetail(fullOrder.signer.wallet, fullOrder.nonce)}`;
+      await writeTextToClipboard(link);
+    }
   };
 
   return (
@@ -173,6 +175,10 @@ const ListNftDetailContainer: FC<ListNftDetailContainerProps> = ({
         <p className="list-nft-details-container__message">
           If your wallet does not open something went wrong
         </p>
+      )}
+
+      {widgetState === ListNftState.indexing && (
+        <LoadingSpinner className="list-nft-details-container__loading-spinner" />
       )}
 
       {widgetState === ListNftState.failed && (
