@@ -1,6 +1,7 @@
 @import "src/styles/index";
 
 .profile-widget {
+    padding-bottom: var(--page-padding);
 
     &__search-input {
         max-width: 23.5rem;
@@ -26,16 +27,9 @@
 
     &__nfts-container {
         margin-top: var(--page-padding);
-
-        @extend %nfts-grid;
     }
 
-    &__loader,
-    &__end-of-orders-icon {
-        margin: 1rem auto;
-        min-width: 1.75rem;
-        min-height: 1.75rem;
-        color: var(--c-white);
-        opacity: 0.5;
+    &__empty-state {
+        margin: 5rem auto 2rem;
     }
 }

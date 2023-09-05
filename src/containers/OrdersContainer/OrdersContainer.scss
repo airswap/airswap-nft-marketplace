@@ -1,6 +1,7 @@
 @import "src/styles";
 
 .orders-container {
+    padding-bottom: var(--page-padding);
 
     &__orders {
         @extend %nfts-grid;
@@ -8,9 +9,13 @@
         width: 100%;
     }
 
+    &__empty-state {
+        margin: 5rem auto 0;
+    }
+
     &__bottom {
         display: flex;
-        margin: 2rem auto;
+        margin: 2rem auto 0;
         width: 2rem;
         aspect-ratio: 1;
     }

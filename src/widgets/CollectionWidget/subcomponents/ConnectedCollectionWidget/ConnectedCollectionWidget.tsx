@@ -16,6 +16,7 @@ import useScrollToBottom from '../../../../hooks/useScrollToBottom';
 import { useAppDispatch, useAppSelector } from '../../../../redux/hooks';
 import { getCollectionOrders } from '../../../../redux/stores/collection/collectionApi';
 import { reset } from '../../../../redux/stores/collection/collectionSlice';
+import getListCallToActionText from '../../helpers/getListCallToActionText';
 import CollectionPortrait from '../CollectionPortrait/CollectionPortrait';
 
 interface ConnectedCollectionWidgetProps {
@@ -28,6 +29,7 @@ const ConnectedCollectionWidget: FC<ConnectedCollectionWidgetProps> = ({ currenc
 
   const scrolledToBottom = useScrollToBottom();
   const { collectionImage, collectionToken, collectionName } = useAppSelector((state) => state.config);
+  const { tokens: userTokens } = useAppSelector((state) => state.balances);
   const {
     isLoading,
     isTotalOrdersReached,
@@ -68,6 +70,7 @@ const ConnectedCollectionWidget: FC<ConnectedCollectionWidgetProps> = ({ currenc
 
       return orderToken ? filterCollectionTokenBySearchValue(orderToken, searchValue) : true;
     })), [orders, tokens, searchValue]);
+  const listCallToActionText = getListCallToActionText(searchValue, !!userTokens.length);
 
   return (
     <div className={`collection-widget ${className}`}>
@@ -88,9 +91,11 @@ const ConnectedCollectionWidget: FC<ConnectedCollectionWidgetProps> = ({ currenc
           {searchValue ? 'Search results' : 'All listings'}
         </h2>
         <OrdersContainer
+          hasListCallToActionButton={!!userTokens.length}
           isEndOfOrders={isTotalOrdersReached}
-          isLoading={isLoading}
+          isLoading={isLoading || offset === 0}
           currencyTokenInfo={currencyTokenInfo}
+          listCallToActionText={listCallToActionText}
           orders={filteredOrders}
           tokens={tokens}
           className="collection-widget__nfts-container"

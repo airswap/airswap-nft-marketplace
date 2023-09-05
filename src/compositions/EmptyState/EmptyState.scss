@@ -1,0 +1,23 @@
+@import "src/styles";
+
+.empty-state {
+    width: 100%;
+    max-width: 19.5rem;
+
+    &__text {
+        margin: 0 auto;
+        width: 100%;
+        max-width: 16rem;
+        line-height: 1.25;
+        font-weight: var(--fw-400);
+        font-size: 1rem;
+        text-align: center;
+        color: var(--c-light-grey);
+    }
+
+    &__link {
+        @extend %button--is-primary;
+
+        margin-top: 3rem;
+    }
+}
