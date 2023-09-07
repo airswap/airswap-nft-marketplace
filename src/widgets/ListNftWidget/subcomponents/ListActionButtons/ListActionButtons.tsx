@@ -41,7 +41,7 @@ const ListActionButtons: FC<ActionButtonsProps> = ({
       return 'Approve NFT';
     }
 
-    return 'Sign Transaction';
+    return 'Sign Listing';
   };
 
   const getDisabledButtonText = () => {
