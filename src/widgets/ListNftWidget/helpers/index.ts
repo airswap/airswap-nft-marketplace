@@ -2,7 +2,7 @@ import { ListNftState } from '../subcomponents/ConnectedListNftWidget/ConnectedL
 
 export const getTitle = (state: ListNftState): string => {
   if (state === ListNftState.review) {
-    return 'Review Swap';
+    return 'Review Listing';
   }
 
   if (state === ListNftState.approve) {
@@ -15,6 +15,10 @@ export const getTitle = (state: ListNftState): string => {
 
   if (state === ListNftState.sign) {
     return 'Sign in Wallet';
+  }
+
+  if (state === ListNftState.indexing) {
+    return 'Listing in Progress';
   }
 
   if (state === ListNftState.success) {

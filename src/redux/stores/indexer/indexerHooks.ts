@@ -1,4 +1,3 @@
-
 import { useEffect } from 'react';
 
 import { FullOrder } from '@airswap/types';
@@ -8,6 +7,7 @@ import { useAppDispatch, useAppSelector } from '../../hooks';
 import { clearLastUserOrder } from '../listNft/listNftSlice';
 import { initialize } from './indexerApi';
 import { sendOrderToIndexers } from './indexerHelpers';
+import { setLastFailedOrder, setLastSentOrder } from './indexerSlice';
 
 export const useIndexers = (): void => {
   const dispatch = useAppDispatch();
@@ -20,7 +20,13 @@ export const useIndexers = (): void => {
   const sendAndClearLastOrder = async (lastOrder: FullOrder) => {
     if (!isInitialized) return;
 
-    sendOrderToIndexers(lastOrder, urls);
+    const isSuccessful = await sendOrderToIndexers(lastOrder, urls);
+
+    if (isSuccessful) {
+      dispatch(setLastSentOrder(lastOrder));
+    } else {
+      dispatch(setLastFailedOrder(lastOrder));
+    }
 
     dispatch(clearLastUserOrder());
   };

@@ -14,6 +14,7 @@ export enum AppErrorType {
   invalidRequest = 'invalidRequest',
   invalidValue = 'invalidValue',
   nonceAlreadyUsed = 'nonceAlreadyUsed',
+  orderIndexFailed = 'orderIndexFailed',
   rejectedByUser = 'rejectedByUser',
   senderAllowanceLow = 'senderAllowanceLow',
   senderBalanceLow = 'senderBalanceLow',
