@@ -60,6 +60,16 @@ export const addUserRejectedToast = () => async (dispatch: AppDispatch): Promise
   }));
 };
 
+export const addGetOrderFailedToast = () => async (dispatch: AppDispatch): Promise<void> => {
+  dispatch(addToast({
+    type: ToastType.fail,
+    id: crypto.randomUUID(),
+    title: 'Server error',
+    text: 'Failed to get orders from indexers',
+    willAutomaticallyHide: true,
+  }));
+};
+
 export const addInfoToast = (title: string, text: string) => async (dispatch: AppDispatch): Promise<void> => {
   dispatch(addToast({
     type: ToastType.info,
