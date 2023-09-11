@@ -20,6 +20,6 @@ AppThunkApiConfig
   } catch {
     dispatch(addGetOrderFailedToast());
 
-    return [];
+    throw new Error('Failed to get orders');
   }
 });

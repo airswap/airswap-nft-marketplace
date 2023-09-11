@@ -5,6 +5,7 @@ import { INDEXER_ORDERS_OFFSET } from '../../../constants/indexer';
 import { getCollectionOrders } from './collectionApi';
 
 export interface CollectionState {
+  hasServerError: boolean;
   isTotalOrdersReached: boolean;
   offset: number;
   orders: FullOrder[];
@@ -12,6 +13,7 @@ export interface CollectionState {
 }
 
 const initialState: CollectionState = {
+  hasServerError: false,
   isTotalOrdersReached: false,
   offset: 0,
   orders: [],
@@ -51,6 +53,8 @@ export const collectionSlice = createSlice({
     }));
     builder.addCase(getCollectionOrders.rejected, (state): CollectionState => ({
       ...state,
+      hasServerError: true,
+      isTotalOrdersReached: true,
       isLoading: false,
     }));
   },
