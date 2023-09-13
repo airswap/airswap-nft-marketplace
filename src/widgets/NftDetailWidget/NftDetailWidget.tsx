@@ -9,7 +9,7 @@ import DisconnectedNftDetailWidget from './subcomponents/DisconnectedNftDetailWi
 import './NftDetailWidget.scss';
 
 interface NftDetailWidgetProps {
-  tokenId: number;
+  tokenId: string;
   className?: string;
 }
 

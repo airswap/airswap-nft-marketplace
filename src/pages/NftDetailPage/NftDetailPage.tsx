@@ -13,7 +13,7 @@ const NftDetailPage: FC = () => {
     <Page>
       <Helmet title={`Token ${tokenId || 1}`} />
       <NftDetailWidget
-        tokenId={tokenId ? +tokenId : 1}
+        tokenId={tokenId || '1'}
       />
     </Page>
   );

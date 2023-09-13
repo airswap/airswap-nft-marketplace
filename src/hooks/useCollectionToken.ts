@@ -8,7 +8,7 @@ import { getCollectionToken } from '../entities/CollectionToken/CollectionTokenH
 import { useAppDispatch, useAppSelector } from '../redux/hooks';
 import { addCollectionTokenInfo } from '../redux/stores/metadata/metadataActions';
 
-const useCollectionToken = (address: string, tokenId: number): [CollectionTokenInfo | undefined, boolean] => {
+const useCollectionToken = (address: string, tokenId: string): [CollectionTokenInfo | undefined, boolean] => {
   const dispatch = useAppDispatch();
   const { library } = useWeb3React<Web3Provider>();
   const { collectionTokens } = useAppSelector(state => state.metadata);

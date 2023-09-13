@@ -26,7 +26,7 @@ export interface Erc20ApprovalTransaction extends Transaction {
 
 export interface NftApprovalTransaction extends Transaction {
   type: SubmittedTransactionType.nftApproval,
-  tokenId: number;
+  tokenId: string;
 }
 
 export interface OrderTransaction extends Transaction {

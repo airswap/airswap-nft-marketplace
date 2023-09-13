@@ -19,7 +19,7 @@ interface CreateOrderParams {
   signerWallet: string;
   senderAmount: string;
   senderTokenInfo: TokenInfo;
-  tokenId: number;
+  tokenId: string;
 }
 
 export const createNftOrder = createAsyncThunk<

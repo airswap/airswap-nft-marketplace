@@ -6,7 +6,7 @@ import IconNavLink from '../IconNavLink/IconNavLink';
 import './OrderWidgetHeader.scss';
 
 interface OrderWidgetHeaderProps {
-  nftId?: number;
+  nftId?: string;
   title: string;
   className?: string;
 }

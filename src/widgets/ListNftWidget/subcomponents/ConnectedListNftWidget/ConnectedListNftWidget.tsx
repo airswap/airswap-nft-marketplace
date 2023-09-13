@@ -47,9 +47,9 @@ interface ListNftWidgetProps {
   account: string;
   chainId: number;
   currencyTokenInfo: TokenInfo;
-  defaultSelectedTokenId?: number;
+  defaultSelectedTokenId?: string;
   library: Web3Provider
-  userTokens: number[];
+  userTokens: string[];
   className?: string;
 }
 

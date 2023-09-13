@@ -20,7 +20,7 @@ const DisconnectedCancelOrderWidget: FC<DisconnectedCancelOrderWidgetProps> = ({
 }): ReactElement => (
   <div className={`cancel-order-widget ${className}`}>
     <OrderWidgetHeader
-      nftId={+fullOrder.signer.id}
+      nftId={fullOrder.signer.id}
       title="Are you sure you want to cancel?"
     />
     <div className="cancel-order-widget__fail-details">

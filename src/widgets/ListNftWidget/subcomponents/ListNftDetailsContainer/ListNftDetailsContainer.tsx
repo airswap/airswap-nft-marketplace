@@ -40,13 +40,13 @@ interface ListNftDetailContainerProps {
   projectFee: number;
   protocolFeeInCurrencyToken?: string;
   protocolFee: number;
-  selectedTokenId: number;
+  selectedTokenId: string;
   submittedApproval?: NftApprovalTransaction;
-  userTokens: number[];
+  userTokens: string[];
   widgetState: ListNftState;
   onExpiryAmountChange: (value?: number) => void;
   onExpiryTimeUnitChange: (value: ExpiryTimeUnit) => void;
-  onSelectedNftChange: (value: number) => void;
+  onSelectedNftChange: (value: string) => void;
   onTradeTokenInputChange: (value: string) => void;
   className?: string;
 }

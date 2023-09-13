@@ -63,7 +63,7 @@ const ConnectedCollectionWidget: FC<ConnectedCollectionWidgetProps> = ({ currenc
     }
   }, [scrolledToBottom]);
 
-  const tokenIds = useMemo(() => orders.map(order => +order.signer.id), [orders]);
+  const tokenIds = useMemo(() => orders.map(order => order.signer.id), [orders]);
   const [tokens] = useCollectionTokens(collectionToken, tokenIds);
   const filteredOrders = useMemo(() => (
     orders.filter(order => {

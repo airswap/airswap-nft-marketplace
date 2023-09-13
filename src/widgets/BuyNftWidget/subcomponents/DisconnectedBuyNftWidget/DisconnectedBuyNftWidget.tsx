@@ -5,7 +5,7 @@ import OrderWidgetHeader from '../../../../compositions/OrderWidgetHeader/OrderW
 
 interface DisconnectedBuyNftWidgetProps {
   isLoading: boolean;
-  nftId: number
+  nftId: string
   className?: string;
 }
 

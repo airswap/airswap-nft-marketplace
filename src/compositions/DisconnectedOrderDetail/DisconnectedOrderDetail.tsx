@@ -9,7 +9,7 @@ interface DisconnectedBuyNftWidgetProps {
   isLoading?: boolean;
   isOrderNonceUndefined?: boolean;
   isOrderNotFound?: boolean;
-  nftId?: number;
+  nftId?: string;
   orderNonce?: string;
   className?: string;
 }

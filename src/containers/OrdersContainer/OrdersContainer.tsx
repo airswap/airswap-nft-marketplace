@@ -61,7 +61,7 @@ const OrdersContainer: FC<OrdersContainerProps> = ({
                   key={order.nonce}
                   price={price.toString()}
                   symbol={currencyTokenInfo.symbol}
-                  to={routes.nftDetail(+order.signer.id)}
+                  to={routes.nftDetail(order.signer.id)}
                   className="collection-widget__nft-card"
                 />
               );
@@ -74,7 +74,7 @@ const OrdersContainer: FC<OrdersContainerProps> = ({
                 price={price.toString()}
                 name={orderToken.name}
                 symbol={currencyTokenInfo.symbol}
-                to={routes.nftDetail(+order.signer.id)}
+                to={routes.nftDetail(order.signer.id)}
                 className="collection-widget__nft-card"
               />
             );

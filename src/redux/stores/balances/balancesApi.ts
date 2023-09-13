@@ -63,7 +63,7 @@ interface fetchTokenIdsParams {
   collectionToken: string;
 }
 
-export const fetchUserTokens = createAsyncThunk<number[], fetchTokenIdsParams>(
+export const fetchUserTokens = createAsyncThunk<string[], fetchTokenIdsParams>(
   'balances/fetchUserTokens',
   async ({
     provider,

@@ -12,7 +12,7 @@ import { setTokenId } from './nftDetailSlice';
 
 export const getNftOrderByTokenId = createAsyncThunk<
 FullOrder | undefined,
-number,
+string,
 AppThunkApiConfig
 >('nftDetail/getNftOrderByTokenId', async (tokenId, { dispatch, getState }) => {
   const { config, indexer } = getState();

@@ -48,7 +48,7 @@ const ConnectedNftDetailWidget: FC<ConnectedNftDetailWidgetProps> = ({
   const orderRoute = order ? routes.orderDetail(order.signer.wallet, order.nonce) : undefined;
 
   useEffect(() => {
-    dispatch(getNftOrderByTokenId(collectionTokenInfo.id));
+    dispatch(getNftOrderByTokenId(collectionTokenInfo.id.toString()));
     dispatch(getNftTransactionReceipts({ provider: library, tokenId: collectionTokenInfo.id }));
 
     return () => {

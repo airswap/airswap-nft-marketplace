@@ -112,7 +112,7 @@ const BuyActionButtons: FC<ActionButtonsProps> = ({
     if (state === BuyNftState.failed) {
       return (
         <NavLink
-          to={routes.nftDetail(collectionTokenInfo.id)}
+          to={routes.nftDetail(collectionTokenInfo.id.toString())}
           onClick={onActionButtonClick}
           className="buy-action-buttons__action-button"
         >

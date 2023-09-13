@@ -12,7 +12,7 @@ export const getOwnedTokenIdsOfWallet = async (
   provider: ethers.providers.Web3Provider,
   walletAddress: string,
   collectionToken: string,
-): Promise<number[]> => {
+): Promise<string[]> => {
   const contract = new ethers.Contract(collectionToken, erc721AbiContract.abi, provider);
 
   const [isErc721Enumerable, isErc721, isErc1155] = await Promise.all([
@@ -31,9 +31,9 @@ export const getOwnedTokenIdsOfWallet = async (
     const tokenIds = await Promise.all(tokenIdsPromises);
 
     return tokenIds
-      .map(t => t.toNumber())
-      .filter(getUniqueSingleDimensionArray)
-      .sort((a, b) => a - b);
+      .sort((a, b) => a.sub(b).toNumber())
+      .map(t => t.toString())
+      .filter(getUniqueSingleDimensionArray);
   }
 
   if (isErc721) {
@@ -47,7 +47,8 @@ export const getOwnedTokenIdsOfWallet = async (
 
     /* get unique values */
     const uniqueTokenIds = foundTokenIds
-      .map(t => t.toNumber())
+      .sort((a, b) => a.sub(b).toNumber())
+      .map(t => t.toString())
       .filter(getUniqueSingleDimensionArray);
 
     /* get owners of tokens */
@@ -59,7 +60,7 @@ export const getOwnedTokenIdsOfWallet = async (
     const ownedTokenIds = uniqueTokenIds.filter((_, index) => tokenOwners[index] === walletAddress);
 
     /* return sorted array of numbers */
-    return ownedTokenIds.sort((a, b) => a - b);
+    return ownedTokenIds.sort((a, b) => +a - +b);
   }
 
   if (isErc1155) {
@@ -73,8 +74,10 @@ export const getOwnedTokenIdsOfWallet = async (
 
     /* get unique values */
     const uniqueTokenIds = foundTokenIds
-      .map(t => t.toNumber())
+      .sort((a, b) => a.sub(b).toNumber())
+      .map(t => t.toString())
       .filter(getUniqueSingleDimensionArray);
+
 
     /* get balances of tokens */
     const tokenBalances: BigNumber[] = await Promise.all(
@@ -87,7 +90,7 @@ export const getOwnedTokenIdsOfWallet = async (
     const ownedTokenIds = uniqueTokenIds.filter((_, index) => tokenBalances[index].toNumber() > 0);
 
     /* return sorted array of numbers */
-    return ownedTokenIds.sort((a, b) => a - b);
+    return ownedTokenIds.sort((a, b) => +a - +b);
   }
 
   throw new Error('Unknown nft interface. Could not fetch token ids.');

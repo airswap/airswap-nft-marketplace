@@ -18,7 +18,7 @@ const ConnectedOrderDetailWidget: FC<ConnectedOrderDetailWidgetProps> = ({ accou
   return (
     <div className={`order-detail-widget ${className}`}>
       <NftDetailWidget
-        tokenId={+order.signer.id}
+        tokenId={order.signer.id}
         className="order-detail-widget__nft-detail-widget"
       />
       <div className="order-detail-widget__buy-nft-widget-container">

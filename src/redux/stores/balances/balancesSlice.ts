@@ -10,7 +10,7 @@ interface BalancesState {
   isLoadingTokens: boolean;
   currencyTokenAllowance: string;
   currencyTokenBalance: string;
-  tokens: number[];
+  tokens: string[];
 }
 
 const initialState: BalancesState = {
@@ -44,7 +44,7 @@ const balancesSlice = createSlice({
       ...state,
       currencyTokenBalance: action.payload,
     }),
-    setTokens: (state, action: PayloadAction<number[]>): BalancesState => ({
+    setTokens: (state, action: PayloadAction<string[]>): BalancesState => ({
       ...state,
       tokens: action.payload,
     }),

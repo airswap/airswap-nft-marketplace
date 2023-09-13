@@ -12,11 +12,11 @@ import './SelectNft.scss';
 interface SelectNftProps {
   collectionName: string;
   logoURI?: string;
-  tokens: number[];
+  tokens: string[];
   title: string;
   token?: CollectionTokenInfo;
-  value: number;
-  onSelect: (value: number) => void;
+  value: string;
+  onSelect: (value: string) => void;
   className?: string;
 }
 
@@ -34,7 +34,7 @@ const SelectNft: FC<SelectNftProps> = ({
   const selectedOption = options.find(option => option.value === value?.toString()) || options[0] as SelectOption;
 
   const handleDropdownChange = (option: SelectOption): void => {
-    onSelect(parseInt(option.value, 10));
+    onSelect(option.value);
   };
 
   return (
