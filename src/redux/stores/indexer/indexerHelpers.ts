@@ -5,6 +5,7 @@ import {
   OrderFilter,
   OrderResponse,
 } from '@airswap/types';
+import { SortField, SortOrder } from '@airswap/types/build/src/server';
 
 import { INDEXER_ORDER_RESPONSE_TIME_MS } from '../../../constants/indexer';
 
@@ -21,8 +22,18 @@ const getUndefinedAfterTimeout = (time: number): Promise<undefined> => new Promi
 });
 
 export const getOrdersFromServer = async (server: Server, filter: OrderFilter): Promise<OrderResponse<FullOrder> | undefined> => {
+  const defaultFilter: Partial<OrderFilter> = {
+    sortField: SortField.NONCE,
+    sortOrder: SortOrder.DESC,
+  };
+
+  const filterWithDefaults: OrderFilter = {
+    ...defaultFilter,
+    ...filter,
+  };
+
   try {
-    return await server.getOrders(filter);
+    return await server.getOrders(filterWithDefaults);
   } catch (e: any) {
     console.error(
       `[getOrdersFromServer] Order indexing failed for ${server.locator}`,

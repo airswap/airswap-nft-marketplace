@@ -12,7 +12,7 @@ export interface ProfileState {
   tokensOffset: number;
 }
 
-export const tokensOffsetInterval = 8;
+export const tokensOffsetInterval = 16;
 
 const initialState: ProfileState = {
   isLoadingOrders: false,
