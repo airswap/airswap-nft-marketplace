@@ -11,6 +11,7 @@ import { Web3Provider } from '@ethersproject/providers';
 import SearchInput from '../../../../components/SearchInput/SearchInput';
 import EmptyState from '../../../../compositions/EmptyState/EmptyState';
 import Helmet from '../../../../compositions/Helmet/Helmet';
+import { INDEXER_ORDERS_OFFSET } from '../../../../constants/indexer';
 import { filterCollectionTokenBySearchValue } from '../../../../entities/CollectionToken/CollectionTokenHelpers';
 import getOwnedTokensByAccountUrl from '../../../../helpers/airswap/getOwnedTokensByAccountUrl';
 import useCollectionTokens from '../../../../hooks/useCollectionTokens';
@@ -18,7 +19,7 @@ import useEnsAddress from '../../../../hooks/useEnsAddress';
 import useScrollToBottom from '../../../../hooks/useScrollToBottom';
 import { useAppDispatch, useAppSelector } from '../../../../redux/hooks';
 import { getProfileOrders, getProfileTokens } from '../../../../redux/stores/profile/profileApi';
-import { reset, setTokensOffset, tokensOffsetInterval } from '../../../../redux/stores/profile/profileSlice';
+import { reset, setTokensOffset } from '../../../../redux/stores/profile/profileSlice';
 import getEmptyStateText from '../../helpers/getEmptyTokensText';
 import OwnedNftsContainer from '../OwnedNftsContainer/OwnedNftsContainer';
 import ProfileHeader from '../ProfileHeader/ProfileHeader';
@@ -81,7 +82,7 @@ const ConnectedProfileWidget: FC<ConnectedProfileWidgetProps> = ({
 
   useEffect(() => {
     if (scrolledToBottom && !isEndOfTokens) {
-      dispatch(setTokensOffset(tokensOffset + tokensOffsetInterval));
+      dispatch(setTokensOffset(tokensOffset + INDEXER_ORDERS_OFFSET));
     }
   }, [scrolledToBottom]);
 
