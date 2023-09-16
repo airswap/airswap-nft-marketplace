@@ -44,6 +44,7 @@ const ConnectedProfileOrdersWidget: FC<ConnectedProfileOrdersWidgetProps> = ({
   const { tokens: userTokens } = useAppSelector((state) => state.balances);
   const { avatarUrl } = useAppSelector((state) => state.user);
   const {
+    hasServerError,
     isLoading,
     isTotalOrdersReached,
     offset,
@@ -65,7 +66,7 @@ const ConnectedProfileOrdersWidget: FC<ConnectedProfileOrdersWidgetProps> = ({
       return orderToken ? filterCollectionTokenBySearchValue(orderToken, searchValue) : true;
     })), [orders, tokens, searchValue]);
   const userIsProfileAccount = account === profileAccount;
-  const listCallToActionText = getListCallToActionText(searchValue, !!orders.length);
+  const listCallToActionText = getListCallToActionText(searchValue, !!orders.length, hasServerError);
 
   const getOrders = () => {
     if (isLoading || isTotalOrdersReached) {
@@ -112,7 +113,7 @@ const ConnectedProfileOrdersWidget: FC<ConnectedProfileOrdersWidgetProps> = ({
           className="profile-orders-widget__search-input"
         />
         <OrdersContainer
-          hasListCallToActionButton={!!userTokens.length && userIsProfileAccount}
+          hasListCallToActionButton={!!userTokens.length && userIsProfileAccount && !hasServerError}
           isEndOfOrders={isTotalOrdersReached}
           isLoading={isLoading || offset === 0}
           currencyTokenInfo={currencyTokenInfo}

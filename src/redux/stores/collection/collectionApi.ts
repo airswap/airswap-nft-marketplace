@@ -3,6 +3,7 @@ import { createAsyncThunk } from '@reduxjs/toolkit';
 
 import { AppThunkApiConfig } from '../../store';
 import { getOrdersFromIndexers } from '../indexer/indexerHelpers';
+import { addGetOrderFailedToast } from '../toasts/toastsActions';
 import { setOffset } from './collectionSlice';
 
 export const getCollectionOrders = createAsyncThunk<
@@ -16,9 +17,15 @@ AppThunkApiConfig
 
   dispatch(setOffset(filter.limit + filter.offset));
 
-  return getOrdersFromIndexers({
-    ...filter,
-    signerTokens: [collectionToken],
-    senderTokens: [currencyToken],
-  }, indexer.urls);
+  try {
+    return await getOrdersFromIndexers({
+      ...filter,
+      signerTokens: [collectionToken],
+      senderTokens: [currencyToken],
+    }, indexer.urls);
+  } catch {
+    dispatch(addGetOrderFailedToast());
+
+    throw new Error('Failed to get orders');
+  }
 });

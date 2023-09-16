@@ -6,6 +6,7 @@ import { createAsyncThunk } from '@reduxjs/toolkit';
 import { NftTransactionLog } from '../../../entities/NftTransactionLog/NftTransactionLog';
 import { AppThunkApiConfig } from '../../store';
 import { getOrdersFromIndexers } from '../indexer/indexerHelpers';
+import { addGetOrderFailedToast } from '../toasts/toastsActions';
 import { getErc721Logs, getErc1155Logs } from './nftDetailHelpers';
 import { setTokenId } from './nftDetailSlice';
 
@@ -18,16 +19,23 @@ AppThunkApiConfig
 
   dispatch(setTokenId(tokenId));
 
-  const orders = await getOrdersFromIndexers(
-    {
-      signerTokens: [config.collectionToken],
-      offset: 0,
-      limit: 999,
-    },
-    indexer.urls,
-  );
+  try {
+    const orders = await getOrdersFromIndexers(
+      {
+        signerTokens: [config.collectionToken],
+        signerIds: [tokenId.toString()],
+        offset: 0,
+        limit: 999,
+      },
+      indexer.urls,
+    );
 
-  return orders.find((order) => order.signer.id === tokenId.toString());
+    return orders[orders.length - 1];
+  } catch {
+    dispatch(addGetOrderFailedToast());
+
+    return undefined;
+  }
 });
 
 interface GetNftTransactionHistoryParams {

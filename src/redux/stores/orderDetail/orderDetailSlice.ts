@@ -46,6 +46,7 @@ export const OrderDetailSlice = createSlice({
     builder.addCase(getNftOrderByOrderNonce.rejected, (state): OrderDetailState => ({
       ...state,
       isLoading: false,
+      isOrderNotFound: true,
     }));
   },
 });

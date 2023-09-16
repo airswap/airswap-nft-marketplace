@@ -10,7 +10,7 @@ import { INDEXER_ORDER_RESPONSE_TIME_MS } from '../../../constants/indexer';
 
 const isPromiseFulfilledResult = <T>(result: any): result is PromiseFulfilledResult<T> => result && result.status === 'fulfilled' && 'value' in result;
 
-const isOrderResponse = <T>(resource: any): resource is OrderResponse<T> => ('orders' in resource);
+const isOrderResponse = <T>(resource: any): resource is OrderResponse<T> => (resource && 'orders' in resource);
 
 const isSuccessResponse = (response: any): response is SuccessResponse => response
   && typeof response.message === 'string'
@@ -22,7 +22,7 @@ const getUndefinedAfterTimeout = (time: number): Promise<undefined> => new Promi
 
 export const getOrdersFromServer = async (server: Server, filter: OrderFilter): Promise<OrderResponse<FullOrder> | undefined> => {
   try {
-    return server.getOrders(filter);
+    return await server.getOrders(filter);
   } catch (e: any) {
     console.error(
       `[getOrdersFromServer] Order indexing failed for ${server.locator}`,
@@ -83,15 +83,22 @@ export const getOrdersFromIndexers = async (filter: OrderFilter, indexerUrls: st
 
   const servers = await getServers(indexerUrls);
 
-  const orderResponses = await Promise.all(
+  const responses = await Promise.all(
     servers.map(server => Promise.race([
       getOrdersFromServer(server, filter),
       getUndefinedAfterTimeout(INDEXER_ORDER_RESPONSE_TIME_MS),
     ])),
   );
 
+  const orderResponses = responses.filter(isOrderResponse<FullOrder>);
+
+  if (orderResponses.length === 0) {
+    console.error('[getOrdersFromIndexers] No order responses received');
+
+    throw new Error('No order responses received');
+  }
+
   const indexedOrders: Record<string, IndexedOrder<FullOrder>> = orderResponses
-    .filter(isOrderResponse<FullOrder>)
     .reduce((total, orderResponse) => ({
       ...total,
       ...orderResponse.orders,

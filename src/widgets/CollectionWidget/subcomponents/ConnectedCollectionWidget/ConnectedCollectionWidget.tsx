@@ -31,6 +31,7 @@ const ConnectedCollectionWidget: FC<ConnectedCollectionWidgetProps> = ({ currenc
   const { collectionImage, collectionToken, collectionName } = useAppSelector((state) => state.config);
   const { tokens: userTokens } = useAppSelector((state) => state.balances);
   const {
+    hasServerError,
     isLoading,
     isTotalOrdersReached,
     offset,
@@ -70,7 +71,7 @@ const ConnectedCollectionWidget: FC<ConnectedCollectionWidgetProps> = ({ currenc
 
       return orderToken ? filterCollectionTokenBySearchValue(orderToken, searchValue) : true;
     })), [orders, tokens, searchValue]);
-  const listCallToActionText = getListCallToActionText(searchValue, !!userTokens.length);
+  const listCallToActionText = getListCallToActionText(searchValue, !!userTokens.length, hasServerError);
 
   return (
     <div className={`collection-widget ${className}`}>
@@ -91,7 +92,7 @@ const ConnectedCollectionWidget: FC<ConnectedCollectionWidgetProps> = ({ currenc
           {searchValue ? 'Search results' : 'All listings'}
         </h2>
         <OrdersContainer
-          hasListCallToActionButton={!!userTokens.length}
+          hasListCallToActionButton={!!userTokens.length && !hasServerError}
           isEndOfOrders={isTotalOrdersReached}
           isLoading={isLoading || offset === 0}
           currencyTokenInfo={currencyTokenInfo}

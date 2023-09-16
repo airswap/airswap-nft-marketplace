@@ -5,6 +5,7 @@ import { INDEXER_ORDERS_OFFSET } from '../../../constants/indexer';
 import { getProfileOrders } from './profileOrdersApi';
 
 export interface ProfileOrdersState {
+  hasServerError: boolean;
   isLoading: boolean;
   isTotalOrdersReached: boolean;
   offset: number;
@@ -12,6 +13,7 @@ export interface ProfileOrdersState {
 }
 
 const initialState: ProfileOrdersState = {
+  hasServerError: false,
   isLoading: false,
   isTotalOrdersReached: false,
   offset: 0,
@@ -56,6 +58,8 @@ const profileSlice = createSlice({
 
       return {
         ...state,
+        hasServerError: true,
+        isTotalOrdersReached: true,
         isLoading: false,
       };
     });

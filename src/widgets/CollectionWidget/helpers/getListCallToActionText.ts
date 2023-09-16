@@ -1,4 +1,8 @@
-const getListCallToActionText = (searchValue: string, userHasTokens: boolean): string => {
+const getListCallToActionText = (searchValue: string, userHasTokens: boolean, hasServerError: boolean): string => {
+  if (hasServerError) {
+    return 'Unable to fetch listings.';
+  }
+
   if (searchValue.length) {
     return 'No listing results. Try another search term.';
   }
