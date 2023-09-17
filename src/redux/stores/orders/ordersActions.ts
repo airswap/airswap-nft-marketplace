@@ -30,7 +30,7 @@ interface ApproveParams {
   amount?: number;
   chainId: number;
   library: Web3Provider;
-  tokenId?: number;
+  tokenId?: string;
   tokenInfo: TokenInfo | CollectionTokenInfo;
 }
 

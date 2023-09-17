@@ -8,7 +8,7 @@ export interface ProfileState {
   isLoadingTokens: boolean;
   isTotalOrdersReached: boolean;
   orders: FullOrder[];
-  tokens: number[];
+  tokens: string[];
   tokensOffset: number;
 }
 

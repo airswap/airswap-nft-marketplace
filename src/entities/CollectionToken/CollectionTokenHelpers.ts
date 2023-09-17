@@ -6,11 +6,11 @@ import erc721AbiEnumerableContract from '@openzeppelin/contracts/build/contracts
 import erc1155AbiContract from '@openzeppelin/contracts/build/contracts/ERC1155.json';
 import * as ethers from 'ethers';
 
-export const getCollectionToken = async (library: ethers.providers.BaseProvider, address: string, tokenId: number): Promise<CollectionTokenInfo | undefined> => {
+export const getCollectionToken = async (library: ethers.providers.BaseProvider, address: string, tokenId: string): Promise<CollectionTokenInfo | undefined> => {
   let tokenInfo: CollectionTokenInfo;
 
   try {
-    tokenInfo = await getCollectionTokenInfo(library, address, tokenId.toString());
+    tokenInfo = await getCollectionTokenInfo(library, address, tokenId);
   } catch (e) {
     console.error(new Error(`Unable to fetch data for ${address} with id ${tokenId}`));
 

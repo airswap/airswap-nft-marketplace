@@ -15,7 +15,7 @@ interface ActionButtonsProps {
   hasNoCollectionTokenApproval: boolean;
   account: string;
   currencyToken: TokenInfo;
-  tokenId: number;
+  tokenId: string;
   orderNonce?: string;
   state: ListNftState;
   onActionButtonClick: () => void;

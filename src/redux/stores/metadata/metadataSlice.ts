@@ -11,7 +11,7 @@ export interface MetadataState {
   protocolFee: number;
   currencyTokenInfo?: TokenInfo;
   collectionTokens: {
-    [id: number]: CollectionTokenInfo;
+    [id: string]: CollectionTokenInfo;
   }
 }
 

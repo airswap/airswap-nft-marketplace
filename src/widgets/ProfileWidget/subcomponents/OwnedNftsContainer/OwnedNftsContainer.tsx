@@ -39,7 +39,7 @@ const OwnedNftsContainer: FC<OwnedNftsContainerProps> = ({
             imageURI={nft.image}
             name={nft.name}
             price={price}
-            to={routes.nftDetail(nft.id)}
+            to={routes.nftDetail(nft.id.toString())}
             symbol={currencyTokenInfo?.symbol}
             className="profile-widget__nft-card"
           />

@@ -5,7 +5,7 @@ import LoadingSpinner from '../../../../components/LoadingSpinner/LoadingSpinner
 interface DisconnectedNftDetailWidgetProps {
   isLoading: boolean;
   isNftNotFound: boolean;
-  id: number;
+  id: string;
   className?: string;
 }
 

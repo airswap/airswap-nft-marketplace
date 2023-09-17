@@ -42,7 +42,7 @@ export const addERC20ApprovalTransaction = (hash: string) => async (dispatch: Ap
   ]));
 };
 
-export const addNftApprovalTransaction = (hash: string, tokenId: number) => async (dispatch: AppDispatch, getState: () => RootState): Promise<void> => {
+export const addNftApprovalTransaction = (hash: string, tokenId: string) => async (dispatch: AppDispatch, getState: () => RootState): Promise<void> => {
   const { transactions } = getState().transactions;
 
   const transaction: NftApprovalTransaction = {

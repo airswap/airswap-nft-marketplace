@@ -9,7 +9,7 @@ import { CancelOrderState } from '../ConnectedCancelOrderWidget/ConnectedCancelO
 import './CancelActionButtons.scss';
 
 interface CancelActionButtonsProps {
-  nftId: number;
+  nftId: string;
   state: CancelOrderState;
   onActionButtonClick: () => void;
   className?: string;

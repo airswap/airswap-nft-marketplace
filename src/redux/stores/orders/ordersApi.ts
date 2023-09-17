@@ -41,7 +41,7 @@ export async function approveErc20Token(
 
 export async function approveNftToken(
   baseToken: string,
-  tokenId: number,
+  tokenId: string,
   provider: ethers.providers.Web3Provider,
   tokenKind: TokenKinds.ERC1155 | TokenKinds.ERC721,
 ): Promise<Transaction> {
@@ -122,7 +122,7 @@ export async function getNonceUsed(
 
 export async function getNftTokenApproved(
   baseToken: string,
-  tokenId: number,
+  tokenId: string,
   provider: ethers.providers.Web3Provider,
   tokenKind: TokenKinds.ERC1155 | TokenKinds.ERC721,
 ): Promise<boolean> {

@@ -22,7 +22,7 @@ interface GetOwnedTokensOfAccountParams {
 }
 
 export const getProfileTokens = createAsyncThunk<
-number[],
+string[],
 GetOwnedTokensOfAccountParams,
 AppThunkApiConfig
 >('profile/getProfileTokens', async ({ account, provider }, { getState }) => {

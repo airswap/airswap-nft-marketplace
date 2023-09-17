@@ -9,7 +9,7 @@ export interface NftDetailState {
   isLoadingTransactionReceipts: boolean;
   isOrderNotFound: boolean;
   order?: FullOrder;
-  tokenId?: number;
+  tokenId?: string;
   transactionLogs: NftTransactionLog[];
 }
 
@@ -27,7 +27,7 @@ export const nftDetailSlice = createSlice({
     reset: (): NftDetailState => ({
       ...initialState,
     }),
-    setTokenId: (state, action: PayloadAction<number>): NftDetailState => ({
+    setTokenId: (state, action: PayloadAction<string>): NftDetailState => ({
       ...state,
       tokenId: action.payload,
     }),

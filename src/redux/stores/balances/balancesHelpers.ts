@@ -8,11 +8,16 @@ import { BigNumber, ethers } from 'ethers';
 
 import { getUniqueSingleDimensionArray } from '../../../helpers/array';
 
+const getUniqueTokenIds = (tokenIds: BigNumber[]): string[] => tokenIds
+  .sort((a, b) => a.sub(b).toNumber())
+  .map(t => t.toString())
+  .filter(getUniqueSingleDimensionArray);
+
 export const getOwnedTokenIdsOfWallet = async (
   provider: ethers.providers.Web3Provider,
   walletAddress: string,
   collectionToken: string,
-): Promise<number[]> => {
+): Promise<string[]> => {
   const contract = new ethers.Contract(collectionToken, erc721AbiContract.abi, provider);
 
   const [isErc721Enumerable, isErc721, isErc1155] = await Promise.all([
@@ -30,10 +35,7 @@ export const getOwnedTokenIdsOfWallet = async (
     const tokenIdsPromises = indexes.map(async index => (await collectionContract.tokenOfOwnerByIndex(walletAddress, BigNumber.from(index))) as BigNumber);
     const tokenIds = await Promise.all(tokenIdsPromises);
 
-    return tokenIds
-      .map(t => t.toNumber())
-      .filter(getUniqueSingleDimensionArray)
-      .sort((a, b) => a - b);
+    return getUniqueTokenIds(tokenIds);
   }
 
   if (isErc721) {
@@ -44,11 +46,7 @@ export const getOwnedTokenIdsOfWallet = async (
 
     /* get token ids from past events */
     const foundTokenIds: BigNumber[] = events.map(e => e.args?.at(2));
-
-    /* get unique values */
-    const uniqueTokenIds = foundTokenIds
-      .map(t => t.toNumber())
-      .filter(getUniqueSingleDimensionArray);
+    const uniqueTokenIds = getUniqueTokenIds(foundTokenIds);
 
     /* get owners of tokens */
     const tokenOwners: string[] = await Promise.all(
@@ -59,7 +57,7 @@ export const getOwnedTokenIdsOfWallet = async (
     const ownedTokenIds = uniqueTokenIds.filter((_, index) => tokenOwners[index] === walletAddress);
 
     /* return sorted array of numbers */
-    return ownedTokenIds.sort((a, b) => a - b);
+    return ownedTokenIds.sort((a, b) => +a - +b);
   }
 
   if (isErc1155) {
@@ -71,10 +69,7 @@ export const getOwnedTokenIdsOfWallet = async (
     /* get token ids from past events */
     const foundTokenIds: BigNumber[] = events.map(e => e.args?.at(3));
 
-    /* get unique values */
-    const uniqueTokenIds = foundTokenIds
-      .map(t => t.toNumber())
-      .filter(getUniqueSingleDimensionArray);
+    const uniqueTokenIds = getUniqueTokenIds(foundTokenIds);
 
     /* get balances of tokens */
     const tokenBalances: BigNumber[] = await Promise.all(
@@ -87,7 +82,7 @@ export const getOwnedTokenIdsOfWallet = async (
     const ownedTokenIds = uniqueTokenIds.filter((_, index) => tokenBalances[index].toNumber() > 0);
 
     /* return sorted array of numbers */
-    return ownedTokenIds.sort((a, b) => a - b);
+    return ownedTokenIds.sort((a, b) => +a - +b);
   }
 
   throw new Error('Unknown nft interface. Could not fetch token ids.');

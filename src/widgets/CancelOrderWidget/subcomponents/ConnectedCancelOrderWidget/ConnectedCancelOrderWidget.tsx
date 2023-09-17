@@ -96,7 +96,7 @@ const ConnectedCancelOrderWidget: FC<ConnectedCancelOrderWidgetProps> = ({
   return (
     <div className={`cancel-order-widget ${className}`}>
       <OrderWidgetHeader
-        nftId={+fullOrder.signer.id}
+        nftId={fullOrder.signer.id}
         title={title}
       />
       <CancelDetailsContainer
@@ -112,7 +112,7 @@ const ConnectedCancelOrderWidget: FC<ConnectedCancelOrderWidgetProps> = ({
         className="cancel-order-widget__trade-details-container"
       />
       <CancelActionButtons
-        nftId={+fullOrder.signer.id}
+        nftId={fullOrder.signer.id}
         state={widgetState}
         onActionButtonClick={handleActionButtonClick}
         className="cancel-order-widget__action-buttons"

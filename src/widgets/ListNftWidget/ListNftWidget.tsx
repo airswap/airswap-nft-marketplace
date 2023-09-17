@@ -40,7 +40,7 @@ const ListNftWidget: FC<ListNftWidgetProps> = ({ className = '' }) => {
         chainId={chainId}
         currencyTokenInfo={currencyTokenInfo}
         library={library}
-        defaultSelectedTokenId={tokenId ? +tokenId : undefined}
+        defaultSelectedTokenId={tokenId || undefined}
         userTokens={userTokens}
         className={className}
       />

@@ -7,7 +7,7 @@ import { useAppDispatch, useAppSelector } from '../redux/hooks';
 import { addCollectionTokenInfo } from '../redux/stores/metadata/metadataActions';
 import useDefaultLibrary from './useDefaultProvider';
 
-const useCollectionTokens = (address: string, tokenIds: number[]): [CollectionTokenInfo[], boolean] => {
+const useCollectionTokens = (address: string, tokenIds: string[]): [CollectionTokenInfo[], boolean] => {
   const { chainId } = useAppSelector((state) => state.config);
   const { metadata } = useAppSelector(state => state);
 
