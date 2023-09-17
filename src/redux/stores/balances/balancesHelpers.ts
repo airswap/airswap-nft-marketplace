@@ -8,6 +8,11 @@ import { BigNumber, ethers } from 'ethers';
 
 import { getUniqueSingleDimensionArray } from '../../../helpers/array';
 
+const getUniqueTokenIds = (tokenIds: BigNumber[]): string[] => tokenIds
+  .sort((a, b) => a.sub(b).toNumber())
+  .map(t => t.toString())
+  .filter(getUniqueSingleDimensionArray);
+
 export const getOwnedTokenIdsOfWallet = async (
   provider: ethers.providers.Web3Provider,
   walletAddress: string,
@@ -30,10 +35,7 @@ export const getOwnedTokenIdsOfWallet = async (
     const tokenIdsPromises = indexes.map(async index => (await collectionContract.tokenOfOwnerByIndex(walletAddress, BigNumber.from(index))) as BigNumber);
     const tokenIds = await Promise.all(tokenIdsPromises);
 
-    return tokenIds
-      .sort((a, b) => a.sub(b).toNumber())
-      .map(t => t.toString())
-      .filter(getUniqueSingleDimensionArray);
+    return getUniqueTokenIds(tokenIds);
   }
 
   if (isErc721) {
@@ -44,12 +46,7 @@ export const getOwnedTokenIdsOfWallet = async (
 
     /* get token ids from past events */
     const foundTokenIds: BigNumber[] = events.map(e => e.args?.at(2));
-
-    /* get unique values */
-    const uniqueTokenIds = foundTokenIds
-      .sort((a, b) => a.sub(b).toNumber())
-      .map(t => t.toString())
-      .filter(getUniqueSingleDimensionArray);
+    const uniqueTokenIds = getUniqueTokenIds(foundTokenIds);
 
     /* get owners of tokens */
     const tokenOwners: string[] = await Promise.all(
@@ -72,12 +69,7 @@ export const getOwnedTokenIdsOfWallet = async (
     /* get token ids from past events */
     const foundTokenIds: BigNumber[] = events.map(e => e.args?.at(3));
 
-    /* get unique values */
-    const uniqueTokenIds = foundTokenIds
-      .sort((a, b) => a.sub(b).toNumber())
-      .map(t => t.toString())
-      .filter(getUniqueSingleDimensionArray);
-
+    const uniqueTokenIds = getUniqueTokenIds(foundTokenIds);
 
     /* get balances of tokens */
     const tokenBalances: BigNumber[] = await Promise.all(
