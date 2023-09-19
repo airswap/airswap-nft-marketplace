@@ -30,7 +30,7 @@ AppThunkApiConfig
       indexer.urls,
     );
 
-    return orders[orders.length - 1];
+    return orders[0];
   } catch {
     dispatch(addGetOrderFailedToast());
 
