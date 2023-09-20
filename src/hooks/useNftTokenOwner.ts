@@ -6,11 +6,12 @@ import { getCollectionTokenOwner } from '../entities/CollectionToken/CollectionT
 import { useAppSelector } from '../redux/hooks';
 import useDefaultProvider from './useDefaultProvider';
 
-const useNftTokenOwner = (token: CollectionTokenInfo): string | undefined => {
+const useNftTokenOwner = (token: CollectionTokenInfo): [string | undefined, boolean] => {
   const { chainId } = useAppSelector((state) => state.config);
   const library = useDefaultProvider(chainId);
 
   const [owner, setOwner] = useState<string>();
+  const [isLoading, setIsLoading] = useState(true);
 
   useLayoutEffect(() => {
     if (!library) {
@@ -19,13 +20,14 @@ const useNftTokenOwner = (token: CollectionTokenInfo): string | undefined => {
 
     const callGetCollectionTokenOwner = async () => {
       const result = await getCollectionTokenOwner(library, token);
+      setIsLoading(false);
       setOwner(result);
     };
 
     callGetCollectionTokenOwner();
   }, [library, token]);
 
-  return owner;
+  return [owner, isLoading];
 };
 
 export default useNftTokenOwner;

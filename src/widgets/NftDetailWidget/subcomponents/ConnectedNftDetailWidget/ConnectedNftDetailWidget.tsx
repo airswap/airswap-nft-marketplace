@@ -39,13 +39,15 @@ const ConnectedNftDetailWidget: FC<ConnectedNftDetailWidgetProps> = ({
   const { account } = useAppSelector((state) => state.web3);
 
   const { protocolFee } = useAppSelector(state => state.metadata);
-  const { isLoading, order, transactionLogs } = useAppSelector(state => state.nftDetail);
+  const { isLoading: isPriceLoading, order, transactionLogs } = useAppSelector(state => state.nftDetail);
 
   const price = useMemo(() => (order ? getFullOrderReadableSenderAmountPlusTotalFees(order, currencyTokenInfo) : undefined), [order]);
-  const owner = useNftTokenOwner(collectionTokenInfo);
+  const [owner, isOwnerLoading] = useNftTokenOwner(collectionTokenInfo);
+  const isLoading = isPriceLoading || isOwnerLoading;
   const readableOwnerAddress = useAddressOrEnsName(owner, true);
   const accountRoute = owner ? routes.profile(owner) : undefined;
   const orderRoute = order ? routes.orderDetail(order.signer.wallet, order.nonce) : undefined;
+  const listRoute = (owner === account && !order) ? routes.listNft(collectionTokenInfo.id.toString()) : undefined;
 
   useEffect(() => {
     dispatch(getNftOrderByTokenId(collectionTokenInfo.id.toString()));
@@ -69,12 +71,14 @@ const ConnectedNftDetailWidget: FC<ConnectedNftDetailWidgetProps> = ({
           backgroundImage={collectionTokenInfo.image || collectionImage}
           className="nft-detail-widget__portrait"
         />
-        <NftDetailSaleInfo
-          isLoading={isLoading}
-          price={price}
-          symbol={currencyTokenInfo.symbol}
-          className="nft-detail-widget__price"
-        />
+        {(isLoading || price) && (
+          <NftDetailSaleInfo
+            isLoading={isLoading}
+            price={price}
+            symbol={currencyTokenInfo.symbol}
+            className="nft-detail-widget__price"
+          />
+        )}
         <Accordion
           label="Description"
           content={(
@@ -83,10 +87,11 @@ const ConnectedNftDetailWidget: FC<ConnectedNftDetailWidgetProps> = ({
           className="nft-detail-widget__description-accordion"
           isDefaultOpen
         />
-        {(orderRoute && owner) && (
+        {((orderRoute || listRoute) && owner && !isLoading) && (
           <NftDetailProceedButton
             accountIsOwner={account === owner}
-            route={orderRoute}
+            orderRoute={orderRoute}
+            listRoute={listRoute}
           />
         )}
         <Accordion
@@ -163,16 +168,19 @@ const ConnectedNftDetailWidget: FC<ConnectedNftDetailWidgetProps> = ({
             <h2 className="nft-detail-widget__meta-container-label">Description</h2>
             <p>{collectionTokenInfo.description}</p>
           </div>
-          <NftDetailSaleInfo
-            isLoading={isLoading}
-            price={price}
-            symbol={currencyTokenInfo.symbol}
-            className="nft-detail-widget__price"
-          />
-          {(orderRoute && owner) && (
+          {(isLoading || price) && (
+            <NftDetailSaleInfo
+              isLoading={isLoading}
+              price={price}
+              symbol={currencyTokenInfo.symbol}
+              className="nft-detail-widget__price"
+            />
+          )}
+          {((orderRoute || listRoute) && owner && !isLoading) && (
             <NftDetailProceedButton
               accountIsOwner={account === owner}
-              route={orderRoute}
+              listRoute={listRoute}
+              orderRoute={orderRoute}
             />
           )}
         </div>
