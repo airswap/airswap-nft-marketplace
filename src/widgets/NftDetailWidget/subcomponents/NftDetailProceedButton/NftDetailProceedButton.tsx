@@ -18,7 +18,6 @@ const NftDetailProceedButton: React.FC<NftDetailProceedButtonProps> = ({
   className = '',
 }) => {
   const navLink = useMemo(() => {
-    console.log(listRoute, accountIsOwner);
     if (listRoute && accountIsOwner) {
       return (
         <NavLink
