@@ -11,7 +11,7 @@ import { ToastType } from '../types/ToastType';
 
 const useSwitchChain = (): void => {
   const dispatch = useAppDispatch();
-  const { active, chainId } = useWeb3React<Web3Provider>();
+  const { isActive, chainId } = useWeb3React<Web3Provider>();
   const { config } = useAppSelector((state) => state);
   const { lastToastActionButtonIdClicked } = useAppSelector((state) => state.toasts);
 
@@ -46,12 +46,12 @@ const useSwitchChain = (): void => {
   }, [chainId, config.chainId]);
 
   useEffect(() => {
-    if (!active && lastToastId) {
+    if (!isActive && lastToastId) {
       dispatch(hideToast(lastToastId));
 
       setLastToastId(undefined);
     }
-  }, [active]);
+  }, [isActive]);
 
   useEffect(() => {
     if (lastToastActionButtonIdClicked && lastToastActionButtonIdClicked === lastToastId) {

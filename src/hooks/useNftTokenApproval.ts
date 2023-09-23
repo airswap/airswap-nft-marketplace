@@ -12,7 +12,7 @@ const useNftTokenApproval = (
   tokenInfo: CollectionTokenInfo | undefined,
   tokenId: string,
 ): boolean => {
-  const { chainId, library } = useWeb3React<Web3Provider>();
+  const { chainId, provider: library } = useWeb3React<Web3Provider>();
   const [isApproved, setIsApproved] = useState(false);
 
   useEffect((): () => void => {

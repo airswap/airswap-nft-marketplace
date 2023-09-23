@@ -1,4 +1,4 @@
-import { TransactionReceipt, Web3Provider } from '@ethersproject/providers';
+import { BaseProvider, TransactionReceipt } from '@ethersproject/providers';
 
 import { SubmittedTransaction, SubmittedTransactionStatus } from '../../../entities/SubmittedTransaction/SubmittedTransaction';
 import { parseJsonArray } from '../../../helpers/json';
@@ -21,7 +21,7 @@ export const handleTransactionReceipt = (status: number, transaction: SubmittedT
   }));
 };
 
-export const listenForTransactionReceipt = (transaction: SubmittedTransaction, library: Web3Provider, dispatch: AppDispatch): string => {
+export const listenForTransactionReceipt = (transaction: SubmittedTransaction, library: BaseProvider, dispatch: AppDispatch): string => {
   library.once(transaction.hash, () => {
     library.getTransactionReceipt(transaction.hash)
       .then((receipt: TransactionReceipt) => {

@@ -1,6 +1,6 @@
 import { TokenKinds } from '@airswap/constants';
 import { FullOrder } from '@airswap/types';
-import { Web3Provider } from '@ethersproject/providers';
+import { BaseProvider } from '@ethersproject/providers';
 import { createAsyncThunk } from '@reduxjs/toolkit';
 
 import { NftTransactionLog } from '../../../entities/NftTransactionLog/NftTransactionLog';
@@ -39,7 +39,7 @@ AppThunkApiConfig
 });
 
 interface GetNftTransactionHistoryParams {
-  provider: Web3Provider;
+  provider: BaseProvider;
   tokenId: number;
 }
 

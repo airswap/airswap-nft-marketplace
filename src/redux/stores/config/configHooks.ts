@@ -10,7 +10,7 @@ import { reset, setIsSuccessful } from './configSlice';
 export const useConfig = (): void => {
   const dispatch = useAppDispatch();
 
-  const { library } = useWeb3React();
+  const { provider: library } = useWeb3React();
   const { chainId } = useAppSelector(state => state.web3);
   const {
     collectionToken,

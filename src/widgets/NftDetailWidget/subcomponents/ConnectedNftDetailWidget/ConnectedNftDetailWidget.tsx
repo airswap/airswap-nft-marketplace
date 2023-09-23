@@ -1,7 +1,7 @@
 import React, { FC, useEffect, useMemo } from 'react';
 
 import { CollectionTokenInfo, TokenInfo } from '@airswap/types';
-import { Web3Provider } from '@ethersproject/providers';
+import { BaseProvider } from '@ethersproject/providers';
 
 import Accordion from '../../../../components/Accordion/Accordion';
 import { getFullOrderReadableSenderAmountPlusTotalFees } from '../../../../entities/FullOrder/FullOrderHelpers';
@@ -23,7 +23,7 @@ import NftDetailSaleInfo from '../NftDetailSaleInfo/NftDetailSaleInfo';
 interface ConnectedNftDetailWidgetProps {
   collectionTokenInfo: CollectionTokenInfo;
   currencyTokenInfo: TokenInfo;
-  library: Web3Provider;
+  library: BaseProvider;
   className?: string;
 }
 

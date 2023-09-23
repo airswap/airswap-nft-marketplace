@@ -11,7 +11,7 @@ import DisconnectedProfileWidget from './subcomponents/DisconnectedProfileWidget
 import './ProfileWidget.scss';
 
 const ProfileWidget: FC = () => {
-  const { account, library } = useWeb3React<Web3Provider>();
+  const { account, provider: library } = useWeb3React<Web3Provider>();
   const { account: profileAccount } = useParams();
 
   const { isInitialized } = useAppSelector((state) => state.indexer);

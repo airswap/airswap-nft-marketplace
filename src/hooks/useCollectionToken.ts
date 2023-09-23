@@ -10,7 +10,7 @@ import { addCollectionTokenInfo } from '../redux/stores/metadata/metadataActions
 
 const useCollectionToken = (address: string, tokenId: string): [CollectionTokenInfo | undefined, boolean] => {
   const dispatch = useAppDispatch();
-  const { library } = useWeb3React<Web3Provider>();
+  const { provider } = useWeb3React<Web3Provider>();
   const { collectionTokens } = useAppSelector(state => state.metadata);
 
   const [isContractCalled, setIsContractCalled] = useState(false);
@@ -24,12 +24,12 @@ const useCollectionToken = (address: string, tokenId: string): [CollectionTokenI
   }, [tokenId]);
 
   useEffect((): void => {
-    if (!library || isContractCalled || collectionTokenFromStore) {
+    if (!provider || isContractCalled || collectionTokenFromStore) {
       return;
     }
 
     const callGetCollectionToken = async () => {
-      const result = await getCollectionToken(library, address, tokenId);
+      const result = await getCollectionToken(provider, address, tokenId);
 
       if (result) {
         dispatch(addCollectionTokenInfo(result));
@@ -43,7 +43,7 @@ const useCollectionToken = (address: string, tokenId: string): [CollectionTokenI
     setIsContractLoading(true);
     callGetCollectionToken();
   }, [
-    library,
+    provider,
     address,
     tokenId,
     isContractCalled,

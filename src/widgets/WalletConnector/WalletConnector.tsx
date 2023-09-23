@@ -5,6 +5,7 @@ import { useWeb3React } from '@web3-react/core';
 
 import IconButton from '../../compositions/IconButton/IconButton';
 import SUPPORTED_WALLET_PROVIDERS, { WalletProvider } from '../../constants/supportedWalletProviders';
+import { setLibrary } from '../../helpers/ethers';
 import { useAppDispatch } from '../../redux/hooks';
 import { getLastProviderFromLocalStorage } from '../../redux/stores/web3/web3Api';
 import { setIsInitialized, setWalletName } from '../../redux/stores/web3/web3Slice';
@@ -20,11 +21,16 @@ interface WalletConnectorProps {
 const WalletConnector: FC<WalletConnectorProps> = ({ onCloseButtonClick, className = '' }) => {
   const dispatch = useAppDispatch();
 
-  const { activate } = useWeb3React<Web3Provider>();
+  const { connector } = useWeb3React<Web3Provider>();
 
   const activateWallet = async (provider: WalletProvider) => {
+    if (!connector.activate) {
+      return;
+    }
+
     dispatch(setWalletName(provider.name));
-    await activate(provider.getConnector());
+    await connector.activate();
+    setLibrary(connector.provider);
     dispatch(setIsInitialized(true));
   };
 

@@ -24,10 +24,11 @@ interface PageProps {
 
 const Page: FC<PageProps> = ({ className = '', contentClassName = '', children }) => {
   const {
-    active,
+    // active,
+    isActive,
     account,
     chainId,
-    deactivate,
+    connector,
   } = useWeb3React<Web3Provider>();
   const ensAddress = useEnsAddress(account || '');
   const { config } = useAppSelector((state) => state);
@@ -37,10 +38,10 @@ const Page: FC<PageProps> = ({ className = '', contentClassName = '', children }
   const chainIdIsCorrect = !!chainId && chainId === config.chainId;
 
   const [mobileMenuIsVisible, setMobileMenuIsVisible] = useState(false);
-  const [showWalletConnector, toggleShowWalletConnector] = useToggle(!active);
+  const [showWalletConnector, toggleShowWalletConnector] = useToggle(!isActive);
 
   const pageClassName = classNames('page', {
-    'page--show-wallet-connector': showWalletConnector && isInitialized && !active,
+    'page--show-wallet-connector': showWalletConnector && isInitialized && !isActive,
   }, className);
 
   const handleIconButtonClick = (): void => {
@@ -48,7 +49,8 @@ const Page: FC<PageProps> = ({ className = '', contentClassName = '', children }
   };
 
   const handleDisconnectButtonClick = (): void => {
-    deactivate();
+    // connector.deactivate();
+    console.log(connector);
     clearLastProvider();
   };
 
@@ -60,8 +62,8 @@ const Page: FC<PageProps> = ({ className = '', contentClassName = '', children }
       <TopBar
         listButtonIsDisabled={!chainIdIsCorrect || !account}
         mobileMenuIsVisible={mobileMenuIsVisible}
-        showDesktopConnectButton={isInitialized && !active}
-        showDesktopUserButton={isInitialized && active}
+        showDesktopConnectButton={isInitialized && !isActive}
+        showDesktopUserButton={isInitialized && isActive}
         userWalletButtonIsDisabled={!chainIdIsCorrect}
         avatarUrl={avatarUrl}
         account={account}
@@ -86,7 +88,7 @@ const Page: FC<PageProps> = ({ className = '', contentClassName = '', children }
       <div className={`page__content ${contentClassName}`}>
         {children}
 
-        {(!active && !showWalletConnector) && (
+        {(!isActive && !showWalletConnector) && (
           <Button
             text="Connect wallet"
             onClick={toggleShowWalletConnector}

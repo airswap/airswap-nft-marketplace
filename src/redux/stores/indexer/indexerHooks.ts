@@ -12,7 +12,7 @@ import { setLastFailedOrder, setLastSentOrder } from './indexerSlice';
 export const useIndexers = (): void => {
   const dispatch = useAppDispatch();
 
-  const { library } = useWeb3React();
+  const { provider: library } = useWeb3React();
   const { lastUserOrder } = useAppSelector(state => state.listNft);
   const { chainId } = useAppSelector(state => state.config);
   const { isInitialized, urls } = useAppSelector(state => state.indexer);

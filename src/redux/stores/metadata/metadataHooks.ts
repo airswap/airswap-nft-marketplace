@@ -12,7 +12,7 @@ import { getLocalStorageCollectionTokens } from './metdataHelpers';
 export const useMetadata = (): void => {
   const dispatch = useAppDispatch();
 
-  const { library } = useWeb3React<Web3Provider>();
+  const { provider: library } = useWeb3React<Web3Provider>();
   const { chainId } = useAppSelector(state => state.web3);
   const { chainId: configChainId, collectionToken, currencyToken } = useAppSelector(state => state.config);
 
