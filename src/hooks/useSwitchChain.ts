@@ -11,7 +11,7 @@ import { ToastType } from '../types/ToastType';
 
 const useSwitchChain = (): void => {
   const dispatch = useAppDispatch();
-  const { isActive, chainId } = useWeb3React<Web3Provider>();
+  const { isActive, chainId, provider } = useWeb3React<Web3Provider>();
   const { config } = useAppSelector((state) => state);
   const { lastToastActionButtonIdClicked } = useAppSelector((state) => state.toasts);
 
@@ -54,8 +54,12 @@ const useSwitchChain = (): void => {
   }, [isActive]);
 
   useEffect(() => {
+    if (typeof provider?.provider.request !== 'function') {
+      return;
+    }
+
     if (lastToastActionButtonIdClicked && lastToastActionButtonIdClicked === lastToastId) {
-      window.ethereum.request({
+      provider.provider.request({
         method: 'wallet_switchEthereumChain',
         params: [{ chainId: `0x${config.chainId}` }],
       });

@@ -1,6 +1,6 @@
 import React, { FC } from 'react';
 
-import { WalletProvider } from '../../../../constants/supportedWalletProviders';
+import { WalletProvider } from '../../../../web3-connectors/walletProviders';
 import WalletProviderButton from './subcomponents/WalletProviderButton/WalletProviderButton';
 
 import './WalletProviderList.scss';

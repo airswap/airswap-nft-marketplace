@@ -1,14 +1,13 @@
 import React, { FC, useEffect } from 'react';
 
-import { Web3Provider } from '@ethersproject/providers';
-import { useWeb3React } from '@web3-react/core';
+import { Connector } from '@web3-react/types';
 
 import IconButton from '../../compositions/IconButton/IconButton';
-import SUPPORTED_WALLET_PROVIDERS, { WalletProvider } from '../../constants/supportedWalletProviders';
-import { setLibrary } from '../../helpers/ethers';
 import { useAppDispatch } from '../../redux/hooks';
 import { getLastProviderFromLocalStorage } from '../../redux/stores/web3/web3Api';
-import { setIsInitialized, setWalletName } from '../../redux/stores/web3/web3Slice';
+import { setConnectionType, setIsInitialized } from '../../redux/stores/web3/web3Slice';
+import { ConnectionType, getConnection, tryActivateConnector } from '../../web3-connectors/connections';
+import SUPPORTED_WALLET_PROVIDERS, { WalletProvider } from '../../web3-connectors/walletProviders';
 import WalletProviderList from './subcomponents/WalletProviderList/WalletProviderList';
 
 import './WalletConnector.scss';
@@ -21,29 +20,49 @@ interface WalletConnectorProps {
 const WalletConnector: FC<WalletConnectorProps> = ({ onCloseButtonClick, className = '' }) => {
   const dispatch = useAppDispatch();
 
-  const { connector } = useWeb3React<Web3Provider>();
-
   const activateWallet = async (provider: WalletProvider) => {
-    if (!connector.activate) {
-      return;
+    try {
+      await tryActivateConnector(getConnection(provider.type).connector);
+      dispatch(setConnectionType(provider.type));
+    } catch (error) {
+      console.error(error);
+    } finally {
+      dispatch(setIsInitialized(true));
     }
+  };
 
-    dispatch(setWalletName(provider.name));
-    await connector.activate();
-    setLibrary(connector.provider);
-    dispatch(setIsInitialized(true));
+  const activateWalletEagerly = async (connector: Connector, type: ConnectionType) => {
+    try {
+      if (connector.connectEagerly) {
+        await connector.connectEagerly();
+        dispatch(setConnectionType(type));
+      }
+    } catch (error) {
+      console.error(error);
+    } finally {
+      dispatch(setIsInitialized(true));
+    }
   };
 
   useEffect(() => {
-    const provider = getLastProviderFromLocalStorage();
-    if (provider) {
-      activateWallet(provider);
-    } else {
+    const type = getLastProviderFromLocalStorage();
+
+    if (!type) {
       dispatch(setIsInitialized(true));
+
+      return;
     }
+
+    activateWalletEagerly(getConnection(type).connector, type);
   }, []);
 
   const handleWalletProviderButtonClick = (provider: WalletProvider): void => {
+    if (!provider.isInstalled) {
+      window.open(provider.url, '_blank');
+
+      return;
+    }
+
     activateWallet(provider);
   };
 

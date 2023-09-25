@@ -1,10 +1,10 @@
 import { useEffect } from 'react';
 
-import { Web3Provider } from '@ethersproject/providers';
 import { useWeb3React } from '@web3-react/core';
 
+import { clearedCachedLibrary, setCachedLibrary } from '../helpers/ethers';
 import { useAppDispatch } from '../redux/hooks';
-import { setWeb3Data } from '../redux/stores/web3/web3Slice';
+import { setHasLibrary, setWeb3Data } from '../redux/stores/web3/web3Slice';
 
 const useMapWeb3ReactToStore = (): void => {
   const dispatch = useAppDispatch();
@@ -14,7 +14,7 @@ const useMapWeb3ReactToStore = (): void => {
     isActive,
     chainId,
     provider: library,
-  } = useWeb3React<Web3Provider>();
+  } = useWeb3React();
 
   useEffect(() => {
     dispatch(setWeb3Data({
@@ -22,7 +22,24 @@ const useMapWeb3ReactToStore = (): void => {
       account: account || undefined,
       chainId,
     }));
-  }, [isActive, account, chainId, library]);
+  }, [
+    isActive,
+    account,
+    chainId,
+    library,
+  ]);
+
+  useEffect(() => {
+    if (!library || !chainId) {
+      clearedCachedLibrary();
+      dispatch(setHasLibrary(false));
+
+      return;
+    }
+
+    setCachedLibrary(library, chainId);
+    dispatch(setHasLibrary(true));
+  }, [library, chainId]);
 
   // useEffect(() => {
   //   dispatch(setError(error));

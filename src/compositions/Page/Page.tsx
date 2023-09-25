@@ -10,6 +10,7 @@ import useEnsAddress from '../../hooks/useEnsAddress';
 import useToggle from '../../hooks/useToggle';
 import { useAppSelector } from '../../redux/hooks';
 import { clearLastProvider } from '../../redux/stores/web3/web3Api';
+import { getConnection, tryDeactivateConnector } from '../../web3-connectors/connections';
 import WalletConnector from '../../widgets/WalletConnector/WalletConnector';
 import MobileMenu from '../MobileMenu/MobileMenu';
 import TopBar from '../TopBar/TopBar';
@@ -24,15 +25,13 @@ interface PageProps {
 
 const Page: FC<PageProps> = ({ className = '', contentClassName = '', children }) => {
   const {
-    // active,
     isActive,
     account,
     chainId,
-    connector,
   } = useWeb3React<Web3Provider>();
   const ensAddress = useEnsAddress(account || '');
   const { config } = useAppSelector((state) => state);
-  const { isInitialized } = useAppSelector((state) => state.web3);
+  const { isInitialized, connectionType } = useAppSelector((state) => state.web3);
   const { avatarUrl } = useAppSelector((state) => state.user);
 
   const chainIdIsCorrect = !!chainId && chainId === config.chainId;
@@ -49,8 +48,11 @@ const Page: FC<PageProps> = ({ className = '', contentClassName = '', children }
   };
 
   const handleDisconnectButtonClick = (): void => {
-    // connector.deactivate();
-    console.log(connector);
+    if (!connectionType) {
+      return;
+    }
+    console.log(getConnection(connectionType));
+    tryDeactivateConnector(getConnection(connectionType).connector);
     clearLastProvider();
   };
 
