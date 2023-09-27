@@ -1,5 +1,3 @@
-import { AbstractConnector } from '@web3-react/abstract-connector';
-
 import { ConnectionType } from './connections';
 import { SupportedWalletConnectors } from './connectors';
 import { getHasMetaMaskExtensionInstalled } from './helpers';
@@ -35,5 +33,3 @@ const SUPPORTED_WALLET_PROVIDERS: WalletProvider[] = [
 ];
 
 export default SUPPORTED_WALLET_PROVIDERS;
-
-export { AbstractConnector };

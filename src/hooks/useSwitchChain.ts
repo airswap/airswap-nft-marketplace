@@ -8,11 +8,13 @@ import { useAppDispatch, useAppSelector } from '../redux/hooks';
 import { addToast, hideToast } from '../redux/stores/toasts/toastsActions';
 import { setLastToastActionButtonIdClicked } from '../redux/stores/toasts/toastsSlice';
 import { ToastType } from '../types/ToastType';
+import { switchNetwork } from '../web3-connectors/connections';
 
 const useSwitchChain = (): void => {
   const dispatch = useAppDispatch();
-  const { isActive, chainId, provider } = useWeb3React<Web3Provider>();
+  const { isActive, chainId } = useWeb3React<Web3Provider>();
   const { config } = useAppSelector((state) => state);
+  const { connectionType } = useAppSelector((state) => state.web3);
   const { lastToastActionButtonIdClicked } = useAppSelector((state) => state.toasts);
 
   const [lastToastId, setLastToastId] = useState<string>();
@@ -54,17 +56,14 @@ const useSwitchChain = (): void => {
   }, [isActive]);
 
   useEffect(() => {
-    if (typeof provider?.provider.request !== 'function') {
+    if (!connectionType) {
       return;
     }
 
     if (lastToastActionButtonIdClicked && lastToastActionButtonIdClicked === lastToastId) {
-      provider.provider.request({
-        method: 'wallet_switchEthereumChain',
-        params: [{ chainId: `0x${config.chainId}` }],
+      switchNetwork(config.chainId, connectionType).then(() => {
+        dispatch(setLastToastActionButtonIdClicked(undefined));
       });
-
-      dispatch(setLastToastActionButtonIdClicked(undefined));
     }
   }, [lastToastActionButtonIdClicked]);
 };

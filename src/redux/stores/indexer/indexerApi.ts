@@ -1,11 +1,11 @@
 import { Protocols } from '@airswap/constants';
 import { RegistryV4 } from '@airswap/libraries';
 import { createAsyncThunk } from '@reduxjs/toolkit';
-import { providers } from 'ethers';
+import { ethers } from 'ethers';
 
 interface InitializeParams {
   chainId: number,
-  provider: providers.Web3Provider,
+  provider: ethers.providers.BaseProvider,
 }
 
 export const initialize = createAsyncThunk<

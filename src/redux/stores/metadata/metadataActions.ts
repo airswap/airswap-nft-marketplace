@@ -1,6 +1,6 @@
 import { CollectionTokenInfo } from '@airswap/types';
-import { Web3Provider } from '@ethersproject/providers';
 import { createAsyncThunk } from '@reduxjs/toolkit';
+import { ethers } from 'ethers';
 
 import { AppDispatch, RootState } from '../../store';
 import { getProtocolFee } from './metadataApi';
@@ -9,7 +9,7 @@ import { setCollectionTokens } from './metadataSlice';
 export const fetchProtocolFee = createAsyncThunk<
 number,
 {
-  provider: Web3Provider;
+  provider: ethers.providers.BaseProvider;
   chainId: number;
 }
 >('metadata/fetchProtocolFee', async ({ provider, chainId }) => {
