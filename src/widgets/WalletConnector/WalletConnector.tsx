@@ -6,8 +6,9 @@ import IconButton from '../../compositions/IconButton/IconButton';
 import { useAppDispatch } from '../../redux/hooks';
 import { getLastProviderFromLocalStorage } from '../../redux/stores/web3/web3Api';
 import { setConnectionType, setIsInitialized } from '../../redux/stores/web3/web3Slice';
-import { ConnectionType, getConnection, tryActivateConnector } from '../../web3-connectors/connections';
-import SUPPORTED_WALLET_PROVIDERS, { WalletProvider } from '../../web3-connectors/walletProviders';
+import { ConnectionType, getConnection } from '../../web3-connectors/connections';
+import { tryActivateConnector } from '../../web3-connectors/helpers';
+import walletProviders, { WalletProvider } from '../../web3-connectors/walletProviders';
 import WalletProviderList from './subcomponents/WalletProviderList/WalletProviderList';
 
 import './WalletConnector.scss';
@@ -80,7 +81,7 @@ const WalletConnector: FC<WalletConnectorProps> = ({ onCloseButtonClick, classNa
           />
         </div>
         <WalletProviderList
-          walletProviders={SUPPORTED_WALLET_PROVIDERS}
+          walletProviders={walletProviders}
           onWalletProviderButtonClick={handleWalletProviderButtonClick}
           className="wallet-connector__wallet-providers-list"
         />

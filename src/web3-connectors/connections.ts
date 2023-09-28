@@ -1,9 +1,8 @@
 import { Web3ReactHooks } from '@web3-react/core';
-import { AddEthereumChainParameter, Connector } from '@web3-react/types';
+import { Connector } from '@web3-react/types';
 
-import { chainInfo } from './chainInfo';
 import { buildInjectedConnector } from './injected';
-import { buildWalletConnectConnector } from './walletConnectV2';
+import { buildWalletConnectConnector } from './walletConnect';
 
 export interface Connection {
   connector: Connector;
@@ -31,6 +30,7 @@ export function getConnection(c: Connector | ConnectionType): Connection {
     if (!connection) {
       throw Error('Unsupported Connector');
     }
+
     return connection;
   }
 
@@ -40,40 +40,3 @@ export function getConnection(c: Connector | ConnectionType): Connection {
 
   return prioritizedConnectors[ConnectionType.injected];
 }
-
-export const switchNetwork = async (chainId: number, connectionType: ConnectionType | null): Promise<void> => {
-  if (!connectionType) {
-    return;
-  }
-
-  const { connector } = getConnection(connectionType);
-
-  if (connectionType === ConnectionType.walletConnect) {
-    await connector.activate(chainId);
-
-    return;
-  }
-
-  const info = chainInfo[chainId];
-  const addChainParameter: AddEthereumChainParameter = {
-    chainId,
-    chainName: info.label,
-    rpcUrls: [info.rpcUrl],
-    nativeCurrency: info.nativeCurrency,
-    blockExplorerUrls: [info.explorer],
-  };
-  await connector.activate(addChainParameter);
-};
-
-export const tryActivateConnector = async (connector: Connector): Promise<ConnectionType | undefined> => {
-  await connector.activate();
-
-  return getConnection(connector).type;
-};
-
-export const tryDeactivateConnector = async (connector: Connector): Promise<null | undefined> => {
-  await connector.deactivate?.();
-  await connector.resetState();
-
-  return null;
-};

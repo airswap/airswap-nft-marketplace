@@ -8,7 +8,7 @@ import { useAppDispatch, useAppSelector } from '../redux/hooks';
 import { addToast, hideToast } from '../redux/stores/toasts/toastsActions';
 import { setLastToastActionButtonIdClicked } from '../redux/stores/toasts/toastsSlice';
 import { ToastType } from '../types/ToastType';
-import { switchNetwork } from '../web3-connectors/connections';
+import { switchNetwork } from '../web3-connectors/helpers';
 
 const useSwitchChain = (): void => {
   const dispatch = useAppDispatch();

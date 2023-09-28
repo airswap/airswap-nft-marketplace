@@ -1,6 +1,12 @@
-import { TokenInfo } from '@airswap/types';
+import { TokenInfo as AirswapTokenInfo } from '@airswap/types';
 
 export const nativeCurrencyAddress = '0x0000000000000000000000000000000000000000';
+
+interface TokenInfo extends Partial<AirswapTokenInfo> {
+  decimals: 18;
+  name: string;
+  symbol: string;
+}
 
 const nativeCurrency: Record<number, TokenInfo> = {
   1: {

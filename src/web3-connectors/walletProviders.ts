@@ -1,8 +1,5 @@
 import { ConnectionType } from './connections';
-import { SupportedWalletConnectors } from './connectors';
 import { getHasMetaMaskExtensionInstalled } from './helpers';
-import { metaMask } from './metaMask';
-import { walletConnect } from './walletConnect';
 
 export type WalletProvider = {
   name: string;
@@ -10,26 +7,27 @@ export type WalletProvider = {
   isInstalled: boolean;
   url: string;
   type: ConnectionType;
-  connector: SupportedWalletConnectors;
 };
 
-const SUPPORTED_WALLET_PROVIDERS: WalletProvider[] = [
+const walletConnectProjectId = process.env.REACT_APP_WALLET_CONNECT_PROJECT_ID;
+
+const walletProviders: WalletProvider[] = [
   {
     name: 'MetaMask',
     logo: 'logos/metamask.svg',
     isInstalled: getHasMetaMaskExtensionInstalled(),
     url: 'https://metamask.io/',
     type: ConnectionType.injected,
-    connector: metaMask,
   },
-  {
-    name: 'WalletConnect',
-    logo: 'logos/walletconnect.svg',
-    isInstalled: true,
-    url: 'https://walletconnect.com/',
-    type: ConnectionType.walletConnect,
-    connector: walletConnect,
-  },
+  ...(walletConnectProjectId ? [
+    {
+      name: 'WalletConnect',
+      logo: 'logos/walletconnect.svg',
+      isInstalled: true,
+      url: 'https://walletconnect.com/',
+      type: ConnectionType.walletConnect,
+    },
+  ] : []),
 ];
 
-export default SUPPORTED_WALLET_PROVIDERS;
+export default walletProviders;

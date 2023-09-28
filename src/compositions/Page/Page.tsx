@@ -10,7 +10,8 @@ import useEnsAddress from '../../hooks/useEnsAddress';
 import useToggle from '../../hooks/useToggle';
 import { useAppSelector } from '../../redux/hooks';
 import { clearLastProvider } from '../../redux/stores/web3/web3Api';
-import { getConnection, tryDeactivateConnector } from '../../web3-connectors/connections';
+import { getConnection } from '../../web3-connectors/connections';
+import { tryDeactivateConnector } from '../../web3-connectors/helpers';
 import WalletConnector from '../../widgets/WalletConnector/WalletConnector';
 import MobileMenu from '../MobileMenu/MobileMenu';
 import TopBar from '../TopBar/TopBar';
@@ -51,7 +52,7 @@ const Page: FC<PageProps> = ({ className = '', contentClassName = '', children }
     if (!connectionType) {
       return;
     }
-    console.log(getConnection(connectionType));
+
     tryDeactivateConnector(getConnection(connectionType).connector);
     clearLastProvider();
   };
