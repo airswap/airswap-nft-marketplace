@@ -7,6 +7,10 @@ const getIsBraveWallet = (): boolean => window.ethereum?.isBraveWallet ?? false;
 
 export const getHasMetaMaskExtensionInstalled = (): boolean => (window.ethereum?.isMetaMask ?? false) && !getIsBraveWallet();
 
+export const onConnectionError = (error: Error) => {
+  console.error(`web3-react error: ${error}`);
+};
+
 export const switchNetwork = async (chainId: number, connectionType: ConnectionType | null): Promise<void> => {
   if (!connectionType) {
     return;

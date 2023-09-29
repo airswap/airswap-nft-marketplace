@@ -132,7 +132,6 @@ const TopBar: FC<TopBarProps> = ({
           className="top-bar__user-popup"
         />
       )}
-      <button type="button" onClick={onDisconnectButtonClick} className="top-bar__disconnect-button">Disconnect</button>
     </div>
   );
 };

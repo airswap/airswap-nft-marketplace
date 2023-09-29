@@ -15,10 +15,6 @@ export enum ConnectionType {
   walletConnect = 'walletConnect',
 }
 
-export const onConnectionError = (error: Error) => {
-  console.debug(`web3-react error: ${error}`);
-};
-
 export const prioritizedConnectors: { [key in ConnectionType]: Connection } = {
   [ConnectionType.injected]: buildInjectedConnector(),
   [ConnectionType.walletConnect]: buildWalletConnectConnector(),

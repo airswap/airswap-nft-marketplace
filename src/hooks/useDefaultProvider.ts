@@ -9,10 +9,10 @@ import { getRpcUrl } from '../helpers/ethers';
 // Hook for getting library from connected wallet or from rpc url, this way you can still use it in ethers.js methods
 
 const useDefaultLibrary = (chainId?: number): BaseProvider | undefined => {
-  const { provider } = useWeb3React();
+  const { provider, chainId: providerChainId } = useWeb3React();
 
   return useMemo(() => {
-    if (provider || !chainId) {
+    if (!chainId || (provider && chainId === providerChainId)) {
       return provider;
     }
 

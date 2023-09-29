@@ -3,10 +3,11 @@ import { initializeConnector } from '@web3-react/core';
 import { WalletConnect } from '@web3-react/walletconnect-v2';
 
 import { Connection, ConnectionType } from './connections';
+import { onConnectionError } from './helpers';
 
 const chains = Object.keys(ChainIds).map(Number).filter(Number);
 
-export function buildWalletConnectConnector() {
+export const buildWalletConnectConnector = () => {
   const [web3WalletConnect, web3WalletConnectHooks] = initializeConnector<WalletConnect>(
     (actions) => new WalletConnect({
       actions,
@@ -16,6 +17,7 @@ export function buildWalletConnectConnector() {
         optionalChains: chains.filter((chain) => chain !== ChainIds.MAINNET),
         showQrModal: true,
       },
+      onError: onConnectionError,
     }),
   );
   const walletConnectConnection: Connection = {
@@ -24,4 +26,4 @@ export function buildWalletConnectConnector() {
     type: ConnectionType.walletConnect,
   };
   return walletConnectConnection;
-}
+};

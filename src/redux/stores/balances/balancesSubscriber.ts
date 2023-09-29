@@ -31,15 +31,19 @@ export const configureBalancesSubscriber = () => {
       return;
     }
 
-    if (!web3.chainId || !web3.account) {
+    if (!web3.chainId || !web3.account || !web3.hasLibrary || web3.chainId !== config.chainId) {
+      return;
+    }
+
+    const library = getLibrary(web3.chainId);
+
+    if (!library) {
       return;
     }
 
     if (account !== web3.account || chainId !== web3.chainId) {
       account = web3.account;
       chainId = web3.chainId;
-
-      const library = getLibrary(chainId);
 
       store.dispatch(setIsInitialized(false));
 
@@ -70,8 +74,6 @@ export const configureBalancesSubscriber = () => {
 
     if (lastSucceededTransaction && lastSucceededTransaction.hash !== lastTransactionHash) {
       lastTransactionHash = lastSucceededTransaction.hash;
-
-      const library = getLibrary(web3.chainId);
 
       if (lastSucceededTransaction.type === SubmittedTransactionType.order) {
         store.dispatch(fetchUserTokens({
