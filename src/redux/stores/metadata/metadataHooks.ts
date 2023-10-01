@@ -11,6 +11,7 @@ export const useMetadata = (): void => {
   const dispatch = useAppDispatch();
 
   const { chainId, collectionToken, currencyToken } = useAppSelector(state => state.config);
+  const { currencyTokenInfo, protocolFee } = useAppSelector(state => state.metadata);
   const library = useDefaultLibrary(chainId);
 
   useEffect(() => {
@@ -22,15 +23,19 @@ export const useMetadata = (): void => {
       return;
     }
 
-    dispatch(getCurrencyTokenInfo({
-      currencyToken,
-      library,
-      chainId,
-    }));
+    if (!currencyTokenInfo) {
+      dispatch(getCurrencyTokenInfo({
+        currencyToken,
+        library,
+        chainId,
+      }));
+    }
 
-    dispatch(fetchProtocolFee({
-      provider: library,
-      chainId,
-    }));
+    if (!protocolFee) {
+      dispatch(fetchProtocolFee({
+        provider: library,
+        chainId,
+      }));
+    }
   }, [library]);
 };

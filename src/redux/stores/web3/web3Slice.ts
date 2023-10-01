@@ -8,6 +8,7 @@ export interface Web3State {
   hasLibrary: boolean;
   isActive: boolean;
   isInitialized: boolean;
+  userHasClosedConnectModal: boolean;
   account?: string;
   chainId?: number;
   walletName?: string;
@@ -19,6 +20,7 @@ const initialState: Web3State = {
   hasLibrary: false,
   isActive: false,
   isInitialized: false,
+  userHasClosedConnectModal: false,
 };
 
 export const web3Slice = createSlice({
@@ -47,6 +49,10 @@ export const web3Slice = createSlice({
       ...state,
       hasLibrary: action.payload,
     }),
+    setUserHasClosedConnectModal: (state, action: PayloadAction<boolean>) => ({
+      ...state,
+      userHasClosedConnectModal: action.payload,
+    }),
     setError: (state, action: PayloadAction<Error | undefined>) => ({
       ...state,
       error: action.payload,
@@ -59,6 +65,7 @@ export const {
   setError,
   setHasLibrary,
   setIsInitialized,
+  setUserHasClosedConnectModal,
   setWeb3Data,
 } = web3Slice.actions;
 

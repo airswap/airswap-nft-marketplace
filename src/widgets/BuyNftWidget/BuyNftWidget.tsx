@@ -17,11 +17,23 @@ interface BuyNftWidgetProps {
 }
 
 const BuyNftWidget: FC<BuyNftWidgetProps> = ({ order, className = '' }) => {
-  const { account, chainId, provider: library } = useWeb3React();
+  const {
+    account,
+    chainId,
+    isActive,
+  } = useWeb3React();
   const tokenId = order.signer.id;
 
-  const { collectionToken } = useAppSelector((state) => state.config);
+  const {
+    collectionImage,
+    collectionName,
+    collectionToken,
+    chainId: configChainId,
+  } = useAppSelector((state) => state.config);
   const { isLoading: isMetadataLoading, currencyTokenInfo } = useAppSelector(state => state.metadata);
+  const { connectionType } = useAppSelector(state => state.web3);
+
+  const { provider: library } = useWeb3React();
 
   const [collectionTokenInfo, isCollectionTokenInfoLoading] = useCollectionToken(collectionToken, tokenId);
   const [isNonceUsed, isNonceUsedLoading] = useFullOrderNonceUsed(order);
@@ -29,8 +41,9 @@ const BuyNftWidget: FC<BuyNftWidgetProps> = ({ order, className = '' }) => {
 
   if (
     !isLoading
+    && isActive
     && account
-    && chainId
+    && chainId === configChainId
     && collectionTokenInfo
     && currencyTokenInfo
     && library
@@ -51,7 +64,16 @@ const BuyNftWidget: FC<BuyNftWidgetProps> = ({ order, className = '' }) => {
 
   return (
     <DisconnectedBuyNftWidget
+      isActive={isActive}
       isLoading={isLoading}
+      chainId={chainId}
+      configChainId={configChainId}
+      collectionImage={collectionImage}
+      collectionName={collectionName}
+      collectionTokenInfo={collectionTokenInfo}
+      connectionType={connectionType}
+      currencyTokenInfo={currencyTokenInfo}
+      fullOrder={order}
       nftId={tokenId}
       className={className}
     />

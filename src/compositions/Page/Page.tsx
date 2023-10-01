@@ -32,13 +32,13 @@ const Page: FC<PageProps> = ({ className = '', contentClassName = '', children }
   } = useWeb3React<Web3Provider>();
   const ensAddress = useEnsAddress(account || '');
   const { config } = useAppSelector((state) => state);
-  const { isInitialized, connectionType } = useAppSelector((state) => state.web3);
+  const { isInitialized, userHasClosedConnectModal, connectionType } = useAppSelector((state) => state.web3);
   const { avatarUrl } = useAppSelector((state) => state.user);
 
   const chainIdIsCorrect = !!chainId && chainId === config.chainId;
 
   const [mobileMenuIsVisible, setMobileMenuIsVisible] = useState(false);
-  const [showWalletConnector, toggleShowWalletConnector] = useToggle(!isActive);
+  const [showWalletConnector, toggleShowWalletConnector] = useToggle(!isActive && !userHasClosedConnectModal);
 
   const pageClassName = classNames('page', {
     'page--show-wallet-connector': showWalletConnector && isInitialized && !isActive,
