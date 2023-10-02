@@ -6,6 +6,8 @@ import { CollectionTokenInfo, FullOrder, TokenInfo } from '@airswap/types';
 import Button from '../../../../components/Button/Button';
 import LoadingSpinner from '../../../../components/LoadingSpinner/LoadingSpinner';
 import OrderWidgetHeader from '../../../../compositions/OrderWidgetHeader/OrderWidgetHeader';
+import { useAppDispatch } from '../../../../redux/hooks';
+import { setShowConnectModal } from '../../../../redux/stores/web3/web3Slice';
 import { ConnectionType } from '../../../../web3-connectors/connections';
 import { switchNetwork } from '../../../../web3-connectors/helpers';
 import BuyNftWidgetDetailsContainer from '../BuyNftWidgetDetailsContainer/BuyNftWidgetDetailsContainer';
@@ -40,6 +42,8 @@ const DisconnectedBuyNftWidget: FC<DisconnectedBuyNftWidgetProps> = ({
   nftId,
   className = '',
 }): ReactElement => {
+  const dispatch = useAppDispatch();
+
   const handleSwitchChainClick = (): void => {
     if (connectionType) {
       switchNetwork(configChainId, connectionType);
@@ -47,7 +51,7 @@ const DisconnectedBuyNftWidget: FC<DisconnectedBuyNftWidgetProps> = ({
   };
 
   const handleConnectWalletClick = (): void => {
-    console.log('snavie');
+    dispatch(setShowConnectModal(true));
   };
 
   return (

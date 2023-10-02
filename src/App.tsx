@@ -11,6 +11,7 @@ import { useConfig } from './redux/stores/config/configHooks';
 import { useIndexers } from './redux/stores/indexer/indexerHooks';
 import { useMetadata } from './redux/stores/metadata/metadataHooks';
 import { useTransactions } from './redux/stores/transactions/transactionsHooks';
+import { useWeb3 } from './redux/stores/web3/web3Hooks';
 import { prioritizedConnectors } from './web3-connectors/connections';
 import ToastsWidget from './widgets/ToastsWidget/ToastsWidget';
 
@@ -23,6 +24,7 @@ const ConnectedApp = () => {
   useMetadata();
   useIndexers();
   useSwitchChain();
+  useWeb3();
 
   if (isFailed) {
     return (
