@@ -25,6 +25,10 @@
         border-bottom-left-radius: .25rem;
     }
 
+    &:nth-child(2) {
+        display: none;
+    }
+
     &:last-child {
         border-top-right-radius: .25rem;
         border-bottom-right-radius: .25rem;

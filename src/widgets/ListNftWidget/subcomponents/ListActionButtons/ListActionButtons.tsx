@@ -104,10 +104,10 @@ const ListActionButtons: FC<ActionButtonsProps> = ({
     if (state === ListNftState.success && orderNonce) {
       return (
         <NavLink
-          to={routes.orderDetail(account, orderNonce)}
+          to={routes.userOrders(account)}
           className="list-action-buttons__action-button"
         >
-          View listing
+          View listings
         </NavLink>
       );
     }

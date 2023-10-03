@@ -80,13 +80,15 @@ const Page: FC<PageProps> = ({ className = '', contentClassName = '', children }
         onMobileMenuButtonClick={handleIconButtonClick}
         className="page__top-bar"
       />
-      <MobileMenu
-        isHidden={!mobileMenuIsVisible}
-        avatarUrl={avatarUrl}
-        address={account || undefined}
-        onNavLinkClick={handleIconButtonClick}
-        className="page__mobile-menu"
-      />
+      {account && (
+        <MobileMenu
+          isHidden={!mobileMenuIsVisible}
+          avatarUrl={avatarUrl}
+          address={account}
+          onNavLinkClick={handleIconButtonClick}
+          className="page__mobile-menu"
+        />
+      )}
       <WalletConnector
         onCloseButtonClick={toggleShowWalletConnector}
         className="page__wallet-connector"

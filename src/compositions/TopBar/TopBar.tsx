@@ -24,8 +24,8 @@ interface TopBarProps {
   showDesktopConnectButton: boolean;
   showDesktopUserButton: boolean;
   userWalletButtonIsDisabled: boolean;
+  account?: string;
   avatarUrl?: string;
-  account: string | null | undefined;
   ensAddress: string | undefined;
   onConnectButtonClick: () => void;
   onDisconnectButtonClick: () => void;
@@ -39,8 +39,8 @@ const TopBar: FC<TopBarProps> = ({
   showDesktopConnectButton,
   showDesktopUserButton,
   userWalletButtonIsDisabled,
-  avatarUrl,
   account,
+  avatarUrl,
   ensAddress,
   onConnectButtonClick,
   onDisconnectButtonClick,
@@ -87,14 +87,16 @@ const TopBar: FC<TopBarProps> = ({
         to="/"
         className="top-bar__airswap-button"
       />
-      <IconButton
-        hideLabel
-        icon={!mobileMenuIsVisible ? 'menu' : 'close'}
-        text="Menu button"
-        onClick={onMobileMenuButtonClick}
-        className="top-bar__menu-button"
-        iconClassName="top-bar__menu-button-icon"
-      />
+      {account && (
+        <IconButton
+          hideLabel
+          icon={!mobileMenuIsVisible ? 'menu' : 'close'}
+          text="Menu button"
+          onClick={onMobileMenuButtonClick}
+          className="top-bar__menu-button"
+          iconClassName="top-bar__menu-button-icon"
+        />
+      )}
       <div className="top-bar__list-button-and-wallet-button-wrapper">
         <IconNavLink
           aria-disabled={listButtonIsDisabled}
