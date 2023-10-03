@@ -12,7 +12,7 @@ interface ListNftWidgetProps {
 }
 
 const ListNftWidget: FC<ListNftWidgetProps> = ({ className = '' }) => {
-  const { account, library, chainId } = useWeb3React();
+  const { account, provider: library, chainId } = useWeb3React();
   const [searchParams] = useSearchParams();
   const { key } = useLocation();
 

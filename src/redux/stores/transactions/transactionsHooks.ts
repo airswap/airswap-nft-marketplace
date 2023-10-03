@@ -1,7 +1,6 @@
 import { useEffect, useState } from 'react';
 
-import { useWeb3React } from '@web3-react/core';
-
+import useDefaultProvider from '../../../hooks/useDefaultProvider';
 import { useAppDispatch, useAppSelector } from '../../hooks';
 import {
   getLocalStorageTransactions,
@@ -13,14 +12,14 @@ import { setTransactions } from './transactionsSlice';
 export const useTransactions = (): void => {
   const dispatch = useAppDispatch();
 
-  const { library } = useWeb3React();
+  const library = useDefaultProvider();
   const { account, chainId } = useAppSelector(state => state.web3);
   const { transactions } = useAppSelector(state => state.transactions);
 
   const [activeListenerHashes, setActiveListenerHashes] = useState<string[]>([]);
 
   useEffect(() => {
-    if (!account || !chainId) {
+    if (!account || !chainId || !library) {
       return;
     }
 

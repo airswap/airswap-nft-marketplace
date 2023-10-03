@@ -4,8 +4,8 @@
 
     @include for-size(tablet-portrait-up) {
         display: flex;
-        align-items: center;
         justify-content: center;
+        padding-top: 1rem;
 
         &:before {
             content: '';

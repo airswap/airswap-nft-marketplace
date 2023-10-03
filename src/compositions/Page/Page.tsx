@@ -10,6 +10,8 @@ import useEnsAddress from '../../hooks/useEnsAddress';
 import useToggle from '../../hooks/useToggle';
 import { useAppSelector } from '../../redux/hooks';
 import { clearLastProvider } from '../../redux/stores/web3/web3Api';
+import { getConnection } from '../../web3-connectors/connections';
+import { tryDeactivateConnector } from '../../web3-connectors/helpers';
 import WalletConnector from '../../widgets/WalletConnector/WalletConnector';
 import MobileMenu from '../MobileMenu/MobileMenu';
 import TopBar from '../TopBar/TopBar';
@@ -24,23 +26,22 @@ interface PageProps {
 
 const Page: FC<PageProps> = ({ className = '', contentClassName = '', children }) => {
   const {
-    active,
+    isActive,
     account,
     chainId,
-    deactivate,
   } = useWeb3React<Web3Provider>();
   const ensAddress = useEnsAddress(account || '');
   const { config } = useAppSelector((state) => state);
-  const { isInitialized } = useAppSelector((state) => state.web3);
+  const { isInitialized, connectionType } = useAppSelector((state) => state.web3);
   const { avatarUrl } = useAppSelector((state) => state.user);
 
   const chainIdIsCorrect = !!chainId && chainId === config.chainId;
 
   const [mobileMenuIsVisible, setMobileMenuIsVisible] = useState(false);
-  const [showWalletConnector, toggleShowWalletConnector] = useToggle(!active);
+  const [showWalletConnector, toggleShowWalletConnector] = useToggle(!isActive);
 
   const pageClassName = classNames('page', {
-    'page--show-wallet-connector': showWalletConnector && isInitialized && !active,
+    'page--show-wallet-connector': showWalletConnector && isInitialized && !isActive,
   }, className);
 
   const handleIconButtonClick = (): void => {
@@ -48,7 +49,11 @@ const Page: FC<PageProps> = ({ className = '', contentClassName = '', children }
   };
 
   const handleDisconnectButtonClick = (): void => {
-    deactivate();
+    if (!connectionType) {
+      return;
+    }
+
+    tryDeactivateConnector(getConnection(connectionType).connector);
     clearLastProvider();
   };
 
@@ -60,8 +65,8 @@ const Page: FC<PageProps> = ({ className = '', contentClassName = '', children }
       <TopBar
         listButtonIsDisabled={!chainIdIsCorrect || !account}
         mobileMenuIsVisible={mobileMenuIsVisible}
-        showDesktopConnectButton={isInitialized && !active}
-        showDesktopUserButton={isInitialized && active}
+        showDesktopConnectButton={isInitialized && !isActive}
+        showDesktopUserButton={isInitialized && isActive}
         userWalletButtonIsDisabled={!chainIdIsCorrect}
         avatarUrl={avatarUrl}
         account={account}
@@ -86,7 +91,7 @@ const Page: FC<PageProps> = ({ className = '', contentClassName = '', children }
       <div className={`page__content ${contentClassName}`}>
         {children}
 
-        {(!active && !showWalletConnector) && (
+        {(!isActive && !showWalletConnector) && (
           <Button
             text="Connect wallet"
             onClick={toggleShowWalletConnector}

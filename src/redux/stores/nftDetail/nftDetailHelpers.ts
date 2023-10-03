@@ -1,4 +1,4 @@
-import { Web3Provider } from '@ethersproject/providers';
+import { BaseProvider } from '@ethersproject/providers';
 import erc721AbiContract from '@openzeppelin/contracts/build/contracts/ERC721.json';
 import erc1155Contract from '@openzeppelin/contracts/build/contracts/ERC1155.json';
 import { BigNumber, ethers } from 'ethers';
@@ -13,7 +13,7 @@ import { getUniqueArrayChildren } from '../../../helpers/array';
 export const getErc721Logs = async (
   chainId: number,
   collectionToken: string,
-  provider: Web3Provider,
+  provider: BaseProvider,
   tokenId: number,
 ): Promise<NftTransactionLog[]> => {
   const contract = new ethers.Contract(collectionToken, erc721AbiContract.abi, provider);
@@ -36,7 +36,7 @@ export const getErc721Logs = async (
 export const getErc1155Logs = async (
   chainId: number,
   collectionToken: string,
-  provider: Web3Provider,
+  provider: BaseProvider,
   tokenId: number,
 ): Promise<NftTransactionLog[]> => {
   const contract = new ethers.Contract(collectionToken, erc1155Contract.abi, provider);

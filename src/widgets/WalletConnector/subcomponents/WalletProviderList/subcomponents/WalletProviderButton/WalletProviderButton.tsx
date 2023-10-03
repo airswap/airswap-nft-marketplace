@@ -1,7 +1,7 @@
 import React, { FC } from 'react';
 
 import Button from '../../../../../../components/Button/Button';
-import { WalletProvider } from '../../../../../../constants/supportedWalletProviders';
+import { WalletProvider } from '../../../../../../web3-connectors/walletProviders';
 
 import './WalletProviderButton.scss';
 
@@ -16,9 +16,11 @@ const WalletProviderButton: FC<WalletProviderButtonProps> = ({ walletProvider, o
     onClick(walletProvider);
   };
 
+  const buttonText = walletProvider.isInstalled ? walletProvider.name : `${walletProvider.name} (install)`;
+
   return (
     <Button
-      text={walletProvider.name}
+      text={buttonText}
       className={`wallet-provider-button ${className}`}
       onClick={handleClick}
     >
@@ -28,7 +30,7 @@ const WalletProviderButton: FC<WalletProviderButtonProps> = ({ walletProvider, o
         className="wallet-provider-button__logo"
       />
       <span className="wallet-provider-button__name">
-        {walletProvider.name}
+        {buttonText}
       </span>
     </Button>
   );

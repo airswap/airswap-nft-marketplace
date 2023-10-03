@@ -2,16 +2,17 @@ import { Web3Provider } from '@ethersproject/providers';
 
 import { rpcUrls } from '../constants/rpc';
 
-const cachedLibrary: Record<string, Web3Provider> = {};
+let cachedLibrary: Record<number, Web3Provider> = {};
 
-export const setLibrary = (provider: any): Web3Provider => {
-  const chainId = parseInt(provider.chainId, 16);
-
+export const setCachedLibrary = (provider: Web3Provider, chainId: number): Web3Provider => {
   if (!cachedLibrary[chainId]) {
-    cachedLibrary[chainId] = new Web3Provider(provider);
-    cachedLibrary[chainId].pollingInterval = 12000;
+    cachedLibrary[chainId] = provider;
   }
   return cachedLibrary[chainId];
+};
+
+export const clearedCachedLibrary = (): void => {
+  cachedLibrary = {};
 };
 
 export const getLibrary = (chainId: number): Web3Provider => cachedLibrary[chainId];

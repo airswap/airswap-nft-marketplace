@@ -1,7 +1,6 @@
 import { SwapERC20 } from '@airswap/libraries';
 import { getTokenInfo } from '@airswap/metadata';
 import { TokenInfo } from '@airswap/types';
-import { Web3Provider } from '@ethersproject/providers';
 import { createAsyncThunk } from '@reduxjs/toolkit';
 import { ethers } from 'ethers';
 
@@ -20,7 +19,7 @@ GetCurrencyTokenInfoParams
 
 export const getProtocolFee = async (
   chainId: number,
-  provider: Web3Provider,
+  provider: ethers.providers.BaseProvider,
 ): Promise<number> => {
   const protocolFee = await SwapERC20.getContract(provider, chainId).protocolFee();
   return protocolFee.toNumber();

@@ -15,7 +15,6 @@ export interface ConfigState {
   collectionTokenKind?: TokenKinds;
   collectionName: string;
   collectionImage: string;
-  ipfsGatewayURL: string;
 }
 const initialState: ConfigState = {
   isFailed: false,
@@ -27,7 +26,6 @@ const initialState: ConfigState = {
   collectionToken: (process.env.REACT_APP_COLLECTION_TOKEN || '').toLowerCase(),
   collectionName: process.env.REACT_APP_COLLECTION_NAME || '',
   collectionImage: process.env.REACT_APP_COLLECTION_IMAGE || '',
-  ipfsGatewayURL: process.env.REACT_APP_IPFS_GATEWAY_URL || 'https://ipfs.io/ipfs/',
 };
 
 const configSlice = createSlice({

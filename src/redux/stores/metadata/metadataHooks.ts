@@ -1,8 +1,6 @@
 import { useEffect } from 'react';
 
-import { Web3Provider } from '@ethersproject/providers';
-import { useWeb3React } from '@web3-react/core';
-
+import useDefaultLibrary from '../../../hooks/useDefaultProvider';
 import { useAppDispatch, useAppSelector } from '../../hooks';
 import { fetchProtocolFee } from './metadataActions';
 import { getCurrencyTokenInfo } from './metadataApi';
@@ -12,16 +10,15 @@ import { getLocalStorageCollectionTokens } from './metdataHelpers';
 export const useMetadata = (): void => {
   const dispatch = useAppDispatch();
 
-  const { library } = useWeb3React<Web3Provider>();
-  const { chainId } = useAppSelector(state => state.web3);
-  const { chainId: configChainId, collectionToken, currencyToken } = useAppSelector(state => state.config);
+  const { chainId, collectionToken, currencyToken } = useAppSelector(state => state.config);
+  const library = useDefaultLibrary(chainId);
 
   useEffect(() => {
     dispatch(setCollectionTokens(getLocalStorageCollectionTokens(collectionToken)));
   }, [collectionToken]);
 
   useEffect(() => {
-    if (!library || !chainId || chainId !== configChainId) {
+    if (!library || !chainId) {
       return;
     }
 
@@ -35,5 +32,5 @@ export const useMetadata = (): void => {
       provider: library,
       chainId,
     }));
-  }, [chainId]);
+  }, [library]);
 };

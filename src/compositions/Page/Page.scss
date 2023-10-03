@@ -7,7 +7,7 @@ $component: page;
     margin: 0 auto;
     width: 100%;
     min-width: 12.5rem;
-    z-index: 100;
+    z-index: 80;
 
     @include for-size(desktop-up) {
         max-width: var(--page-max-width);
@@ -45,11 +45,18 @@ $component: page;
         top: var(--top-bar-height);
         left: 0;
         width: 100%;
-        height: calc(100svh - var(--top-bar-height));
+        height: calc(100% - var(--top-bar-height));
+        min-height: calc(100svh - var(--top-bar-height));
         z-index: 4;
         overflow-y: auto;
         visibility: hidden;
         pointer-events: none;
+
+        @include for-size(tablet-portrait-up) {
+            top: var(--desktop-top-bar-height);
+            height: calc(100% - var(--desktop-top-bar-height));
+            min-height: calc(100svh - var(--desktop-top-bar-height));
+        }
     }
 
     &__connect-wallet-button {

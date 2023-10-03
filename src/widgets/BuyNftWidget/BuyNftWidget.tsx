@@ -17,7 +17,7 @@ interface BuyNftWidgetProps {
 }
 
 const BuyNftWidget: FC<BuyNftWidgetProps> = ({ order, className = '' }) => {
-  const { account, chainId, library } = useWeb3React();
+  const { account, chainId, provider: library } = useWeb3React();
   const tokenId = order.signer.id;
 
   const { collectionToken } = useAppSelector((state) => state.config);

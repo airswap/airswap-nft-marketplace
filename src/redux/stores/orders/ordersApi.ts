@@ -112,7 +112,7 @@ export async function checkOrder(
 
 export async function getNonceUsed(
   order: FullOrder,
-  provider: ethers.providers.Web3Provider,
+  provider: ethers.providers.BaseProvider,
 ): Promise<boolean> {
   return Swap.getContract(provider, order.chainId).nonceUsed(
     order.signer.wallet,
