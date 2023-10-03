@@ -11,7 +11,7 @@ import './MobileMenu.scss';
 interface MobileMenuProp {
   isHidden: boolean;
   avatarUrl?: string;
-  address?: string;
+  address: string;
   ensAddress?: string | undefined;
   onNavLinkClick: () => void;
   className?: string;
@@ -31,51 +31,33 @@ const MobileMenu: FC<MobileMenuProp> = ({
 
   return (
     <div className={mobileMenuClassName}>
-      {address && (
-        <WalletInfo
-          avatarUrl={avatarUrl}
-          address={address}
-          ensAddress={ensAddress}
-        />
-      )}
+      <WalletInfo
+        avatarUrl={avatarUrl}
+        address={address}
+        ensAddress={ensAddress}
+      />
       <div className="mobile-menu__nav-links">
         <NavLink
-          className="mobile-menu__nav-link"
-          to=""
+          to={routes.profile(address)}
           onClick={onNavLinkClick}
+          className="mobile-menu__nav-link"
         >
-          My NFTs
+          My Tokens
         </NavLink>
         <NavLink
-          className="mobile-menu__nav-link"
-          to=""
+          to={routes.userOrders(address)}
           onClick={onNavLinkClick}
+          className="mobile-menu__nav-link"
         >
-          My Activity
+          My Listings
         </NavLink>
         <NavLink
-          className="mobile-menu__nav-link"
-          to=""
-          onClick={onNavLinkClick}
-        >
-          My Listed NFTs
-        </NavLink>
-        <NavLink
-          className="mobile-menu__nav-link"
           to={routes.listNft()}
           onClick={onNavLinkClick}
-        >
-          List a token
-        </NavLink>
-        <a
           className="mobile-menu__nav-link"
-          target="_blank"
-          rel="noreferrer"
-          href="https://discord.com/invite/ecQbV7H"
-          onClick={onNavLinkClick}
         >
-          Project Discord
-        </a>
+          List a Token
+        </NavLink>
       </div>
     </div>
   );
