@@ -18,7 +18,7 @@ AppThunkApiConfig
 
 interface GetOwnedTokensOfAccountParams {
   account: string,
-  provider: ethers.providers.Web3Provider,
+  provider: ethers.providers.BaseProvider,
 }
 
 export const getProfileTokens = createAsyncThunk<

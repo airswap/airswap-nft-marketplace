@@ -29,7 +29,9 @@
         margin-top: var(--page-padding);
     }
 
-    &__empty-state {
-        margin: 5rem auto 2rem;
+    &__empty-state,
+    &__loading-spinner {
+        margin: 2.5rem auto 0;
+        opacity: 0.5;
     }
 }

@@ -50,7 +50,6 @@ const TradeNftDetails: FC<TradeNftDetailsProps> = ({
           />
           <div className="trade-nft-details__collection-details">
             <h3 className="trade-nft-details__collection-name">{collectionName}</h3>
-            <h4 className="trade-nft-details__collection-author">By Sjnivo</h4>
           </div>
         </div>
       </div>

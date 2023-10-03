@@ -1,5 +1,7 @@
 import { FC, useMemo } from 'react';
 
+import LoadingSpinner from '../../../../components/LoadingSpinner/LoadingSpinner';
+import SearchInput from '../../../../components/SearchInput/SearchInput';
 import getOwnedTokensByAccountUrl from '../../../../helpers/airswap/getOwnedTokensByAccountUrl';
 import useEnsAddress from '../../../../hooks/useEnsAddress';
 import { useAppSelector } from '../../../../redux/hooks';
@@ -32,6 +34,15 @@ const ConnectedProfileWidget: FC<ConnectedProfileWidgetProps> = ({
         address={profileAccount}
         className="profile-widget__header"
       />
+      <div className="profile-widget__content">
+        <SearchInput
+          disabled
+          placeholder="Search tokens"
+          value=""
+          className="profile-widget__search-input"
+        />
+        <LoadingSpinner className="profile-widget__loading-spinner" />
+      </div>
     </div>
   );
 };

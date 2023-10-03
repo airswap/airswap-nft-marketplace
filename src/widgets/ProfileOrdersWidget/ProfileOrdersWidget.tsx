@@ -20,7 +20,6 @@ const ProfileOrdersWidget: FC = () => {
 
   if (
     isInitialized
-    && account
     && currencyTokenInfo
     && profileAccount
   ) {
