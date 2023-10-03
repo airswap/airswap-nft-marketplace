@@ -14,7 +14,7 @@ export const useIndexers = (): void => {
 
   const { lastUserOrder } = useAppSelector(state => state.listNft);
   const { chainId } = useAppSelector(state => state.config);
-  const { isInitialized, urls } = useAppSelector(state => state.indexer);
+  const { isInitialized, isLoading, urls } = useAppSelector(state => state.indexer);
   const library = useDefaultLibrary(chainId);
 
   const sendAndClearLastOrder = async (lastOrder: FullOrder) => {
@@ -32,7 +32,7 @@ export const useIndexers = (): void => {
   };
 
   useEffect(() => {
-    if (library) {
+    if (library && !isLoading) {
       dispatch(initialize({ chainId, provider: library }));
     }
   }, [library]);

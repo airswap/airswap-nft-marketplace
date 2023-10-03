@@ -14,7 +14,7 @@ const getUniqueTokenIds = (tokenIds: BigNumber[]): string[] => tokenIds
   .filter(getUniqueSingleDimensionArray);
 
 export const getOwnedTokenIdsOfWallet = async (
-  provider: ethers.providers.Web3Provider,
+  provider: ethers.providers.BaseProvider,
   walletAddress: string,
   collectionToken: string,
 ): Promise<string[]> => {

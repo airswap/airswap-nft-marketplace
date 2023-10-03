@@ -24,7 +24,7 @@ import ProfileHeader from '../../../ProfileWidget/subcomponents/ProfileHeader/Pr
 import getListCallToActionText from '../../helpers/getListCallToActionText';
 
 interface ConnectedProfileOrdersWidgetProps {
-  account: string;
+  account?: string;
   currencyTokenInfo: TokenInfo;
   profileAccount: string;
   className?: string;

@@ -6,7 +6,7 @@ import {
 } from 'react';
 
 import { TokenInfo } from '@airswap/types';
-import { Web3Provider } from '@ethersproject/providers';
+import { BaseProvider } from '@ethersproject/providers';
 
 import SearchInput from '../../../../components/SearchInput/SearchInput';
 import EmptyState from '../../../../compositions/EmptyState/EmptyState';
@@ -26,7 +26,7 @@ import ProfileHeader from '../ProfileHeader/ProfileHeader';
 
 interface ConnectedProfileWidgetProps {
   currencyTokenInfo: TokenInfo;
-  library: Web3Provider;
+  library: BaseProvider;
   profileAccount: string;
   className?: string;
 }

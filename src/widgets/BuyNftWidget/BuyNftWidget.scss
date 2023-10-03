@@ -20,9 +20,17 @@
         margin: 1.75rem auto 0;
     }
 
+    &__button-loading-spinner {
+        margin: 0 auto;
+    }
+
     &__action-buttons {
         justify-self: flex-end;
         margin-top: auto;
         width: 100%;
+    }
+
+    &__action-button {
+        @extend %button--is-primary;
     }
 }

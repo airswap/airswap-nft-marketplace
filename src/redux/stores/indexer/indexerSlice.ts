@@ -31,9 +31,14 @@ export const indexerSlice = createSlice({
     }),
   },
   extraReducers: (builder) => {
+    builder.addCase(initialize.pending, (state): IndexerState => ({
+      ...state,
+      isLoading: true,
+    }));
     builder.addCase(initialize.fulfilled, (state, action: PayloadAction<string[]>): IndexerState => ({
       ...state,
       isInitialized: true,
+      isLoading: false,
       urls: action.payload,
     }));
   },

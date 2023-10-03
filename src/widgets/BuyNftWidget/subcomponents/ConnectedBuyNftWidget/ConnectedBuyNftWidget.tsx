@@ -41,7 +41,7 @@ interface ConnectedBuyNftWidgetProps {
   collectionTokenInfo: CollectionTokenInfo;
   currencyTokenInfo: TokenInfo;
   fullOrder: FullOrder;
-  library: Web3Provider
+  library: Web3Provider;
   className?: string;
 }
 

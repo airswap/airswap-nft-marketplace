@@ -107,12 +107,4 @@
         font-size: .875rem;
         font-weight: var(--fw-400);
     }
-
-    &__collection-author {
-        @extend %text-ellipsis;
-
-        width: 100%;
-        font-size: .75rem;
-        font-weight: var(--fw-400);
-    }
 }

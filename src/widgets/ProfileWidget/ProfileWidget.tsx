@@ -1,9 +1,8 @@
 import { FC } from 'react';
 
-import { Web3Provider } from '@ethersproject/providers';
-import { useWeb3React } from '@web3-react/core';
 import { useParams } from 'react-router-dom';
 
+import useDefaultLibrary from '../../hooks/useDefaultProvider';
 import { useAppSelector } from '../../redux/hooks';
 import ConnectedProfileWidget from './subcomponents/ConnectedProfileWidget/ConnectedProfileWidget';
 import DisconnectedProfileWidget from './subcomponents/DisconnectedProfileWidget/DisconnectedProfileWidget';
@@ -11,15 +10,16 @@ import DisconnectedProfileWidget from './subcomponents/DisconnectedProfileWidget
 import './ProfileWidget.scss';
 
 const ProfileWidget: FC = () => {
-  const { account, provider: library } = useWeb3React<Web3Provider>();
   const { account: profileAccount } = useParams();
 
+  const { chainId } = useAppSelector((state) => state.config);
   const { isInitialized } = useAppSelector((state) => state.indexer);
   const { currencyTokenInfo } = useAppSelector((state) => state.metadata);
 
+  const library = useDefaultLibrary(chainId);
+
   if (
     isInitialized
-    && account
     && currencyTokenInfo
     && library
     && profileAccount

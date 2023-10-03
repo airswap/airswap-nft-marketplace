@@ -5,7 +5,7 @@ import { Connector } from '@web3-react/types';
 import IconButton from '../../compositions/IconButton/IconButton';
 import { useAppDispatch } from '../../redux/hooks';
 import { getLastProviderFromLocalStorage } from '../../redux/stores/web3/web3Api';
-import { setConnectionType, setIsInitialized } from '../../redux/stores/web3/web3Slice';
+import { setConnectionType, setIsInitialized, setUserHasClosedConnectModal } from '../../redux/stores/web3/web3Slice';
 import { ConnectionType, getConnection } from '../../web3-connectors/connections';
 import { tryActivateConnector } from '../../web3-connectors/helpers';
 import walletProviders, { WalletProvider } from '../../web3-connectors/walletProviders';
@@ -45,6 +45,11 @@ const WalletConnector: FC<WalletConnectorProps> = ({ onCloseButtonClick, classNa
     }
   };
 
+  const handleCloseButtonClick = (): void => {
+    dispatch(setUserHasClosedConnectModal(true));
+    onCloseButtonClick();
+  };
+
   useEffect(() => {
     const type = getLastProviderFromLocalStorage();
 
@@ -76,7 +81,7 @@ const WalletConnector: FC<WalletConnectorProps> = ({ onCloseButtonClick, classNa
             hideLabel
             icon="close"
             text="Close"
-            onClick={onCloseButtonClick}
+            onClick={handleCloseButtonClick}
             className="wallet-connector__close-button"
           />
         </div>

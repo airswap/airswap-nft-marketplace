@@ -7,9 +7,9 @@ import { Helmet } from 'react-helmet';
 
 import Button from '../../components/Button/Button';
 import useEnsAddress from '../../hooks/useEnsAddress';
-import useToggle from '../../hooks/useToggle';
-import { useAppSelector } from '../../redux/hooks';
+import { useAppDispatch, useAppSelector } from '../../redux/hooks';
 import { clearLastProvider } from '../../redux/stores/web3/web3Api';
+import { setShowConnectModal } from '../../redux/stores/web3/web3Slice';
 import { getConnection } from '../../web3-connectors/connections';
 import { tryDeactivateConnector } from '../../web3-connectors/helpers';
 import WalletConnector from '../../widgets/WalletConnector/WalletConnector';
@@ -30,18 +30,18 @@ const Page: FC<PageProps> = ({ className = '', contentClassName = '', children }
     account,
     chainId,
   } = useWeb3React<Web3Provider>();
+  const dispatch = useAppDispatch();
   const ensAddress = useEnsAddress(account || '');
   const { config } = useAppSelector((state) => state);
-  const { isInitialized, connectionType } = useAppSelector((state) => state.web3);
+  const { isInitialized, showConnectModal, connectionType } = useAppSelector((state) => state.web3);
   const { avatarUrl } = useAppSelector((state) => state.user);
 
   const chainIdIsCorrect = !!chainId && chainId === config.chainId;
 
   const [mobileMenuIsVisible, setMobileMenuIsVisible] = useState(false);
-  const [showWalletConnector, toggleShowWalletConnector] = useToggle(!isActive);
 
   const pageClassName = classNames('page', {
-    'page--show-wallet-connector': showWalletConnector && isInitialized && !isActive,
+    'page--show-wallet-connector': showConnectModal,
   }, className);
 
   const handleIconButtonClick = (): void => {
@@ -55,6 +55,10 @@ const Page: FC<PageProps> = ({ className = '', contentClassName = '', children }
 
     tryDeactivateConnector(getConnection(connectionType).connector);
     clearLastProvider();
+  };
+
+  const toggleShowWalletConnector = (): void => {
+    dispatch(setShowConnectModal(!showConnectModal));
   };
 
   return (
@@ -91,7 +95,7 @@ const Page: FC<PageProps> = ({ className = '', contentClassName = '', children }
       <div className={`page__content ${contentClassName}`}>
         {children}
 
-        {(!isActive && !showWalletConnector) && (
+        {(!isActive && !showConnectModal) && (
           <Button
             text="Connect wallet"
             onClick={toggleShowWalletConnector}
