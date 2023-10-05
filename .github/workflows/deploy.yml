@@ -26,3 +26,11 @@ jobs:
         with:
           branch: gh-pages
           folder: build
+
+      - name: IPFS Deploy 🚀
+        uses: aquiladev/ipfs-action@master
+        with:
+          path: ./build
+          service: infura
+          infuraProjectId: ${{ secrets.INFURA_PROJECT_ID }}
+          infuraProjectSecret: ${{ secrets.INFURA_PROJECT_SECRET }}
