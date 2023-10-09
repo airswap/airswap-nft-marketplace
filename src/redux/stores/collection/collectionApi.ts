@@ -8,7 +8,7 @@ import { setOffset } from './collectionSlice';
 
 export const getCollectionOrders = createAsyncThunk<
 FullOrder[],
-Pick<OrderFilter, 'limit' | 'offset'>,
+Pick<OrderFilter, 'limit' | 'offset' | 'excludeNonces'>,
 AppThunkApiConfig
 >('collection/getCollectionOrders', async (filter, { dispatch, getState }) => {
   const { config, indexer } = getState();

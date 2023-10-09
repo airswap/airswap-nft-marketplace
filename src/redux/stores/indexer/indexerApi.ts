@@ -11,10 +11,8 @@ interface InitializeParams {
 export const initialize = createAsyncThunk<
 string[],
 InitializeParams
->('indexer/initialize', async ({ chainId, provider }) => (
-  RegistryV4.getServerURLs(
-    provider,
-    chainId,
-    Protocols.Storage,
-  )
+>('indexer/initialize', async ({ chainId, provider }) => RegistryV4.getServerURLs(
+  provider,
+  chainId,
+  Protocols.Storage,
 ));
