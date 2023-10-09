@@ -1,6 +1,7 @@
 import React, { FC, useCallback } from 'react';
 
-import { TokenInfo } from '@airswap/types';
+import { FullOrder, TokenInfo } from '@airswap/types';
+import classnames from 'classnames';
 import { NavLink } from 'react-router-dom';
 
 import Button from '../../../../components/Button/Button';
@@ -14,6 +15,7 @@ interface ActionButtonsProps {
   hasInsufficientExpiryAmount: boolean;
   hasNoCollectionTokenApproval: boolean;
   account: string;
+  activeUserOrder?: FullOrder;
   currencyToken: TokenInfo;
   tokenId: string;
   orderNonce?: string;
@@ -28,6 +30,7 @@ const ListActionButtons: FC<ActionButtonsProps> = ({
   hasInsufficientExpiryAmount,
   hasNoCollectionTokenApproval,
   account,
+  activeUserOrder,
   currencyToken,
   tokenId,
   orderNonce,
@@ -36,6 +39,10 @@ const ListActionButtons: FC<ActionButtonsProps> = ({
   onBackButtonClick,
   className = '',
 }) => {
+  const classNames = classnames('list-action-buttons', {
+    'list-action-buttons--is-token-already-listed-warning': state === ListNftState.tokenAlreadyListedWarning,
+  }, className);
+
   const getReviewButtonText = () => {
     if (hasNoCollectionTokenApproval) {
       return 'Approve NFT';
@@ -70,6 +77,29 @@ const ListActionButtons: FC<ActionButtonsProps> = ({
           onClick={onActionButtonClick}
           className="list-action-buttons__action-button"
         />
+      );
+    }
+
+    if (state === ListNftState.tokenAlreadyListedWarning && activeUserOrder) {
+      return (
+        <>
+          <NavLink
+            to={routes.orderDetail(account, activeUserOrder.nonce)}
+            className="list-action-buttons__action-button"
+          >
+            Cancel previous listing
+          </NavLink>
+          <Button
+            text="back"
+            onClick={onBackButtonClick}
+            className="list-action-buttons__back-button"
+          />
+          <Button
+            text="List anyway"
+            onClick={onActionButtonClick}
+            className="list-action-buttons__list-anyway-button"
+          />
+        </>
       );
     }
 
@@ -133,7 +163,7 @@ const ListActionButtons: FC<ActionButtonsProps> = ({
   ]);
 
   return (
-    <div className={`list-action-buttons ${className}`}>
+    <div className={classNames}>
       {getActionButton()}
     </div>
   );

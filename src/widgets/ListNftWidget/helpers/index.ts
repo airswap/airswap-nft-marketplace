@@ -5,6 +5,10 @@ export const getTitle = (state: ListNftState): string => {
     return 'Review Listing';
   }
 
+  if (state === ListNftState.tokenAlreadyListedWarning) {
+    return 'Warning';
+  }
+
   if (state === ListNftState.approve) {
     return 'Approve in Wallet';
   }

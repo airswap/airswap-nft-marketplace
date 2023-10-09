@@ -34,6 +34,7 @@ import '../../ListNftWidget.scss';
 
 export enum ListNftState {
   details = 'details',
+  tokenAlreadyListedWarning = 'tokenAlreadyListedWarning',
   review = 'review',
   approve = 'approve',
   approving = 'approving',
@@ -49,6 +50,7 @@ interface ListNftWidgetProps {
   currencyTokenInfo: TokenInfo;
   defaultSelectedTokenId?: string;
   library: Web3Provider
+  userOrders: FullOrder[];
   userTokens: string[];
   className?: string;
 }
@@ -59,6 +61,7 @@ const ConnectedListNftWidget: FC<ListNftWidgetProps> = ({
   currencyTokenInfo,
   defaultSelectedTokenId,
   library,
+  userOrders,
   userTokens,
   className = '',
 }) => {
@@ -87,10 +90,17 @@ const ConnectedListNftWidget: FC<ListNftWidgetProps> = ({
   const hasCollectionTokenApproval = useNftTokenApproval(collectionTokenInfo, selectedTokenId);
   const approveTransaction = useApproveNftTransaction(approvalTransactionHash);
   const [indexedOrderResult, indexerError] = useIndexedOrderResult(order?.nonce);
+  const activeUserOrder = userOrders.find(userOrder => userOrder.signer.id === selectedTokenId);
   const title = useMemo(() => getTitle(widgetState), [widgetState]);
 
   const handleActionButtonClick = async () => {
-    if (widgetState === ListNftState.details) {
+    if (widgetState === ListNftState.details && activeUserOrder) {
+      setWidgetState(ListNftState.tokenAlreadyListedWarning);
+
+      return;
+    }
+
+    if (widgetState === ListNftState.details || widgetState === ListNftState.tokenAlreadyListedWarning) {
       setWidgetState(ListNftState.review);
     }
 
@@ -229,6 +239,7 @@ const ConnectedListNftWidget: FC<ListNftWidgetProps> = ({
           hasInsufficientAmount={hasInsufficientAmount}
           hasInsufficientExpiryAmount={hasInsufficientExpiryAmount}
           account={account}
+          activeUserOrder={activeUserOrder}
           currencyToken={currencyTokenInfo}
           tokenId={selectedTokenId}
           orderNonce={order?.nonce}

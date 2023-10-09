@@ -30,16 +30,18 @@ const useMapWeb3ReactToStore = (): void => {
   ]);
 
   useEffect(() => {
-    if (!library || !chainId) {
+    if (!library) {
       clearedCachedLibrary();
       dispatch(setHasLibrary(false));
 
       return;
     }
 
-    setCachedLibrary(library, chainId);
-    dispatch(setHasLibrary(true));
-  }, [library, chainId]);
+    if (library && chainId) {
+      setCachedLibrary(library, chainId);
+      dispatch(setHasLibrary(true));
+    }
+  }, [library]);
 };
 
 export default useMapWeb3ReactToStore;

@@ -32,7 +32,8 @@ export const useIndexers = (): void => {
   };
 
   useEffect(() => {
-    if (library && !isLoading) {
+    if (library && !isInitialized && !isLoading) {
+      console.log('intiialize');
       dispatch(initialize({ chainId, provider: library }));
     }
   }, [library]);

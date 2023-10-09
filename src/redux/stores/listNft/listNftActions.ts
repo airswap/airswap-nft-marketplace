@@ -26,7 +26,7 @@ export const createNftOrder = createAsyncThunk<
 FullOrder,
 CreateOrderParams
 >(
-  'make-otc/createOtcOrder',
+  'listNft/createOtcOrder',
   async (params, { dispatch, rejectWithValue }) => {
     dispatch(setError(undefined));
 
