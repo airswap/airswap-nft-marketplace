@@ -1,9 +1,29 @@
 @import "src/styles/index";
 
-.list-action-buttons {
+$component: list-action-buttons;
+
+.#{$component} {
     display: flex;
 
+    &--is-token-already-listed-warning {
+        flex-wrap: wrap;
+        justify-content: space-between;
+
+        .#{$component}__list-anyway-button,
+        .#{$component}__back-button {
+            order: 3;
+            margin-top: 1rem;
+            margin-right: 0;
+            width: calc(70% - 1rem);
+        }
+
+        .#{$component}__back-button {
+            width: calc(30% - 1rem);
+        }
+    }
+
     &__back-button,
+    &__list-anyway-button,
     &__action-button {
         @extend %text-ellipsis;
 
@@ -12,6 +32,7 @@
         line-height: 1.5;
     }
 
+    &__list-anyway-button,
     &__back-button {
         @extend %button--is-secondary;
 

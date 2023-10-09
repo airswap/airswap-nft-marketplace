@@ -2,9 +2,12 @@ import { FullOrder } from '@airswap/types';
 import { createSlice, PayloadAction } from '@reduxjs/toolkit';
 
 import { AppError } from '../../../errors/appError';
+import { getUserOrders } from './listNftApi';
 
 export interface ListNftState {
+  isLoadingUserOrders: boolean;
   lastUserOrder?: FullOrder;
+  userOrders: FullOrder[];
   error?: AppError;
 }
 
@@ -13,6 +16,8 @@ const localStorageLastUserOrder = localStorage.getItem(lastUserOrderLocalStorage
 
 const initialState: ListNftState = {
   ...(localStorageLastUserOrder && { lastUserOrder: JSON.parse(localStorageLastUserOrder) }),
+  isLoadingUserOrders: false,
+  userOrders: [],
 };
 
 export const listNftSlice = createSlice({
@@ -42,6 +47,21 @@ export const listNftSlice = createSlice({
       error: action.payload,
     }),
     reset: (): ListNftState => initialState,
+  },
+  extraReducers: (builder) => {
+    builder.addCase(getUserOrders.pending, (state): ListNftState => ({
+      ...state,
+      isLoadingUserOrders: true,
+    }));
+    builder.addCase(getUserOrders.rejected, (state): ListNftState => ({
+      ...state,
+      isLoadingUserOrders: false,
+    }));
+    builder.addCase(getUserOrders.fulfilled, (state, action): ListNftState => ({
+      ...state,
+      isLoadingUserOrders: false,
+      userOrders: action.payload,
+    }));
   },
 });
 

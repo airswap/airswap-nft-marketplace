@@ -5,7 +5,6 @@ import { getReceiptUrl } from '@airswap/utils';
 import classNames from 'classnames';
 
 import ExpiryDateInfo from '../../../../components/ExpiryDateInfo/ExpiryDateInfo';
-import Icon from '../../../../components/Icon/Icon';
 import LoadingSpinner from '../../../../components/LoadingSpinner/LoadingSpinner';
 import ReviewNftDetails from '../../../../components/ReviewNftDetails/ReviewNftDetails';
 import ReviewTokenDetails from '../../../../components/ReviewTokenDetails/ReviewTokenDetails';
@@ -60,13 +59,6 @@ const CancelDetailsContainer: FC<CancelDetailsContainerProps> = ({
     <div className={wrapperClassName}>
       {widgetState === CancelOrderState.details && (
         <>
-          <div className="cancel-details-container__intro">
-            <Icon
-              name="information-circle-outline"
-              className="cancel-details-container__info-icon"
-            />
-            To change the price of your NFT it is required to cancel the current listing.
-          </div>
           <ReviewNftDetails
             logoURI={collectionTokenInfo ? collectionTokenInfo.image : collectionImage}
             title="Cancel"

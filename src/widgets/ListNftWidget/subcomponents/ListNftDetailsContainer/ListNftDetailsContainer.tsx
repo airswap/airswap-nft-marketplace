@@ -190,6 +190,30 @@ const ListNftDetailContainer: FC<ListNftDetailContainerProps> = ({
           </p>
         </>
       )}
+
+      {widgetState === ListNftState.tokenAlreadyListedWarning && (
+        <>
+          <ReviewNftDetails
+            logoURI={collectionTokenInfo ? collectionTokenInfo.image : collectionImage}
+            title="Listed"
+            token={collectionTokenInfo}
+          />
+          <div className="list-nft-details-container__warning">
+            <Icon
+              name="information-circle-outline"
+              className="list-nft-details-container__info-icon"
+            />
+            <div className="list-nft-details-container__warning-text-wrapper">
+              <div className="list-nft-details-container__warning-title">
+                Token already listed
+              </div>
+              <div className="list-nft-details-container__warning-text">
+                You are about to create a listing for a token that is already listed for sale. It&apos;s possible that the previous listing would fill instead.
+              </div>
+            </div>
+          </div>
+        </>
+      )}
     </div>
   );
 };

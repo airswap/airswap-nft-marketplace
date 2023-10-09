@@ -22,21 +22,6 @@
         }
     }
 
-    &__intro {
-        display: flex;
-        align-items: center;
-        font-size: .875rem;
-        color: var(--c-text-grey);
-    }
-
-    &__info-icon {
-        margin-right: 1rem;
-        line-height: 1.25;
-        min-width: 1.5rem;
-        min-height: 1.5rem;
-        font-size: .875rem;
-    }
-
     &__review-nft-details {
         margin-top: 1.5rem;
     }
