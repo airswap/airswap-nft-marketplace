@@ -32,6 +32,10 @@ export const getOrdersFromServer = async (server: Server, filter: OrderFilter): 
     ...filter,
   };
 
+  if (!filterWithDefaults.excludeNonces?.length) {
+    delete filterWithDefaults.excludeNonces;
+  }
+
   try {
     return await server.getOrders(filterWithDefaults);
   } catch (e: any) {
