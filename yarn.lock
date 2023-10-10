@@ -14,15 +14,10 @@
   dependencies:
     "@openzeppelin/contracts" "^4.8.3"
 
-"@airswap/constants@4.0.10":
-  version "4.0.10"
-  resolved "https://registry.yarnpkg.com/@airswap/constants/-/constants-4.0.10.tgz#b2bf2cdba8dff42414cc5151586bacbfcbc3f0fb"
-  integrity sha512-jGqSrVf4YWJbMaiDkWXtCIaIw+MHq/BqrmHpfynw1la7woRSjbbKK6aFjgoYGY/XcZTmMPG7COT+oApxXdXdXg==
-
-"@airswap/constants@^4.0.10":
-  version "4.1.0"
-  resolved "https://registry.yarnpkg.com/@airswap/constants/-/constants-4.1.0.tgz#87c01d2d8c45819531a713e439049f7c1ee7c81a"
-  integrity sha512-oGwDIOooNE9usteVF1xrLhDXCiWSezAOFXkBmUyhnX3l+pq1mpdk4XW9Xu5vb2eTxLwuwQ7MyWF19HKpA+7sgQ==
+"@airswap/constants@4.1.1", "@airswap/constants@^4.1.1":
+  version "4.1.1"
+  resolved "https://registry.yarnpkg.com/@airswap/constants/-/constants-4.1.1.tgz#56caac4ff8b5601febd66ffa1a98b7a45be82fe7"
+  integrity sha512-md11UcxAA0VcLd1rOgQpK3bKne7S2fnt2Ci+y7t/CVw+CGlXedPBr66SksFYtIsNLPmHam1rq6xUcLLLxx6kgw==
 
 "@airswap/jsonrpc-client-websocket@0.0.1":
   version "0.0.1"
@@ -31,22 +26,23 @@
   dependencies:
     get-parameter-names "^0.3.0"
 
-"@airswap/libraries@4.0.19":
-  version "4.0.19"
-  resolved "https://registry.yarnpkg.com/@airswap/libraries/-/libraries-4.0.19.tgz#44826c612fc092328ee846efabe8509c8b43f403"
-  integrity sha512-PeR58cVA3RDDCOGMpO0zslXwidOxF2dufswmeyTpvuGQSXgeBbpkNp+7SkcMbqvdcIWyMMMKwic45LwLES5GBg==
+"@airswap/libraries@4.1.7":
+  version "4.1.7"
+  resolved "https://registry.yarnpkg.com/@airswap/libraries/-/libraries-4.1.7.tgz#d31f870cde7053b87d1e2510d5de051953d1d008"
+  integrity sha512-N7NuMMBpwLR4OGEkYkAyyn7zvbfBzd6z3ag+tPph7qSP2d/iTnl4k9esrSYEufnpkolAkNV2W3SfDgXGursAYw==
   dependencies:
     "@airswap/balances" "4.0.2"
-    "@airswap/constants" "4.0.10"
+    "@airswap/constants" "^4.1.1"
     "@airswap/jsonrpc-client-websocket" "0.0.1"
     "@airswap/maker-registry" "4.0.4"
-    "@airswap/registry" "4.0.3"
+    "@airswap/pool" "4.1.1"
+    "@airswap/registry" "4.1.1"
     "@airswap/staking" "4.0.3"
-    "@airswap/swap" "4.0.4"
-    "@airswap/swap-erc20" "4.0.6"
-    "@airswap/types" "4.0.5"
-    "@airswap/utils" "4.0.8"
-    "@airswap/wrapper" "4.0.8"
+    "@airswap/swap" "4.1.0"
+    "@airswap/swap-erc20" "4.1.4"
+    "@airswap/types" "^4.1.1"
+    "@airswap/utils" "^4.1.4"
+    "@airswap/wrapper" "4.1.3"
     browser-or-node "^2.1.1"
     ethers "^5.6.9"
     jayson "^4.0.0"
@@ -60,25 +56,31 @@
   dependencies:
     "@openzeppelin/contracts" "^4.8.1"
 
-"@airswap/metadata@4.0.11":
-  version "4.0.11"
-  resolved "https://registry.yarnpkg.com/@airswap/metadata/-/metadata-4.0.11.tgz#8d2128e5468a43983ca797c6d5b539890d4a0267"
-  integrity sha512-BGlpx+XthscD4b0qdHw9RTIkGOnrhx9lwVXCDemoJZRXMn1tHDNx5M44/273v8/quOmK+BSSb7Cu7m6PujLCGg==
+"@airswap/metadata@4.1.4":
+  version "4.1.4"
+  resolved "https://registry.yarnpkg.com/@airswap/metadata/-/metadata-4.1.4.tgz#e7d0003deea1037204249a872ec4db1b4472d50a"
+  integrity sha512-W56tX6aBQe+kjESmIR52sA0+gRl+xF95iv2EJEvD1zbQp71j3+lOford1GainWef7QV2290fEOtRU01Bqvmx1Q==
   dependencies:
-    "@airswap/constants" "^4.0.10"
-    "@airswap/types" "^4.0.0"
-    "@airswap/wrapper" "4.0.8"
+    "@airswap/constants" "^4.1.1"
+    "@airswap/types" "^4.1.1"
+    "@airswap/wrapper" "4.1.2"
     "@openzeppelin/contracts" "^4.8.3"
     "@uniswap/token-lists" "^1.0.0-beta.24"
     axios "^0.21.4"
-    ethereumjs-abi "^0.6.8"
     ethers "^5.6.9"
     valid-url "^1.0.9"
 
-"@airswap/registry@4.0.3":
-  version "4.0.3"
-  resolved "https://registry.yarnpkg.com/@airswap/registry/-/registry-4.0.3.tgz#c2ffa76864271b64275965c7badb85d118ee3cca"
-  integrity sha512-E+50VB5jFu56bjEPjDFVLbyFwJs5WphP+dNcDgxwbyHVgmWfgI2HD2wEXrY0OUjDHvtpqxfT2HkrDx2dypMBTQ==
+"@airswap/pool@4.1.1":
+  version "4.1.1"
+  resolved "https://registry.yarnpkg.com/@airswap/pool/-/pool-4.1.1.tgz#9443f292ac11c951b141612a75fd7a6d666b96ca"
+  integrity sha512-qvJiNg2utn/Sw60kE8f4w4Ml34yjtnJZbGoi+JP0NSgE0viLF1GhLDM/tUc+yrWJ+2+3AVKmPXlH9pHSFMbdFA==
+  dependencies:
+    "@openzeppelin/contracts" "^4.8.3"
+
+"@airswap/registry@4.1.1":
+  version "4.1.1"
+  resolved "https://registry.yarnpkg.com/@airswap/registry/-/registry-4.1.1.tgz#a7b2e8deb342040ebfbaa8fb6cb2ecf5a0ccbc69"
+  integrity sha512-DEyKSxUrzWXFgQ4Z52/7q6+uLkZxWU5UhF39aq8MdUN040kuO8sPdrSq7cFA+0wjflL2zMs8e0j2su7tegVtPA==
   dependencies:
     "@openzeppelin/contracts" "^4.8.3"
 
@@ -89,53 +91,61 @@
   dependencies:
     "@openzeppelin/contracts" "^4.8.3"
 
-"@airswap/swap-erc20@4.0.6":
-  version "4.0.6"
-  resolved "https://registry.yarnpkg.com/@airswap/swap-erc20/-/swap-erc20-4.0.6.tgz#96d96b98cf633e1b50c3cbe02fced3ab1ecb2b4b"
-  integrity sha512-8mcjTX/4l/M4+bXCya3z5AYUGK73YQhrfTYGIUIDrqesrkVcNg3W/++km3MdGg0WQwKWOPygwfdQ4OVFTX4fWg==
+"@airswap/swap-erc20@4.1.3":
+  version "4.1.3"
+  resolved "https://registry.yarnpkg.com/@airswap/swap-erc20/-/swap-erc20-4.1.3.tgz#606d323ef73ac4bdc7ed74283d845943ddad25d6"
+  integrity sha512-cFZ/TbLZGYvtIjj4I5PjC2MjR6hQeealG4eBEDrS9sCBthnl0bTPkBj9BBixi+60iyMG0r51n0XFGKPoriAIQg==
   dependencies:
     "@openzeppelin/contracts" "^4.8.3"
 
-"@airswap/swap@4.0.4":
-  version "4.0.4"
-  resolved "https://registry.yarnpkg.com/@airswap/swap/-/swap-4.0.4.tgz#19f2ecb7cecdfcb55ab2f1a239b6460c0dde917c"
-  integrity sha512-bfwNdaBVXySvi2gm1sOf+lVpaFxosuPR9VMoPriTJRQXMVNHqBxC1ztDkfrp1mOCaTOP7ALM5pxkOncQynDq/g==
+"@airswap/swap-erc20@4.1.4":
+  version "4.1.4"
+  resolved "https://registry.yarnpkg.com/@airswap/swap-erc20/-/swap-erc20-4.1.4.tgz#063b4b654bf0fdae4e8c222878fe517172a65276"
+  integrity sha512-jxsJooA4FVAaUrx64/9vM9CPnMXqraGkkIFWlDnUjeJRqi6iGza8Tyg5VcZuFfYBsAinKXsDMAZOY6a3dmuUVw==
   dependencies:
     "@openzeppelin/contracts" "^4.8.3"
 
-"@airswap/types@4.0.5":
-  version "4.0.5"
-  resolved "https://registry.yarnpkg.com/@airswap/types/-/types-4.0.5.tgz#94ccc4f3a9e3c54573a88e62cd9b6670e23c77cc"
-  integrity sha512-X6ZGCFyKpYo608PM14jX3Co+UdzQzaNPgceSfCI4x1VnZrGImVpNm26pzEO6FahpTmClWeQqk5I/AVGg21w2Vw==
+"@airswap/swap@4.1.0":
+  version "4.1.0"
+  resolved "https://registry.yarnpkg.com/@airswap/swap/-/swap-4.1.0.tgz#c7293cff8e89f39b2c2712825383d9d402d1eae0"
+  integrity sha512-jfAY4ES6/kufrJ1duo41UHHDQuqK8pgR0rr0BVZIwk7pHL0EnZGzDxXHTY9zBESFRt5L3bIQy8WFgm0u4sMtKA==
   dependencies:
-    "@uniswap/token-lists" "^1.0.0-beta.31"
+    "@openzeppelin/contracts" "^4.8.3"
 
-"@airswap/types@4.1.1", "@airswap/types@^4.0.0", "@airswap/types@^4.0.4":
+"@airswap/types@4.1.1", "@airswap/types@^4.1.1":
   version "4.1.1"
   resolved "https://registry.yarnpkg.com/@airswap/types/-/types-4.1.1.tgz#1296674bca2838c6612c2c1bff6d094544608056"
   integrity sha512-geOn5AuyBqley3MIHYvIQ5MGF1ElHoC+VPHmG5UD+1qPP273/cYiy7QfjALkKeM6URXeMiQo5/95E5zye0wzlQ==
   dependencies:
     "@uniswap/token-lists" "^1.0.0-beta.31"
 
-"@airswap/utils@4.0.8":
-  version "4.0.8"
-  resolved "https://registry.yarnpkg.com/@airswap/utils/-/utils-4.0.8.tgz#a61c3e4dd89cc813c77f337f490d46452dea27ea"
-  integrity sha512-OfyykOc7RENrYoM8rRjBhNszYEzFkcRMdfeN33kee4j5HLIfB+Mbk7wLLQOiTrB+CgFSuIU1u8lCExfdtMp1VQ==
+"@airswap/utils@4.1.4", "@airswap/utils@^4.1.4":
+  version "4.1.4"
+  resolved "https://registry.yarnpkg.com/@airswap/utils/-/utils-4.1.4.tgz#78547bfad14227055dd6eba24e94823d49276f11"
+  integrity sha512-Si3bopOfmHGIc6RPhXdfztcLv3eqrKuwOW0T6pBQjq41OT5oiHec7y9QXypSz1y6fqUc+PJFNdBuJmd7mY1qug==
   dependencies:
-    "@airswap/constants" "^4.0.10"
-    "@airswap/types" "^4.0.4"
+    "@airswap/constants" "^4.1.1"
+    "@airswap/types" "^4.1.1"
     "@metamask/eth-sig-util" "^5.0.2"
     bignumber.js "^9.0.1"
     ethereumjs-util "^7.1.5"
     ethers "^5.6.9"
     lz-string "^1.5.0"
 
-"@airswap/wrapper@4.0.8":
-  version "4.0.8"
-  resolved "https://registry.yarnpkg.com/@airswap/wrapper/-/wrapper-4.0.8.tgz#17659085edf318fcdc191dc332811a1f1957b48c"
-  integrity sha512-v0CBG1Med1bvug+cT4H1Nzgxhe1fRZPvK3VD7PIxmcOKbfeJzuJTyhnA9hWNE5CUJ5vaEb186Hn6VtwU0sKoEw==
+"@airswap/wrapper@4.1.2":
+  version "4.1.2"
+  resolved "https://registry.yarnpkg.com/@airswap/wrapper/-/wrapper-4.1.2.tgz#4f7486734db324def5fc14032d8d02d233d49cf8"
+  integrity sha512-8fF37QPs81OK2HNdU9g1beqLXtCbRrFgJdWk7Laa9Q+ghz+L6f1jNRzfoEeZZxYcNK/wW8XvsA4Lszbf5B2KLQ==
   dependencies:
-    "@airswap/swap-erc20" "4.0.6"
+    "@airswap/swap-erc20" "4.1.3"
+    "@openzeppelin/contracts" "^4.8.3"
+
+"@airswap/wrapper@4.1.3":
+  version "4.1.3"
+  resolved "https://registry.yarnpkg.com/@airswap/wrapper/-/wrapper-4.1.3.tgz#08250a68ca0452cd992eb095d4efaf4a3ddfa132"
+  integrity sha512-9nN15p8cEJsPl0Mb0BZ6oB0BmC9SwnNFtke/r8tRL8STXFtm1RiYZQUGUt/4a2aHz42EKXoCixciYxUOsU5rIA==
+  dependencies:
+    "@airswap/swap-erc20" "4.1.4"
     "@openzeppelin/contracts" "^4.8.3"
 
 "@ampproject/remapping@^2.1.0":
@@ -6990,14 +7000,6 @@ ethereum-cryptography@^1.1.2:
     "@noble/secp256k1" "1.7.1"
     "@scure/bip32" "1.1.5"
     "@scure/bip39" "1.1.1"
-
-ethereumjs-abi@^0.6.8:
-  version "0.6.8"
-  resolved "https://registry.yarnpkg.com/ethereumjs-abi/-/ethereumjs-abi-0.6.8.tgz#71bc152db099f70e62f108b7cdfca1b362c6fcae"
-  integrity sha512-Tx0r/iXI6r+lRsdvkFDlut0N08jWMnKRZ6Gkq+Nmw75lZe4e6o3EkSnkaBP5NF6+m5PTGAr9JP43N3LyeoglsA==
-  dependencies:
-    bn.js "^4.11.8"
-    ethereumjs-util "^6.0.0"
 
 "ethereumjs-abi@git+https://github.com/ethereumjs/ethereumjs-abi.git":
   version "0.6.8"
