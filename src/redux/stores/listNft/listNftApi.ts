@@ -12,13 +12,8 @@ AppThunkApiConfig
 >('listNft/getUserOrders', async (filter, { dispatch, getState }) => {
   const { indexer } = getState();
 
-  const localFilter = filter;
-  if (!localFilter.excludeNonces?.length) {
-    delete localFilter.excludeNonces;
-  }
-
   try {
-    return await getOrdersFromIndexers(localFilter, indexer.urls);
+    return await getOrdersFromIndexers(filter, indexer.urls);
   } catch {
     dispatch(addGetOrderFailedToast());
 

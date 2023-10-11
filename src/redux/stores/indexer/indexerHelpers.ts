@@ -32,6 +32,7 @@ export const getOrdersFromServer = async (server: Server, filter: OrderFilter): 
     ...filter,
   };
 
+  // TODO: Remove this once the indexer supports empty excludeNonces https://github.com/airswap/airswap-marketplace/issues/157
   if (!filterWithDefaults.excludeNonces?.length) {
     delete filterWithDefaults.excludeNonces;
   }
