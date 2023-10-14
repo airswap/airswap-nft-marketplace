@@ -1,9 +1,4 @@
-import React, {
-  FC,
-  useEffect,
-  useMemo,
-  useState,
-} from 'react';
+import React, { FC, useEffect, useState } from 'react';
 
 import { FullOrder, TokenInfo } from '@airswap/types';
 import { Web3Provider } from '@ethersproject/providers';
@@ -14,7 +9,7 @@ import { SubmittedTransactionStatus } from '../../../../entities/SubmittedTransa
 import { AppErrorType, isAppError } from '../../../../errors/appError';
 import { toMaxAllowedDecimalsNumberString } from '../../../../helpers/input';
 import useApproveNftTransaction from '../../../../hooks/useApproveNftTransaction';
-import useCollectionToken from '../../../../hooks/useCollectionToken';
+import useCollectionTokens from '../../../../hooks/useCollectionTokens';
 import useIndexedOrderResult from '../../../../hooks/useIndexedOrderResult';
 import useInsufficientAmount from '../../../../hooks/useInsufficientAmount';
 import useNftTokenApproval from '../../../../hooks/useNftTokenApproval';
@@ -24,7 +19,6 @@ import { approve as approveNft } from '../../../../redux/stores/orders/ordersAct
 import { addInfoToast, addUserRejectedToast } from '../../../../redux/stores/toasts/toastsActions';
 import { ExpiryTimeUnit } from '../../../../types/ExpiryTimeUnit';
 import { IndexedOrderResult } from '../../../../types/IndexedOrderResult';
-import { getTitle } from '../../helpers';
 import useTokenAmountAndFee from '../../hooks/useTokenAmountAndFee';
 import ListActionButtons from '../ListActionButtons/ListActionButtons';
 import ListNftDetailContainer from '../ListNftDetailsContainer/ListNftDetailsContainer';
@@ -33,15 +27,16 @@ import ListNftWidgetHeader from '../ListNftWidgetHeader/ListNftWidgetHeader';
 import '../../ListNftWidget.scss';
 
 export enum ListNftState {
-  details = 'details',
-  tokenAlreadyListedWarning = 'tokenAlreadyListedWarning',
-  review = 'review',
   approve = 'approve',
   approving = 'approving',
-  sign = 'sign',
-  indexing = 'indexing',
-  success = 'success',
+  details = 'details',
   failed = 'failed',
+  indexing = 'indexing',
+  review = 'review',
+  selectNft = 'selectNft',
+  sign = 'sign',
+  success = 'success',
+  tokenAlreadyListedWarning = 'tokenAlreadyListedWarning',
 }
 
 interface ListNftWidgetProps {
@@ -81,7 +76,9 @@ const ConnectedListNftWidget: FC<ListNftWidgetProps> = ({
   const [expiryAmount, setExpiryAmount] = useState<number | undefined>(60);
 
   // States derived from user input
-  const [collectionTokenInfo] = useCollectionToken(collectionToken, selectedTokenId);
+  const [tokens, isLoadingTokens] = useCollectionTokens(collectionToken, userTokens);
+  const collectionTokenInfo = tokens.find(token => token.id.toString() === selectedTokenId);
+  console.log(tokens, isLoadingTokens);
   const [currencyTokenAmountMinusProtocolFee, protocolFeeInCurrencyToken] = useTokenAmountAndFee(currencyTokenAmount);
   const [approvalTransactionHash, setApprovalTransactionHash] = useState<string>();
   const [order, setOrder] = useState<FullOrder>();
@@ -91,7 +88,6 @@ const ConnectedListNftWidget: FC<ListNftWidgetProps> = ({
   const approveTransaction = useApproveNftTransaction(approvalTransactionHash);
   const [indexedOrderResult, indexerError] = useIndexedOrderResult(order?.nonce);
   const activeUserOrder = userOrders.find(userOrder => userOrder.signer.id === selectedTokenId);
-  const title = useMemo(() => getTitle(widgetState), [widgetState]);
 
   const handleActionButtonClick = async () => {
     if (widgetState === ListNftState.details && activeUserOrder) {
@@ -173,6 +169,10 @@ const ConnectedListNftWidget: FC<ListNftWidgetProps> = ({
     setCurrencyTokenAmount(toMaxAllowedDecimalsNumberString(value, currencyTokenInfo.decimals));
   };
 
+  const handleSelectNftButtonClick = () => {
+    setWidgetState(ListNftState.selectNft);
+  };
+
   useEffect(() => {
     if (approveTransaction?.status === SubmittedTransactionStatus.processing) {
       setWidgetState(ListNftState.approving);
@@ -203,7 +203,8 @@ const ConnectedListNftWidget: FC<ListNftWidgetProps> = ({
   return (
     <div className={`list-nft-widget ${className}`}>
       <ListNftWidgetHeader
-        title={title}
+        state={widgetState}
+        onBackButtonClick={handleBackButtonClick}
         className="list-nft-widget__header"
       />
 
@@ -212,6 +213,7 @@ const ConnectedListNftWidget: FC<ListNftWidgetProps> = ({
         collectionImage={collectionImage}
         collectionName={collectionName}
         collectionTokenInfo={collectionTokenInfo}
+        collectionTokensInfo={tokens}
         currencyTokenAmount={currencyTokenAmount}
         currencyTokenAmountMinusProtocolFee={currencyTokenAmountMinusProtocolFee}
         currencyTokenInfo={currencyTokenInfo}
@@ -228,12 +230,17 @@ const ConnectedListNftWidget: FC<ListNftWidgetProps> = ({
         widgetState={widgetState}
         onExpiryAmountChange={setExpiryAmount}
         onExpiryTimeUnitChange={setExpiryTimeUnit}
-        onSelectedNftChange={setSelectedTokenId}
+        onSelectNftButtonClick={handleSelectNftButtonClick}
         onTradeTokenInputChange={handleTradeTokenInputChange}
         className="list-nft-widget__trade-details-container"
       />
 
-      {!(widgetState === ListNftState.sign || widgetState === ListNftState.approve || widgetState === ListNftState.approving) && (
+      {!(
+        widgetState === ListNftState.sign
+        || widgetState === ListNftState.approve
+        || widgetState === ListNftState.approving
+        || widgetState === ListNftState.selectNft
+      ) && (
         <ListActionButtons
           hasNoCollectionTokenApproval={!hasCollectionTokenApproval}
           hasInsufficientAmount={hasInsufficientAmount}

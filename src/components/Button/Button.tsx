@@ -11,7 +11,7 @@ import './Button.scss';
 type HTMLButtonProps = JSX.IntrinsicElements['button'];
 
 export interface ButtonProps extends HTMLButtonProps {
-  text: string;
+  text?: string;
 }
 
 export type ButtonWithRefProps = ButtonProps & RefAttributes<HTMLButtonElement>;

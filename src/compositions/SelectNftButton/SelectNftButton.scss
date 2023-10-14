@@ -1,14 +1,22 @@
-@import "src/styles";
+@import "../../styles/index";
 
-$component: select-nft;
+$component: select-nft-button;
 
-.select-nft {
+.#{$component} {
     @extend %trade-window;
 
     justify-content: flex-start;
     position: relative;
     height: 4.5rem;
     overflow: visible;
+
+    &:focus {
+        border-color: var(--c-light-grey);
+    }
+
+    &:active {
+        border-color: var(--c-primary);
+    }
 
     @include for-size(tiny-phone-only) {
         padding: 0 .75rem;
@@ -69,6 +77,8 @@ $component: select-nft;
 
     &__title {
         @extend %trade-window-title;
+
+        text-align: start;
     }
 
     &__name {
