@@ -9,7 +9,7 @@ import { SubmittedTransactionStatus } from '../../../../entities/SubmittedTransa
 import { AppErrorType, isAppError } from '../../../../errors/appError';
 import { toMaxAllowedDecimalsNumberString } from '../../../../helpers/input';
 import useApproveNftTransaction from '../../../../hooks/useApproveNftTransaction';
-import useCollectionTokens from '../../../../hooks/useCollectionTokens';
+import useCollectionToken from '../../../../hooks/useCollectionToken';
 import useIndexedOrderResult from '../../../../hooks/useIndexedOrderResult';
 import useInsufficientAmount from '../../../../hooks/useInsufficientAmount';
 import useNftTokenApproval from '../../../../hooks/useNftTokenApproval';
@@ -76,9 +76,7 @@ const ConnectedListNftWidget: FC<ListNftWidgetProps> = ({
   const [expiryAmount, setExpiryAmount] = useState<number | undefined>(60);
 
   // States derived from user input
-  const [tokens, isLoadingTokens] = useCollectionTokens(collectionToken, userTokens);
-  const collectionTokenInfo = tokens.find(token => token.id.toString() === selectedTokenId);
-  console.log(tokens, isLoadingTokens);
+  const [collectionTokenInfo] = useCollectionToken(collectionToken, selectedTokenId);
   const [currencyTokenAmountMinusProtocolFee, protocolFeeInCurrencyToken] = useTokenAmountAndFee(currencyTokenAmount);
   const [approvalTransactionHash, setApprovalTransactionHash] = useState<string>();
   const [order, setOrder] = useState<FullOrder>();
@@ -213,7 +211,6 @@ const ConnectedListNftWidget: FC<ListNftWidgetProps> = ({
         collectionImage={collectionImage}
         collectionName={collectionName}
         collectionTokenInfo={collectionTokenInfo}
-        collectionTokensInfo={tokens}
         currencyTokenAmount={currencyTokenAmount}
         currencyTokenAmountMinusProtocolFee={currencyTokenAmountMinusProtocolFee}
         currencyTokenInfo={currencyTokenInfo}
@@ -230,6 +227,7 @@ const ConnectedListNftWidget: FC<ListNftWidgetProps> = ({
         widgetState={widgetState}
         onExpiryAmountChange={setExpiryAmount}
         onExpiryTimeUnitChange={setExpiryTimeUnit}
+        onSelectededNftChange={setSelectedTokenId}
         onSelectNftButtonClick={handleSelectNftButtonClick}
         onTradeTokenInputChange={handleTradeTokenInputChange}
         className="list-nft-widget__trade-details-container"

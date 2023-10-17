@@ -12,10 +12,10 @@ import ReviewTokenDetails from '../../../../components/ReviewTokenDetails/Review
 import TradeDetails from '../../../../components/TradeDetails/TradeDetails';
 import CopyLinkButton from '../../../../compositions/CopyLinkButton/CopyLinkButton';
 import SelectExpiry from '../../../../compositions/SelectExpiry/SelectExpiry';
-import SelectNft from '../../../../compositions/SelectNft/SelectNft';
 import SelectNftButton from '../../../../compositions/SelectNftButton/SelectNftButton';
 import TradeTokenInput from '../../../../compositions/TradeTokenInput/TradeTokenInput';
 import TransactionLink from '../../../../compositions/TransactionLink/TransactionLink';
+import ConnectedNftSelector from '../../../../connectors/ConnectedNftSelector/ConnectedNftSelector';
 import { NftApprovalTransaction } from '../../../../entities/SubmittedTransaction/SubmittedTransaction';
 import { AppError } from '../../../../errors/appError';
 import writeTextToClipboard from '../../../../helpers/browser';
@@ -31,7 +31,6 @@ interface ListNftDetailContainerProps {
   collectionImage: string;
   collectionName: string;
   collectionTokenInfo?: CollectionTokenInfo;
-  collectionTokensInfo: CollectionTokenInfo[];
   currencyTokenAmount: string;
   currencyTokenAmountMinusProtocolFee?: string;
   currencyTokenInfo: TokenInfo;
@@ -48,6 +47,7 @@ interface ListNftDetailContainerProps {
   widgetState: ListNftState;
   onExpiryAmountChange: (value?: number) => void;
   onExpiryTimeUnitChange: (value: ExpiryTimeUnit) => void;
+  onSelectededNftChange: (tokenId: string) => void;
   onSelectNftButtonClick: () => void;
   onTradeTokenInputChange: (value: string) => void;
   className?: string;
@@ -58,7 +58,6 @@ const ListNftDetailContainer: FC<ListNftDetailContainerProps> = ({
   collectionImage,
   collectionName,
   collectionTokenInfo,
-  collectionTokensInfo,
   currencyTokenInfo,
   currencyTokenAmount,
   currencyTokenAmountMinusProtocolFee,
@@ -75,6 +74,7 @@ const ListNftDetailContainer: FC<ListNftDetailContainerProps> = ({
   userTokens,
   onExpiryAmountChange,
   onExpiryTimeUnitChange,
+  onSelectededNftChange,
   onSelectNftButtonClick,
   onTradeTokenInputChange,
   className = '',
@@ -82,7 +82,6 @@ const ListNftDetailContainer: FC<ListNftDetailContainerProps> = ({
   const wrapperClassNames = classNames('list-nft-details-container', {
     [`list-nft-details-container--has-${widgetState}-state`]: widgetState,
   }, className);
-  console.log(selectedTokenId, userTokens);
 
   const approvalUrl = useMemo(() => (submittedApproval?.hash ? getReceiptUrl(chainId, submittedApproval.hash) : undefined), [submittedApproval]);
 
@@ -124,11 +123,10 @@ const ListNftDetailContainer: FC<ListNftDetailContainerProps> = ({
       )}
 
       {widgetState === ListNftState.selectNft && (
-        <SelectNft
-          collectionName={collectionName}
-          collectionTokensInfo={collectionTokensInfo}
+        <ConnectedNftSelector
+          selectedToken={selectedTokenId}
           tokens={userTokens}
-          onClickNft={console.log}
+          onClickNft={onSelectededNftChange}
         />
       )}
 
