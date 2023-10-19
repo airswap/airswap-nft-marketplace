@@ -171,6 +171,11 @@ const ConnectedListNftWidget: FC<ListNftWidgetProps> = ({
     setWidgetState(ListNftState.selectNft);
   };
 
+  const handleSelectedNftChange = (tokenId: string) => {
+    setSelectedTokenId(tokenId);
+    setWidgetState(ListNftState.details);
+  };
+
   useEffect(() => {
     if (approveTransaction?.status === SubmittedTransactionStatus.processing) {
       setWidgetState(ListNftState.approving);
@@ -227,7 +232,7 @@ const ConnectedListNftWidget: FC<ListNftWidgetProps> = ({
         widgetState={widgetState}
         onExpiryAmountChange={setExpiryAmount}
         onExpiryTimeUnitChange={setExpiryTimeUnit}
-        onSelectededNftChange={setSelectedTokenId}
+        onSelectedNftChange={handleSelectedNftChange}
         onSelectNftButtonClick={handleSelectNftButtonClick}
         onTradeTokenInputChange={handleTradeTokenInputChange}
         className="list-nft-widget__trade-details-container"

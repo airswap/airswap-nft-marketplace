@@ -47,7 +47,7 @@ interface ListNftDetailContainerProps {
   widgetState: ListNftState;
   onExpiryAmountChange: (value?: number) => void;
   onExpiryTimeUnitChange: (value: ExpiryTimeUnit) => void;
-  onSelectededNftChange: (tokenId: string) => void;
+  onSelectedNftChange: (tokenId: string) => void;
   onSelectNftButtonClick: () => void;
   onTradeTokenInputChange: (value: string) => void;
   className?: string;
@@ -74,7 +74,7 @@ const ListNftDetailContainer: FC<ListNftDetailContainerProps> = ({
   userTokens,
   onExpiryAmountChange,
   onExpiryTimeUnitChange,
-  onSelectededNftChange,
+  onSelectedNftChange,
   onSelectNftButtonClick,
   onTradeTokenInputChange,
   className = '',
@@ -126,7 +126,7 @@ const ListNftDetailContainer: FC<ListNftDetailContainerProps> = ({
         <ConnectedNftSelector
           selectedToken={selectedTokenId}
           tokens={userTokens}
-          onClickNft={onSelectededNftChange}
+          onClickNft={onSelectedNftChange}
         />
       )}
 

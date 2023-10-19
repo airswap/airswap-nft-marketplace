@@ -1,4 +1,5 @@
 import {
+  ChangeEvent,
   FC,
   ReactElement,
   useEffect,
@@ -7,12 +8,14 @@ import {
   useState,
 } from 'react';
 
-import { CollectionTokenInfo } from '@airswap/types';
+import { CollectionTokenInfo, FullOrder } from '@airswap/types';
 // eslint-disable-next-line import/no-extraneous-dependencies
 import { useDebounce } from 'react-use';
 
 import SearchInput from '../../components/SearchInput/SearchInput';
+import EmptyState from '../EmptyState/EmptyState';
 import { getSelectNftOptions } from '../SelectNftButton/helpers/getSelectNftOptions';
+import { filterTokenBySearchValue } from './helpers/filterTokenBySearchValue';
 import SelectNftListButton from './subcomponents/SelectNftListButton';
 
 import './SelectNft.scss';
@@ -22,6 +25,7 @@ interface SelectNftProps {
   tokenInfo: CollectionTokenInfo[];
   tokens: string[];
   loadingTokens?: string[];
+  orders: FullOrder[];
   onClickNft: (id: string) => void;
   onScroll: (tokens: string[]) => void;
   className?: string;
@@ -32,15 +36,19 @@ const SelectNft: FC<SelectNftProps> = ({
   tokenInfo,
   tokens,
   loadingTokens = [],
+  orders,
   onClickNft,
   onScroll,
   className = '',
 }): ReactElement => {
-  const options = useMemo(() => getSelectNftOptions(tokens, collectionName), [tokens, collectionName]);
   const ref = useRef<HTMLUListElement>(null);
 
   const [viewedTokens, setViewedTokens] = useState<string[]>([]);
   const [debouncedViewedTokens, setDebouncedViewedTokens] = useState<string[]>([]);
+  const [searchValue, setSearchValue] = useState('');
+
+  const filteredTokens = useMemo(() => tokens.filter(token => filterTokenBySearchValue(token, searchValue, tokenInfo)), [tokens, searchValue, orders]);
+  const options = useMemo(() => getSelectNftOptions(filteredTokens, collectionName), [filteredTokens, collectionName]);
 
   useDebounce((): void => {
     setDebouncedViewedTokens(viewedTokens);
@@ -69,13 +77,29 @@ const SelectNft: FC<SelectNftProps> = ({
     getViewedTokens(ref.current);
   };
 
+  const handleSearchInputChange = (e: ChangeEvent<HTMLInputElement>) => {
+    setSearchValue(e.target.value);
+  };
+
   useEffect(() => {
     getViewedTokens(ref.current);
-  }, []);
+  }, [options]);
 
   return (
     <div className={`select-nft ${className}`}>
-      <SearchInput placeholder="Search nft" className="select-nft__search-input" />
+      <SearchInput
+        placeholder="Search nft"
+        onChange={handleSearchInputChange}
+        className="select-nft__search-input"
+      />
+
+      {options.length === 0 && (
+        <EmptyState
+          text="No tokens found. Try another search term."
+          className="select-nft__empty-state"
+        />
+      )}
+
       <ul
         ref={ref}
         onScroll={handleScroll}
@@ -84,10 +108,12 @@ const SelectNft: FC<SelectNftProps> = ({
         {options.map(option => {
           const nft = tokenInfo.find(token => token.id.toString() === option.value);
           const isLoading = !nft && loadingTokens.some(token => token === option.value);
+          const isListed = orders.some(order => order.signer.id === option.value);
 
           return (
             <li key={option.value}>
               <SelectNftListButton
+                isListed={isListed}
                 isLoading={isLoading}
                 isPreview={!nft}
                 name={nft?.name || option.label}

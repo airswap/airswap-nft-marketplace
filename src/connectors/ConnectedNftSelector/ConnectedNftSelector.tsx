@@ -52,6 +52,7 @@ const ConnectedNftSelector: FC<ConnectedNftSelectorProps> = ({
     <SelectNft
       collectionName={collectionName}
       loadingTokens={viewedTokens}
+      orders={userOrders}
       tokenInfo={tokenInfo}
       tokens={allTokens}
       onClickNft={onClickNft}
