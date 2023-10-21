@@ -27,7 +27,6 @@ const ConnectedNftSelector: FC<ConnectedNftSelectorProps> = ({
 }): ReactElement => {
   const { collectionToken, collectionName } = useAppSelector(state => state.config);
   const { userOrders } = useAppSelector(state => state.listNft);
-  console.log(userOrders);
 
   const [tokens, setTokens] = useState<string[]>([selectedToken]);
   const [viewedTokens, setViewedTokens] = useState<string[]>([]);
