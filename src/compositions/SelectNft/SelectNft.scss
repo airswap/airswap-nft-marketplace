@@ -1,0 +1,22 @@
+@import "src/styles";
+
+.select-nft {
+    width: 100%;
+
+    &__empty-state {
+        margin-top: 2rem;
+    }
+
+    &__list {
+        @extend %scrollbar;
+
+        margin-top: 1rem;
+        max-height: calc(100svh - var(--top-bar-height) - 12rem);
+        list-style: none;
+        overflow-y: auto;
+
+        @include for-size(tablet-portrait-up) {
+            max-height: 22rem;
+        }
+    }
+}

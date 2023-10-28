@@ -1,8 +1,12 @@
 import { ListNftState } from '../subcomponents/ConnectedListNftWidget/ConnectedListNftWidget';
 
-export const getTitle = (state: ListNftState): string => {
+export const getTitle = (state?: ListNftState): string => {
   if (state === ListNftState.review) {
     return 'Review Listing';
+  }
+
+  if (state === ListNftState.selectNft) {
+    return 'Select NFT';
   }
 
   if (state === ListNftState.tokenAlreadyListedWarning) {

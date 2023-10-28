@@ -9,12 +9,13 @@ import Icon from '../../../../components/Icon/Icon';
 import LoadingSpinner from '../../../../components/LoadingSpinner/LoadingSpinner';
 import ReviewNftDetails from '../../../../components/ReviewNftDetails/ReviewNftDetails';
 import ReviewTokenDetails from '../../../../components/ReviewTokenDetails/ReviewTokenDetails';
-import SelectNft from '../../../../components/SelectNft/SelectNft';
 import TradeDetails from '../../../../components/TradeDetails/TradeDetails';
 import CopyLinkButton from '../../../../compositions/CopyLinkButton/CopyLinkButton';
 import SelectExpiry from '../../../../compositions/SelectExpiry/SelectExpiry';
+import SelectNftButton from '../../../../compositions/SelectNftButton/SelectNftButton';
 import TradeTokenInput from '../../../../compositions/TradeTokenInput/TradeTokenInput';
 import TransactionLink from '../../../../compositions/TransactionLink/TransactionLink';
+import ConnectedNftSelector from '../../../../connectors/ConnectedNftSelector/ConnectedNftSelector';
 import { NftApprovalTransaction } from '../../../../entities/SubmittedTransaction/SubmittedTransaction';
 import { AppError } from '../../../../errors/appError';
 import writeTextToClipboard from '../../../../helpers/browser';
@@ -46,7 +47,8 @@ interface ListNftDetailContainerProps {
   widgetState: ListNftState;
   onExpiryAmountChange: (value?: number) => void;
   onExpiryTimeUnitChange: (value: ExpiryTimeUnit) => void;
-  onSelectedNftChange: (value: string) => void;
+  onSelectedNftChange: (tokenId: string) => void;
+  onSelectNftButtonClick: () => void;
   onTradeTokenInputChange: (value: string) => void;
   className?: string;
 }
@@ -66,13 +68,14 @@ const ListNftDetailContainer: FC<ListNftDetailContainerProps> = ({
   projectFee,
   protocolFeeInCurrencyToken,
   protocolFee,
-  selectedTokenId,
   submittedApproval,
-  userTokens,
+  selectedTokenId,
   widgetState,
+  userTokens,
   onExpiryAmountChange,
   onExpiryTimeUnitChange,
   onSelectedNftChange,
+  onSelectNftButtonClick,
   onTradeTokenInputChange,
   className = '',
 }) => {
@@ -93,14 +96,12 @@ const ListNftDetailContainer: FC<ListNftDetailContainerProps> = ({
     <div className={wrapperClassNames}>
       {widgetState === ListNftState.details && (
         <>
-          <SelectNft
+          <SelectNftButton
             collectionName={collectionName}
             logoURI={collectionTokenInfo?.image}
-            tokens={userTokens}
             title="List"
             token={collectionTokenInfo}
-            value={selectedTokenId}
-            onSelect={onSelectedNftChange}
+            onClick={onSelectNftButtonClick}
             className="list-nft-details-container__select-nft"
           />
           <SwapIcon className="list-nft-details-container__swap-icon" />
@@ -119,6 +120,14 @@ const ListNftDetailContainer: FC<ListNftDetailContainerProps> = ({
             className="list-nft-details-container__select-expiry"
           />
         </>
+      )}
+
+      {widgetState === ListNftState.selectNft && (
+        <ConnectedNftSelector
+          selectedToken={selectedTokenId}
+          tokens={userTokens}
+          onClickNft={onSelectedNftChange}
+        />
       )}
 
       {(widgetState === ListNftState.review || widgetState === ListNftState.success) && (

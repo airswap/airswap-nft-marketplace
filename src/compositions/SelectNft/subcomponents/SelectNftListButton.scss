@@ -1,0 +1,66 @@
+@import "src/styles";
+
+.select-nft-list-button {
+    @extend %button-border-style;
+
+    display: flex;
+    justify-content: flex-start;
+    gap: 1rem;
+    width: 100%;
+    padding-block: .75rem;
+    padding-left: .75rem;
+    font-size: 1.125rem;
+    font-weight: var(--fw-700);
+
+    &:hover {
+        background-color: var(--c-dark);
+    }
+
+    &--is-preview &__name {
+        color: var(--c-light-grey);
+    }
+
+    &__loading-spinner,
+    &__logo-icon {
+        @extend %trade-window-icon;
+
+        width: 2.375rem;
+
+        @include for-size(tiny-phone-only) {
+            width: 2rem;
+        }
+    }
+
+    &__loading-spinner {
+        padding: .375rem;
+        background: none;
+    }
+
+    &__name-and-listed {
+        display: flex;
+        flex-direction: column;
+        justify-content: center;
+        max-width: calc(100% - 3rem);
+
+        @include for-size(tiny-phone-only) {
+            margin: 0 .75rem;
+            max-width: calc(100% - 2rem);
+        }
+    }
+
+    &__name {
+        @extend %trade-window-name;
+        @extend %text-ellipsis;
+
+        min-height: 1.125rem;
+    }
+
+
+
+    &__listed {
+        @extend %trade-window-title;
+
+        margin-top: .25rem;
+        text-align: start;
+    }
+}
