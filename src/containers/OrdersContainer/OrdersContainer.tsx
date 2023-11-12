@@ -17,6 +17,7 @@ interface OrdersContainerProps {
   isEndOfOrders: boolean;
   isLoading: boolean;
   currencyTokenInfo: TokenInfo;
+  highlightOrderNonce?: string;
   listCallToActionText?: string;
   orders: FullOrder[];
   tokens: CollectionTokenInfo[];
@@ -28,6 +29,7 @@ const OrdersContainer: FC<OrdersContainerProps> = ({
   isEndOfOrders,
   isLoading,
   currencyTokenInfo,
+  highlightOrderNonce,
   listCallToActionText,
   orders,
   tokens,
@@ -59,6 +61,7 @@ const OrdersContainer: FC<OrdersContainerProps> = ({
               return (
                 <NftCardSkeleton
                   key={order.nonce}
+                  isHighlighted={order.nonce === highlightOrderNonce}
                   price={price.toString()}
                   symbol={currencyTokenInfo.symbol}
                   to={routes.nftDetail(order.signer.id)}
@@ -70,6 +73,7 @@ const OrdersContainer: FC<OrdersContainerProps> = ({
             return (
               <NftCard
                 key={order.nonce}
+                isHighlighted={order.nonce === highlightOrderNonce}
                 imageURI={orderToken.image}
                 price={price.toString()}
                 name={orderToken.name}
@@ -80,8 +84,8 @@ const OrdersContainer: FC<OrdersContainerProps> = ({
             );
           })}
       </div>
-      <div className="orders-container__bottom">
-        {isLoading && <LoadingSpinner className="orders-container__loader" />}
+      {isLoading && <LoadingSpinner className="orders-container__loading-spinner" />}
+      <div className="orders-container__end-of-orders-icon-wrapper">
         {(!isLoading && isEndOfOrders) && <Icon name="airswap" className="orders-container__end-of-orders-icon" />}
       </div>
     </div>

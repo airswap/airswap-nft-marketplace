@@ -3,6 +3,10 @@
 .nft-card {
     @extend %nft-card;
 
+    &--is-highlighted {
+        @extend %nft-card--is-highlighted;
+    }
+
     &__img {
         width: 100%;
         aspect-ratio: 1;

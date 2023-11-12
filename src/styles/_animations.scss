@@ -7,3 +7,23 @@
     from { transform: scale(0) }
     to { transform: scale(1) }
 }
+
+:root {
+    --c-highlight-start: rgba(255, 255, 255, .3);
+    --c-highlight-end: rgba(255, 255, 255, .65);
+}
+
+@keyframes highlight {
+    from {
+        box-shadow: 0 0 2rem 1rem var(--c-highlight-start);
+        border-color: var(--c-highlight-start);
+    }
+    50% {
+        box-shadow: 0 0 2rem 1rem var(--c-highlight-end);
+        border-color: var(--c-highlight-end);
+    }
+    to {
+        box-shadow: 0 0 2rem 1rem var(--c-highlight-start);
+        border-color: var(--c-highlight-start);
+    }
+}

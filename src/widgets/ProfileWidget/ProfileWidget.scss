@@ -32,6 +32,9 @@
     &__empty-state,
     &__loading-spinner {
         margin: 2.5rem auto 0;
+    }
+
+    &__empty-state {
         opacity: 0.5;
     }
 }

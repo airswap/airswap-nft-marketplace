@@ -3,6 +3,10 @@
 .nft-card-skeleton {
     @extend %nft-card;
 
+    &--is-highlighted {
+        @extend %nft-card--is-highlighted;
+    }
+
     &__loader-wrapper {
         @extend %flex-align-center;
 

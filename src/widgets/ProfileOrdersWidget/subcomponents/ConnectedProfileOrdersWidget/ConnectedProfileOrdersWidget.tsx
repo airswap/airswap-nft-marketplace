@@ -7,6 +7,7 @@ import React, {
 } from 'react';
 
 import { TokenInfo } from '@airswap/types';
+import { useSearchParams } from 'react-router-dom';
 
 import SearchInput from '../../../../components/SearchInput/SearchInput';
 import Helmet from '../../../../compositions/Helmet/Helmet';
@@ -37,6 +38,7 @@ const ConnectedProfileOrdersWidget: FC<ConnectedProfileOrdersWidgetProps> = ({
   className = '',
 }): ReactElement => {
   const dispatch = useAppDispatch();
+  const [searchParams] = useSearchParams();
 
   const scrolledToBottom = useScrollToBottom();
 
@@ -51,6 +53,7 @@ const ConnectedProfileOrdersWidget: FC<ConnectedProfileOrdersWidgetProps> = ({
     orders,
   } = useAppSelector((state) => state.profileOrders);
 
+  const highlightOrderNonce = searchParams.get('highlightOrderNonce');
   const [searchValue, setSearchValue] = useState('');
 
   const ensAddress = useEnsAddress(profileAccount);
@@ -117,6 +120,7 @@ const ConnectedProfileOrdersWidget: FC<ConnectedProfileOrdersWidgetProps> = ({
           isEndOfOrders={isTotalOrdersReached}
           isLoading={isLoading || offset === 0}
           currencyTokenInfo={currencyTokenInfo}
+          highlightOrderNonce={highlightOrderNonce || undefined}
           listCallToActionText={listCallToActionText}
           orders={filteredOrders}
           tokens={tokens}
