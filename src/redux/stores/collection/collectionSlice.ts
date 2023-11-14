@@ -31,6 +31,10 @@ export const collectionSlice = createSlice({
       ...state,
       offset: action.payload,
     }),
+    setOrders: (state, action: PayloadAction<FullOrder[]>): CollectionState => ({
+      ...state,
+      orders: action.payload,
+    }),
   },
   extraReducers: (builder) => {
     builder.addCase(getCollectionOrders.fulfilled, (state, action: PayloadAction<FullOrder[]>): CollectionState => {
@@ -63,6 +67,7 @@ export const collectionSlice = createSlice({
 export const {
   reset,
   setOffset,
+  setOrders,
 } = collectionSlice.actions;
 
 export default collectionSlice.reducer;

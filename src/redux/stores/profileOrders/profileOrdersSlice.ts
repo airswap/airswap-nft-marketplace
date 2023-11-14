@@ -27,6 +27,10 @@ const profileSlice = createSlice({
     reset: (): ProfileOrdersState => ({
       ...initialState,
     }),
+    setOrders: (state, action: PayloadAction<FullOrder[]>): ProfileOrdersState => ({
+      ...state,
+      orders: action.payload,
+    }),
     setOrdersOffset: (state, action: PayloadAction<number>): ProfileOrdersState => ({
       ...state,
       offset: action.payload,
@@ -68,6 +72,7 @@ const profileSlice = createSlice({
 
 export const {
   reset,
+  setOrders,
   setOrdersOffset,
 } = profileSlice.actions;
 

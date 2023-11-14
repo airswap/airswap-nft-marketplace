@@ -4,6 +4,7 @@ import { Web3ReactProvider } from '@web3-react/core';
 
 import Routes from './compositions/Routes/Routes';
 import useMapWeb3ReactToStore from './hooks/useMapWeb3ReactToStore';
+import useSwapEventsSubscriber from './hooks/useSwapEventsSubscriber';
 import useSwitchChain from './hooks/useSwitchChain';
 import DebugPage from './pages/DebugPage/DebugPage';
 import { useAppSelector } from './redux/hooks';
@@ -25,6 +26,7 @@ const ConnectedApp = () => {
   useIndexers();
   useSwitchChain();
   useWeb3();
+  useSwapEventsSubscriber();
 
   if (isFailed) {
     return (
