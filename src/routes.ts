@@ -18,7 +18,9 @@ export const routes = {
   listNft: (tokenId?: string) => `/${AppRoutes.listNft}${tokenId ? `?tokenId=${tokenId}` : ''}`,
   nftDetail: (tokenId: string) => `/${AppRoutes.nftDetail}/${tokenId}`,
   orderDetail: (account: string, orderNonce: string) => `/${AppRoutes.orderDetail}/${account}/${orderNonce}`,
-  profile: (account: string) => `/${AppRoutes.profile}/${account}/${ProfileRoutes.ownedNfts}`,
+  profile: (account: string, highlightTokenId?: string) => (
+    `/${AppRoutes.profile}/${account}/${ProfileRoutes.ownedNfts}/${highlightTokenId ? `?highlightTokenId=${highlightTokenId}` : ''}`
+  ),
   userOrders: (account: string, highlightOrderNonce?: string) => (
     `/${AppRoutes.profile}/${account}/${ProfileRoutes.orders}${highlightOrderNonce ? `?highlightOrderNonce=${highlightOrderNonce}` : ''}`
   ),

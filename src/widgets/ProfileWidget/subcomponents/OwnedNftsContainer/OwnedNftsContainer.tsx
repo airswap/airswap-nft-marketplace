@@ -14,6 +14,7 @@ interface OwnedNftsContainerProps {
   isEndOfTokens: boolean;
   isLoading: boolean;
   currencyTokenInfo: TokenInfo;
+  highlightTokenId?: string;
   orders: FullOrder[];
   tokens: CollectionTokenInfo[];
   className?: string;
@@ -23,6 +24,7 @@ const OwnedNftsContainer: FC<OwnedNftsContainerProps> = ({
   isEndOfTokens,
   isLoading,
   currencyTokenInfo,
+  highlightTokenId,
   orders,
   tokens,
   className = '',
@@ -36,6 +38,7 @@ const OwnedNftsContainer: FC<OwnedNftsContainerProps> = ({
         return (
           <NftCard
             key={nft.id}
+            isHighlighted={highlightTokenId === nft.id.toString()}
             imageURI={nft.image}
             name={nft.name}
             price={price}
