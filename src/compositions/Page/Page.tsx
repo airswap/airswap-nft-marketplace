@@ -1,7 +1,5 @@
 import React, { FC, ReactNode, useState } from 'react';
 
-import { Web3Provider } from '@ethersproject/providers';
-import { useWeb3React } from '@web3-react/core';
 import classNames from 'classnames';
 import { Helmet } from 'react-helmet';
 
@@ -25,16 +23,14 @@ interface PageProps {
 }
 
 const Page: FC<PageProps> = ({ className = '', contentClassName = '', children }) => {
-  const {
-    isActive,
-    account,
-    chainId,
-  } = useWeb3React<Web3Provider>();
   const dispatch = useAppDispatch();
-  const ensAddress = useEnsAddress(account || '');
+
+  const { isActive, account, chainId } = useAppSelector(state => state.web3);
   const { config } = useAppSelector((state) => state);
   const { isInitialized, showConnectModal, connectionType } = useAppSelector((state) => state.web3);
   const { avatarUrl } = useAppSelector((state) => state.user);
+
+  const ensAddress = useEnsAddress(account || '');
 
   const chainIdIsCorrect = !!chainId && chainId === config.chainId;
 

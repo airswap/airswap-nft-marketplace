@@ -1,23 +1,25 @@
 import { useMemo } from 'react';
 
 import { BaseProvider } from '@ethersproject/providers/src.ts/base-provider';
-import { useWeb3React } from '@web3-react/core';
 import { getDefaultProvider } from 'ethers';
 
-import { getRpcUrl } from '../helpers/ethers';
+import { getLibrary, getRpcUrl } from '../helpers/ethers';
+import { useAppSelector } from '../redux/hooks';
 
 // Hook for getting library from connected wallet or from rpc url, this way you can still use it in ethers.js methods
 
 const useDefaultLibrary = (chainId?: number): BaseProvider | undefined => {
-  const { provider, chainId: providerChainId } = useWeb3React();
+  const { isActive, chainId: providerChainId } = useAppSelector(state => state.web3);
 
   return useMemo(() => {
-    if (!chainId || (provider && chainId === providerChainId)) {
-      return provider;
+    const library = providerChainId ? getLibrary(providerChainId) : undefined;
+
+    if ((!chainId && library) || (library && chainId === providerChainId)) {
+      return library;
     }
 
-    return getDefaultProvider(getRpcUrl(chainId));
-  }, [provider, chainId]);
+    return chainId ? getDefaultProvider(getRpcUrl(chainId)) : undefined;
+  }, [isActive, chainId]);
 };
 
 export default useDefaultLibrary;
