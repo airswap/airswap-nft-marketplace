@@ -10,7 +10,7 @@ export const useConfig = (): void => {
   const dispatch = useAppDispatch();
 
   const library = useWeb3ReactLibrary();
-  const { chainId } = useAppSelector(state => state.web3);
+  const chainId = library?.network?.chainId;
   const {
     collectionToken,
     collectionTokenKind,
@@ -26,7 +26,7 @@ export const useConfig = (): void => {
 
     dispatch(getCollectionTokenKind({ address: collectionToken, provider: library }));
     dispatch(getCurrencyTokenKind({ address: currencyToken, provider: library }));
-  }, [chainId]);
+  }, [library]);
 
   useEffect(() => {
     if (

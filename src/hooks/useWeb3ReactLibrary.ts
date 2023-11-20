@@ -14,7 +14,7 @@ const useWeb3ReactLibrary = (): Web3Provider | undefined => {
   // Using debounce because useWeb3React disconnects from provider every route for a split second
   useDebounce(() => {
     setLibrary(provider);
-  }, 100, [library]);
+  }, 100, [provider]);
 
   return library;
 };

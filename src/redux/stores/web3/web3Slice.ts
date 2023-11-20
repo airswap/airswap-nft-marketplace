@@ -5,22 +5,22 @@ import { saveLastProviderToLocalStorage } from './web3Api';
 
 
 export interface Web3State {
-  hasLibrary: boolean;
   isActive: boolean;
   isInitialized: boolean;
   showConnectModal: boolean;
   userHasClosedConnectModal: boolean;
   account?: string;
   chainId?: number;
+  libraries: Record<number, boolean>;
   walletName?: string;
   connectionType?: ConnectionType;
   error?: Error;
 }
 
 const initialState: Web3State = {
-  hasLibrary: false,
   isActive: false,
   isInitialized: false,
+  libraries: {},
   showConnectModal: false,
   userHasClosedConnectModal: false,
 };
@@ -47,9 +47,9 @@ export const web3Slice = createSlice({
       ...state,
       isInitialized: action.payload,
     }),
-    setHasLibrary: (state, action: PayloadAction<boolean>) => ({
+    setLibraries: (state, action: PayloadAction<Record<number, boolean>>) => ({
       ...state,
-      hasLibrary: action.payload,
+      libraries: action.payload,
     }),
     setShowConnectModal: (state, action: PayloadAction<boolean>) => ({
       ...state,
@@ -69,8 +69,8 @@ export const web3Slice = createSlice({
 export const {
   setConnectionType,
   setError,
-  setHasLibrary,
   setIsInitialized,
+  setLibraries,
   setShowConnectModal,
   setUserHasClosedConnectModal,
   setWeb3Data,

@@ -16,7 +16,7 @@ export const configureUserSubscriber = () => {
       web3.account
       && userAccount !== web3.account
       && web3.chainId
-      && web3.hasLibrary
+      && web3.libraries[web3.chainId]
     ) {
       userAccount = web3.account;
       const library = getLibrary(web3.chainId);
