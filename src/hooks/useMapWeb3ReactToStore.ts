@@ -40,10 +40,10 @@ const useMapWeb3ReactToStore = (): void => {
 
     if (library && chainId) {
       setCachedLibrary(library, chainId);
-      setLibraries({
+      dispatch(setLibraries({
         ...libraries,
         [chainId]: true,
-      });
+      }));
     }
   }, 100, [library]);
 };

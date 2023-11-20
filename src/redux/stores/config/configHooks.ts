@@ -9,8 +9,7 @@ import { reset, setIsSuccessful } from './configSlice';
 export const useConfig = (): void => {
   const dispatch = useAppDispatch();
 
-  const library = useWeb3ReactLibrary();
-  const chainId = library?.network?.chainId;
+  const { library, chainId } = useWeb3ReactLibrary();
   const {
     collectionToken,
     collectionTokenKind,

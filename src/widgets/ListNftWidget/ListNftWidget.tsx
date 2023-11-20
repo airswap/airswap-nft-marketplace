@@ -17,10 +17,10 @@ const ListNftWidget: FC<ListNftWidgetProps> = ({ className = '' }) => {
   const dispatch = useAppDispatch();
   const [searchParams] = useSearchParams();
   const { key } = useLocation();
-  const library = useWeb3ReactLibrary();
+  const { library, chainId } = useWeb3ReactLibrary();
 
   const { config } = useAppSelector(state => state);
-  const { chainId, account } = useAppSelector(state => state.web3);
+  const { account } = useAppSelector(state => state.web3);
   const { isLoadingUserOrders, userOrders } = useAppSelector(state => state.listNft);
   const { isInitialized: isBalancesInitialized, tokens: userTokens } = useAppSelector(state => state.balances);
   const { isLoading: isMetadataLoading, currencyTokenInfo } = useAppSelector(state => state.metadata);

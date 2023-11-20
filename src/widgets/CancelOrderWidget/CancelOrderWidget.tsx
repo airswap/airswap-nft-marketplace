@@ -17,11 +17,10 @@ interface CancelOrderWidgetProps {
 }
 
 const CancelOrderWidget: FC<CancelOrderWidgetProps> = ({ order, className = '' }): ReactElement => {
-  const library = useWeb3ReactLibrary();
+  const { library, chainId } = useWeb3ReactLibrary();
   const tokenId = order.signer.id;
 
   const { collectionToken } = useAppSelector((state) => state.config);
-  const { chainId } = useAppSelector(state => state.web3);
 
   const { isLoading: isMetadataLoading, currencyTokenInfo } = useAppSelector(state => state.metadata);
 

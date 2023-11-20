@@ -9,7 +9,7 @@ import useWeb3ReactLibrary from './useWeb3ReactLibrary';
 
 const useCollectionToken = (address: string, tokenId: string): [CollectionTokenInfo | undefined, boolean] => {
   const dispatch = useAppDispatch();
-  const library = useWeb3ReactLibrary();
+  const { library } = useWeb3ReactLibrary();
   const { collectionTokens } = useAppSelector(state => state.metadata);
 
   const [isContractCalled, setIsContractCalled] = useState(false);

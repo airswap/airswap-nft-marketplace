@@ -17,7 +17,7 @@ interface BuyNftWidgetProps {
 }
 
 const BuyNftWidget: FC<BuyNftWidgetProps> = ({ order, className = '' }) => {
-  const library = useWeb3ReactLibrary();
+  const { library, chainId } = useWeb3ReactLibrary();
 
   const {
     collectionImage,
@@ -26,12 +26,7 @@ const BuyNftWidget: FC<BuyNftWidgetProps> = ({ order, className = '' }) => {
     chainId: configChainId,
   } = useAppSelector((state) => state.config);
   const { isLoading: isMetadataLoading, currencyTokenInfo } = useAppSelector(state => state.metadata);
-  const {
-    isActive,
-    account,
-    chainId,
-    connectionType,
-  } = useAppSelector(state => state.web3);
+  const { isActive, account, connectionType } = useAppSelector(state => state.web3);
 
   const tokenId = order.signer.id;
   const [collectionTokenInfo, isCollectionTokenInfoLoading] = useCollectionToken(collectionToken, tokenId);

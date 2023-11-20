@@ -6,7 +6,7 @@ import { useDebounce } from 'react-use';
 
 // Hook for getting library from connected wallet or from rpc url, this way you can still use it in ethers.js methods
 
-const useWeb3ReactLibrary = (): Web3Provider | undefined => {
+const useWeb3ReactLibrary = (): { library?: Web3Provider, chainId?: number } => {
   const { provider } = useWeb3React();
 
   const [library, setLibrary] = useState<Web3Provider>();
@@ -16,7 +16,7 @@ const useWeb3ReactLibrary = (): Web3Provider | undefined => {
     setLibrary(provider);
   }, 100, [provider]);
 
-  return library;
+  return { library, chainId: library?.network?.chainId };
 };
 
 export default useWeb3ReactLibrary;
