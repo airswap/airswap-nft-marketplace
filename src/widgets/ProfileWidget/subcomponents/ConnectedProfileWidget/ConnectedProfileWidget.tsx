@@ -54,12 +54,15 @@ const ConnectedProfileWidget: FC<ConnectedProfileWidgetProps> = ({
   const highlightTokenId = searchParams.get('highlightTokenId');
   const [searchValue, setSearchValue] = useState('');
 
-  const isEndOfTokens = tokensOffset >= ownedTokenIds.length;
+  const shouldHighlightToken = !!(highlightTokenId && ownedTokenIds.length);
+  const sortedOwnedTokenIds = [...(shouldHighlightToken ? [highlightTokenId] : []), ...ownedTokenIds.filter(token => token !== highlightTokenId)];
+
+  const isEndOfTokens = tokensOffset >= sortedOwnedTokenIds.length;
   const ensAddress = useEnsAddress(profileAccount);
   const accountUrl = useMemo(() => (
     profileAccount ? getOwnedTokensByAccountUrl(chainId, profileAccount, collectionToken) : undefined
   ), [profileAccount, chainId, collectionToken]);
-  const [tokens, isLoadingTokens] = useCollectionTokens(collectionToken, ownedTokenIds);
+  const [tokens, isLoadingTokens] = useCollectionTokens(collectionToken, sortedOwnedTokenIds);
 
   const isLoading = isLoadingUserTokens || isLoadingTokens;
   const filteredTokens = useMemo(() => (tokens

@@ -26,7 +26,7 @@ const useCollectionTokens = (address: string, tokenIds: string[]): [CollectionTo
   useEffect((): void => {
     setIsContractCalled(false);
     setCollectionTokens([]);
-  }, [tokenIds]);
+  }, [tokenIds.length]);
 
   useEffect((): void => {
     if (!library || isContractCalled || !tokenIdsToFetch.length) {
