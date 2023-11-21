@@ -6,8 +6,9 @@ export const getFullOrderSenderAmountPlusTotalFees = (fullOrder: FullOrder): Big
   const protocolFeePercentage = +fullOrder.protocolFee / 10000;
   const affiliateFeePercentage = +fullOrder.affiliateAmount / 10000;
   const feePercentage = protocolFeePercentage + affiliateFeePercentage;
+  const fullAmount = new BigNumber(fullOrder.sender.amount).dividedBy(1 - feePercentage);
 
-  return new BigNumber(fullOrder.sender.amount).dividedBy(1 - feePercentage);
+  return fullAmount.decimalPlaces(0, BigNumber.ROUND_UP);
 };
 
 export const getFullOrderReadableSenderAmountPlusTotalFees = (fullOrder: FullOrder, token: TokenInfo): string => {
