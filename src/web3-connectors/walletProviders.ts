@@ -28,6 +28,13 @@ const walletProviders: WalletProvider[] = [
       type: ConnectionType.walletConnect,
     },
   ] : []),
+  {
+    name: 'Coinbase',
+    logo: 'logos/coinbase.svg',
+    isInstalled: true,
+    url: 'https://www.coinbase.com/wallet',
+    type: ConnectionType.coinbase,
+  },
 ];
 
 export default walletProviders;
