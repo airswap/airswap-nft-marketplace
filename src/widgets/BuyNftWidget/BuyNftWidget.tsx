@@ -1,10 +1,10 @@
 import React, { FC } from 'react';
 
 import { FullOrder } from '@airswap/types';
-import { useWeb3React } from '@web3-react/core';
 
 import useCollectionToken from '../../hooks/useCollectionToken';
 import useFullOrderNonceUsed from '../../hooks/useFullOrderNonceUsed';
+import useWeb3ReactLibrary from '../../hooks/useWeb3ReactLibrary';
 import { useAppSelector } from '../../redux/hooks';
 import ConnectedBuyNftWidget from './subcomponents/ConnectedBuyNftWidget/ConnectedBuyNftWidget';
 import DisconnectedBuyNftWidget from './subcomponents/DisconnectedBuyNftWidget/DisconnectedBuyNftWidget';
@@ -17,12 +17,7 @@ interface BuyNftWidgetProps {
 }
 
 const BuyNftWidget: FC<BuyNftWidgetProps> = ({ order, className = '' }) => {
-  const {
-    account,
-    chainId,
-    isActive,
-  } = useWeb3React();
-  const tokenId = order.signer.id;
+  const { library, chainId } = useWeb3ReactLibrary();
 
   const {
     collectionImage,
@@ -31,10 +26,9 @@ const BuyNftWidget: FC<BuyNftWidgetProps> = ({ order, className = '' }) => {
     chainId: configChainId,
   } = useAppSelector((state) => state.config);
   const { isLoading: isMetadataLoading, currencyTokenInfo } = useAppSelector(state => state.metadata);
-  const { connectionType } = useAppSelector(state => state.web3);
+  const { isActive, account, connectionType } = useAppSelector(state => state.web3);
 
-  const { provider: library } = useWeb3React();
-
+  const tokenId = order.signer.id;
   const [collectionTokenInfo, isCollectionTokenInfoLoading] = useCollectionToken(collectionToken, tokenId);
   const [isNonceUsed, isNonceUsedLoading] = useFullOrderNonceUsed(order);
   const isLoading = isMetadataLoading || isCollectionTokenInfoLoading || isNonceUsedLoading;

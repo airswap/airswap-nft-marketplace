@@ -31,7 +31,7 @@ export const configureBalancesSubscriber = () => {
       return;
     }
 
-    if (!web3.chainId || !web3.account || !web3.hasLibrary || web3.chainId !== config.chainId) {
+    if (!web3.chainId || !web3.account || !web3.libraries[web3.chainId] || web3.chainId !== config.chainId) {
       return;
     }
 

@@ -1,10 +1,10 @@
 import { FC, ReactElement } from 'react';
 
 import { FullOrder } from '@airswap/types';
-import { useWeb3React } from '@web3-react/core';
 
 import useCollectionToken from '../../hooks/useCollectionToken';
 import useFullOrderNonceUsed from '../../hooks/useFullOrderNonceUsed';
+import useWeb3ReactLibrary from '../../hooks/useWeb3ReactLibrary';
 import { useAppSelector } from '../../redux/hooks';
 import ConnectedCancelOrderWidget from './subcomponents/ConnectedCancelOrderWidget/ConnectedCancelOrderWidget';
 import DisconnectedCancelOrderWidget from './subcomponents/DisconnectedCancelOrderWidget/DisconnectedCancelOrderWidget';
@@ -17,10 +17,11 @@ interface CancelOrderWidgetProps {
 }
 
 const CancelOrderWidget: FC<CancelOrderWidgetProps> = ({ order, className = '' }): ReactElement => {
-  const { chainId, provider: library } = useWeb3React();
+  const { library, chainId } = useWeb3ReactLibrary();
   const tokenId = order.signer.id;
 
   const { collectionToken } = useAppSelector((state) => state.config);
+
   const { isLoading: isMetadataLoading, currencyTokenInfo } = useAppSelector(state => state.metadata);
 
   const [collectionTokenInfo, isCollectionTokenInfoLoading] = useCollectionToken(collectionToken, tokenId);

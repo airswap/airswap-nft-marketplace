@@ -2,17 +2,16 @@ import { useEffect, useState } from 'react';
 
 import { TokenKinds } from '@airswap/constants';
 import { CollectionTokenInfo } from '@airswap/types';
-import { Web3Provider } from '@ethersproject/providers';
-import { useWeb3React } from '@web3-react/core';
 
 import { isCollectionTokenInfo } from '../entities/CollectionToken/CollectionTokenHelpers';
 import { getNftTokenApproved } from '../redux/stores/orders/ordersApi';
+import useWeb3ReactLibrary from './useWeb3ReactLibrary';
 
 const useNftTokenApproval = (
   tokenInfo: CollectionTokenInfo | undefined,
   tokenId: string,
 ): boolean => {
-  const { chainId, provider: library } = useWeb3React<Web3Provider>();
+  const { library, chainId } = useWeb3ReactLibrary();
   const [isApproved, setIsApproved] = useState(false);
 
   useEffect((): () => void => {

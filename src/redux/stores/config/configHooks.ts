@@ -1,8 +1,7 @@
 import { useEffect } from 'react';
 
-import { useWeb3React } from '@web3-react/core';
-
 import { supportedCollectionTokenKinds, supportedCurrencyTokenKinds } from '../../../constants/supportedTokenKinds';
+import useWeb3ReactLibrary from '../../../hooks/useWeb3ReactLibrary';
 import { useAppDispatch, useAppSelector } from '../../hooks';
 import { getCollectionTokenKind, getCurrencyTokenKind } from './configApi';
 import { reset, setIsSuccessful } from './configSlice';
@@ -10,8 +9,7 @@ import { reset, setIsSuccessful } from './configSlice';
 export const useConfig = (): void => {
   const dispatch = useAppDispatch();
 
-  const { provider: library } = useWeb3React();
-  const { chainId } = useAppSelector(state => state.web3);
+  const { library, chainId } = useWeb3ReactLibrary();
   const {
     collectionToken,
     collectionTokenKind,
@@ -27,7 +25,7 @@ export const useConfig = (): void => {
 
     dispatch(getCollectionTokenKind({ address: collectionToken, provider: library }));
     dispatch(getCurrencyTokenKind({ address: currencyToken, provider: library }));
-  }, [chainId]);
+  }, [library]);
 
   useEffect(() => {
     if (

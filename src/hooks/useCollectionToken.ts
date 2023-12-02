@@ -1,16 +1,15 @@
 import { useEffect, useState } from 'react';
 
 import { CollectionTokenInfo } from '@airswap/types';
-import { Web3Provider } from '@ethersproject/providers';
-import { useWeb3React } from '@web3-react/core';
 
 import { getCollectionToken } from '../entities/CollectionToken/CollectionTokenHelpers';
 import { useAppDispatch, useAppSelector } from '../redux/hooks';
 import { addCollectionTokenInfo } from '../redux/stores/metadata/metadataActions';
+import useWeb3ReactLibrary from './useWeb3ReactLibrary';
 
 const useCollectionToken = (address: string, tokenId: string): [CollectionTokenInfo | undefined, boolean] => {
   const dispatch = useAppDispatch();
-  const { provider } = useWeb3React<Web3Provider>();
+  const { library } = useWeb3ReactLibrary();
   const { collectionTokens } = useAppSelector(state => state.metadata);
 
   const [isContractCalled, setIsContractCalled] = useState(false);
@@ -24,12 +23,12 @@ const useCollectionToken = (address: string, tokenId: string): [CollectionTokenI
   }, [tokenId]);
 
   useEffect((): void => {
-    if (!provider || isContractCalled || collectionTokenFromStore) {
+    if (!library || isContractCalled || collectionTokenFromStore) {
       return;
     }
 
     const callGetCollectionToken = async () => {
-      const result = await getCollectionToken(provider, address, tokenId);
+      const result = await getCollectionToken(library, address, tokenId);
 
       if (result) {
         dispatch(addCollectionTokenInfo(result));
@@ -43,7 +42,7 @@ const useCollectionToken = (address: string, tokenId: string): [CollectionTokenI
     setIsContractLoading(true);
     callGetCollectionToken();
   }, [
-    provider,
+    library,
     address,
     tokenId,
     isContractCalled,

@@ -1,8 +1,6 @@
 import { useEffect, useState } from 'react';
 
 import { chainNames } from '@airswap/constants';
-import { Web3Provider } from '@ethersproject/providers';
-import { useWeb3React } from '@web3-react/core';
 
 import { useAppDispatch, useAppSelector } from '../redux/hooks';
 import { addToast, hideToast } from '../redux/stores/toasts/toastsActions';
@@ -12,9 +10,8 @@ import { switchNetwork } from '../web3-connectors/helpers';
 
 const useSwitchChain = (): void => {
   const dispatch = useAppDispatch();
-  const { isActive, chainId } = useWeb3React<Web3Provider>();
   const { config } = useAppSelector((state) => state);
-  const { connectionType } = useAppSelector((state) => state.web3);
+  const { isActive, chainId, connectionType } = useAppSelector((state) => state.web3);
   const { lastToastActionButtonIdClicked } = useAppSelector((state) => state.toasts);
 
   const [lastToastId, setLastToastId] = useState<string>();
