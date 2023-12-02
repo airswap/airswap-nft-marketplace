@@ -11,7 +11,7 @@
   "dependencies": {
     "@airswap/balances": "4.0.2",
     "@airswap/constants": "4.1.1",
-    "@airswap/libraries": "4.1.7",
+    "@airswap/libraries": "4.1.9",
     "@airswap/metadata": "4.1.4",
     "@airswap/types": "4.1.1",
     "@airswap/utils": "4.1.4",

@@ -25,7 +25,7 @@ const ConnectedProfileWidget: FC<ConnectedProfileWidgetProps> = ({
   ), [profileAccount, chainId, collectionToken]);
 
   return (
-    <div className={`profile-widget ${className}`}>
+    <div className={`profile-orders ${className}`}>
       <ProfileHeader
         accountUrl={accountUrl}
         avatarUrl={avatarUrl}

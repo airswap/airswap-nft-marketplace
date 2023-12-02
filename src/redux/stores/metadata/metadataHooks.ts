@@ -11,7 +11,7 @@ export const useMetadata = (): void => {
   const dispatch = useAppDispatch();
 
   const { chainId, collectionToken, currencyToken } = useAppSelector(state => state.config);
-  const { currencyTokenInfo, protocolFee } = useAppSelector(state => state.metadata);
+  const { isLoading, currencyTokenInfo, protocolFee } = useAppSelector(state => state.metadata);
   const library = useDefaultLibrary(chainId);
 
   useEffect(() => {
@@ -19,7 +19,7 @@ export const useMetadata = (): void => {
   }, [collectionToken]);
 
   useEffect(() => {
-    if (!library || !chainId) {
+    if (!library || !chainId || isLoading) {
       return;
     }
 

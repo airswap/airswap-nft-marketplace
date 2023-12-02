@@ -14,11 +14,15 @@ export enum ProfileRoutes {
 }
 
 export const routes = {
-  collection: () => '/',
+  collection: (highlightOrderNonce?: string) => `${highlightOrderNonce ? `?highlightOrderNonce=${highlightOrderNonce}` : ''}`,
   listNft: (tokenId?: string) => `/${AppRoutes.listNft}${tokenId ? `?tokenId=${tokenId}` : ''}`,
   nftDetail: (tokenId: string) => `/${AppRoutes.nftDetail}/${tokenId}`,
   orderDetail: (account: string, orderNonce: string) => `/${AppRoutes.orderDetail}/${account}/${orderNonce}`,
-  profile: (account: string) => `/${AppRoutes.profile}/${account}/${ProfileRoutes.ownedNfts}`,
-  userOrders: (account: string) => `/${AppRoutes.profile}/${account}/${ProfileRoutes.orders}`,
+  profile: (account: string, highlightTokenId?: string) => (
+    `/${AppRoutes.profile}/${account}/${ProfileRoutes.ownedNfts}/${highlightTokenId ? `?highlightTokenId=${highlightTokenId}` : ''}`
+  ),
+  userOrders: (account: string, highlightOrderNonce?: string) => (
+    `/${AppRoutes.profile}/${account}/${ProfileRoutes.orders}${highlightOrderNonce ? `?highlightOrderNonce=${highlightOrderNonce}` : ''}`
+  ),
   activity: (account: string) => `/${AppRoutes.profile}/${account}/${ProfileRoutes.activity}`,
 };

@@ -7,6 +7,7 @@ import {
 
 import { TokenInfo } from '@airswap/types';
 import { BaseProvider } from '@ethersproject/providers';
+import { useSearchParams } from 'react-router-dom';
 
 import SearchInput from '../../../../components/SearchInput/SearchInput';
 import EmptyState from '../../../../compositions/EmptyState/EmptyState';
@@ -38,6 +39,7 @@ const ConnectedProfileWidget: FC<ConnectedProfileWidgetProps> = ({
   className = '',
 }) => {
   const dispatch = useAppDispatch();
+  const [searchParams] = useSearchParams();
   const scrolledToBottom = useScrollToBottom();
 
   const { chainId, collectionToken, collectionImage } = useAppSelector((state) => state.config);
@@ -49,14 +51,18 @@ const ConnectedProfileWidget: FC<ConnectedProfileWidgetProps> = ({
     tokensOffset,
   } = useAppSelector((state) => state.profile);
 
+  const highlightTokenId = searchParams.get('highlightTokenId');
   const [searchValue, setSearchValue] = useState('');
 
-  const isEndOfTokens = tokensOffset >= ownedTokenIds.length;
+  const shouldHighlightToken = !!(highlightTokenId && ownedTokenIds.length);
+  const sortedOwnedTokenIds = [...(shouldHighlightToken ? [highlightTokenId] : []), ...ownedTokenIds.filter(token => token !== highlightTokenId)];
+
+  const isEndOfTokens = tokensOffset >= sortedOwnedTokenIds.length;
   const ensAddress = useEnsAddress(profileAccount);
   const accountUrl = useMemo(() => (
     profileAccount ? getOwnedTokensByAccountUrl(chainId, profileAccount, collectionToken) : undefined
   ), [profileAccount, chainId, collectionToken]);
-  const [tokens, isLoadingTokens] = useCollectionTokens(collectionToken, ownedTokenIds);
+  const [tokens, isLoadingTokens] = useCollectionTokens(collectionToken, sortedOwnedTokenIds);
 
   const isLoading = isLoadingUserTokens || isLoadingTokens;
   const filteredTokens = useMemo(() => (tokens
@@ -115,6 +121,7 @@ const ConnectedProfileWidget: FC<ConnectedProfileWidgetProps> = ({
                 isEndOfTokens={isEndOfTokens}
                 isLoading={isLoading || tokensOffset === 0}
                 currencyTokenInfo={currencyTokenInfo}
+                highlightTokenId={highlightTokenId || undefined}
                 orders={orders}
                 tokens={filteredTokens}
                 className="profile-widget__nfts-container"

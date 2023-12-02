@@ -17,6 +17,7 @@ interface OrdersContainerProps {
   isEndOfOrders: boolean;
   isLoading: boolean;
   currencyTokenInfo: TokenInfo;
+  highlightOrderNonce?: string;
   listCallToActionText?: string;
   orders: FullOrder[];
   tokens: CollectionTokenInfo[];
@@ -28,6 +29,7 @@ const OrdersContainer: FC<OrdersContainerProps> = ({
   isEndOfOrders,
   isLoading,
   currencyTokenInfo,
+  highlightOrderNonce,
   listCallToActionText,
   orders,
   tokens,
@@ -54,11 +56,13 @@ const OrdersContainer: FC<OrdersContainerProps> = ({
           .map(order => {
             const orderToken = tokens.find(token => token.id === +order.signer.id);
             const price = getFullOrderReadableSenderAmountPlusTotalFees(order, currencyTokenInfo);
+            const isHighlighted = order.nonce === highlightOrderNonce;
 
             if (!orderToken) {
               return (
                 <NftCardSkeleton
                   key={order.nonce}
+                  isHighlighted={order.nonce === highlightOrderNonce}
                   price={price.toString()}
                   symbol={currencyTokenInfo.symbol}
                   to={routes.nftDetail(order.signer.id)}
@@ -70,7 +74,9 @@ const OrdersContainer: FC<OrdersContainerProps> = ({
             return (
               <NftCard
                 key={order.nonce}
+                isHighlighted={isHighlighted}
                 imageURI={orderToken.image}
+                label={isHighlighted ? 'Newly listed' : undefined}
                 price={price.toString()}
                 name={orderToken.name}
                 symbol={currencyTokenInfo.symbol}
@@ -80,8 +86,8 @@ const OrdersContainer: FC<OrdersContainerProps> = ({
             );
           })}
       </div>
-      <div className="orders-container__bottom">
-        {isLoading && <LoadingSpinner className="orders-container__loader" />}
+      {isLoading && <LoadingSpinner className="orders-container__loading-spinner" />}
+      <div className="orders-container__end-of-orders-icon-wrapper">
         {(!isLoading && isEndOfOrders) && <Icon name="airswap" className="orders-container__end-of-orders-icon" />}
       </div>
     </div>

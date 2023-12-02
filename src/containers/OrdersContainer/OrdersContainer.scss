@@ -13,15 +13,15 @@
         margin: 5rem auto 0;
     }
 
-    &__bottom {
+    &__loading-spinner {
+        margin: 1rem auto 0;
+    }
+
+    &__end-of-orders-icon-wrapper {
         display: flex;
         margin: 2rem auto 0;
         width: 2rem;
         aspect-ratio: 1;
-    }
-
-    &__loader {
-        border: 0;
     }
 
     &__end-of-orders-icon {

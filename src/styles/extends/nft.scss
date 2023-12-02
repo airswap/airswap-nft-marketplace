@@ -5,6 +5,7 @@
     @extend %button;
     @extend %button-border-style;
 
+    border-color: transparent;
     content-visibility: auto;
     contain-intrinsic-size: 10rem;
     flex-direction: column;
@@ -22,6 +23,12 @@
     @include for-size(desktop-up) {
         contain-intrinsic-size: 20.875rem;
     }
+}
+
+%nft-card--is-highlighted {
+    border-color: rgba(43, 113, 255, 1);
+    animation: highlight 2s ease-in-out infinite;
+    z-index: 1;
 }
 
 %nft-card-info-wrapper {
