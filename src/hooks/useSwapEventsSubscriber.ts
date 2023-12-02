@@ -3,6 +3,7 @@ import { useEffect, useState } from 'react';
 import { Swap } from '@airswap/libraries/build/src/Contracts';
 import { useWeb3React } from '@web3-react/core';
 import { BigNumber } from 'ethers';
+import { noop } from 'react-use/lib/misc/util';
 
 import { isEqualAddress } from '../helpers/string';
 import { useAppDispatch, useAppSelector } from '../redux/hooks';
@@ -31,7 +32,6 @@ const useSwapEventsSubscriber = () => {
   const dispatch = useAppDispatch();
   const { provider: library } = useWeb3React();
 
-  const [isInitialized, setIsInitialized] = useState(false);
   const [lastSoldOrder, setLastSoldOrder] = useState<LastSoldOrder>();
 
   useEffect(() => {
@@ -109,13 +109,17 @@ const useSwapEventsSubscriber = () => {
   };
 
   useEffect(() => {
-    if (library && account && !isInitialized) {
-      const swapContract = Swap.getContract(library, chainId);
-
-      swapContract.on('Swap', onSwap);
-
-      setIsInitialized(true);
+    if (!library || !account) {
+      return noop;
     }
+
+    const swapContract = Swap.getContract(library, chainId);
+
+    swapContract.on('Swap', onSwap);
+
+    return () => {
+      swapContract.off('Swap', onSwap);
+    };
   }, [library, account]);
 };
 
