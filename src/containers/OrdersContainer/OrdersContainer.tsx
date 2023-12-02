@@ -56,6 +56,7 @@ const OrdersContainer: FC<OrdersContainerProps> = ({
           .map(order => {
             const orderToken = tokens.find(token => token.id === +order.signer.id);
             const price = getFullOrderReadableSenderAmountPlusTotalFees(order, currencyTokenInfo);
+            const isHighlighted = order.nonce === highlightOrderNonce;
 
             if (!orderToken) {
               return (
@@ -73,8 +74,9 @@ const OrdersContainer: FC<OrdersContainerProps> = ({
             return (
               <NftCard
                 key={order.nonce}
-                isHighlighted={order.nonce === highlightOrderNonce}
+                isHighlighted={isHighlighted}
                 imageURI={orderToken.image}
+                label={isHighlighted ? 'Newly listed' : undefined}
                 price={price.toString()}
                 name={orderToken.name}
                 symbol={currencyTokenInfo.symbol}

@@ -34,12 +34,14 @@ const OwnedNftsContainer: FC<OwnedNftsContainerProps> = ({
       {tokens.map((nft) => {
         const tokenOrder = orders.find(order => +order.signer.id === nft.id);
         const price = (tokenOrder && currencyTokenInfo) ? getFullOrderReadableSenderAmountPlusTotalFees(tokenOrder, currencyTokenInfo) : undefined;
+        const isHighlighted = highlightTokenId === nft.id.toString();
 
         return (
           <NftCard
             key={nft.id}
-            isHighlighted={highlightTokenId === nft.id.toString()}
+            isHighlighted={isHighlighted}
             imageURI={nft.image}
+            label={isHighlighted ? 'Newly bought' : undefined}
             name={nft.name}
             price={price}
             to={routes.nftDetail(nft.id.toString())}
