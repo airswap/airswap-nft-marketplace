@@ -1,0 +1,1 @@
+const{destr:destr,safeDestr:safeDestr}=require("../dist/index.cjs");destr.destr=destr,destr.safeDestr=safeDestr,module.exports=destr;
