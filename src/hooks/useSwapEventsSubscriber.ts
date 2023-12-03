@@ -1,7 +1,6 @@
 import { useEffect, useState } from 'react';
 
 import { Swap } from '@airswap/libraries/build/src/Contracts';
-import { useWeb3React } from '@web3-react/core';
 import { BigNumber } from 'ethers';
 import { noop } from 'react-use/lib/misc/util';
 
@@ -16,6 +15,7 @@ import { setTokens } from '../redux/stores/balances/balancesSlice';
 import { setOrders } from '../redux/stores/collection/collectionSlice';
 import { setOrders as setProfileOrders } from '../redux/stores/profileOrders/profileOrdersSlice';
 import { addNftSoldToast } from '../redux/stores/toasts/toastsActions';
+import useWeb3ReactLibrary from './useWeb3ReactLibrary';
 
 interface LastSoldOrder {
   nonce: string;
@@ -30,7 +30,7 @@ const useSwapEventsSubscriber = () => {
   const { orders: profileOrders } = useAppSelector(state => state.profileOrders);
 
   const dispatch = useAppDispatch();
-  const { provider: library } = useWeb3React();
+  const { library } = useWeb3ReactLibrary();
 
   const [lastSoldOrder, setLastSoldOrder] = useState<LastSoldOrder>();
 
@@ -120,7 +120,7 @@ const useSwapEventsSubscriber = () => {
     return () => {
       swapContract.off('Swap', onSwap);
     };
-  }, [library, account]);
+  }, [library?.connection.url, account]);
 };
 
 export default useSwapEventsSubscriber;
