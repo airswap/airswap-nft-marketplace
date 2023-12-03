@@ -79,3 +79,12 @@ export const addInfoToast = (title: string, text: string) => async (dispatch: Ap
     willAutomaticallyHide: true,
   }));
 };
+
+export const addNftSoldToast = (tokenId: string) => async (dispatch: AppDispatch): Promise<void> => {
+  dispatch(addToast({
+    type: ToastType.success,
+    id: crypto.randomUUID(),
+    title: 'Nft Sold',
+    text: `Your nft with id #${tokenId} has been sold.`,
+  }));
+};

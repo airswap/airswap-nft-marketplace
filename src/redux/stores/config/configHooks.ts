@@ -25,7 +25,7 @@ export const useConfig = (): void => {
 
     dispatch(getCollectionTokenKind({ address: collectionToken, provider: library }));
     dispatch(getCurrencyTokenKind({ address: currencyToken, provider: library }));
-  }, [library]);
+  }, [library?.connection.url]);
 
   useEffect(() => {
     if (

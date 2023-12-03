@@ -2,6 +2,7 @@ import { FullOrder } from '@airswap/types';
 import { createSlice, PayloadAction } from '@reduxjs/toolkit';
 
 import { INDEXER_ORDERS_OFFSET } from '../../../constants/indexer';
+import { getUniqueArrayChildren } from '../../../helpers/array';
 import { getCollectionOrders } from './collectionApi';
 
 export interface CollectionState {
@@ -31,13 +32,17 @@ export const collectionSlice = createSlice({
       ...state,
       offset: action.payload,
     }),
+    setOrders: (state, action: PayloadAction<FullOrder[]>): CollectionState => ({
+      ...state,
+      orders: action.payload,
+    }),
   },
   extraReducers: (builder) => {
     builder.addCase(getCollectionOrders.fulfilled, (state, action: PayloadAction<FullOrder[]>): CollectionState => {
-      const newOrders = [
+      const newOrders = getUniqueArrayChildren([
         ...state.orders,
         ...action.payload,
-      ];
+      ], 'nonce');
       const isTotalOrdersReached = action.payload.length < INDEXER_ORDERS_OFFSET;
 
       return {
@@ -63,6 +68,7 @@ export const collectionSlice = createSlice({
 export const {
   reset,
   setOffset,
+  setOrders,
 } = collectionSlice.actions;
 
 export default collectionSlice.reducer;
