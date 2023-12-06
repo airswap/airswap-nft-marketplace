@@ -2,12 +2,13 @@ import { useEffect, useState } from 'react';
 
 import { CollectionTokenInfo } from '@airswap/types';
 
-import { getCollectionToken } from '../entities/CollectionToken/CollectionTokenHelpers';
+import { getCollectionToken, isCollectionTokenInfo } from '../entities/CollectionToken/CollectionTokenHelpers';
+import { AppError, isAppError } from '../errors/appError';
 import { useAppDispatch, useAppSelector } from '../redux/hooks';
 import { addCollectionTokenInfo } from '../redux/stores/metadata/metadataActions';
 import useWeb3ReactLibrary from './useWeb3ReactLibrary';
 
-const useCollectionToken = (address: string, tokenId: string): [CollectionTokenInfo | undefined, boolean] => {
+const useCollectionToken = (address: string, tokenId: string): [CollectionTokenInfo | undefined, boolean, AppError | undefined] => {
   const dispatch = useAppDispatch();
   const { library } = useWeb3ReactLibrary();
   const { collectionTokens } = useAppSelector(state => state.metadata);
@@ -15,6 +16,7 @@ const useCollectionToken = (address: string, tokenId: string): [CollectionTokenI
   const [isContractCalled, setIsContractCalled] = useState(false);
   const [isContractLoading, setIsContractLoading] = useState(true);
   const [collectionToken, setCollectionToken] = useState<CollectionTokenInfo>();
+  const [error, setError] = useState<AppError>();
   const collectionTokenFromStore = collectionTokens[tokenId];
 
   useEffect((): void => {
@@ -30,14 +32,19 @@ const useCollectionToken = (address: string, tokenId: string): [CollectionTokenI
     const callGetCollectionToken = async () => {
       const result = await getCollectionToken(library, address, tokenId);
 
-      if (result) {
-        dispatch(addCollectionTokenInfo(result));
+      if (isCollectionTokenInfo(result)) {
+        dispatch(addCollectionTokenInfo([result]));
+        setCollectionToken(result);
       }
 
-      setCollectionToken(result);
+      if (isAppError(result)) {
+        setError(result);
+      }
+
       setIsContractLoading(false);
     };
 
+    setError(undefined);
     setIsContractCalled(true);
     setIsContractLoading(true);
     callGetCollectionToken();
@@ -49,10 +56,10 @@ const useCollectionToken = (address: string, tokenId: string): [CollectionTokenI
   ]);
 
   if (collectionTokenFromStore) {
-    return [collectionTokenFromStore, false];
+    return [collectionTokenFromStore, false, undefined];
   }
 
-  return [collectionToken, isContractLoading];
+  return [collectionToken, isContractLoading, error];
 };
 
 export default useCollectionToken;

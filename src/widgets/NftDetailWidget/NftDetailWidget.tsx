@@ -1,5 +1,6 @@
 import React, { FC, useEffect } from 'react';
 
+import { AppErrorType } from '../../errors/appError';
 import useCollectionToken from '../../hooks/useCollectionToken';
 import useDefaultProvider from '../../hooks/useDefaultProvider';
 import { useAppSelector } from '../../redux/hooks';
@@ -19,7 +20,7 @@ const NftDetailWidget: FC<NftDetailWidgetProps> = ({ tokenId, className = '' }) 
   const { currencyTokenInfo, isLoading: isMetadataLoading } = useAppSelector(state => state.metadata);
   const library = useDefaultProvider(chainId);
 
-  const [collectionTokenInfo, isLoadingCollectionTokenInfo] = useCollectionToken(collectionToken, tokenId);
+  const [collectionTokenInfo, isLoadingCollectionTokenInfo, error] = useCollectionToken(collectionToken, tokenId);
   const isLoading = isMetadataLoading || isLoadingCollectionTokenInfo;
 
   useEffect(() => {
@@ -46,7 +47,8 @@ const NftDetailWidget: FC<NftDetailWidgetProps> = ({ tokenId, className = '' }) 
   return (
     <DisconnectedNftDetailWidget
       isLoading={isLoading}
-      isNftNotFound={!isLoading && !collectionTokenInfo}
+      isNftNotFound={error?.type === AppErrorType.notFound}
+      isNetworkError={error?.type === AppErrorType.networkError}
       id={tokenId}
       className={className}
     />

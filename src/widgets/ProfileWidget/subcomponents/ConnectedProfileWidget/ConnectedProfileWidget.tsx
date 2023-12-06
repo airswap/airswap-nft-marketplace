@@ -62,7 +62,7 @@ const ConnectedProfileWidget: FC<ConnectedProfileWidgetProps> = ({
   const accountUrl = useMemo(() => (
     profileAccount ? getOwnedTokensByAccountUrl(chainId, profileAccount, collectionToken) : undefined
   ), [profileAccount, chainId, collectionToken]);
-  const [tokens, isLoadingTokens] = useCollectionTokens(collectionToken, sortedOwnedTokenIds);
+  const [tokens, isLoadingTokens, tokensError] = useCollectionTokens(collectionToken, sortedOwnedTokenIds);
 
   const isLoading = isLoadingUserTokens || isLoadingTokens;
   const filteredTokens = useMemo(() => (tokens
@@ -87,7 +87,7 @@ const ConnectedProfileWidget: FC<ConnectedProfileWidgetProps> = ({
   }, [profileAccount]);
 
   useEffect(() => {
-    if (scrolledToBottom && !isEndOfTokens) {
+    if (scrolledToBottom && !isEndOfTokens && !tokensError) {
       dispatch(setTokensOffset(tokensOffset + INDEXER_ORDERS_OFFSET));
     }
   }, [scrolledToBottom]);

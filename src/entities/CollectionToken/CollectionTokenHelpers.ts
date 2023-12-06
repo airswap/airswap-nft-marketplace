@@ -6,15 +6,33 @@ import erc721AbiEnumerableContract from '@openzeppelin/contracts/build/contracts
 import erc1155AbiContract from '@openzeppelin/contracts/build/contracts/ERC1155.json';
 import * as ethers from 'ethers';
 
-export const getCollectionToken = async (library: ethers.providers.BaseProvider, address: string, tokenId: string): Promise<CollectionTokenInfo | undefined> => {
+import { AppError, AppErrorType, transformToAppError } from '../../errors/appError';
+
+const transformGetCollectionTokenErrorToAppError = (error: any): AppError => {
+  if (typeof error !== 'string') {
+    return transformToAppError(AppErrorType.unknownError);
+  }
+
+  if (error.includes('404')) {
+    return transformToAppError(AppErrorType.notFound, undefined, error);
+  }
+
+  if (error.includes('Network Error')) {
+    return transformToAppError(AppErrorType.networkError, undefined, error);
+  }
+
+  return transformToAppError(AppErrorType.unknownError);
+};
+
+export const getCollectionToken = async (library: ethers.providers.BaseProvider, address: string, tokenId: string): Promise<CollectionTokenInfo | AppError> => {
   let tokenInfo: CollectionTokenInfo;
 
   try {
     tokenInfo = await getCollectionTokenInfo(library, address, tokenId);
-  } catch (e) {
-    console.error(new Error(`Unable to fetch data for ${address} with id ${tokenId}`));
+  } catch (e: any) {
+    console.error(new Error(`Unable to fetch data for ${address} with id ${tokenId}. ${e}`));
 
-    return undefined;
+    return transformGetCollectionTokenErrorToAppError(e);
   }
 
   return tokenInfo;
