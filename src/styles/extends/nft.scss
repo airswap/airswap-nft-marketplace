@@ -50,11 +50,20 @@
 
 %nft-card-price {
     margin-top: .5rem;
+    font-size: .875rem;
     font-weight: var(--fw-400);
     font-family: var(--f-mono);
-    color: var(--c-light-grey);
+    color: var(--c-white);
 
     @include for-size(desktop-up) {
         margin-top: .75rem;
     }
+}
+
+%nft-card-date {
+    margin-top: .5rem;
+    word-break: break-word;
+    font-size: .875rem;
+    font-weight: var(--fw-400);
+    color: var(--c-light-grey);
 }

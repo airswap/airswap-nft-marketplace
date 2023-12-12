@@ -7,6 +7,7 @@ import './NftCard.scss';
 
 interface NftCardProps extends NavLinkProps {
   isHighlighted?: boolean;
+  expiry?: Date;
   imageURI?: string;
   label?: string;
   name?: string;
@@ -17,6 +18,7 @@ interface NftCardProps extends NavLinkProps {
 
 const NftCard = ({
   isHighlighted,
+  expiry,
   imageURI,
   label,
   name,
@@ -38,6 +40,9 @@ const NftCard = ({
         <h4 className="nft-card__price">
           {(price && symbol) ? `${price} ${symbol}` : <>&nbsp;</>}
         </h4>
+        {expiry && (
+          <h5 className="nft-card__expiry">{`Sale ends ${expiry.toLocaleString()}`}</h5>
+        )}
       </div>
     </NavLink>
   );

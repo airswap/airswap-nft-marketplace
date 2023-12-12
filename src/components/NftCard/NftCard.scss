@@ -47,4 +47,8 @@
     &__price {
         @extend %nft-card-price;
     }
+
+    &__expiry {
+        @extend %nft-card-date;
+    }
 }

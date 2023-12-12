@@ -7,7 +7,10 @@ import LoadingSpinner from '../../components/LoadingSpinner/LoadingSpinner';
 import NftCard from '../../components/NftCard/NftCard';
 import NftCardSkeleton from '../../components/NftCardSkeleton/NftCardSkeleton';
 import EmptyState from '../../compositions/EmptyState/EmptyState';
-import { getFullOrderReadableSenderAmountPlusTotalFees } from '../../entities/FullOrder/FullOrderHelpers';
+import {
+  getFullOrderExpiryDate,
+  getFullOrderReadableSenderAmountPlusTotalFees,
+} from '../../entities/FullOrder/FullOrderHelpers';
 import { routes } from '../../routes';
 
 import './OrdersContainer.scss';
@@ -16,6 +19,7 @@ interface OrdersContainerProps {
   hasListCallToActionButton?: boolean;
   isEndOfOrders: boolean;
   isLoading: boolean;
+  showExpiryDate?: boolean;
   currencyTokenInfo: TokenInfo;
   highlightOrderNonce?: string;
   listCallToActionText?: string;
@@ -28,6 +32,7 @@ const OrdersContainer: FC<OrdersContainerProps> = ({
   hasListCallToActionButton = false,
   isEndOfOrders,
   isLoading,
+  showExpiryDate = false,
   currencyTokenInfo,
   highlightOrderNonce,
   listCallToActionText,
@@ -75,6 +80,7 @@ const OrdersContainer: FC<OrdersContainerProps> = ({
               <NftCard
                 key={order.nonce}
                 isHighlighted={isHighlighted}
+                expiry={showExpiryDate ? getFullOrderExpiryDate(order) : undefined}
                 imageURI={orderToken.image}
                 label={isHighlighted ? 'Newly listed' : undefined}
                 price={price.toString()}

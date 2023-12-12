@@ -119,6 +119,7 @@ const ConnectedProfileOrdersWidget: FC<ConnectedProfileOrdersWidgetProps> = ({
           hasListCallToActionButton={!!userTokens.length && userIsProfileAccount && !hasServerError}
           isEndOfOrders={isTotalOrdersReached}
           isLoading={isLoading || offset === 0}
+          showExpiryDate
           currencyTokenInfo={currencyTokenInfo}
           highlightOrderNonce={highlightOrderNonce || undefined}
           listCallToActionText={listCallToActionText}

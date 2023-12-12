@@ -42,6 +42,8 @@
 
     &__time {
         @extend %text-ellipsis;
+
+        line-height: 1.3;
     }
 
     &__transaction-icon {
