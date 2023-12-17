@@ -20,7 +20,10 @@ const DisconnectedListNftWidget: FC<ListNftWidgetProps> = ({
     <ListNftWidgetHeader className="list-nft-widget__header" />
     {isLoading && <LoadingSpinner className="list-nft-widget__loading-spinner" />}
     {(!isLoading && hasNoUserTokens) && (
-      <div className="list-nft-widget__paragraph">You have no nfts to list</div>
+      <div className="list-nft-widget__no-tokens">
+        <div className="list-nft-widget__no-tokens-title">No items found</div>
+        <div className="list-nft-widget__no-tokens-subtitle">You have no NFTs to list</div>
+      </div>
     )}
   </div>
 );
