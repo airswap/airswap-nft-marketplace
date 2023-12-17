@@ -62,7 +62,7 @@ const ConnectedProfileWidget: FC<ConnectedProfileWidgetProps> = ({
   const accountUrl = useMemo(() => (
     profileAccount ? getOwnedTokensByAccountUrl(chainId, profileAccount, collectionToken) : undefined
   ), [profileAccount, chainId, collectionToken]);
-  const [tokens, isLoadingTokens, tokensError] = useCollectionTokens(collectionToken, sortedOwnedTokenIds);
+  const [tokens, isLoadingTokens, tokensError] = useCollectionTokens(collectionToken, sortedOwnedTokenIds.splice(0, tokensOffset));
 
   const isLoading = isLoadingUserTokens || isLoadingTokens;
   const filteredTokens = useMemo(() => (tokens
