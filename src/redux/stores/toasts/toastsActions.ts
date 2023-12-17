@@ -70,6 +70,16 @@ export const addGetOrderFailedToast = () => async (dispatch: AppDispatch): Promi
   }));
 };
 
+export const addGetNftMetadataFailedToast = (error?: string) => async (dispatch: AppDispatch): Promise<void> => {
+  dispatch(addToast({
+    type: ToastType.fail,
+    id: crypto.randomUUID(),
+    title: 'Get NFT metadata failed',
+    text: error,
+    willAutomaticallyHide: true,
+  }));
+};
+
 export const addInfoToast = (title: string, text: string) => async (dispatch: AppDispatch): Promise<void> => {
   dispatch(addToast({
     type: ToastType.info,

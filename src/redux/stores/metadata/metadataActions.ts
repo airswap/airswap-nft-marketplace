@@ -21,11 +21,13 @@ number,
   }
 });
 
-export const addCollectionTokenInfo = (tokenInfo: CollectionTokenInfo) => async (dispatch: AppDispatch, getState: () => RootState): Promise<void> => {
+export const addCollectionTokenInfo = (tokenInfos: CollectionTokenInfo[]) => async (dispatch: AppDispatch, getState: () => RootState): Promise<void> => {
   const { collectionTokens } = getState().metadata;
 
-  dispatch(setCollectionTokens({
-    ...collectionTokens,
+  const newCollectionTokens = tokenInfos.reduce((acc, tokenInfo) => ({
+    ...acc,
     [tokenInfo.id]: tokenInfo,
-  }));
+  }), collectionTokens);
+
+  dispatch(setCollectionTokens(newCollectionTokens));
 };

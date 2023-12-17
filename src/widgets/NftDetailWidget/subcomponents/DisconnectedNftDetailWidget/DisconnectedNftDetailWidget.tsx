@@ -5,6 +5,7 @@ import LoadingSpinner from '../../../../components/LoadingSpinner/LoadingSpinner
 interface DisconnectedNftDetailWidgetProps {
   isLoading: boolean;
   isNftNotFound: boolean;
+  isNetworkError: boolean;
   id: string;
   className?: string;
 }
@@ -12,12 +13,14 @@ interface DisconnectedNftDetailWidgetProps {
 const DisconnectedNftDetailWidget: FC<DisconnectedNftDetailWidgetProps> = ({
   isLoading,
   isNftNotFound,
+  isNetworkError,
   id,
   className = '',
 }) => (
   <div className={`nft-detail-widget ${className}`}>
     {isLoading && <LoadingSpinner className="nft-detail-widget__loading-spinner" />}
-    {isNftNotFound && `NFT with id ${id} not found`}
+    {(!isLoading && isNftNotFound) && `NFT with id ${id} not found`}
+    {(!isLoading && isNetworkError) && 'Network error. Could not fetch NFT metadata.'}
   </div>
 );
 

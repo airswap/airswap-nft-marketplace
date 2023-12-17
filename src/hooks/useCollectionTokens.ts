@@ -2,12 +2,14 @@ import { useEffect, useMemo, useState } from 'react';
 
 import { CollectionTokenInfo } from '@airswap/types';
 
-import { getCollectionToken } from '../entities/CollectionToken/CollectionTokenHelpers';
+import { getCollectionToken, isCollectionTokenInfo } from '../entities/CollectionToken/CollectionTokenHelpers';
+import { AppError, isAppError } from '../errors/appError';
 import { useAppDispatch, useAppSelector } from '../redux/hooks';
 import { addCollectionTokenInfo } from '../redux/stores/metadata/metadataActions';
+import { addGetNftMetadataFailedToast } from '../redux/stores/toasts/toastsActions';
 import useDefaultLibrary from './useDefaultProvider';
 
-const useCollectionTokens = (address: string, tokenIds: string[]): [CollectionTokenInfo[], boolean] => {
+const useCollectionTokens = (address: string, tokenIds: string[]): [CollectionTokenInfo[], boolean, AppError | undefined] => {
   const { chainId } = useAppSelector((state) => state.config);
   const { metadata } = useAppSelector(state => state);
 
@@ -17,6 +19,7 @@ const useCollectionTokens = (address: string, tokenIds: string[]): [CollectionTo
   const [isContractCalled, setIsContractCalled] = useState(false);
   const [isContractLoading, setIsContractLoading] = useState(true);
   const [collectionTokens, setCollectionTokens] = useState<CollectionTokenInfo[]>([]);
+  const [error, setError] = useState<AppError>();
 
   const collectionTokensFromStore = useMemo(() => tokenIds
     .filter(tokenId => !!metadata.collectionTokens[tokenId])
@@ -35,14 +38,17 @@ const useCollectionTokens = (address: string, tokenIds: string[]): [CollectionTo
 
     const callGetCollectionToken = async () => {
       const results = await Promise.all(tokenIdsToFetch.map(tokenId => getCollectionToken(library, address, tokenId)));
+      const newError = results.find(isAppError);
 
-      results.forEach(result => {
-        if (result) {
-          dispatch(addCollectionTokenInfo(result));
-        }
-      });
+      if (newError) {
+        setError(newError);
+        dispatch(addGetNftMetadataFailedToast(newError.argument));
+      }
 
-      const newCollectionTokens = results.filter(result => !!result) as CollectionTokenInfo[];
+      const newCollectionTokens = results.filter(isCollectionTokenInfo);
+
+      dispatch(addCollectionTokenInfo(newCollectionTokens));
+
       setCollectionTokens(newCollectionTokens);
       setIsContractLoading(false);
     };
@@ -58,10 +64,10 @@ const useCollectionTokens = (address: string, tokenIds: string[]): [CollectionTo
   ]);
 
   if (!tokenIdsToFetch.length) {
-    return [collectionTokensFromStore, false];
+    return [collectionTokensFromStore, false, error];
   }
 
-  return [[...collectionTokensFromStore, ...collectionTokens], isContractLoading];
+  return [[...collectionTokensFromStore, ...collectionTokens], isContractLoading, error];
 };
 
 export default useCollectionTokens;
