@@ -1,10 +1,9 @@
-import React, { FC, useEffect, useMemo } from 'react';
+import React, { FC, useEffect } from 'react';
 
 import { CollectionTokenInfo, TokenInfo } from '@airswap/types';
 import { BaseProvider } from '@ethersproject/providers';
 
 import Accordion from '../../../../components/Accordion/Accordion';
-import { getFullOrderReadableSenderAmountPlusTotalFees } from '../../../../entities/FullOrder/FullOrderHelpers';
 import useAddressOrEnsName from '../../../../hooks/useAddressOrEnsName';
 import useNftTokenOwner from '../../../../hooks/useNftTokenOwner';
 import { useAppDispatch, useAppSelector } from '../../../../redux/hooks';
@@ -41,7 +40,6 @@ const ConnectedNftDetailWidget: FC<ConnectedNftDetailWidgetProps> = ({
   const { protocolFee } = useAppSelector(state => state.metadata);
   const { isLoading: isPriceLoading, order, transactionLogs } = useAppSelector(state => state.nftDetail);
 
-  const price = useMemo(() => (order ? getFullOrderReadableSenderAmountPlusTotalFees(order, currencyTokenInfo) : undefined), [order]);
   const [owner, isOwnerLoading] = useNftTokenOwner(collectionTokenInfo);
   const isLoading = isPriceLoading || isOwnerLoading;
   const readableOwnerAddress = useAddressOrEnsName(owner, true);
@@ -71,21 +69,19 @@ const ConnectedNftDetailWidget: FC<ConnectedNftDetailWidgetProps> = ({
           backgroundImage={collectionTokenInfo.image || collectionImage}
           className="nft-detail-widget__portrait"
         />
-        {(isLoading || price) && (
-          <NftDetailSaleInfo
-            isLoading={isLoading}
-            price={price}
-            symbol={currencyTokenInfo.symbol}
-            className="nft-detail-widget__price"
-          />
-        )}
+        <NftDetailSaleInfo
+          isLoading={isLoading}
+          order={order}
+          tokenInfo={currencyTokenInfo}
+          className="nft-detail-widget__price"
+        />
         <Accordion
+          isDefaultOpen
           label="Description"
           content={(
             <p>{collectionTokenInfo.description}</p>
           )}
           className="nft-detail-widget__description-accordion"
-          isDefaultOpen
         />
         {((orderRoute || listRoute) && owner && !isLoading) && (
           <NftDetailProceedButton
@@ -168,14 +164,12 @@ const ConnectedNftDetailWidget: FC<ConnectedNftDetailWidgetProps> = ({
             <h2 className="nft-detail-widget__meta-container-label">Description</h2>
             <p>{collectionTokenInfo.description}</p>
           </div>
-          {(isLoading || price) && (
-            <NftDetailSaleInfo
-              isLoading={isLoading}
-              price={price}
-              symbol={currencyTokenInfo.symbol}
-              className="nft-detail-widget__price"
-            />
-          )}
+          <NftDetailSaleInfo
+            isLoading={isLoading}
+            order={order}
+            tokenInfo={currencyTokenInfo}
+            className="nft-detail-widget__price"
+          />
           {((orderRoute || listRoute) && owner && !isLoading) && (
             <NftDetailProceedButton
               accountIsOwner={account === owner}

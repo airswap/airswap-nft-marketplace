@@ -17,4 +17,22 @@
             font-size: 2rem;
         }
     }
+
+    &__expiry {
+        margin-top: .25rem;
+        font-size: .875rem;
+        font-weight: var(--fw-400);
+        color: var(--c-text-grey);
+
+        @include for-size(tablet-portrait-up) {
+            margin-top: .375rem;
+        }
+    }
+
+    &__expiry-date {
+        margin-left: .3125rem;
+        font-size: .875rem;
+        font-weight: var(--fw-700);
+        color: var(--c-white);
+    }
 }
