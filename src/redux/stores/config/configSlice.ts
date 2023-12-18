@@ -15,6 +15,7 @@ export interface ConfigState {
   collectionTokenKind?: TokenKinds;
   collectionName: string;
   collectionImage: string;
+  storageServerUrl: string;
 }
 const initialState: ConfigState = {
   isFailed: false,
@@ -26,6 +27,7 @@ const initialState: ConfigState = {
   collectionToken: (process.env.REACT_APP_COLLECTION_TOKEN || '').toLowerCase(),
   collectionName: process.env.REACT_APP_COLLECTION_NAME || '',
   collectionImage: process.env.REACT_APP_COLLECTION_IMAGE || '',
+  storageServerUrl: process.env.REACT_APP_STORAGE_SERVER_URL || '',
 };
 
 const configSlice = createSlice({
