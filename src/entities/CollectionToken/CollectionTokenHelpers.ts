@@ -55,7 +55,7 @@ export const getCollectionTokenOwner = async (library: ethers.providers.BaseProv
   const contract = new ethers.Contract(token.address, contractAbi, library);
 
   if (token.kind === TokenKinds.ERC1155) {
-    const response = await window.alchemy.nft.getOwnersForNft(token.address, token.id);
+    const response = await alchemy.nft.getOwnersForNft(token.address, token.id);
 
     return response.owners;
   }

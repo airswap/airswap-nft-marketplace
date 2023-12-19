@@ -42,7 +42,6 @@ const ConnectedNftDetailWidget: FC<ConnectedNftDetailWidgetProps> = ({
 
   const [owners, isOwnerLoading] = useNftTokenOwners(collectionTokenInfo);
   const isLoading = isPriceLoading || isOwnerLoading;
-  console.log(owners);
   const readableOwnerAddress = useAddressOrEnsName(owners?.length ? owners[0] : undefined, true);
   const accountRoute = owners?.length ? routes.profile(owners[0]) : undefined;
   const orderRoute = order ? routes.orderDetail(order.signer.wallet, order.nonce) : undefined;
@@ -63,6 +62,7 @@ const ConnectedNftDetailWidget: FC<ConnectedNftDetailWidgetProps> = ({
         <NftDetailMainInfo
           accountRoute={accountRoute}
           owner={readableOwnerAddress}
+          ownersLength={owners?.length}
           title={collectionTokenInfo.name}
           className="nft-detail-widget__main-info"
         />
@@ -158,6 +158,7 @@ const ConnectedNftDetailWidget: FC<ConnectedNftDetailWidgetProps> = ({
           <NftDetailMainInfo
             accountRoute={accountRoute}
             owner={readableOwnerAddress}
+            ownersLength={owners?.length}
             title={collectionTokenInfo.name}
             className="nft-detail-widget__main-info"
           />

@@ -28,7 +28,7 @@ export const getErc721Logs = async (
     transactionReceipt,
     transactionReceiptBlocks[index].timestamp,
     transactionReceipt.from,
-  )).sort((a, b) => b.timestamp - a.timestamp);
+  )).sort((a, b) => (b.timestamp || 0) - (a.timestamp || 0));
 
   return getUniqueArrayChildren(logs, 'transactionHash');
 };
@@ -62,7 +62,7 @@ export const getErc1155Logs = async (
       transactionReceiptBlocks[index].timestamp,
       recipient[0],
     );
-  }).sort((a, b) => b.timestamp - a.timestamp);
+  }).sort((a, b) => (b.timestamp || 0) - (a.timestamp || 0));
 
   return getUniqueArrayChildren(logs, 'transactionHash');
 };

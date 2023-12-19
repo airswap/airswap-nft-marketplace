@@ -7,4 +7,6 @@ declare global {
     ethereum: any;
     alchemy: Alchemy;
   }
+
+  const alchemy: typeof alchemy;
 }

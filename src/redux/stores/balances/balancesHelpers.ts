@@ -3,10 +3,13 @@ import { TokenKinds } from '@airswap/constants';
 import { Event } from '@ethersproject/contracts';
 import erc721AbiContract from '@openzeppelin/contracts/build/contracts/ERC721.json';
 import erc721EnumerableContract from '@openzeppelin/contracts/build/contracts/ERC721Enumerable.json';
-import { OwnedNft } from 'alchemy-sdk';
 import { BigNumber, ethers } from 'ethers';
 
 import { TokenIdsWithBalance } from '../../../entities/TokenIdsWithBalance/TokenIdsWithBalance';
+import {
+  transformOwnedNftsToTokenIdsWithBalance,
+  transformTokensToTokenIdsWithBalance,
+} from '../../../entities/TokenIdsWithBalance/TokenIdsWithBalanceTransformers';
 import { getUniqueSingleDimensionArray } from '../../../helpers/array';
 
 const getUniqueTokenIds = (tokenIds: BigNumber[]): string[] => tokenIds
@@ -35,13 +38,8 @@ export const getOwnedTokenIdsOfWallet = async (
 
     const tokenIdsPromises = indexes.map(async index => (await collectionContract.tokenOfOwnerByIndex(walletAddress, BigNumber.from(index))) as BigNumber);
     const tokenIds = await Promise.all(tokenIdsPromises);
-    const uniqueTokenIds = getUniqueTokenIds(tokenIds);
 
-    return uniqueTokenIds.reduce((acc: TokenIdsWithBalance, tokenId: string) => {
-      acc[tokenId] = '1';
-
-      return acc;
-    }, {});
+    return transformTokensToTokenIdsWithBalance(tokenIds.map(tokenId => tokenId.toString()));
   }
 
   if (isErc721) {
@@ -62,24 +60,13 @@ export const getOwnedTokenIdsOfWallet = async (
     /* get only the owned token ids */
     const ownedTokenIds = uniqueTokenIds.filter((_, index) => tokenOwners[index] === walletAddress);
 
-    /* get sorted array of numbers */
-    const sortedTokenIds = ownedTokenIds.sort((a, b) => +a - +b);
-
-    return sortedTokenIds.reduce((acc: TokenIdsWithBalance, tokenId: string) => {
-      acc[tokenId] = '1';
-
-      return acc;
-    }, {});
+    return transformTokensToTokenIdsWithBalance(ownedTokenIds);
   }
 
   if (isErc1155) {
-    const response = await window.alchemy.nft.getNftsForOwner(walletAddress, { contractAddresses: [collectionToken] });
+    const response = await alchemy.nft.getNftsForOwner(walletAddress, { contractAddresses: [collectionToken] });
 
-    return response.ownedNfts.reduce((acc: TokenIdsWithBalance, ownedNft: OwnedNft) => {
-      acc[ownedNft.tokenId] = ownedNft.balance;
-
-      return acc;
-    }, {});
+    return transformOwnedNftsToTokenIdsWithBalance(response.ownedNfts);
   }
 
   throw new Error('Unknown nft interface. Could not fetch token ids.');
