@@ -2,6 +2,7 @@ import { FullOrder, OrderFilter } from '@airswap/types';
 import { createAsyncThunk } from '@reduxjs/toolkit';
 import { ethers } from 'ethers';
 
+import { TokenIdsWithBalance } from '../../../entities/TokenIdsWithBalance/TokenIdsWithBalance';
 import { AppThunkApiConfig } from '../../store';
 import { getOwnedTokenIdsOfWallet } from '../balances/balancesHelpers';
 import { getOrdersFromIndexers } from '../indexer/indexerHelpers';
@@ -22,7 +23,7 @@ interface GetOwnedTokensOfAccountParams {
 }
 
 export const getProfileTokens = createAsyncThunk<
-string[],
+TokenIdsWithBalance,
 GetOwnedTokensOfAccountParams,
 AppThunkApiConfig
 >('profile/getProfileTokens', async ({ account, provider }, { getState }) => {

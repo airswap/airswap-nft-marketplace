@@ -29,7 +29,7 @@ const ConnectedCollectionWidget: FC<ConnectedCollectionWidgetProps> = ({ currenc
 
   const scrolledToBottom = useScrollToBottom();
   const { collectionImage, collectionToken, collectionName } = useAppSelector((state) => state.config);
-  const { tokens: userTokens } = useAppSelector((state) => state.balances);
+  const { tokenIdsWithBalance } = useAppSelector((state) => state.balances);
   const {
     hasServerError,
     isLoading,
@@ -63,6 +63,7 @@ const ConnectedCollectionWidget: FC<ConnectedCollectionWidgetProps> = ({ currenc
     }
   }, [scrolledToBottom]);
 
+  const userTokens = Object.keys(tokenIdsWithBalance);
   const tokenIds = useMemo(() => orders.map(order => order.signer.id), [orders]);
   const [tokens] = useCollectionTokens(collectionToken, tokenIds);
   const filteredOrders = useMemo(() => (

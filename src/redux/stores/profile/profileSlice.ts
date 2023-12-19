@@ -1,6 +1,7 @@
 import { FullOrder } from '@airswap/types';
 import { createSlice, PayloadAction } from '@reduxjs/toolkit';
 
+import { TokenIdsWithBalance } from '../../../entities/TokenIdsWithBalance/TokenIdsWithBalance';
 import { getProfileOrders, getProfileTokens } from './profileApi';
 
 export interface ProfileState {
@@ -8,7 +9,7 @@ export interface ProfileState {
   isLoadingTokens: boolean;
   isTotalOrdersReached: boolean;
   orders: FullOrder[];
-  tokens: string[];
+  tokenIdsWithBalance: TokenIdsWithBalance;
   tokensOffset: number;
 }
 
@@ -19,7 +20,7 @@ const initialState: ProfileState = {
   isLoadingTokens: false,
   isTotalOrdersReached: false,
   orders: [],
-  tokens: [],
+  tokenIdsWithBalance: {},
   tokensOffset: tokensOffsetInterval,
 };
 
@@ -71,7 +72,7 @@ const profileSlice = createSlice({
     builder.addCase(getProfileTokens.fulfilled, (state, action): ProfileState => ({
       ...state,
       isLoadingTokens: false,
-      tokens: action.payload,
+      tokenIdsWithBalance: action.payload,
     }));
 
     builder.addCase(getProfileTokens.rejected, (state, action): ProfileState => {

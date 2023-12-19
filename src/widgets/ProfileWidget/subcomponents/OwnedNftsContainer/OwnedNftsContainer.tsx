@@ -6,6 +6,7 @@ import Icon from '../../../../components/Icon/Icon';
 import LoadingSpinner from '../../../../components/LoadingSpinner/LoadingSpinner';
 import NftCard from '../../../../components/NftCard/NftCard';
 import { getFullOrderReadableSenderAmountPlusTotalFees } from '../../../../entities/FullOrder/FullOrderHelpers';
+import { TokenIdsWithBalance } from '../../../../entities/TokenIdsWithBalance/TokenIdsWithBalance';
 import { routes } from '../../../../routes';
 
 import './OwnedNftsContainer.scss';
@@ -16,6 +17,7 @@ interface OwnedNftsContainerProps {
   currencyTokenInfo: TokenInfo;
   highlightTokenId?: string;
   orders: FullOrder[];
+  tokenIdsWithBalance: TokenIdsWithBalance;
   tokens: CollectionTokenInfo[];
   className?: string;
 }
@@ -26,12 +28,14 @@ const OwnedNftsContainer: FC<OwnedNftsContainerProps> = ({
   currencyTokenInfo,
   highlightTokenId,
   orders,
+  tokenIdsWithBalance,
   tokens,
   className = '',
 }): ReactElement => (
   <div className={`owned-nfts-container ${className}`}>
     <div className="owned-nfts-container__tokens">
       {tokens.map((nft) => {
+        const balance = tokenIdsWithBalance[nft.id.toString()];
         const tokenOrder = orders.find(order => +order.signer.id === nft.id);
         const price = (tokenOrder && currencyTokenInfo) ? getFullOrderReadableSenderAmountPlusTotalFees(tokenOrder, currencyTokenInfo) : undefined;
         const isHighlighted = highlightTokenId === nft.id.toString();
@@ -40,6 +44,7 @@ const OwnedNftsContainer: FC<OwnedNftsContainerProps> = ({
           <NftCard
             key={nft.id}
             isHighlighted={isHighlighted}
+            balance={(balance && balance !== '1') ? balance : undefined}
             imageURI={nft.image}
             label={isHighlighted ? 'Newly bought' : undefined}
             name={nft.name}

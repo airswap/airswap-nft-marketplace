@@ -1,9 +1,11 @@
 import BalanceChecker from '@airswap/balances/build/contracts/BalanceChecker.sol/BalanceChecker.json';
+// @ts-ignore
 import balancesDeploys from '@airswap/balances/deploys';
 import { Swap } from '@airswap/libraries';
 import { createAsyncThunk } from '@reduxjs/toolkit';
 import { ethers, providers } from 'ethers';
 
+import { TokenIdsWithBalance } from '../../../entities/TokenIdsWithBalance/TokenIdsWithBalance';
 import { getErc20TokenAllowance } from '../orders/ordersApi';
 import { getOwnedTokenIdsOfWallet } from './balancesHelpers';
 
@@ -63,7 +65,7 @@ interface fetchTokenIdsParams {
   collectionToken: string;
 }
 
-export const fetchUserTokens = createAsyncThunk<string[], fetchTokenIdsParams>(
+export const fetchUserTokens = createAsyncThunk<TokenIdsWithBalance, fetchTokenIdsParams>(
   'balances/fetchUserTokens',
   async ({
     provider,

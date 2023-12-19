@@ -3,9 +3,10 @@ import { TokenKinds } from '@airswap/constants';
 import { Event } from '@ethersproject/contracts';
 import erc721AbiContract from '@openzeppelin/contracts/build/contracts/ERC721.json';
 import erc721EnumerableContract from '@openzeppelin/contracts/build/contracts/ERC721Enumerable.json';
-import erc1155Contract from '@openzeppelin/contracts/build/contracts/ERC1155.json';
+import { OwnedNft } from 'alchemy-sdk';
 import { BigNumber, ethers } from 'ethers';
 
+import { TokenIdsWithBalance } from '../../../entities/TokenIdsWithBalance/TokenIdsWithBalance';
 import { getUniqueSingleDimensionArray } from '../../../helpers/array';
 
 const getUniqueTokenIds = (tokenIds: BigNumber[]): string[] => tokenIds
@@ -17,7 +18,7 @@ export const getOwnedTokenIdsOfWallet = async (
   provider: ethers.providers.BaseProvider,
   walletAddress: string,
   collectionToken: string,
-): Promise<string[]> => {
+): Promise<TokenIdsWithBalance> => {
   const contract = new ethers.Contract(collectionToken, erc721AbiContract.abi, provider);
 
   const [isErc721Enumerable, isErc721, isErc1155] = await Promise.all([
@@ -34,8 +35,13 @@ export const getOwnedTokenIdsOfWallet = async (
 
     const tokenIdsPromises = indexes.map(async index => (await collectionContract.tokenOfOwnerByIndex(walletAddress, BigNumber.from(index))) as BigNumber);
     const tokenIds = await Promise.all(tokenIdsPromises);
+    const uniqueTokenIds = getUniqueTokenIds(tokenIds);
 
-    return getUniqueTokenIds(tokenIds);
+    return uniqueTokenIds.reduce((acc: TokenIdsWithBalance, tokenId: string) => {
+      acc[tokenId] = '1';
+
+      return acc;
+    }, {});
   }
 
   if (isErc721) {
@@ -56,33 +62,24 @@ export const getOwnedTokenIdsOfWallet = async (
     /* get only the owned token ids */
     const ownedTokenIds = uniqueTokenIds.filter((_, index) => tokenOwners[index] === walletAddress);
 
-    /* return sorted array of numbers */
-    return ownedTokenIds.sort((a, b) => +a - +b);
+    /* get sorted array of numbers */
+    const sortedTokenIds = ownedTokenIds.sort((a, b) => +a - +b);
+
+    return sortedTokenIds.reduce((acc: TokenIdsWithBalance, tokenId: string) => {
+      acc[tokenId] = '1';
+
+      return acc;
+    }, {});
   }
 
   if (isErc1155) {
-    const collectionContract = new ethers.Contract(collectionToken, erc1155Contract.abi, provider);
-    const transferFilter = collectionContract.filters.TransferSingle(null, null, walletAddress);
+    const response = await window.alchemy.nft.getNftsForOwner(walletAddress, { contractAddresses: [collectionToken] });
 
-    const events: Event[] = await collectionContract.queryFilter(transferFilter, 0);
+    return response.ownedNfts.reduce((acc: TokenIdsWithBalance, ownedNft: OwnedNft) => {
+      acc[ownedNft.tokenId] = ownedNft.balance;
 
-    /* get token ids from past events */
-    const foundTokenIds: BigNumber[] = events.map(e => e.args?.at(3));
-
-    const uniqueTokenIds = getUniqueTokenIds(foundTokenIds);
-
-    /* get balances of tokens */
-    const tokenBalances: BigNumber[] = await Promise.all(
-      uniqueTokenIds.map(
-        async tokenId => collectionContract.balanceOf(walletAddress, tokenId),
-      ),
-    );
-
-    /* get only the owned token ids */
-    const ownedTokenIds = uniqueTokenIds.filter((_, index) => tokenBalances[index].toNumber() > 0);
-
-    /* return sorted array of numbers */
-    return ownedTokenIds.sort((a, b) => +a - +b);
+      return acc;
+    }, {});
   }
 
   throw new Error('Unknown nft interface. Could not fetch token ids.');

@@ -7,6 +7,7 @@ import './NftCard.scss';
 
 interface NftCardProps extends NavLinkProps {
   isHighlighted?: boolean;
+  balance?: string;
   expiry?: Date;
   imageURI?: string;
   label?: string;
@@ -18,6 +19,7 @@ interface NftCardProps extends NavLinkProps {
 
 const NftCard = ({
   isHighlighted,
+  balance,
   expiry,
   imageURI,
   label,
@@ -31,12 +33,14 @@ const NftCard = ({
     'nft-card--is-highlighted': isHighlighted,
   }, className);
 
+  const namePlusBalance = balance ? `${name} (${balance})` : name;
+
   return (
     <NavLink to={to} className={linkClassName}>
       <img className="nft-card__img" src={imageURI} alt={name} />
       {label && <div className="nft-card__label">{label}</div>}
       <div className="nft-card__info-wrapper">
-        <h3 className="nft-card__name">{name}</h3>
+        <h3 className="nft-card__name">{namePlusBalance}</h3>
         <h4 className="nft-card__price">
           {(price && symbol) ? `${price} ${symbol}` : <>&nbsp;</>}
         </h4>
