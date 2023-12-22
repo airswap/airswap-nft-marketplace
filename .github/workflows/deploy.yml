@@ -23,7 +23,6 @@ jobs:
           REACT_APP_CURRENCY_TOKEN: ${{ vars.REACT_APP_CURRENCY_TOKEN }}
           REACT_APP_STORAGE_SERVER_URL: ${{ vars.REACT_APP_STORAGE_SERVER_URL }}
           REACT_APP_WALLET_CONNECT_PROJECT_ID: ${{ vars.REACT_APP_WALLET_CONNECT_PROJECT_ID }}
-          REACT_APP_RPC_URL_1: ${{ vars.REACT_APP_RPC_URL_1 }}
           REACT_APP_RPC_URL_5: ${{ vars.REACT_APP_RPC_URL_5 }}
         run: |
           yarn
@@ -38,5 +37,7 @@ jobs:
         with:
           path: ./build
           service: infura
+          pin: true
+          verbose: true
           infuraProjectId: ${{ secrets.INFURA_PROJECT_ID }}
           infuraProjectSecret: ${{ secrets.INFURA_PROJECT_SECRET }}
