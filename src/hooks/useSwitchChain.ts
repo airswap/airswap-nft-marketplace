@@ -2,6 +2,7 @@ import { useEffect, useState } from 'react';
 
 import { chainNames } from '@airswap/constants';
 
+import { getRandomUuid } from '../helpers/crypto';
 import { useAppDispatch, useAppSelector } from '../redux/hooks';
 import { addToast, hideToast } from '../redux/stores/toasts/toastsActions';
 import { setLastToastActionButtonIdClicked } from '../redux/stores/toasts/toastsSlice';
@@ -28,7 +29,7 @@ const useSwitchChain = (): void => {
     }
 
     if (chainId !== config.chainId) {
-      const toastId = crypto.randomUUID();
+      const toastId = getRandomUuid();
 
       setLastToastId(toastId);
 

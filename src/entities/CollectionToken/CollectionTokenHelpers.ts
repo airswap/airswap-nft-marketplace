@@ -28,6 +28,7 @@ export const getCollectionToken = async (library: ethers.providers.BaseProvider,
   let tokenInfo: CollectionTokenInfo;
 
   try {
+    // @ts-ignore
     tokenInfo = await getCollectionTokenInfo(library, address, tokenId);
   } catch (e: any) {
     console.error(new Error(`Unable to fetch data for ${address} with id ${tokenId}. ${e}`));

@@ -1,4 +1,5 @@
 import { Toast } from '../../../entities/Toast/Toast';
+import { getRandomUuid } from '../../../helpers/crypto';
 import { ToastType } from '../../../types/ToastType';
 import { AppDispatch, RootState } from '../../store';
 import { setToasts } from './toastsSlice';
@@ -54,7 +55,7 @@ export const removeHiddenToasts = () => async (dispatch: AppDispatch, getState: 
 export const addUserRejectedToast = () => async (dispatch: AppDispatch): Promise<void> => {
   dispatch(addToast({
     type: ToastType.deny,
-    id: crypto.randomUUID(),
+    id: getRandomUuid(),
     title: 'User rejected request',
     willAutomaticallyHide: true,
   }));
@@ -63,7 +64,7 @@ export const addUserRejectedToast = () => async (dispatch: AppDispatch): Promise
 export const addGetOrderFailedToast = () => async (dispatch: AppDispatch): Promise<void> => {
   dispatch(addToast({
     type: ToastType.fail,
-    id: crypto.randomUUID(),
+    id: getRandomUuid(),
     title: 'Server error',
     text: 'Failed to get orders from indexers',
     willAutomaticallyHide: true,
@@ -73,7 +74,7 @@ export const addGetOrderFailedToast = () => async (dispatch: AppDispatch): Promi
 export const addGetNftMetadataFailedToast = (error?: string) => async (dispatch: AppDispatch): Promise<void> => {
   dispatch(addToast({
     type: ToastType.fail,
-    id: crypto.randomUUID(),
+    id: getRandomUuid(),
     title: 'Get NFT metadata failed',
     text: error,
     willAutomaticallyHide: true,
@@ -83,7 +84,7 @@ export const addGetNftMetadataFailedToast = (error?: string) => async (dispatch:
 export const addInfoToast = (title: string, text: string) => async (dispatch: AppDispatch): Promise<void> => {
   dispatch(addToast({
     type: ToastType.info,
-    id: crypto.randomUUID(),
+    id: getRandomUuid(),
     title,
     text,
     willAutomaticallyHide: true,
@@ -93,7 +94,7 @@ export const addInfoToast = (title: string, text: string) => async (dispatch: Ap
 export const addNftSoldToast = (tokenId: string) => async (dispatch: AppDispatch): Promise<void> => {
   dispatch(addToast({
     type: ToastType.success,
-    id: crypto.randomUUID(),
+    id: getRandomUuid(),
     title: 'Nft Sold',
     text: `Your nft with id #${tokenId} has been sold.`,
   }));
