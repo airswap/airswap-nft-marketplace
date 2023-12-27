@@ -38,7 +38,12 @@ const ConnectedNftDetailWidget: FC<ConnectedNftDetailWidgetProps> = ({
   const { account } = useAppSelector((state) => state.web3);
 
   const { protocolFee } = useAppSelector(state => state.metadata);
-  const { isLoading: isPriceLoading, order, transactionLogs } = useAppSelector(state => state.nftDetail);
+  const {
+    isLoading: isPriceLoading,
+    isLoadingTransactionReceipts,
+    order,
+    transactionLogs,
+  } = useAppSelector(state => state.nftDetail);
 
   const [owners, isOwnerLoading] = useNftTokenOwners(collectionTokenInfo);
   const isLoading = isPriceLoading || isOwnerLoading;
@@ -116,6 +121,7 @@ const ConnectedNftDetailWidget: FC<ConnectedNftDetailWidgetProps> = ({
           label="Item Activity"
           content={(
             <NftDetailActivity
+              isLoading={isLoadingTransactionReceipts}
               chainId={chainId}
               logs={transactionLogs}
             />
@@ -145,6 +151,7 @@ const ConnectedNftDetailWidget: FC<ConnectedNftDetailWidgetProps> = ({
             <h2 className="nft-detail-widget__meta-container-label">Item activity</h2>
             <div className="accordion__content accordion__content--has-border">
               <NftDetailActivity
+                isLoading={isLoadingTransactionReceipts}
                 chainId={chainId}
                 logs={transactionLogs}
               />

@@ -55,8 +55,6 @@ AppThunkApiConfig
     const sales = await alchemy.nft.getNftSales({ contractAddress: collectionToken, tokenId: tokenId.toString() });
     const { nftSales } = sales;
 
-    nftSales.reverse();
-
     return nftSales.map(transformNftSalesToNftTransactionLog);
   }
 
