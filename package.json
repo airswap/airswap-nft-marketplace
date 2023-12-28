@@ -85,7 +85,7 @@
     "react-error-overlay": "6.0.9"
   },
   "engines": {
-    "node": "18.16.0"
+    "node": ">=18.16.0 <19.0.0"
   },
   "eslintConfig": {
     "extends": [
