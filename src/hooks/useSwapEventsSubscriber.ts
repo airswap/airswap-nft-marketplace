@@ -1,9 +1,10 @@
 import { useEffect, useState } from 'react';
 
 import { Swap } from '@airswap/libraries/build/src/Contracts';
-import { BigNumber } from 'ethers';
+import { BigNumber } from 'bignumber.js';
 import { noop } from 'react-use/lib/misc/util';
 
+import { subtractTokenBalance } from '../entities/TokenIdsWithBalance/TokenIdsWithBalanceHelpers';
 import { isEqualAddress } from '../helpers/string';
 import { useAppDispatch, useAppSelector } from '../redux/hooks';
 import {
@@ -25,7 +26,7 @@ interface LastSoldOrder {
 const useSwapEventsSubscriber = () => {
   const { account } = useAppSelector(state => state.web3);
   const { chainId, collectionToken, currencyToken } = useAppSelector(state => state.config);
-  const { tokens } = useAppSelector(state => state.balances);
+  const { tokenIdsWithBalance } = useAppSelector(state => state.balances);
   const { orders } = useAppSelector(state => state.collection);
   const { orders: profileOrders } = useAppSelector(state => state.profileOrders);
 
@@ -37,7 +38,7 @@ const useSwapEventsSubscriber = () => {
   useEffect(() => {
     if (
       !lastSoldOrder
-        || !tokens.includes(lastSoldOrder.tokenId)
+        || !tokenIdsWithBalance[lastSoldOrder.tokenId]
         || !library
         || !account
     ) {
@@ -46,7 +47,7 @@ const useSwapEventsSubscriber = () => {
 
     const newOrders = orders.filter(order => order.nonce !== lastSoldOrder.nonce);
     const newProfileOrders = profileOrders.filter(order => order.nonce !== lastSoldOrder.nonce);
-    const newUserTokens = tokens.filter(token => token !== lastSoldOrder.tokenId);
+    const newUserTokens = subtractTokenBalance(tokenIdsWithBalance, lastSoldOrder.tokenId);
 
     setLastSoldOrder(undefined);
 
@@ -76,7 +77,7 @@ const useSwapEventsSubscriber = () => {
     }));
   }, [
     lastSoldOrder,
-    tokens,
+    tokenIdsWithBalance,
     library,
     account,
   ]);

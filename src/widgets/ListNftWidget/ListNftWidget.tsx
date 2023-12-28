@@ -22,11 +22,12 @@ const ListNftWidget: FC<ListNftWidgetProps> = ({ className = '' }) => {
   const { config } = useAppSelector(state => state);
   const { account } = useAppSelector(state => state.web3);
   const { isLoadingUserOrders, userOrders } = useAppSelector(state => state.listNft);
-  const { isInitialized: isBalancesInitialized, tokens: userTokens } = useAppSelector(state => state.balances);
+  const { isInitialized: isBalancesInitialized, tokenIdsWithBalance: userTokenIdsWithBalance } = useAppSelector(state => state.balances);
   const { isLoading: isMetadataLoading, currencyTokenInfo } = useAppSelector(state => state.metadata);
   const { isInitialized: isIndexerInitialized } = useAppSelector(state => state.indexer);
   const transactions = useAppSelector(selectCancelOrderTransactions);
 
+  const userTokens = Object.keys(userTokenIdsWithBalance);
   const tokenId = searchParams.get('tokenId');
   const isLoading = !isBalancesInitialized || isMetadataLoading || !isIndexerInitialized || isLoadingUserOrders;
   const chainIdIsCorrect = !!chainId && chainId === config.chainId;

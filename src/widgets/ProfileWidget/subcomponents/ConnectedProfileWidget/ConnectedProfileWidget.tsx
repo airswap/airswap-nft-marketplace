@@ -46,11 +46,12 @@ const ConnectedProfileWidget: FC<ConnectedProfileWidgetProps> = ({
   const { avatarUrl } = useAppSelector((state) => state.user);
   const {
     isLoadingTokens: isLoadingUserTokens,
-    tokens: ownedTokenIds,
+    tokenIdsWithBalance,
     orders,
     tokensOffset,
   } = useAppSelector((state) => state.profile);
 
+  const ownedTokenIds = Object.keys(tokenIdsWithBalance);
   const highlightTokenId = searchParams.get('highlightTokenId');
   const [searchValue, setSearchValue] = useState('');
 
@@ -123,6 +124,7 @@ const ConnectedProfileWidget: FC<ConnectedProfileWidgetProps> = ({
                 currencyTokenInfo={currencyTokenInfo}
                 highlightTokenId={highlightTokenId || undefined}
                 orders={orders}
+                tokenIdsWithBalance={tokenIdsWithBalance}
                 tokens={filteredTokens}
                 className="profile-widget__nfts-container"
               />

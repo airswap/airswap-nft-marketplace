@@ -26,7 +26,7 @@ export const configureBalancesSubscriber = () => {
       store.dispatch(setIsInitialized(false));
       store.dispatch(setAllowance('0'));
       store.dispatch(setBalance('0'));
-      store.dispatch(setTokens([]));
+      store.dispatch(setTokens({}));
 
       return;
     }

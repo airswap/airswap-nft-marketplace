@@ -8,13 +8,13 @@
     padding-bottom: 1px;
 
     & + & {
-        border-top: 1px solid var(--c-dark-border);
-        margin-top: .375rem;
-        padding-top: .5rem;
+        border-bottom: 1px solid var(--c-dark-border);
+        margin-bottom: .375rem;
+        padding-bottom: .5rem;
 
         @include for-size(desktop-up) {
-            margin-top: .675rem;
-            padding-top: .75rem;
+            margin-bottom: .675rem;
+            padding-bottom: .75rem;
         }
     }
 

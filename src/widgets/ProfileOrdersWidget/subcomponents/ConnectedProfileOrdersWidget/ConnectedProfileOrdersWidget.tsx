@@ -43,7 +43,7 @@ const ConnectedProfileOrdersWidget: FC<ConnectedProfileOrdersWidgetProps> = ({
   const scrolledToBottom = useScrollToBottom();
 
   const { chainId, collectionToken, collectionImage } = useAppSelector((state) => state.config);
-  const { tokens: userTokens } = useAppSelector((state) => state.balances);
+  const { tokenIdsWithBalance: userTokenIdsWithBalance } = useAppSelector((state) => state.balances);
   const { avatarUrl } = useAppSelector((state) => state.user);
   const {
     hasServerError,
@@ -53,6 +53,7 @@ const ConnectedProfileOrdersWidget: FC<ConnectedProfileOrdersWidgetProps> = ({
     orders,
   } = useAppSelector((state) => state.profileOrders);
 
+  const userTokens = Object.keys(userTokenIdsWithBalance);
   const highlightOrderNonce = searchParams.get('highlightOrderNonce');
   const [searchValue, setSearchValue] = useState('');
 

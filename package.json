@@ -3,8 +3,8 @@
   "version": "0.1.0",
   "private": true,
   "scripts": {
-    "start": "craco start",
-    "build": "craco build",
+    "start": "craco --openssl-legacy-provider start",
+    "build": "craco --openssl-legacy-provider build",
     "test": "craco test",
     "eject": "react-scripts eject"
   },
@@ -33,6 +33,7 @@
     "@web3-react/store": "^8.2.3",
     "@web3-react/types": "^8.2.3",
     "@web3-react/walletconnect-v2": "8.5.1",
+    "alchemy-sdk": "^3.1.0",
     "bignumber.js": "^9.1.1",
     "classnames": "^2.3.2",
     "craco-plugin-env": "^1.0.5",
@@ -53,7 +54,6 @@
     "react-use": "^17.4.0",
     "truncate-eth-address": "^1.0.2",
     "typescript": "^4.4.2",
-    "walletconnect": "^1.7.8",
     "web-vitals": "^2.1.0"
   },
   "devDependencies": {
@@ -85,7 +85,7 @@
     "react-error-overlay": "6.0.9"
   },
   "engines": {
-    "node": "16.15.1"
+    "node": ">=18.16.0 <19.0.0"
   },
   "eslintConfig": {
     "extends": [

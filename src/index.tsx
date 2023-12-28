@@ -1,13 +1,20 @@
 import React from 'react';
 
+import { Alchemy } from 'alchemy-sdk';
 import ReactDOM from 'react-dom';
 import { Provider } from 'react-redux';
 
 import App from './App';
+import { getAlchemyChain } from './helpers/alchemy';
 import { store } from './redux/store';
 import reportWebVitals from './reportWebVitals';
 
 import './styles/global.scss';
+
+window.alchemy = new Alchemy({
+  apiKey: process.env.REACT_APP_ALCHEMY_API_KEY,
+  network: getAlchemyChain(+(process.env.REACT_APP_CHAIN_ID || '1')),
+});
 
 ReactDOM.render(
   <React.StrictMode>

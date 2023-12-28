@@ -28,6 +28,7 @@ export const getCollectionToken = async (library: ethers.providers.BaseProvider,
   let tokenInfo: CollectionTokenInfo;
 
   try {
+    // @ts-ignore
     tokenInfo = await getCollectionTokenInfo(library, address, tokenId);
   } catch (e: any) {
     console.error(new Error(`Unable to fetch data for ${address} with id ${tokenId}. ${e}`));
@@ -50,22 +51,18 @@ export const getCollectionTokenContractAbi = (kind: CollectionTokenInfo['kind'])
   return erc721AbiEnumerableContract.abi;
 };
 
-export const getCollectionTokenOwner = async (library: ethers.providers.BaseProvider, token: CollectionTokenInfo): Promise<string | undefined> => {
+export const getCollectionTokenOwner = async (library: ethers.providers.BaseProvider, token: CollectionTokenInfo): Promise<string[] | undefined> => {
   const contractAbi = getCollectionTokenContractAbi(token.kind);
   const contract = new ethers.Contract(token.address, contractAbi, library);
 
   if (token.kind === TokenKinds.ERC1155) {
-    // TODO: Use NftTransactionLogs to determine the people who owns this token (can be multiple owners)
-    // https://github.com/orgs/airswap/projects/9/views/1?pane=issue&itemId=26957049
+    const response = await alchemy.nft.getOwnersForNft(token.address, token.id);
 
-    // Maybe use this or derive it all from logs:
-    // balanceOf(address account, uint256 id) → uint256
-    // Returns the amount of tokens of token type id owned by account.
-    return undefined;
+    return response.owners;
   }
 
   return contract.functions.ownerOf(token.id)
-    .then((owner: [string]) => owner[0])
+    .then((owner: [string]) => owner)
     .catch(() => undefined);
 };
 

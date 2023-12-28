@@ -8,6 +8,7 @@ export interface INftDetailMainInfoProps {
   accountRoute?: string;
   title?: string;
   owner?: string;
+  ownersLength?: number;
   className?: string;
 }
 
@@ -15,6 +16,7 @@ const NftDetailMainInfo: FC<INftDetailMainInfoProps> = ({
   accountRoute,
   title,
   owner,
+  ownersLength = 0,
   className = '',
 }) => (
   <div className={`nft-detail-main-info ${className}`}>
@@ -28,6 +30,13 @@ const NftDetailMainInfo: FC<INftDetailMainInfoProps> = ({
         >
           {owner}
         </Link>
+      )}
+      {ownersLength > 1 && (
+        <span className="nft-detail-main-info__owners-length">
+          &nbsp;and&nbsp;
+          {ownersLength - 1}
+          &nbsp;others
+        </span>
       )}
     </span>
   </div>

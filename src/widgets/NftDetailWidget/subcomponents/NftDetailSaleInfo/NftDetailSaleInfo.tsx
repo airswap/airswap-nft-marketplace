@@ -30,21 +30,27 @@ const NftDetailSaleInfo: FC<NftDetailSaleInfoProps> = ({
   ) : undefined), [order]);
   const { symbol } = tokenInfo;
 
+  if (isLoading) {
+    return (
+      <div className={`nft-detail-sale-info ${className}`}>
+        <LoadingSpinner className="nft-detail-sale-info__loading-spinner" />
+      </div>
+    );
+  }
+
+  if (!order) {
+    return null;
+  }
+
   return (
     <div className={`nft-detail-sale-info ${className}`}>
-      {isLoading ? (
-        <LoadingSpinner className="nft-detail-sale-info__loading-spinner" />
-        ) : (
-          <>
-            <h3 className="nft-detail-sale-info__price">
-              {price ? `${price} ${symbol}` : null}
-            </h3>
-            <h4 className="nft-detail-sale-info__expiry">
-              Expires in
-              <span className="nft-detail-sale-info__expiry-date">{expiry}</span>
-            </h4>
-          </>
-        )}
+      <h3 className="nft-detail-sale-info__price">
+        {price ? `${price} ${symbol}` : null}
+      </h3>
+      <h4 className="nft-detail-sale-info__expiry">
+        Expires in
+        <span className="nft-detail-sale-info__expiry-date">{expiry}</span>
+      </h4>
     </div>
   );
 };

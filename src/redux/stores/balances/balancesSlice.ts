@@ -1,5 +1,6 @@
 import { createSlice, PayloadAction } from '@reduxjs/toolkit';
 
+import { TokenIdsWithBalance } from '../../../entities/TokenIdsWithBalance/TokenIdsWithBalance';
 import { fetchCurrencyTokenAllowance, fetchCurrencyTokenBalance, fetchUserTokens } from './balancesApi';
 
 interface BalancesState {
@@ -10,7 +11,7 @@ interface BalancesState {
   isLoadingTokens: boolean;
   currencyTokenAllowance: string;
   currencyTokenBalance: string;
-  tokens: string[];
+  tokenIdsWithBalance: TokenIdsWithBalance;
 }
 
 const initialState: BalancesState = {
@@ -21,7 +22,7 @@ const initialState: BalancesState = {
   isLoadingTokens: false,
   currencyTokenAllowance: '0',
   currencyTokenBalance: '0',
-  tokens: [],
+  tokenIdsWithBalance: {},
 };
 
 const balancesSlice = createSlice({
@@ -44,9 +45,9 @@ const balancesSlice = createSlice({
       ...state,
       currencyTokenBalance: action.payload,
     }),
-    setTokens: (state, action: PayloadAction<string[]>): BalancesState => ({
+    setTokens: (state, action: PayloadAction<TokenIdsWithBalance>): BalancesState => ({
       ...state,
-      tokens: action.payload,
+      tokenIdsWithBalance: action.payload,
     }),
   },
   extraReducers: builder => {
@@ -73,7 +74,7 @@ const balancesSlice = createSlice({
       ...state,
       isLoading: state.isLoadingAllowances || state.isLoadingBalances,
       isLoadingTokens: false,
-      tokens: action.payload,
+      tokenIdsWithBalance: action.payload,
     }));
 
     builder.addCase(fetchCurrencyTokenAllowance.pending, (state): BalancesState => ({

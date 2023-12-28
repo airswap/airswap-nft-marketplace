@@ -4,10 +4,11 @@ import { BaseProvider } from '@ethersproject/providers';
 import { createAsyncThunk } from '@reduxjs/toolkit';
 
 import { NftTransactionLog } from '../../../entities/NftTransactionLog/NftTransactionLog';
+import { transformNftSalesToNftTransactionLog } from '../../../entities/NftTransactionLog/NftTransactionLogTransformers';
 import { AppThunkApiConfig } from '../../store';
 import { getOrdersFromIndexers } from '../indexer/indexerHelpers';
 import { addGetOrderFailedToast } from '../toasts/toastsActions';
-import { getErc721Logs, getErc1155Logs } from './nftDetailHelpers';
+import { getErc721Logs } from './nftDetailHelpers';
 import { setTokenId } from './nftDetailSlice';
 
 export const getNftOrderByTokenId = createAsyncThunk<
@@ -51,12 +52,10 @@ AppThunkApiConfig
   const { chainId, collectionToken, collectionTokenKind } = getState().config;
 
   if (collectionTokenKind === TokenKinds.ERC1155) {
-    return getErc1155Logs(
-      chainId,
-      collectionToken,
-      provider,
-      tokenId,
-    );
+    const sales = await alchemy.nft.getNftSales({ contractAddress: collectionToken, tokenId: tokenId.toString() });
+    const { nftSales } = sales;
+
+    return nftSales.map(transformNftSalesToNftTransactionLog);
   }
 
   return getErc721Logs(
