@@ -74,7 +74,7 @@ const ConnectedProfileWidget: FC<ConnectedProfileWidgetProps> = ({
 
   useEffect((): () => void => {
     dispatch(getProfileOrders({
-      signerTokens: [collectionToken],
+      signerToken: collectionToken,
       signerWallet: profileAccount,
       offset: 0,
       limit: 9999,

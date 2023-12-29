@@ -23,8 +23,8 @@ AppThunkApiConfig
   try {
     const orders = await getOrdersFromIndexers(
       {
-        signerTokens: [config.collectionToken],
-        signerIds: [tokenId.toString()],
+        signerToken: config.collectionToken,
+        signerId: tokenId.toString(),
         offset: 0,
         limit: 999,
       },
@@ -41,7 +41,7 @@ AppThunkApiConfig
 
 interface GetNftTransactionHistoryParams {
   provider: BaseProvider;
-  tokenId: number;
+  tokenId: string;
 }
 
 export const getNftTransactionReceipts = createAsyncThunk<

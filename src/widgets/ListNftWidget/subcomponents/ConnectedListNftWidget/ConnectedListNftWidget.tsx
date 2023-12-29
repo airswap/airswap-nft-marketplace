@@ -19,6 +19,7 @@ import { approve as approveNft } from '../../../../redux/stores/orders/ordersAct
 import { addInfoToast, addUserRejectedToast } from '../../../../redux/stores/toasts/toastsActions';
 import { ExpiryTimeUnit } from '../../../../types/ExpiryTimeUnit';
 import { IndexedOrderResult } from '../../../../types/IndexedOrderResult';
+import { NftTokenKind } from '../../../../types/NftTokenKind';
 import useTokenAmountAndFee from '../../hooks/useTokenAmountAndFee';
 import ListActionButtons from '../ListActionButtons/ListActionButtons';
 import ListNftDetailContainer from '../ListNftDetailsContainer/ListNftDetailsContainer';
@@ -133,9 +134,11 @@ const ConnectedListNftWidget: FC<ListNftWidgetProps> = ({
       setWidgetState(ListNftState.sign);
 
       const expiryDate = Date.now() + (expiryAmounts[expiryTimeUnit] * (expiryAmount || 1));
+      const kind = collectionTokenInfo.kind as unknown as NftTokenKind;
 
       dispatch(createNftOrder({
         expiry: Math.floor(expiryDate / 1000).toString(),
+        kind,
         library,
         signerWallet: account,
         signerTokenInfo: collectionTokenInfo,

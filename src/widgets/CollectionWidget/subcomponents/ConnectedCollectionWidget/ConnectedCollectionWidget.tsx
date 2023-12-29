@@ -34,7 +34,7 @@ const ConnectedCollectionWidget: FC<ConnectedCollectionWidgetProps> = ({ currenc
     hasServerError,
     isLoading,
     isTotalOrdersReached,
-    offset,
+    offset = 0,
     orders,
   } = useAppSelector((state) => state.collection);
 
@@ -68,7 +68,7 @@ const ConnectedCollectionWidget: FC<ConnectedCollectionWidgetProps> = ({ currenc
   const [tokens] = useCollectionTokens(collectionToken, tokenIds);
   const filteredOrders = useMemo(() => (
     orders.filter(order => {
-      const orderToken = tokens.find(token => token.id === +order.signer.id);
+      const orderToken = tokens.find(token => token.id === order.signer.id);
 
       return orderToken ? filterCollectionTokenBySearchValue(orderToken, searchValue) : true;
     })), [orders, tokens, searchValue]);

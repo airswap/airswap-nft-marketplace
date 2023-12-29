@@ -1,5 +1,5 @@
 import { Protocols } from '@airswap/constants';
-import { RegistryV4 } from '@airswap/libraries';
+import { Registry } from '@airswap/libraries';
 import { createAsyncThunk } from '@reduxjs/toolkit';
 import { ethers } from 'ethers';
 
@@ -19,9 +19,13 @@ AppThunkApiConfig
   if (config.storageServerUrl) {
     return [config.storageServerUrl];
   }
-  return RegistryV4.getServerURLs(
+  const snavie = await Registry.getServerURLs(
     provider,
     chainId,
-    Protocols.Storage,
+    Protocols.Indexing,
   );
+
+  console.log(snavie);
+
+  return snavie;
 });

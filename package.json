@@ -9,12 +9,12 @@
     "eject": "react-scripts eject"
   },
   "dependencies": {
-    "@airswap/balances": "4.0.2",
-    "@airswap/constants": "4.1.1",
-    "@airswap/libraries": "4.1.9",
-    "@airswap/metadata": "4.1.4",
-    "@airswap/types": "4.1.1",
-    "@airswap/utils": "4.1.4",
+    "@airswap/balances": "4.0.4",
+    "@airswap/constants": "4.1.8",
+    "@airswap/libraries": "4.1.16",
+    "@airswap/metadata": "4.1.15",
+    "@airswap/types": "4.1.3",
+    "@airswap/utils": "4.1.11",
     "@coinbase/wallet-sdk": "^3.7.2",
     "@ethersproject/abi": "^5.7.0",
     "@ethersproject/providers": "^5.7.2",

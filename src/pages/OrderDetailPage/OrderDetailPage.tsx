@@ -10,9 +10,9 @@ import OrderDetailWidget from '../../widgets/OrderDetailWidget/OrderDetailWidget
 import './OrderDetailPage.scss';
 
 const OrderDetailPage: FC = () => {
-  const { orderNonce } = useParams<{ account: string, orderNonce: string }>();
+  const { account, orderNonce } = useParams<{ account: string, orderNonce: string }>();
 
-  if (!orderNonce) {
+  if (!orderNonce || !account) {
     return (
       <Page className="order-detail-page">
         <DisconnectedOrderDetail isOrderNonceUndefined />
@@ -23,7 +23,7 @@ const OrderDetailPage: FC = () => {
   return (
     <Page className="order-detail-page">
       <Helmet title="Order detail" />
-      <OrderDetailWidget orderNonce={orderNonce} />
+      <OrderDetailWidget orderNonce={orderNonce} signerWallet={account} />
     </Page>
   );
 };

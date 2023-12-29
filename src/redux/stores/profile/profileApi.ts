@@ -1,7 +1,8 @@
-import { FullOrder, OrderFilter } from '@airswap/types';
+import { FullOrder } from '@airswap/types';
 import { createAsyncThunk } from '@reduxjs/toolkit';
 import { ethers } from 'ethers';
 
+import { OrderFilter } from '../../../entities/OrderFilter/OrderFilter';
 import { TokenIdsWithBalance } from '../../../entities/TokenIdsWithBalance/TokenIdsWithBalance';
 import { AppThunkApiConfig } from '../../store';
 import { getOwnedTokenIdsOfWallet } from '../balances/balancesHelpers';

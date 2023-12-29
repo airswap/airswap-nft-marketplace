@@ -14,7 +14,7 @@ export const getErc721Logs = async (
   chainId: number,
   collectionToken: string,
   provider: BaseProvider,
-  tokenId: number,
+  tokenId: string,
 ): Promise<NftTransactionLog[]> => {
   const contract = new ethers.Contract(collectionToken, erc721AbiContract.abi, provider);
   const transferFilter = contract.filters.Transfer(null, null, tokenId);

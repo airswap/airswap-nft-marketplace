@@ -64,7 +64,7 @@ export const getOwnedTokenIdsOfWallet = async (
   }
 
   if (isErc1155) {
-    const response = await alchemy.nft.getNftsForOwner(walletAddress, { contractAddresses: [collectionToken] });
+    const response = await alchemy.nft.getNftsForOwner(walletAddress, { contractAddresses: [collectionToken], withMetadata: false });
 
     return transformOwnedNftsToTokenIdsWithBalance(response.ownedNfts);
   }

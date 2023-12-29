@@ -59,7 +59,7 @@ const OrdersContainer: FC<OrdersContainerProps> = ({
       <div className="orders-container__orders">
         {orders
           .map(order => {
-            const orderToken = tokens.find(token => token.id === +order.signer.id);
+            const orderToken = tokens.find(token => token.id === order.signer.id);
             const price = getFullOrderReadableSenderAmountPlusTotalFees(order, currencyTokenInfo);
             const isHighlighted = order.nonce === highlightOrderNonce;
 

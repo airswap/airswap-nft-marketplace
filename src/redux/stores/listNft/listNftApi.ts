@@ -1,6 +1,7 @@
-import { FullOrder, OrderFilter } from '@airswap/types';
+import { FullOrder } from '@airswap/types';
 import { createAsyncThunk } from '@reduxjs/toolkit';
 
+import { OrderFilter } from '../../../entities/OrderFilter/OrderFilter';
 import { AppThunkApiConfig } from '../../store';
 import { getOrdersFromIndexers } from '../indexer/indexerHelpers';
 import { addGetOrderFailedToast } from '../toasts/toastsActions';
