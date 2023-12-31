@@ -1,0 +1,26 @@
+@import "./misc";
+
+%label {
+    border-radius: 2.5rem;
+    line-height: 1.4;
+    padding: .25rem .75rem;
+    font-size: .75rem;
+    background: var(--c-primary);
+}
+
+%status-label {
+    @extend %label;
+    @extend %text-ellipsis;
+
+    font-weight: var(--fw-700);
+    text-transform: uppercase;
+}
+
+%balance-label {
+    @extend %label;
+
+    border-radius: .375rem;
+    padding-inline: .5rem;
+    color: var(--c-white);
+    background: var(--c-dark-border);
+}

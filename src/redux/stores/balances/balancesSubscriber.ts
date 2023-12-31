@@ -51,7 +51,6 @@ export const configureBalancesSubscriber = () => {
       chainId = web3.chainId;
 
       store.dispatch(setIsInitialized(false));
-      console.log('call');
 
       Promise.all([
         store.dispatch(fetchCurrencyTokenBalance({

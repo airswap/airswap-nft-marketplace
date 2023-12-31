@@ -1,12 +1,15 @@
 @import "src/styles";
 
 .select-nft-list-button {
+    --select-nft-list-button-balance-width: 0;
+
     @extend %button-border-style;
 
     display: flex;
     justify-content: flex-start;
     gap: 1rem;
     width: 100%;
+    text-align: left;
     padding-block: .75rem;
     padding-left: .75rem;
     font-size: 1.125rem;
@@ -24,10 +27,10 @@
     &__logo-icon {
         @extend %trade-window-icon;
 
-        width: 2.375rem;
+        min-width: 2.375rem;
 
         @include for-size(tiny-phone-only) {
-            width: 2rem;
+            min-width: 2rem;
         }
     }
 
@@ -40,11 +43,13 @@
         display: flex;
         flex-direction: column;
         justify-content: center;
-        max-width: calc(100% - 3rem);
+        margin-top: -.125rem;
+        max-width: calc(100% - 4rem - var(--select-nft-list-button-balance-width));
+        flex-grow: 0;
+        flex-shrink: 1;
 
         @include for-size(tiny-phone-only) {
-            margin: 0 .75rem;
-            max-width: calc(100% - 2rem);
+            max-width: calc(100% - 3rem - var(--select-nft-list-button-balance-width));
         }
     }
 
@@ -55,12 +60,17 @@
         min-height: 1.125rem;
     }
 
-
-
     &__listed {
         @extend %trade-window-title;
 
-        margin-top: .25rem;
+        margin-top: .125rem;
         text-align: start;
+    }
+
+    &__balance {
+        @extend %balance-label;
+
+        justify-self: flex-end;
+        margin-left: auto;
     }
 }

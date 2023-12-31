@@ -23,15 +23,19 @@ const SelectNftButton: FC<SelectNftProps> = ({
   token,
   onClick,
   className = '',
-}) => (
-  <Button onClick={onClick} className={`select-nft-button ${className}`}>
-    <div className="select-nft-button__logo-icon" style={{ backgroundImage: `url("${logoURI}")` }} />
-    <div className="select-nft-button__title-and-name">
-      <h3 className="select-nft-button__title">{title}</h3>
-      <h4 className="select-nft-button__name">{`${collectionName} ${token?.id ? `#${token.id}` : ''}`}</h4>
-    </div>
-    <Icon name="chevron-down" className="select-nft-button__chevron-down-icon" />
-  </Button>
-);
+}) => {
+  const name = token?.name || `${collectionName} ${token?.id ? `#${token.id}` : ''}`;
+
+  return (
+    <Button onClick={onClick} className={`select-nft-button ${className}`}>
+      <div className="select-nft-button__logo-icon" style={{ backgroundImage: `url("${logoURI}")` }} />
+      <div className="select-nft-button__title-and-name">
+        <h3 className="select-nft-button__title">{title}</h3>
+        <h4 className="select-nft-button__name">{name}</h4>
+      </div>
+      <Icon name="chevron-down" className="select-nft-button__chevron-down-icon" />
+    </Button>
+  );
+};
 
 export default SelectNftButton;

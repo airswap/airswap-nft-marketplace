@@ -13,6 +13,7 @@ import { CollectionTokenInfo, FullOrder } from '@airswap/types';
 import { useDebounce } from 'react-use';
 
 import SearchInput from '../../components/SearchInput/SearchInput';
+import { TokenIdsWithBalance } from '../../entities/TokenIdsWithBalance/TokenIdsWithBalance';
 import EmptyState from '../EmptyState/EmptyState';
 import { getSelectNftOptions } from '../SelectNftButton/helpers/getSelectNftOptions';
 import { filterTokenBySearchValue } from './helpers/filterTokenBySearchValue';
@@ -22,6 +23,7 @@ import './SelectNft.scss';
 
 interface SelectNftProps {
   collectionName: string;
+  tokenIdsWithBalance: TokenIdsWithBalance;
   tokenInfo: CollectionTokenInfo[];
   tokens: string[];
   loadingTokens?: string[];
@@ -33,6 +35,7 @@ interface SelectNftProps {
 
 const SelectNft: FC<SelectNftProps> = ({
   collectionName,
+  tokenIdsWithBalance,
   tokenInfo,
   tokens,
   loadingTokens = [],
@@ -106,9 +109,10 @@ const SelectNft: FC<SelectNftProps> = ({
         className="select-nft__list"
       >
         {options.map(option => {
-          const nft = tokenInfo.find(token => token.id.toString() === option.value);
+          const nft = tokenInfo.find(token => token.id === option.value);
           const isLoading = !nft && loadingTokens.some(token => token === option.value);
           const isListed = orders.some(order => order.signer.id === option.value);
+          const balance = tokenIdsWithBalance[option.value];
 
           return (
             <li key={option.value}>
@@ -116,6 +120,7 @@ const SelectNft: FC<SelectNftProps> = ({
                 isListed={isListed}
                 isLoading={isLoading}
                 isPreview={!nft}
+                balance={balance === '1' ? undefined : balance}
                 name={nft?.name || option.label}
                 logoURI={nft?.image || ''}
                 value={option.value}
