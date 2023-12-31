@@ -13,20 +13,39 @@
         object-fit: contain;
     }
 
-    &__label {
-        @extend %text-ellipsis;
-
+    &__header {
+        display: flex;
+        justify-content: space-between;
+        gap: 1rem;
         position: absolute;
         top: 1rem;
         left: 1rem;
+        width: calc(100% - 2rem);
+    }
+
+    &__balance,
+    &__label {
         border-radius: 2.5rem;
-        line-height: 1.5;
-        max-width: calc(100% - 2rem);
-        padding: .125rem .75rem;
+        line-height: 1.4;
+        padding: .25rem .75rem;
         font-size: .75rem;
+        background: var(--c-primary);
+    }
+
+    &__label {
+        @extend %text-ellipsis;
+
         font-weight: var(--fw-700);
         text-transform: uppercase;
-        background: var(--c-primary);
+    }
+
+    &__balance {
+        justify-self: flex-end;
+        margin-left: auto;
+        border-radius: .375rem;
+        padding-inline: .5rem;
+        color: var(--c-white);
+        background: var(--c-dark-border);
     }
 
     &__info-wrapper {

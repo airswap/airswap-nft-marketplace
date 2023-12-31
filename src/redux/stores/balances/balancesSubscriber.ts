@@ -16,6 +16,7 @@ export const configureBalancesSubscriber = () => {
 
   store.subscribe(() => {
     const { config, transactions, web3 } = store.getState();
+    console.log(transactions);
 
     const lastTransaction = transactions.transactions[0];
     const lastSucceededTransaction = lastTransaction?.status === 'succeeded' ? lastTransaction : undefined;
@@ -46,6 +47,7 @@ export const configureBalancesSubscriber = () => {
       chainId = web3.chainId;
 
       store.dispatch(setIsInitialized(false));
+      console.log('call');
 
       Promise.all([
         store.dispatch(fetchCurrencyTokenBalance({
