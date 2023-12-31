@@ -47,6 +47,7 @@ CreateOrderParams
           token: params.signerTokenInfo.address,
           kind: params.kind,
           id: params.tokenId,
+          ...(params.kind === TokenKinds.ERC1155 && { amount: '1' }),
         },
         sender: {
           wallet: nativeCurrencyAddress,

@@ -19,13 +19,9 @@ AppThunkApiConfig
   if (config.storageServerUrl) {
     return [config.storageServerUrl];
   }
-  const snavie = await Registry.getServerURLs(
+  return Registry.getServerURLs(
     provider,
     chainId,
     Protocols.Indexing,
   );
-
-  console.log(snavie);
-
-  return snavie;
 });
