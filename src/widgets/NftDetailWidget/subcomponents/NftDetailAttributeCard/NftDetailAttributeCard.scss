@@ -13,6 +13,11 @@
         font-size: .875rem; // Target 14px
     }
 
+    &__label,
+    &__value {
+        word-break: break-word;
+    }
+
     &__label {
         color: var(--c-text-grey);
         font-weight: var(--fw-400);

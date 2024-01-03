@@ -71,7 +71,7 @@ export const isCollectionTokenInfo = (resource: any): resource is CollectionToke
     && typeof resource.chainId === 'number'
     && typeof resource.kind === 'string'
     && typeof resource.address === 'string'
-    && typeof resource.id === 'number'
+    && typeof resource.id === 'string'
     && typeof resource.uri === 'string'
     && resource.attributes && Array.isArray(resource.attributes)
 );
@@ -81,5 +81,5 @@ export const filterCollectionTokenBySearchValue = (token: CollectionTokenInfo, v
 
   if (token.name && token.name.toLowerCase().includes(value.toLowerCase())) return true;
 
-  return token.id.toString().toLowerCase().includes(value.toLowerCase());
+  return token.id.includes(value);
 };

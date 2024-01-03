@@ -65,7 +65,7 @@ const ConnectedProfileOrdersWidget: FC<ConnectedProfileOrdersWidgetProps> = ({
   const [tokens] = useCollectionTokens(collectionToken, tokenIds);
   const filteredOrders = useMemo(() => (
     orders.filter(order => {
-      const orderToken = tokens.find(token => token.id === +order.signer.id);
+      const orderToken = tokens.find(token => token.id === order.signer.id);
 
       return orderToken ? filterCollectionTokenBySearchValue(orderToken, searchValue) : true;
     })), [orders, tokens, searchValue]);
@@ -78,7 +78,7 @@ const ConnectedProfileOrdersWidget: FC<ConnectedProfileOrdersWidgetProps> = ({
     }
 
     dispatch(getProfileOrders({
-      signerTokens: [collectionToken],
+      signerToken: collectionToken,
       signerWallet: profileAccount,
       offset,
       limit: INDEXER_ORDERS_OFFSET,

@@ -19,7 +19,8 @@
     &__column {
         display: flex;
         flex-direction: column;
-        flex: 0 0 47.5%;
+        width: 100%;
+        max-width: 47.5%;
     }
 
     &__loading-spinner {

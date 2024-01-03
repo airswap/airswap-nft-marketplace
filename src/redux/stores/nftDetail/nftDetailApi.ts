@@ -23,8 +23,8 @@ AppThunkApiConfig
   try {
     const orders = await getOrdersFromIndexers(
       {
-        signerTokens: [config.collectionToken],
-        signerIds: [tokenId.toString()],
+        signerToken: config.collectionToken,
+        signerId: tokenId.toString(),
         offset: 0,
         limit: 999,
       },
@@ -41,7 +41,7 @@ AppThunkApiConfig
 
 interface GetNftTransactionHistoryParams {
   provider: BaseProvider;
-  tokenId: number;
+  tokenId: string;
 }
 
 export const getNftTransactionReceipts = createAsyncThunk<
@@ -49,7 +49,7 @@ NftTransactionLog[],
 GetNftTransactionHistoryParams,
 AppThunkApiConfig
 >('nftDetail/getNftTransactionReceipts', async ({ provider, tokenId }, { getState }) => {
-  const { chainId, collectionToken, collectionTokenKind } = getState().config;
+  const { collectionToken, collectionTokenKind } = getState().config;
 
   if (collectionTokenKind === TokenKinds.ERC1155) {
     const sales = await alchemy.nft.getNftSales({ contractAddress: collectionToken, tokenId: tokenId.toString() });
@@ -59,7 +59,6 @@ AppThunkApiConfig
   }
 
   return getErc721Logs(
-    chainId,
     collectionToken,
     provider,
     tokenId,

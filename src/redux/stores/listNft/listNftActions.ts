@@ -9,10 +9,12 @@ import { nativeCurrencyAddress } from '../../../constants/nativeCurrency';
 import { AppErrorType, isAppError } from '../../../errors/appError';
 import toRoundedAtomicString from '../../../helpers/airswap/getRoundedAtomicString';
 import { createOrderSignature } from '../../../helpers/createOrderSignature';
+import { NftTokenKind } from '../../../types/NftTokenKind';
 import { setError, setUserOrder } from './listNftSlice';
 
 interface CreateOrderParams {
   expiry: string;
+  kind: NftTokenKind;
   library: Web3Provider;
   protocolFee: number;
   signerTokenInfo: CollectionTokenInfo;
@@ -43,8 +45,9 @@ CreateOrderParams
         signer: {
           wallet: params.signerWallet,
           token: params.signerTokenInfo.address,
-          kind: TokenKinds.ERC721,
+          kind: params.kind,
           id: params.tokenId,
+          ...(params.kind === TokenKinds.ERC1155 && { amount: '1' }),
         },
         sender: {
           wallet: nativeCurrencyAddress,

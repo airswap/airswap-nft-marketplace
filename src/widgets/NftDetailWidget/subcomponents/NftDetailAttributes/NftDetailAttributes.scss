@@ -4,5 +4,5 @@
 	display: grid;
 	margin: .25rem 0; // Compensate for font vs colourful block
 	gap: .75rem;
-	grid-template-columns: 1fr 1fr;
+	grid-template-columns: 50% 50%;
 }

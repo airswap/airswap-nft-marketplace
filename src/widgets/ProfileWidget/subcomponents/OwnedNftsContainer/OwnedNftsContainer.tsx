@@ -36,7 +36,7 @@ const OwnedNftsContainer: FC<OwnedNftsContainerProps> = ({
     <div className="owned-nfts-container__tokens">
       {tokens.map((nft) => {
         const balance = tokenIdsWithBalance[nft.id.toString()];
-        const tokenOrder = orders.find(order => +order.signer.id === nft.id);
+        const tokenOrder = orders.find(order => order.signer.id === nft.id);
         const price = (tokenOrder && currencyTokenInfo) ? getFullOrderReadableSenderAmountPlusTotalFees(tokenOrder, currencyTokenInfo) : undefined;
         const isHighlighted = highlightTokenId === nft.id.toString();
 

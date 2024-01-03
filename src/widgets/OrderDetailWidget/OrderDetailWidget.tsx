@@ -11,10 +11,11 @@ import './OrderDetailWidget.scss';
 
 interface OrderDetailWidgetProps {
   orderNonce: string;
+  signerWallet: string;
   className?: string;
 }
 
-const OrderDetailWidget: FC<OrderDetailWidgetProps> = ({ orderNonce, className = '' }): ReactElement => {
+const OrderDetailWidget: FC<OrderDetailWidgetProps> = ({ orderNonce, signerWallet, className = '' }): ReactElement => {
   const dispatch = useAppDispatch();
   const { account } = useWeb3React();
 
@@ -27,7 +28,7 @@ const OrderDetailWidget: FC<OrderDetailWidgetProps> = ({ orderNonce, className =
       return;
     }
 
-    dispatch(getNftOrderByOrderNonce(orderNonce));
+    dispatch(getNftOrderByOrderNonce({ orderNonce, signerWallet }));
   }, [isInitialized, orderNonce]);
 
   if (

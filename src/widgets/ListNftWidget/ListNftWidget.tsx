@@ -5,7 +5,6 @@ import { useLocation, useSearchParams } from 'react-router-dom';
 import useWeb3ReactLibrary from '../../hooks/useWeb3ReactLibrary';
 import { useAppDispatch, useAppSelector } from '../../redux/hooks';
 import { getUserOrders } from '../../redux/stores/listNft/listNftApi';
-import { selectCancelOrderTransactions } from '../../redux/stores/transactions/transactionsSlice';
 import ConnectedListNftWidget from './subcomponents/ConnectedListNftWidget/ConnectedListNftWidget';
 import DisconnectedListNftWidget from './subcomponents/DisconnectedListNftWidget/DisconnectedListNftWidget';
 
@@ -25,7 +24,7 @@ const ListNftWidget: FC<ListNftWidgetProps> = ({ className = '' }) => {
   const { isInitialized: isBalancesInitialized, tokenIdsWithBalance: userTokenIdsWithBalance } = useAppSelector(state => state.balances);
   const { isLoading: isMetadataLoading, currencyTokenInfo } = useAppSelector(state => state.metadata);
   const { isInitialized: isIndexerInitialized } = useAppSelector(state => state.indexer);
-  const transactions = useAppSelector(selectCancelOrderTransactions);
+  // const transactions = useAppSelector(selectCancelOrderTransactions);
 
   const userTokens = Object.keys(userTokenIdsWithBalance);
   const tokenId = searchParams.get('tokenId');
@@ -35,8 +34,8 @@ const ListNftWidget: FC<ListNftWidgetProps> = ({ className = '' }) => {
   useEffect(() => {
     if (isIndexerInitialized && !isLoadingUserOrders && account) {
       dispatch(getUserOrders({
-        excludeNonces: transactions.map(transaction => transaction.order.nonce),
-        signerTokens: [config.collectionToken],
+        // excludeNonces: transactions.map(transaction => transaction.order.nonce),
+        signerToken: config.collectionToken,
         signerWallet: account,
         limit: 9999,
         offset: 0,

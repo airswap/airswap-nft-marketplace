@@ -2,12 +2,12 @@ import { Server, SuccessResponse } from '@airswap/libraries';
 import {
   FullOrder,
   IndexedOrder,
-  OrderFilter,
   OrderResponse,
 } from '@airswap/types';
 import { SortField, SortOrder } from '@airswap/types/build/src/server';
 
 import { INDEXER_ORDER_RESPONSE_TIME_MS } from '../../../constants/indexer';
+import { OrderFilter } from '../../../entities/OrderFilter/OrderFilter';
 
 const isPromiseFulfilledResult = <T>(result: any): result is PromiseFulfilledResult<T> => result && result.status === 'fulfilled' && 'value' in result;
 
@@ -32,13 +32,14 @@ export const getOrdersFromServer = async (server: Server, filter: OrderFilter): 
     ...filter,
   };
 
-  // TODO: Remove this once the indexer supports empty excludeNonces https://github.com/airswap/airswap-marketplace/issues/157
-  if (!filterWithDefaults.excludeNonces?.length) {
-    delete filterWithDefaults.excludeNonces;
-  }
-
   try {
-    return await server.getOrders(filterWithDefaults);
+    return await server.getOrders(
+      filterWithDefaults,
+      filterWithDefaults.offset || 0,
+      filterWithDefaults.limit || 9999,
+      filterWithDefaults.sortField,
+      filterWithDefaults.sortOrder,
+    );
   } catch (e: any) {
     console.error(
       `[getOrdersFromServer] Order indexing failed for ${server.locator}`,

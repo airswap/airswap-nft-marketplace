@@ -15,6 +15,7 @@ import {
 import { AppError } from '../../../errors/appError';
 import { SwapError, transformSwapErrorToAppError } from '../../../errors/swapError';
 import transformUnknownErrorToAppError from '../../../errors/transformUnknownErrorToAppError';
+import { NftTokenKind } from '../../../types/NftTokenKind';
 
 const erc20Interface = new ethers.utils.Interface(erc20Contract.abi);
 const erc721Interface = new ethers.utils.Interface(erc721Contract.abi);
@@ -43,15 +44,24 @@ export async function approveNftToken(
   baseToken: string,
   tokenId: string,
   provider: ethers.providers.Web3Provider,
-  tokenKind: TokenKinds.ERC1155 | TokenKinds.ERC721,
+  tokenKind: NftTokenKind,
 ): Promise<Transaction> {
+  const contractAddress = Swap.getAddress(provider.network.chainId);
   const contract = new ethers.Contract(
     baseToken,
     tokenKind === TokenKinds.ERC1155 ? erc1155Interface : erc721Interface,
     provider.getSigner(),
   );
+
+  if (tokenKind === TokenKinds.ERC1155) {
+    return contract.setApprovalForAll(
+      contractAddress,
+      true,
+    );
+  }
+
   return contract.approve(
-    Swap.getAddress(provider.network.chainId),
+    contractAddress,
     tokenId,
   );
 }
@@ -120,22 +130,52 @@ export async function getNonceUsed(
   );
 }
 
+const getContractApproved = async (
+  contract: ethers.Contract,
+  contractAddress: string,
+  tokenKind: NftTokenKind,
+  tokenId: string,
+): Promise<boolean> => {
+  if (tokenKind === TokenKinds.ERC1155) {
+    const response: [boolean] = await contract.functions.isApprovedForAll(
+      contract.signer.getAddress(),
+      contractAddress,
+    );
+
+    return response[0];
+  }
+
+  const response: string = await contract.getApproved(tokenId);
+
+  return response === contractAddress;
+};
+
 export async function getNftTokenApproved(
   baseToken: string,
   tokenId: string,
   provider: ethers.providers.Web3Provider,
-  tokenKind: TokenKinds.ERC1155 | TokenKinds.ERC721,
+  tokenKind: NftTokenKind,
+  chainId: number,
 ): Promise<boolean> {
   try {
+    const contractAddress = Swap.getAddress(chainId);
+
+    if (!contractAddress) {
+      return false;
+    }
+
     const contract = new ethers.Contract(
       baseToken,
       tokenKind === TokenKinds.ERC1155 ? erc1155Interface : erc721Interface,
       provider.getSigner(),
     );
 
-    const response = await contract.getApproved(tokenId);
-
-    return response === Swap.getAddress(5);
+    return getContractApproved(
+      contract,
+      contractAddress,
+      tokenKind,
+      tokenId,
+    );
   } catch (error: any) {
     console.error(error);
 

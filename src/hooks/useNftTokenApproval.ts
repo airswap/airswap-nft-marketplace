@@ -39,6 +39,7 @@ const useNftTokenApproval = (
         tokenId,
         library,
         tokenKind,
+        chainId,
       );
 
       setIsApproved(approved);
