@@ -35,10 +35,10 @@ const OwnedNftsContainer: FC<OwnedNftsContainerProps> = ({
   <div className={`owned-nfts-container ${className}`}>
     <div className="owned-nfts-container__tokens">
       {tokens.map((nft) => {
-        const balance = tokenIdsWithBalance[nft.id.toString()];
+        const balance = tokenIdsWithBalance[nft.id];
         const tokenOrder = orders.find(order => order.signer.id === nft.id);
         const price = (tokenOrder && currencyTokenInfo) ? getFullOrderReadableSenderAmountPlusTotalFees(tokenOrder, currencyTokenInfo) : undefined;
-        const isHighlighted = highlightTokenId === nft.id.toString();
+        const isHighlighted = highlightTokenId === nft.id;
 
         return (
           <NftCard
@@ -49,7 +49,7 @@ const OwnedNftsContainer: FC<OwnedNftsContainerProps> = ({
             label={isHighlighted ? 'Newly bought' : undefined}
             name={nft.name}
             price={price}
-            to={routes.nftDetail(nft.id.toString())}
+            to={routes.nftDetail(nft.id)}
             symbol={currencyTokenInfo?.symbol}
             className="profile-widget__nft-card"
           />

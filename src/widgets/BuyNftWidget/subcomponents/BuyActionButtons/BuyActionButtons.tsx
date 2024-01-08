@@ -101,7 +101,7 @@ const BuyActionButtons: FC<ActionButtonsProps> = ({
     if (state === BuyNftState.success) {
       return (
         <NavLink
-          to={routes.profile(account, collectionTokenInfo.id.toString())}
+          to={routes.profile(account, collectionTokenInfo.id)}
           className="buy-action-buttons__action-button"
         >
           View in my profile
@@ -112,7 +112,7 @@ const BuyActionButtons: FC<ActionButtonsProps> = ({
     if (state === BuyNftState.failed) {
       return (
         <NavLink
-          to={routes.nftDetail(collectionTokenInfo.id.toString())}
+          to={routes.nftDetail(collectionTokenInfo.id)}
           onClick={onActionButtonClick}
           className="buy-action-buttons__action-button"
         >

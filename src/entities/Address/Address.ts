@@ -4,6 +4,6 @@ export interface Address {
   ens?: string;
 }
 
-export interface EnsAddresses {
+export interface EnsAddressesMap {
   [address: string]: string | null;
 }

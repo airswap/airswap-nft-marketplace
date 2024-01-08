@@ -1,7 +1,8 @@
-import { CollectionTokenInfo, TokenInfo } from '@airswap/types';
+import { TokenInfo } from '@airswap/types';
 import { createSlice, PayloadAction } from '@reduxjs/toolkit';
 
-import { EnsAddresses } from '../../../entities/Address/Address';
+import { EnsAddressesMap } from '../../../entities/Address/Address';
+import { CollectionTokenInfoMap } from '../../../entities/CollectionToken/CollectionToken';
 import { fetchProtocolFee } from './metadataActions';
 import { getCurrencyTokenInfo } from './metadataApi';
 import { getCollectionTokensLocalStorageKey } from './metdataHelpers';
@@ -9,10 +10,8 @@ import { getCollectionTokensLocalStorageKey } from './metdataHelpers';
 export interface MetadataState {
   isLoading: boolean;
   currencyTokenInfo?: TokenInfo;
-  collectionTokens: {
-    [id: string]: CollectionTokenInfo;
-  }
-  ensAddresses: EnsAddresses
+  collectionTokens: CollectionTokenInfoMap;
+  ensAddresses: EnsAddressesMap
   projectFee: number;
   protocolFee: number;
 }
@@ -33,7 +32,7 @@ const metadataSlice = createSlice({
       ...state,
       isLoading: action.payload,
     }),
-    setCollectionTokens: (state, action: PayloadAction<{ [id: number]: CollectionTokenInfo }>) => {
+    setCollectionTokens: (state, action: PayloadAction<CollectionTokenInfoMap>) => {
       const values = Object.values(action.payload);
 
       if (values.length) {
@@ -45,7 +44,7 @@ const metadataSlice = createSlice({
         collectionTokens: action.payload,
       };
     },
-    setEnsAddresses: (state, action: PayloadAction<EnsAddresses>) => ({
+    setEnsAddresses: (state, action: PayloadAction<EnsAddressesMap>) => ({
       ...state,
       ensAddresses: action.payload,
     }),

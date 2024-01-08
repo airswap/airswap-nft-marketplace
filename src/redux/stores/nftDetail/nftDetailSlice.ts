@@ -1,28 +1,22 @@
 import { FullOrder } from '@airswap/types';
 import { createSlice, PayloadAction } from '@reduxjs/toolkit';
 
-import { Address } from '../../../entities/Address/Address';
 import { NftTransactionLog } from '../../../entities/NftTransactionLog/NftTransactionLog';
-import { getErc1155OwnerAddresses, getNftOrderByTokenId, getNftTransactionReceipts } from './nftDetailApi';
+import { getNftOrderByTokenId, getNftTransactionReceipts } from './nftDetailApi';
 
 export interface NftDetailState {
   isLoading: boolean;
-  isLoadingOwners: boolean;
   isLoadingTransactionReceipts: boolean;
   isOrderNotFound: boolean;
   order?: FullOrder;
-  owners: Address[];
-  ownersPageKey?: string | null;
   tokenId?: string;
   transactionLogs: NftTransactionLog[];
 }
 
 const initialState: NftDetailState = {
   isLoading: false,
-  isLoadingOwners: false,
   isLoadingTransactionReceipts: false,
   isOrderNotFound: false,
-  owners: [],
   transactionLogs: [],
 };
 
@@ -67,20 +61,6 @@ export const nftDetailSlice = createSlice({
       ...state,
       transactionLogs: [],
       isLoadingTransactionReceipts: false,
-    }));
-    builder.addCase(getErc1155OwnerAddresses.pending, (state): NftDetailState => ({
-      ...state,
-      isLoadingOwners: true,
-    }));
-    builder.addCase(getErc1155OwnerAddresses.fulfilled, (state, action): NftDetailState => ({
-      ...state,
-      isLoadingOwners: false,
-      owners: action.payload.owners,
-      ownersPageKey: action.payload.pageKey,
-    }));
-    builder.addCase(getErc1155OwnerAddresses.rejected, (state): NftDetailState => ({
-      ...state,
-      isLoadingOwners: false,
     }));
   },
 });
