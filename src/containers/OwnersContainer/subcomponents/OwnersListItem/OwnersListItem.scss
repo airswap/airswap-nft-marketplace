@@ -1,3 +1,5 @@
+@import "src/styles";
+
 .owners-list-item {
     padding: .5rem;
     color: var(--c-white);
@@ -17,7 +19,13 @@
         height: 100%;
     }
 
+    &__address {
+        @extend %text-ellipsis;
+    }
+
     &__ens-address {
+        @extend %text-ellipsis;
+
         font-weight: var(--fw-700);
     }
 }
