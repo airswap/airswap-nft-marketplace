@@ -1,0 +1,17 @@
+@import "src/styles";
+
+.owners-container {
+    display: flex;
+    flex-grow: 1;
+    padding: 1rem;
+    background: var(--c-dark);
+
+    &__list {
+        @extend %scrollbar;
+
+        width: 100%;
+        height: 100%;
+        padding-right: 1rem;
+        overflow-y: auto;
+    }
+}

@@ -2,6 +2,8 @@ import React, { FC } from 'react';
 
 import { Link } from 'react-router-dom';
 
+import Button from '../../../../components/Button/Button';
+
 import './NftDetailMainInfo.scss';
 
 export interface INftDetailMainInfoProps {
@@ -9,6 +11,7 @@ export interface INftDetailMainInfoProps {
   title?: string;
   owner?: string;
   ownersLength?: number;
+  onOwnersButtonClick: () => void;
   className?: string;
 }
 
@@ -17,13 +20,15 @@ const NftDetailMainInfo: FC<INftDetailMainInfoProps> = ({
   title,
   owner,
   ownersLength = 0,
+  onOwnersButtonClick,
   className = '',
 }) => (
   <div className={`nft-detail-main-info ${className}`}>
     <h1 className="nft-detail-main-info__title">{title}</h1>
     <span className="nft-detail-main-info__owner">
       <p className="nft-detail-main-info__owner-label">Owned by&nbsp;</p>
-      {(owner && accountRoute) && (
+
+      {(owner && ownersLength === 1 && accountRoute) && (
         <Link
           to={accountRoute}
           className="nft-detail-main-info__owner-name"
@@ -31,12 +36,14 @@ const NftDetailMainInfo: FC<INftDetailMainInfoProps> = ({
           {owner}
         </Link>
       )}
+
       {ownersLength > 1 && (
-        <span className="nft-detail-main-info__owners-length">
-          &nbsp;and&nbsp;
-          {ownersLength - 1}
-          &nbsp;others
-        </span>
+        <Button
+          className="nft-detail-main-info__owners-button"
+          onClick={onOwnersButtonClick}
+        >
+          {`${ownersLength > 100 ? '100+' : ownersLength} addresses`}
+        </Button>
       )}
     </span>
   </div>

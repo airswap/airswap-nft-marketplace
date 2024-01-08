@@ -1,0 +1,21 @@
+.owners-list-item {
+    height: 2.5rem;
+    color: var(--c-white);
+    cursor: pointer;
+
+    &--is-loading {
+        opacity: .5;
+    }
+
+    &:hover,
+    &:focus {
+        background-color: var(--c-dark-border);
+    }
+
+    &__nav-link {
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        height: 100%;
+    }
+}
