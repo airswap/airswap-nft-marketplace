@@ -9,6 +9,8 @@ import {
   setTokens,
 } from './balancesSlice';
 
+const getLastTransactionHashLocalStorageKey: (walletAddress: string, chainId: number) => string = (walletAddress, chainId) => `airswap-marketplace/last-transaction/${walletAddress}/${chainId}`;
+
 export const configureBalancesSubscriber = () => {
   let account: string;
   let chainId: number;
@@ -36,6 +38,9 @@ export const configureBalancesSubscriber = () => {
     }
 
     const library = getLibrary(web3.chainId);
+    const lastTransactionHashKey = getLastTransactionHashLocalStorageKey(web3.account, web3.chainId);
+
+    lastTransactionHash = localStorage.getItem(lastTransactionHashKey) || undefined;
 
     if (!library) {
       return;
@@ -73,7 +78,7 @@ export const configureBalancesSubscriber = () => {
     }
 
     if (lastSucceededTransaction && lastSucceededTransaction.hash !== lastTransactionHash) {
-      lastTransactionHash = lastSucceededTransaction.hash;
+      localStorage.setItem(lastTransactionHashKey, lastSucceededTransaction.hash);
 
       if (lastSucceededTransaction.type === SubmittedTransactionType.order) {
         store.dispatch(fetchUserTokens({

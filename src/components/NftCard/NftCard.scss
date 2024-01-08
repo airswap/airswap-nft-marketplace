@@ -13,20 +13,25 @@
         object-fit: contain;
     }
 
-    &__label {
-        @extend %text-ellipsis;
-
+    &__header {
+        display: flex;
+        justify-content: space-between;
+        gap: 1rem;
         position: absolute;
         top: 1rem;
         left: 1rem;
-        border-radius: 2.5rem;
-        line-height: 1.5;
-        max-width: calc(100% - 2rem);
-        padding: .125rem .75rem;
-        font-size: .75rem;
-        font-weight: var(--fw-700);
-        text-transform: uppercase;
-        background: var(--c-primary);
+        width: calc(100% - 2rem);
+    }
+
+    &__label {
+        @extend %status-label;
+    }
+
+    &__balance {
+        @extend %balance-label;
+
+        justify-self: flex-end;
+        margin-left: auto;
     }
 
     &__info-wrapper {

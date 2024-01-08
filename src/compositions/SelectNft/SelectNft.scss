@@ -13,6 +13,7 @@
         margin-top: 1rem;
         max-height: calc(100svh - var(--top-bar-height) - 12rem);
         list-style: none;
+        overflow-x: hidden;
         overflow-y: auto;
 
         @include for-size(tablet-portrait-up) {

@@ -26,6 +26,7 @@ const ConnectedNftSelector: FC<ConnectedNftSelectorProps> = ({
   className = '',
 }): ReactElement => {
   const { collectionToken, collectionName } = useAppSelector(state => state.config);
+  const { tokenIdsWithBalance } = useAppSelector(state => state.balances);
   const { userOrders } = useAppSelector(state => state.listNft);
 
   const [tokens, setTokens] = useState<string[]>([selectedToken]);
@@ -52,6 +53,7 @@ const ConnectedNftSelector: FC<ConnectedNftSelectorProps> = ({
       collectionName={collectionName}
       loadingTokens={viewedTokens}
       orders={userOrders}
+      tokenIdsWithBalance={tokenIdsWithBalance}
       tokenInfo={tokenInfo}
       tokens={allTokens}
       onClickNft={onClickNft}
