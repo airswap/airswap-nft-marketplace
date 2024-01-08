@@ -2,10 +2,13 @@ import React, { useMemo } from 'react';
 
 import { NavLink } from 'react-router-dom';
 
+import Button from '../../../../components/Button/Button';
+
 import './NftDetailProceedButton.scss';
 
 interface NftDetailProceedButtonProps {
   accountIsOwner: boolean;
+  isExpired: boolean;
   listRoute?: string;
   orderRoute?: string;
   className?: string;
@@ -13,11 +16,23 @@ interface NftDetailProceedButtonProps {
 
 const NftDetailProceedButton: React.FC<NftDetailProceedButtonProps> = ({
   accountIsOwner,
+  isExpired,
   listRoute,
   orderRoute,
   className = '',
 }) => {
   const navLink = useMemo(() => {
+    if (isExpired) {
+      return (
+        <Button
+          disabled
+          className="nft-detail-proceed-button__link"
+        >
+          Order expired
+        </Button>
+      );
+    }
+
     if (listRoute && accountIsOwner) {
       return (
         <NavLink
@@ -41,7 +56,12 @@ const NftDetailProceedButton: React.FC<NftDetailProceedButtonProps> = ({
     }
 
     return null;
-  }, [accountIsOwner, listRoute, orderRoute]);
+  }, [
+    accountIsOwner,
+    isExpired,
+    listRoute,
+    orderRoute,
+  ]);
 
   return (
     <div className={`nft-detail-proceed-button ${className}`}>

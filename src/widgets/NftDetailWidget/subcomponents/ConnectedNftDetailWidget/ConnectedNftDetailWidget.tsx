@@ -4,6 +4,7 @@ import { CollectionTokenInfo, TokenInfo } from '@airswap/types';
 import { BaseProvider } from '@ethersproject/providers';
 
 import Accordion from '../../../../components/Accordion/Accordion';
+import { isFullOrderExpired } from '../../../../entities/FullOrder/FullOrderHelpers';
 import useAddressOrEnsName from '../../../../hooks/useAddressOrEnsName';
 import useNftTokenOwners from '../../../../hooks/useNftTokenOwners';
 import { useAppDispatch, useAppSelector } from '../../../../redux/hooks';
@@ -47,6 +48,7 @@ const ConnectedNftDetailWidget: FC<ConnectedNftDetailWidgetProps> = ({
 
   const [owners, isOwnerLoading] = useNftTokenOwners(collectionTokenInfo);
   const isLoading = isPriceLoading || isOwnerLoading;
+  const isExpired = order ? isFullOrderExpired(order) : false;
   const readableOwnerAddress = useAddressOrEnsName(owners?.length ? owners[0] : undefined, true);
   const accountRoute = owners?.length ? routes.profile(owners[0]) : undefined;
   const orderRoute = order ? routes.orderDetail(order.signer.wallet, order.nonce) : undefined;
@@ -92,6 +94,7 @@ const ConnectedNftDetailWidget: FC<ConnectedNftDetailWidgetProps> = ({
         {((orderRoute || listRoute) && owners && account && !isLoading) && (
           <NftDetailProceedButton
             accountIsOwner={owners.includes(account)}
+            isExpired={isExpired}
             orderRoute={orderRoute}
             listRoute={listRoute}
           />
@@ -182,6 +185,7 @@ const ConnectedNftDetailWidget: FC<ConnectedNftDetailWidgetProps> = ({
           {((orderRoute || listRoute) && owners && account && !isLoading) && (
             <NftDetailProceedButton
               accountIsOwner={owners.includes(account)}
+              isExpired={isExpired}
               listRoute={listRoute}
               orderRoute={orderRoute}
             />

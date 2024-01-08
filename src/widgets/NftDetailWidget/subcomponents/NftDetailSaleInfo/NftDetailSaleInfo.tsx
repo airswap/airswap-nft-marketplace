@@ -5,7 +5,7 @@ import { FullOrder, TokenInfo } from '@airswap/types';
 import LoadingSpinner from '../../../../components/LoadingSpinner/LoadingSpinner';
 import {
   getFullOrderExpiryDate,
-  getFullOrderReadableSenderAmountPlusTotalFees,
+  getFullOrderReadableSenderAmountPlusTotalFees, isFullOrderExpired,
 } from '../../../../entities/FullOrder/FullOrderHelpers';
 import { getExpiryTranslation } from '../../../../helpers/date/getExpiryTranslation';
 
@@ -25,9 +25,13 @@ const NftDetailSaleInfo: FC<NftDetailSaleInfoProps> = ({
   className = '',
 }) => {
   const price = useMemo(() => (order ? getFullOrderReadableSenderAmountPlusTotalFees(order, tokenInfo) : undefined), [order]);
-  const expiry = useMemo(() => (order ? (
-      getExpiryTranslation(getFullOrderExpiryDate(order), new Date())
-  ) : undefined), [order]);
+  const expiry = useMemo(() => {
+    if (!order || isFullOrderExpired(order)) {
+      return undefined;
+    }
+
+    return getExpiryTranslation(getFullOrderExpiryDate(order), new Date());
+  }, [order]);
   const { symbol } = tokenInfo;
 
   if (isLoading) {
@@ -47,10 +51,12 @@ const NftDetailSaleInfo: FC<NftDetailSaleInfoProps> = ({
       <h3 className="nft-detail-sale-info__price">
         {price ? `${price} ${symbol}` : null}
       </h3>
-      <h4 className="nft-detail-sale-info__expiry">
-        Expires in
-        <span className="nft-detail-sale-info__expiry-date">{expiry}</span>
-      </h4>
+      {expiry && (
+        <h4 className="nft-detail-sale-info__expiry">
+          Expires in
+          <span className="nft-detail-sale-info__expiry-date">{expiry}</span>
+        </h4>
+      )}
     </div>
   );
 };

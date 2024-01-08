@@ -26,3 +26,5 @@ export const getFullOrderReadableSenderAmount = (fullOrder: FullOrder, token: To
 });
 
 export const getFullOrderExpiryDate = (fullOrder: FullOrder): Date => new Date(+fullOrder.expiry * 1000);
+
+export const isFullOrderExpired = (fullOrder: FullOrder): boolean => getFullOrderExpiryDate(fullOrder) < new Date();
