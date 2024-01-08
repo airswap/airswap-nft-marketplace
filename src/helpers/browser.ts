@@ -24,7 +24,6 @@ export const generateEventPath = (eventTarget: EventTarget | null): EventPathEle
 
   while (element) {
     path.push(element);
-    console.log(element);
 
     // Can't copy dom-related objects
     // eslint-disable-next-line no-param-reassign

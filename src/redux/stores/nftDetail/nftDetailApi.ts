@@ -3,6 +3,8 @@ import { FullOrder } from '@airswap/types';
 import { BaseProvider } from '@ethersproject/providers';
 import { createAsyncThunk } from '@reduxjs/toolkit';
 
+import { Address } from '../../../entities/Address/Address';
+import { transformToAddress } from '../../../entities/Address/AddressTransformers';
 import { NftTransactionLog } from '../../../entities/NftTransactionLog/NftTransactionLog';
 import { transformNftSalesToNftTransactionLog } from '../../../entities/NftTransactionLog/NftTransactionLogTransformers';
 import { AppThunkApiConfig } from '../../store';
@@ -63,4 +65,38 @@ AppThunkApiConfig
     provider,
     tokenId,
   );
+});
+
+interface GetErc1155OwnerAddressesParams {
+  provider: BaseProvider;
+  tokenId: string;
+}
+
+interface GetErc1155OwnerAddressesPayload {
+  owners: Address[];
+  pageKey: string;
+}
+
+export const getErc1155OwnerAddresses = createAsyncThunk<
+GetErc1155OwnerAddressesPayload,
+GetErc1155OwnerAddressesParams,
+AppThunkApiConfig
+>('nftDetail/getNftOwnerAddresses', async ({ provider, tokenId }, { getState }) => {
+  const { collectionToken } = getState().config;
+  const { owners, ownersPageKey } = getState().nftDetail;
+  const sales = await alchemy.nft.getOwnersForNft(collectionToken, tokenId, { pageSize: 20, pageKey: ownersPageKey });
+  const newOwners: string[] = sales.owners;
+  const ensAddresses = await Promise.all(newOwners.map(owner => provider.lookupAddress(owner)));
+  const combinedOwners = [
+    ...owners,
+    ...newOwners.map((address, index) => transformToAddress(
+      address,
+      ensAddresses[index],
+    )),
+  ];
+
+  return {
+    owners: combinedOwners,
+    pageKey: sales.pageKey,
+  };
 });

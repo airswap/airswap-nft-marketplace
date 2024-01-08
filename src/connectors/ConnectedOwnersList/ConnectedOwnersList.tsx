@@ -2,43 +2,47 @@ import {
   FC,
   ReactElement,
   useEffect,
-  useMemo,
   useRef,
   useState,
 } from 'react';
 
+import { BaseProvider } from '@ethersproject/providers';
+
 import Dialog from '../../compositions/Dialog/Dialog';
 import OwnersContainer from '../../containers/OwnersContainer/OwnersContainer';
-import { transformToAddress } from '../../entities/Address/AddressTransformers';
-import useEnsAddresses from '../../hooks/useEnsAddresses';
+import { useAppDispatch, useAppSelector } from '../../redux/hooks';
+import { getErc1155OwnerAddresses } from '../../redux/stores/nftDetail/nftDetailApi';
 
 interface ConnectedOwnersListProps {
+  library: BaseProvider;
   tokenId: string;
   onClose: () => void;
 }
 
-const ConnectedOwnersList: FC<ConnectedOwnersListProps> = ({ onClose, owners }): ReactElement => {
+const ConnectedOwnersList: FC<ConnectedOwnersListProps> = ({ library, tokenId, onClose }): ReactElement => {
+  const dispatch = useAppDispatch();
+
+  const { isLoadingOwners, owners, ownersPageKey } = useAppSelector((state) => state.nftDetail);
+
   const dialogRef = useRef<HTMLDialogElement>(null);
-  const [viewedAddresses, setViewedAddresses] = useState<string[]>([]);
-  const addresses = useEnsAddresses(viewedAddresses);
-  console.log(addresses);
+  const [pageKey, setPageKey] = useState(1);
+  const isEndOfList = ownersPageKey === null;
 
-  const allAddresses = useMemo(() => owners.map(owner => {
-    const ensAddress = addresses.find(address => address.address === owner);
-
-    return transformToAddress(owner, ensAddress?.ens, ensAddress?.isLoading);
-  }), [owners, addresses]);
-
-
-  const handleViewedAddressesChange = (values: string[]) => {
-    setViewedAddresses(values);
+  const handleScrolledToBottom = () => {
+    if (!isLoadingOwners && !isEndOfList) {
+      setPageKey(pageKey + 1);
+    }
   };
+
+  useEffect(() => {
+    dispatch(getErc1155OwnerAddresses({ tokenId, provider: library }));
+  }, [pageKey, tokenId]);
 
   useEffect(() => {
     if (dialogRef.current) {
       dialogRef.current.showModal();
     }
-  }, [dialogRef, addresses]);
+  }, [dialogRef]);
 
   return (
     <Dialog
@@ -46,8 +50,10 @@ const ConnectedOwnersList: FC<ConnectedOwnersListProps> = ({ onClose, owners }):
       onClose={onClose}
     >
       <OwnersContainer
-        owners={allAddresses}
-        onViewedAddressesChange={handleViewedAddressesChange}
+        isEndOfList={isEndOfList}
+        isLoading={isLoadingOwners}
+        owners={owners}
+        onScrolledToBottom={handleScrolledToBottom}
       />
     </Dialog>
   );

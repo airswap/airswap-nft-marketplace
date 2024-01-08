@@ -1,9 +1,10 @@
 .owners-list-item {
-    height: 2.5rem;
+    padding: .5rem;
     color: var(--c-white);
     cursor: pointer;
 
-    &--is-loading {
+    &--has-no-ens &__ens-address {
+        font-weight: var(--fw-400);
         opacity: .5;
     }
 
@@ -13,9 +14,10 @@
     }
 
     &__nav-link {
-        display: flex;
-        align-items: center;
-        justify-content: space-between;
         height: 100%;
+    }
+
+    &__ens-address {
+        font-weight: var(--fw-700);
     }
 }

@@ -43,15 +43,16 @@ const Dialog: ForwardRefExoticComponent<DialogProps> = forwardRef(({
       className={`dialog ${className}`}
     >
       <div className="dialog__content" ref={contentRef}>
+        <IconButton
+          hideLabel
+          icon="close"
+          text="close"
+          onClick={onClose}
+          className="dialog__close-button"
+        />
+
         {children}
       </div>
-      <IconButton
-        hideLabel
-        icon="close"
-        text="close"
-        onClick={onClose}
-        className="dialog__close-button"
-      />
     </dialog>
   );
 });

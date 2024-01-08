@@ -2,9 +2,9 @@
 
 .owners-container {
     display: flex;
+    align-items: center;
     flex-grow: 1;
     padding: 1rem;
-    background: var(--c-dark);
 
     &__list {
         @extend %scrollbar;
@@ -13,5 +13,25 @@
         height: 100%;
         padding-right: 1rem;
         overflow-y: auto;
+    }
+
+    &__loading-spinner,
+    &__end-of-list {
+        margin: 0 auto;
+        height: 2.5rem;
+    }
+
+    &__end-of-list {
+        display: flex;
+        align-items: center;
+        justify-content: center;
+    }
+
+    &__airswap-icon {
+        margin: 0 auto;
+        width: 1.5rem;
+        height: 1.5rem;
+        color: var(--c-white);
+        opacity: .5;
     }
 }

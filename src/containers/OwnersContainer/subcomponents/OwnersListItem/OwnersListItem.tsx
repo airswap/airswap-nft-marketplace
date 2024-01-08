@@ -15,7 +15,7 @@ interface OwnerListItemProps {
 
 const OwnersListItem: FC<OwnerListItemProps> = ({ owner, className = '' }): ReactElement => {
   const listItemClassName = classNames('owners-list-item', {
-    'owners-list-item--is-loading': owner.isLoading,
+    'owners-list-item--has-no-ens': !owner.ens,
   }, className);
 
   return (
@@ -24,8 +24,8 @@ const OwnersListItem: FC<OwnerListItemProps> = ({ owner, className = '' }): Reac
         to={routes.profile(owner.address)}
         className="owners-list-item__nav-link"
       >
+        <div className="owners-list-item__ens-address">{owner.ens || 'Unnamed'}</div>
         <div className="owners-list-item__address">{owner.address}</div>
-        <div className="owners-list-item__ens-address">{owner.ens}</div>
       </NavLink>
     </li>
   );

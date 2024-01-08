@@ -204,6 +204,7 @@ const ConnectedNftDetailWidget: FC<ConnectedNftDetailWidgetProps> = ({
 
       {showOwnersModal && (
         <ConnectedOwnersList
+          library={library}
           tokenId={collectionTokenInfo.id}
           onClose={toggleShowOwnersModal}
         />

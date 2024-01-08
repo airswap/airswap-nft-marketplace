@@ -3,55 +3,54 @@ import {
   ReactElement,
   useEffect,
   useRef,
-  useState,
 } from 'react';
 
-import { useDebounce } from 'react-use';
-
+import Icon from '../../components/Icon/Icon';
+import LoadingSpinner from '../../components/LoadingSpinner/LoadingSpinner';
 import { Address } from '../../entities/Address/Address';
-import { getElementVisibleChildrenIndices } from '../../helpers/tools';
 import OwnersListItem from './subcomponents/OwnersListItem/OwnersListItem';
 
 import './OwnersContainer.scss';
 
 interface OwnersContainerProps {
+  isEndOfList: boolean;
+  isLoading: boolean;
   owners: Address[];
-  onViewedAddressesChange: (viewedAddresses: string[]) => void;
+  onScrolledToBottom: () => void;
   className?: string;
 }
 
-const OwnersContainer: FC<OwnersContainerProps> = ({ owners, onViewedAddressesChange, className = '' }): ReactElement => {
+const OwnersContainer: FC<OwnersContainerProps> = ({
+  isEndOfList,
+  isLoading,
+  owners,
+  onScrolledToBottom,
+  className = '',
+}): ReactElement => {
   const listRef = useRef<HTMLUListElement>(null);
 
-  const [viewedAddresses, setViewedAddresses] = useState<string[]>([]);
-  const [debouncedViewedAddresses, setDebouncedViewedAddresses] = useState<string[]>([]);
-
-  const getViewedAddresses = () => {
-    if (!listRef.current) {
-      return;
-    }
-
-    const { start, end } = getElementVisibleChildrenIndices(listRef.current);
-    const ownerAddresses = owners.map(owner => owner.address);
-
-    setViewedAddresses(ownerAddresses.slice(start, end));
-  };
-
   const handleListScroll = () => {
-    getViewedAddresses();
+    if (listRef.current && !isEndOfList) {
+      const { scrollTop, clientHeight, scrollHeight } = listRef.current;
+      if (scrollTop + clientHeight === scrollHeight) {
+        onScrolledToBottom();
+      }
+    }
   };
 
   useEffect(() => {
-    getViewedAddresses();
-  }, []);
+    if (isLoading && listRef.current) {
+      listRef.current.scrollTo(0, listRef.current.scrollHeight);
+    }
+  }, [isLoading]);
 
-  useDebounce((): void => {
-    setDebouncedViewedAddresses(viewedAddresses);
-  }, 300, [viewedAddresses]);
-
-  useEffect(() => {
-    onViewedAddressesChange(debouncedViewedAddresses);
-  }, [debouncedViewedAddresses]);
+  if (isLoading && !owners.length) {
+    return (
+      <div className={`owners-container ${className}`}>
+        <LoadingSpinner />
+      </div>
+    );
+  }
 
   return (
     <div className={`owners-container ${className}`}>
@@ -61,6 +60,15 @@ const OwnersContainer: FC<OwnersContainerProps> = ({ owners, onViewedAddressesCh
         className="owners-container__list"
       >
         {owners.map(owner => <OwnersListItem key={owner.address} owner={owner} />)}
+        <li>
+          {isLoading ? (
+            <LoadingSpinner className="owners-container__loading-spinner" />
+          ) : (
+            <div className="owners-container__end-of-list">
+              {isEndOfList && <Icon name="airswap" className="owners-container__airswap-icon" />}
+            </div>
+          )}
+        </li>
       </ul>
     </div>
   );
