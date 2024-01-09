@@ -5,8 +5,8 @@ import { createAsyncThunk } from '@reduxjs/toolkit';
 
 import { NftTransactionLog } from '../../../entities/NftTransactionLog/NftTransactionLog';
 import { transformNftSalesToNftTransactionLog } from '../../../entities/NftTransactionLog/NftTransactionLogTransformers';
+import { getOrdersFromIndexers } from '../../../helpers/indexers';
 import { AppThunkApiConfig } from '../../store';
-import { getOrdersFromIndexers } from '../indexer/indexerHelpers';
 import { addGetOrderFailedToast } from '../toasts/toastsActions';
 import { getErc721Logs } from './nftDetailHelpers';
 import { setTokenId } from './nftDetailSlice';

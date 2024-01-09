@@ -4,9 +4,9 @@ import { ethers } from 'ethers';
 
 import { OrderFilter } from '../../../entities/OrderFilter/OrderFilter';
 import { TokenIdsWithBalance } from '../../../entities/TokenIdsWithBalance/TokenIdsWithBalance';
+import { getOrdersFromIndexers } from '../../../helpers/indexers';
 import { AppThunkApiConfig } from '../../store';
 import { getOwnedTokenIdsOfWallet } from '../balances/balancesHelpers';
-import { getOrdersFromIndexers } from '../indexer/indexerHelpers';
 
 export const getProfileOrders = createAsyncThunk<
 FullOrder[],

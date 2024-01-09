@@ -1,8 +1,8 @@
 import { FullOrder } from '@airswap/types';
 import { createAsyncThunk } from '@reduxjs/toolkit';
 
+import { getOrdersFromIndexers } from '../../../helpers/indexers';
 import { AppThunkApiConfig } from '../../store';
-import { getOrdersFromIndexers } from '../indexer/indexerHelpers';
 import { addGetOrderFailedToast } from '../toasts/toastsActions';
 import { setOffset } from './collectionSlice';
 

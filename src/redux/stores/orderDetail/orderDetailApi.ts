@@ -2,8 +2,8 @@ import { FullOrder } from '@airswap/types';
 import { createAsyncThunk } from '@reduxjs/toolkit';
 
 import { OrderFilter } from '../../../entities/OrderFilter/OrderFilter';
+import { getOrdersFromIndexers } from '../../../helpers/indexers';
 import { AppThunkApiConfig } from '../../store';
-import { getOrdersFromIndexers } from '../indexer/indexerHelpers';
 import { addGetOrderFailedToast } from '../toasts/toastsActions';
 
 interface GetNftOrderByOrderNonceParams extends Partial<OrderFilter> {
