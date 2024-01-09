@@ -9,6 +9,7 @@ import NftCardSkeleton from '../../components/NftCardSkeleton/NftCardSkeleton';
 import EmptyState from '../../compositions/EmptyState/EmptyState';
 import {
   getFullOrderExpiryDate,
+  getFullOrderKey,
   getFullOrderReadableSenderAmountPlusTotalFees,
 } from '../../entities/FullOrder/FullOrderHelpers';
 import { routes } from '../../routes';
@@ -66,7 +67,7 @@ const OrdersContainer: FC<OrdersContainerProps> = ({
             if (!orderToken) {
               return (
                 <NftCardSkeleton
-                  key={order.nonce}
+                  key={getFullOrderKey(order)}
                   isHighlighted={order.nonce === highlightOrderNonce}
                   price={price.toString()}
                   symbol={currencyTokenInfo.symbol}
@@ -78,7 +79,7 @@ const OrdersContainer: FC<OrdersContainerProps> = ({
 
             return (
               <NftCard
-                key={order.nonce}
+                key={getFullOrderKey(order)}
                 isHighlighted={isHighlighted}
                 expiry={showExpiryDate ? getFullOrderExpiryDate(order) : undefined}
                 imageURI={orderToken.image}
