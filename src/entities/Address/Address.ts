@@ -1,5 +1,4 @@
 export interface Address {
-  isLoading: boolean;
   address: string;
   ens?: string;
 }

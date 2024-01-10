@@ -3,6 +3,7 @@ import { createAsyncThunk } from '@reduxjs/toolkit';
 
 import { Address, EnsAddressesMap } from '../../../entities/Address/Address';
 import { transformAddressesToEnsAddressesMap, transformToAddress } from '../../../entities/Address/AddressTransformers';
+import { getEnsNames } from '../../../helpers/ens';
 import { AppThunkApiConfig } from '../../store';
 import { setEnsAddresses } from '../metadata/metadataSlice';
 
@@ -16,13 +17,12 @@ interface GetErc1155OwnerAddressesPayload {
   pageKey: string;
 }
 
-const getEnsAddress = async (provider: BaseProvider, address: string, ensAddresses: EnsAddressesMap) => {
-  if (address in ensAddresses) {
-    return ensAddresses[address];
+const getEnsNamesForAddresses = async (provider: BaseProvider, addresses: string[], ensAddresses: EnsAddressesMap): Promise<(string | null)[]> => {
+  if (addresses.some(address => !(address in ensAddresses))) {
+    return getEnsNames(addresses, provider);
   }
 
-  // Note: lookupAddress only seems to work on mainnet.
-  return provider.lookupAddress(address);
+  return addresses.map(address => ensAddresses[address]);
 };
 
 export const getErc1155OwnerAddresses = createAsyncThunk<
@@ -37,7 +37,8 @@ AppThunkApiConfig
 
   const newOwners: string[] = sales.owners;
 
-  const responses = await Promise.all(newOwners.map(owner => getEnsAddress(provider, owner, ensAddresses)));
+  const responses = await getEnsNamesForAddresses(provider, newOwners, ensAddresses);
+
   const combinedOwners = [
     ...owners,
     ...newOwners.map((address, index) => transformToAddress(

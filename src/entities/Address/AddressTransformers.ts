@@ -3,9 +3,7 @@ import { Address, EnsAddressesMap } from './Address';
 export const transformToAddress = (
   address: string,
   ensAddress: string | null = null,
-  isLoading = false,
-) => ({
-  isLoading,
+): Address => ({
   address,
   ...(ensAddress && { ens: ensAddress }),
 });
