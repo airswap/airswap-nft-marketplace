@@ -17,11 +17,13 @@ interface NftDetailWidgetProps {
 const NftDetailWidget: FC<NftDetailWidgetProps> = ({ tokenId, className = '' }) => {
   const { chainId, collectionToken } = useAppSelector(state => state.config);
   const { isInitialized } = useAppSelector(state => state.indexer);
+  const { isLoadingBalances, tokenIdsWithBalance } = useAppSelector(state => state.balances);
   const { currencyTokenInfo, isLoading: isMetadataLoading } = useAppSelector(state => state.metadata);
   const library = useDefaultProvider(chainId);
 
   const [collectionTokenInfo, isLoadingCollectionTokenInfo, error] = useCollectionToken(collectionToken, tokenId);
-  const isLoading = isMetadataLoading || isLoadingCollectionTokenInfo;
+  const isLoading = isMetadataLoading || isLoadingCollectionTokenInfo || isLoadingBalances;
+  const accountIsOwner = !!tokenIdsWithBalance[tokenId];
 
   useEffect(() => {
     window.scrollTo(0, 0);
@@ -36,6 +38,7 @@ const NftDetailWidget: FC<NftDetailWidgetProps> = ({ tokenId, className = '' }) 
   ) {
     return (
       <ConnectedNftDetailWidget
+        accountIsOwner={accountIsOwner}
         collectionTokenInfo={collectionTokenInfo}
         currencyTokenInfo={currencyTokenInfo}
         library={library}

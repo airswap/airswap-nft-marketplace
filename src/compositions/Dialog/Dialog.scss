@@ -1,0 +1,32 @@
+.dialog {
+    margin: 1rem auto;
+    width: 100%;
+    height: 100vh;
+    height: 100svh;
+    padding: 0;
+    max-width: 40rem;
+    overflow: hidden;
+
+    &::backdrop {
+        background-color: rgba(0, 0, 0, .5);
+        cursor: pointer;
+    }
+
+    &__content {
+        display: flex;
+        position: relative;
+        padding-top: 2rem;
+        max-height: 100%;
+        min-height: 100%;
+        overflow: hidden;
+        background: var(--c-dark);
+    }
+
+    &__close-button {
+        position: absolute;
+        top: 1rem;
+        right: 1rem;
+        width: 1.5rem;
+        color: var(--c-white);
+    }
+}

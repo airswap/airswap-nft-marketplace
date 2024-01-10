@@ -2,9 +2,10 @@ import { CollectionTokenInfo } from '@airswap/types';
 import { createAsyncThunk } from '@reduxjs/toolkit';
 import { ethers } from 'ethers';
 
+import { EnsAddressesMap } from '../../../entities/Address/Address';
 import { AppDispatch, RootState } from '../../store';
 import { getProtocolFee } from './metadataApi';
-import { setCollectionTokens } from './metadataSlice';
+import { setCollectionTokens, setEnsAddresses } from './metadataSlice';
 
 export const fetchProtocolFee = createAsyncThunk<
 number,
@@ -30,4 +31,13 @@ export const addCollectionTokenInfo = (tokenInfos: CollectionTokenInfo[]) => asy
   }), collectionTokens);
 
   dispatch(setCollectionTokens(newCollectionTokens));
+};
+
+export const addEnsAddresses = (newEnsAddresses: EnsAddressesMap) => async (dispatch: AppDispatch, getState: () => RootState): Promise<void> => {
+  const { ensAddresses } = getState().metadata;
+
+  dispatch(setEnsAddresses({
+    ...ensAddresses,
+    ...newEnsAddresses,
+  }));
 };

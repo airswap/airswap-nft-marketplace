@@ -24,7 +24,7 @@ AppThunkApiConfig
     const orders = await getOrdersFromIndexers(
       {
         signerToken: config.collectionToken,
-        signerId: tokenId.toString(),
+        signerId: tokenId,
         offset: 0,
         limit: 999,
       },
@@ -52,7 +52,7 @@ AppThunkApiConfig
   const { collectionToken, collectionTokenKind } = getState().config;
 
   if (collectionTokenKind === TokenKinds.ERC1155) {
-    const sales = await alchemy.nft.getNftSales({ contractAddress: collectionToken, tokenId: tokenId.toString() });
+    const sales = await alchemy.nft.getNftSales({ contractAddress: collectionToken, tokenId: tokenId.toString(), limit: 100 });
     const { nftSales } = sales;
 
     return nftSales.map(transformNftSalesToNftTransactionLog);

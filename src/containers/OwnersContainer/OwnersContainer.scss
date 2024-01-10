@@ -1,0 +1,39 @@
+@import "src/styles";
+
+.owners-container {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    flex-grow: 1;
+    max-width: 100%;
+    padding: 1rem;
+
+    &__list {
+        @extend %scrollbar;
+
+        width: 100%;
+        height: 100%;
+        padding-right: 1rem;
+        overflow-y: auto;
+    }
+
+    &__loading-spinner,
+    &__end-of-list {
+        margin: 0 auto;
+        height: 2.5rem;
+    }
+
+    &__end-of-list {
+        display: flex;
+        align-items: center;
+        justify-content: center;
+    }
+
+    &__airswap-icon {
+        margin: 0 auto;
+        width: 1.5rem;
+        height: 1.5rem;
+        color: var(--c-white);
+        opacity: .5;
+    }
+}

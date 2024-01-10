@@ -1,25 +1,27 @@
-import { CollectionTokenInfo, TokenInfo } from '@airswap/types';
+import { TokenInfo } from '@airswap/types';
 import { createSlice, PayloadAction } from '@reduxjs/toolkit';
 
+import { EnsAddressesMap } from '../../../entities/Address/Address';
+import { CollectionTokenInfoMap } from '../../../entities/CollectionToken/CollectionToken';
 import { fetchProtocolFee } from './metadataActions';
 import { getCurrencyTokenInfo } from './metadataApi';
 import { getCollectionTokensLocalStorageKey } from './metdataHelpers';
 
 export interface MetadataState {
   isLoading: boolean;
+  currencyTokenInfo?: TokenInfo;
+  collectionTokens: CollectionTokenInfoMap;
+  ensAddresses: EnsAddressesMap
   projectFee: number;
   protocolFee: number;
-  currencyTokenInfo?: TokenInfo;
-  collectionTokens: {
-    [id: string]: CollectionTokenInfo;
-  }
 }
 
 const initialState: MetadataState = {
   isLoading: false,
+  collectionTokens: {},
+  ensAddresses: {},
   projectFee: 0,
   protocolFee: 7,
-  collectionTokens: {},
 };
 
 const metadataSlice = createSlice({
@@ -30,7 +32,7 @@ const metadataSlice = createSlice({
       ...state,
       isLoading: action.payload,
     }),
-    setCollectionTokens: (state, action: PayloadAction<{ [id: number]: CollectionTokenInfo }>) => {
+    setCollectionTokens: (state, action: PayloadAction<CollectionTokenInfoMap>) => {
       const values = Object.values(action.payload);
 
       if (values.length) {
@@ -42,6 +44,10 @@ const metadataSlice = createSlice({
         collectionTokens: action.payload,
       };
     },
+    setEnsAddresses: (state, action: PayloadAction<EnsAddressesMap>) => ({
+      ...state,
+      ensAddresses: action.payload,
+    }),
   },
   extraReducers: builder => {
     builder.addCase(getCurrencyTokenInfo.pending, (state) => ({
@@ -73,6 +79,7 @@ const metadataSlice = createSlice({
 export const {
   setIsLoading,
   setCollectionTokens,
+  setEnsAddresses,
 } = metadataSlice.actions;
 
 export default metadataSlice.reducer;

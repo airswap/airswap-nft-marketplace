@@ -1,0 +1,31 @@
+@import "src/styles";
+
+.owners-list-item {
+    padding: .5rem;
+    color: var(--c-white);
+    cursor: pointer;
+
+    &--has-no-ens &__ens-address {
+        font-weight: var(--fw-400);
+        opacity: .5;
+    }
+
+    &:hover,
+    &:focus {
+        background-color: var(--c-dark-border);
+    }
+
+    &__nav-link {
+        height: 100%;
+    }
+
+    &__address {
+        @extend %text-ellipsis;
+    }
+
+    &__ens-address {
+        @extend %text-ellipsis;
+
+        font-weight: var(--fw-700);
+    }
+}

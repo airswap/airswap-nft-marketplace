@@ -152,7 +152,7 @@ const BuyNftWidget: FC<ConnectedBuyNftWidgetProps> = ({
   return (
     <div className={`buy-nft-widget ${className}`}>
       <OrderWidgetHeader
-        nftId={collectionTokenInfo.id.toString()}
+        nftId={collectionTokenInfo.id}
         title={title}
         className="buy-nft-widget__header"
       />

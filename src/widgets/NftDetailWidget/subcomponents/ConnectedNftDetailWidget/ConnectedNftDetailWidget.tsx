@@ -2,8 +2,11 @@ import React, { FC, useEffect } from 'react';
 
 import { CollectionTokenInfo, TokenInfo } from '@airswap/types';
 import { BaseProvider } from '@ethersproject/providers';
+import { useToggle } from 'react-use';
 
 import Accordion from '../../../../components/Accordion/Accordion';
+import ConnectedOwnersList from '../../../../connectors/ConnectedOwnersList/ConnectedOwnersList';
+import { isFullOrderExpired } from '../../../../entities/FullOrder/FullOrderHelpers';
 import useAddressOrEnsName from '../../../../hooks/useAddressOrEnsName';
 import useNftTokenOwners from '../../../../hooks/useNftTokenOwners';
 import { useAppDispatch, useAppSelector } from '../../../../redux/hooks';
@@ -20,6 +23,7 @@ import NftDetailProceedButton from '../NftDetailProceedButton/NftDetailProceedBu
 import NftDetailSaleInfo from '../NftDetailSaleInfo/NftDetailSaleInfo';
 
 interface ConnectedNftDetailWidgetProps {
+  accountIsOwner: boolean;
   collectionTokenInfo: CollectionTokenInfo;
   currencyTokenInfo: TokenInfo;
   library: BaseProvider;
@@ -27,6 +31,7 @@ interface ConnectedNftDetailWidgetProps {
 }
 
 const ConnectedNftDetailWidget: FC<ConnectedNftDetailWidgetProps> = ({
+  accountIsOwner,
   collectionTokenInfo,
   currencyTokenInfo,
   library,
@@ -45,12 +50,16 @@ const ConnectedNftDetailWidget: FC<ConnectedNftDetailWidgetProps> = ({
     transactionLogs,
   } = useAppSelector(state => state.nftDetail);
 
-  const [owners, isOwnerLoading] = useNftTokenOwners(collectionTokenInfo);
+  const [showOwnersModal, toggleShowOwnersModal] = useToggle(false);
+
+  const [owner, ownersLength, isOwnerLoading] = useNftTokenOwners(collectionTokenInfo);
+
   const isLoading = isPriceLoading || isOwnerLoading;
-  const readableOwnerAddress = useAddressOrEnsName(owners?.length ? owners[0] : undefined, true);
-  const accountRoute = owners?.length ? routes.profile(owners[0]) : undefined;
+  const isExpired = order ? isFullOrderExpired(order) : false;
+  const readableOwnerAddress = useAddressOrEnsName(owner, true);
+  const accountRoute = owner ? routes.profile(owner) : undefined;
   const orderRoute = order ? routes.orderDetail(order.signer.wallet, order.nonce) : undefined;
-  const listRoute = (owners === account && !order) ? routes.listNft(collectionTokenInfo.id.toString()) : undefined;
+  const listRoute = (accountIsOwner && !order) ? routes.listNft(collectionTokenInfo.id) : undefined;
 
   useEffect(() => {
     dispatch(getNftOrderByTokenId(collectionTokenInfo.id));
@@ -67,8 +76,9 @@ const ConnectedNftDetailWidget: FC<ConnectedNftDetailWidgetProps> = ({
         <NftDetailMainInfo
           accountRoute={accountRoute}
           owner={readableOwnerAddress}
-          ownersLength={owners?.length}
+          ownersLength={ownersLength}
           title={collectionTokenInfo.name}
+          onOwnersButtonClick={toggleShowOwnersModal}
           className="nft-detail-widget__main-info"
         />
         <NftDetailPortrait
@@ -89,9 +99,10 @@ const ConnectedNftDetailWidget: FC<ConnectedNftDetailWidgetProps> = ({
           )}
           className="nft-detail-widget__description-accordion"
         />
-        {((orderRoute || listRoute) && owners && account && !isLoading) && (
+        {((orderRoute || listRoute) && ownersLength && account && !isLoading) && (
           <NftDetailProceedButton
-            accountIsOwner={owners.includes(account)}
+            accountIsOwner={accountIsOwner}
+            isExpired={isExpired}
             orderRoute={orderRoute}
             listRoute={listRoute}
           />
@@ -165,8 +176,9 @@ const ConnectedNftDetailWidget: FC<ConnectedNftDetailWidgetProps> = ({
           <NftDetailMainInfo
             accountRoute={accountRoute}
             owner={readableOwnerAddress}
-            ownersLength={owners?.length}
+            ownersLength={ownersLength}
             title={collectionTokenInfo.name}
+            onOwnersButtonClick={toggleShowOwnersModal}
             className="nft-detail-widget__main-info"
           />
           <div className="nft-detail-widget__meta-container">
@@ -179,15 +191,24 @@ const ConnectedNftDetailWidget: FC<ConnectedNftDetailWidgetProps> = ({
             tokenInfo={currencyTokenInfo}
             className="nft-detail-widget__price"
           />
-          {((orderRoute || listRoute) && owners && account && !isLoading) && (
+          {((orderRoute || listRoute) && ownersLength && account && !isLoading) && (
             <NftDetailProceedButton
-              accountIsOwner={owners.includes(account)}
+              accountIsOwner={accountIsOwner}
+              isExpired={isExpired}
               listRoute={listRoute}
               orderRoute={orderRoute}
             />
           )}
         </div>
       </NftDetailContentContainer>
+
+      {showOwnersModal && (
+        <ConnectedOwnersList
+          library={library}
+          tokenId={collectionTokenInfo.id}
+          onClose={toggleShowOwnersModal}
+        />
+      )}
     </div>
   );
 };

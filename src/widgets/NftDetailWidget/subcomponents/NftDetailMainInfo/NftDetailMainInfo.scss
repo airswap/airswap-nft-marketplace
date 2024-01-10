@@ -27,5 +27,12 @@
         width: fit-content;
     }
 
+    &__owners-button {
+        @extend %button-border-style;
+
+        margin-left: .25rem;
+        padding: 0;
+    }
+
     
 }

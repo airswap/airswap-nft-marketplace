@@ -28,7 +28,6 @@ export const getCollectionToken = async (library: ethers.providers.BaseProvider,
   let tokenInfo: CollectionTokenInfo;
 
   try {
-    // @ts-ignore
     tokenInfo = await getCollectionTokenInfo(library, address, tokenId);
   } catch (e: any) {
     console.error(new Error(`Unable to fetch data for ${address} with id ${tokenId}. ${e}`));
@@ -51,12 +50,12 @@ export const getCollectionTokenContractAbi = (kind: CollectionTokenInfo['kind'])
   return erc721AbiEnumerableContract.abi;
 };
 
-export const getCollectionTokenOwner = async (library: ethers.providers.BaseProvider, token: CollectionTokenInfo): Promise<string[] | undefined> => {
+export const getCollectionTokenOwners = async (library: ethers.providers.BaseProvider, token: CollectionTokenInfo): Promise<string[] | undefined> => {
   const contractAbi = getCollectionTokenContractAbi(token.kind);
   const contract = new ethers.Contract(token.address, contractAbi, library);
 
   if (token.kind === TokenKinds.ERC1155) {
-    const response = await alchemy.nft.getOwnersForNft(token.address, token.id);
+    const response = await alchemy.nft.getOwnersForNft(token.address, token.id, { pageSize: 101 });
 
     return response.owners;
   }
