@@ -1,7 +1,10 @@
 import { SuccessResponse } from '@airswap/libraries';
 import { FullOrder, IndexedOrder, OrderResponse } from '@airswap/types';
+import { BaseProvider } from '@ethersproject/providers';
 
 import { INDEXER_ORDER_RESPONSE_TIME_MS } from '../constants/indexer';
+import { getFullOrdersNonceUsed } from '../entities/FullOrder/FullOrderHelpers';
+import { transformToFullOrder } from '../entities/FullOrder/FullOrderTransformers';
 import { OrderFilter } from '../entities/OrderFilter/OrderFilter';
 import { getOrdersFromServer, getServers } from '../redux/stores/indexer/indexerHelpers';
 
@@ -17,7 +20,7 @@ export const getUndefinedAfterTimeout = (time: number): Promise<undefined> => ne
   setTimeout(() => resolve(undefined), time);
 });
 
-export const getOrdersFromIndexers = async (filter: OrderFilter, indexerUrls: string[]): Promise<FullOrder[]> => {
+export const getOrdersFromIndexers = async (filter: OrderFilter, indexerUrls: string[], provider?: BaseProvider): Promise<FullOrder[]> => {
   if (!indexerUrls.length) {
     console.error('[getOrdersFromIndexers] No indexer urls provided');
   }
@@ -45,5 +48,17 @@ export const getOrdersFromIndexers = async (filter: OrderFilter, indexerUrls: st
       ...orderResponse.orders,
     }), {});
 
-  return Object.values(indexedOrders).map(indexedOrder => indexedOrder.order);
+  const fullOrders = Object.values(indexedOrders).map(indexedOrder => indexedOrder.order);
+  if (provider) {
+    const noncesUsed = await getFullOrdersNonceUsed(fullOrders, provider);
+    console.log(noncesUsed);
+
+    const extendedFullOrders = fullOrders.map((fullOrder, index) => (
+      transformToFullOrder(fullOrder, noncesUsed[index])
+    ));
+
+    console.log(extendedFullOrders);
+  }
+
+  return fullOrders;
 };

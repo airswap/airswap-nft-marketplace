@@ -12,6 +12,7 @@ import { INDEXER_ORDERS_OFFSET } from '../../../../constants/indexer';
 import OrdersContainer from '../../../../containers/OrdersContainer/OrdersContainer';
 import { filterCollectionTokenBySearchValue } from '../../../../entities/CollectionToken/CollectionTokenHelpers';
 import useCollectionTokens from '../../../../hooks/useCollectionTokens';
+import useDefaultProvider from '../../../../hooks/useDefaultProvider';
 import useScrollToBottom from '../../../../hooks/useScrollToBottom';
 import { useAppDispatch, useAppSelector } from '../../../../redux/hooks';
 import { getCollectionOrders } from '../../../../redux/stores/collection/collectionApi';
@@ -26,6 +27,7 @@ interface ConnectedCollectionWidgetProps {
 
 const ConnectedCollectionWidget: FC<ConnectedCollectionWidgetProps> = ({ currencyTokenInfo, className = '' }) => {
   const dispatch = useAppDispatch();
+  const provider = useDefaultProvider();
 
   const scrolledToBottom = useScrollToBottom();
   const { collectionImage, collectionToken, collectionName } = useAppSelector((state) => state.config);
@@ -41,13 +43,14 @@ const ConnectedCollectionWidget: FC<ConnectedCollectionWidgetProps> = ({ currenc
   const [searchValue, setSearchValue] = useState<string>('');
 
   const getOrders = () => {
-    if (isLoading || isTotalOrdersReached) {
+    if (isLoading || isTotalOrdersReached || !provider) {
       return;
     }
 
     dispatch(getCollectionOrders({
       offset,
       limit: INDEXER_ORDERS_OFFSET,
+      provider,
     }));
   };
 
@@ -55,7 +58,7 @@ const ConnectedCollectionWidget: FC<ConnectedCollectionWidgetProps> = ({ currenc
     getOrders();
 
     return () => dispatch(reset());
-  }, []);
+  }, [provider]);
 
   useEffect(() => {
     if (scrolledToBottom) {

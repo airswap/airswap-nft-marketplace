@@ -1,11 +1,26 @@
-import { FullOrder as AirswapFullOrder } from '@airswap/types';
+import { FullOrder } from '@airswap/types';
 
 import { FullOrderState } from '../../types/FullOrderState';
-import { FullOrder } from './FullOrder';
-import { getFullOrderKey } from './FullOrderHelpers';
+import { ExtendedFullOrder } from './FullOrder';
+import { getFullOrderKey, isFullOrderExpired } from './FullOrderHelpers';
 
-export const transformToFullOrder = (fullOrder: AirswapFullOrder, state: FullOrderState): FullOrder => ({
+const getFullOrderState = (fullOrder: FullOrder, isTaken: boolean): FullOrderState => {
+  const isExpired = isFullOrderExpired(fullOrder);
+
+  if (isTaken) {
+    return FullOrderState.taken;
+  }
+
+  if (isExpired) {
+    return FullOrderState.expired;
+  }
+
+  return FullOrderState.open;
+};
+
+export const transformToFullOrder = (fullOrder: FullOrder, isTaken: boolean): ExtendedFullOrder => ({
   ...fullOrder,
   key: getFullOrderKey(fullOrder),
-  state,
+  state: getFullOrderState(fullOrder, isTaken),
 });
+

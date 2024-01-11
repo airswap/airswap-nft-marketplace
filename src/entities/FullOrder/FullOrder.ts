@@ -1,8 +1,8 @@
-import { FullOrder as AirswapFullOrder } from '@airswap/types';
+import { FullOrder } from '@airswap/types';
 
 import { FullOrderState } from '../../types/FullOrderState';
 
-export interface FullOrder extends AirswapFullOrder {
+export interface ExtendedFullOrder extends FullOrder {
   key: string;
   state: FullOrderState;
 }

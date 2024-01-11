@@ -1,4 +1,5 @@
 import { FullOrder } from '@airswap/types';
+import { BaseProvider } from '@ethersproject/providers';
 import { createAsyncThunk } from '@reduxjs/toolkit';
 
 import { getOrdersFromIndexers } from '../../../helpers/indexers';
@@ -6,11 +7,17 @@ import { AppThunkApiConfig } from '../../store';
 import { addGetOrderFailedToast } from '../toasts/toastsActions';
 import { setOffset } from './collectionSlice';
 
+interface GetCollectionOrdersParams {
+  limit: number;
+  offset: number;
+  provider: BaseProvider;
+}
+
 export const getCollectionOrders = createAsyncThunk<
 FullOrder[],
-{ limit: number; offset: number },
+GetCollectionOrdersParams,
 AppThunkApiConfig
->('collection/getCollectionOrders', async (filter, { dispatch, getState }) => {
+>('collection/getCollectionOrders', async ({ provider, ...filter }, { dispatch, getState }) => {
   const { config, indexer } = getState();
 
   const { collectionToken, currencyToken } = config;
@@ -22,11 +29,15 @@ AppThunkApiConfig
   dispatch(setOffset(filter.limit + filter.offset));
 
   try {
-    return await getOrdersFromIndexers({
-      ...filter,
-      signerToken: collectionToken,
-      senderToken: currencyToken,
-    }, indexer.urls);
+    return await getOrdersFromIndexers(
+      {
+        ...filter,
+        signerToken: collectionToken,
+        senderToken: currencyToken,
+      },
+      indexer.urls,
+      provider,
+    );
   } catch {
     dispatch(addGetOrderFailedToast());
 

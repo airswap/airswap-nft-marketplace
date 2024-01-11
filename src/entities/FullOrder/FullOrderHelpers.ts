@@ -1,4 +1,6 @@
+import { Swap } from '@airswap/libraries';
 import { FullOrder, TokenInfo } from '@airswap/types';
+import { BaseProvider } from '@ethersproject/providers';
 import { format } from '@greypixel_/nicenumbers';
 import { BigNumber } from 'bignumber.js';
 
@@ -31,3 +33,16 @@ export const getFullOrderReadableSenderAmount = (fullOrder: FullOrder, token: To
 export const getFullOrderExpiryDate = (fullOrder: FullOrder): Date => new Date(+fullOrder.expiry * 1000);
 
 export const isFullOrderExpired = (fullOrder: FullOrder): boolean => getFullOrderExpiryDate(fullOrder) < new Date();
+
+export const getFullOrderNonceUsed = (
+  order: FullOrder,
+  provider: BaseProvider,
+// TODO: use batch call
+): Promise<boolean> => Swap.getContract(provider, order.chainId).nonceUsed(
+  order.signer.wallet,
+  order.nonce,
+);
+
+export const getFullOrdersNonceUsed = (orders: FullOrder[], provider: BaseProvider): Promise<boolean[]> => Promise.all(
+  orders.map(order => getFullOrderNonceUsed(order, provider)),
+);
