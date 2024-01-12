@@ -32,16 +32,16 @@ const ListNftWidget: FC<ListNftWidgetProps> = ({ className = '' }) => {
   const chainIdIsCorrect = !!chainId && chainId === config.chainId;
 
   useEffect(() => {
-    if (isIndexerInitialized && !isLoadingUserOrders && account) {
+    if (isIndexerInitialized && !isLoadingUserOrders && account && library) {
       dispatch(getUserOrders({
-        // excludeNonces: transactions.map(transaction => transaction.order.nonce),
         signerToken: config.collectionToken,
         signerWallet: account,
         limit: 9999,
         offset: 0,
+        provider: library,
       }));
     }
-  }, [account, isIndexerInitialized]);
+  }, [account, isIndexerInitialized, library]);
 
   if (
     !isLoading

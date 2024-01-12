@@ -20,7 +20,7 @@ export const getUndefinedAfterTimeout = (time: number): Promise<undefined> => ne
   setTimeout(() => resolve(undefined), time);
 });
 
-export const getOrdersFromIndexers = async (filter: OrderFilter, indexerUrls: string[], provider?: BaseProvider): Promise<FullOrder[]> => {
+export const getOrdersFromIndexers = async (filter: OrderFilter, indexerUrls: string[], provider: BaseProvider): Promise<FullOrder[]> => {
   if (!indexerUrls.length) {
     console.error('[getOrdersFromIndexers] No indexer urls provided');
   }

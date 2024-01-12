@@ -78,6 +78,7 @@ const ConnectedProfileWidget: FC<ConnectedProfileWidgetProps> = ({
       signerWallet: profileAccount,
       offset: 0,
       limit: 9999,
+      provider: library,
     }));
 
     dispatch(getProfileTokens({ account: profileAccount, provider: library }));

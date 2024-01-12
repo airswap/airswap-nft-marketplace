@@ -1,4 +1,5 @@
 import { FullOrder } from '@airswap/types';
+import { BaseProvider } from '@ethersproject/providers';
 import { createAsyncThunk } from '@reduxjs/toolkit';
 import { ethers } from 'ethers';
 
@@ -8,14 +9,18 @@ import { getOrdersFromIndexers } from '../../../helpers/indexers';
 import { AppThunkApiConfig } from '../../store';
 import { getOwnedTokenIdsOfWallet } from '../balances/balancesHelpers';
 
+interface GetProfileOrdersParams extends OrderFilter {
+  provider: BaseProvider;
+}
+
 export const getProfileOrders = createAsyncThunk<
 FullOrder[],
-OrderFilter,
+GetProfileOrdersParams,
 AppThunkApiConfig
->('profile/getProfileOrders', async (filter, { getState }) => {
+>('profile/getProfileOrders', async ({ provider, ...filter }, { getState }) => {
   const { indexer } = getState();
 
-  return getOrdersFromIndexers(filter, indexer.urls);
+  return getOrdersFromIndexers(filter, indexer.urls, provider);
 });
 
 interface GetOwnedTokensOfAccountParams {

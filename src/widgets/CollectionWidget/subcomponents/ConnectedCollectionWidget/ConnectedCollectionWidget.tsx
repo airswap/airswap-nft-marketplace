@@ -6,13 +6,13 @@ import React, {
 } from 'react';
 
 import { TokenInfo } from '@airswap/types';
+import { BaseProvider } from '@ethersproject/providers';
 
 import SearchInput from '../../../../components/SearchInput/SearchInput';
 import { INDEXER_ORDERS_OFFSET } from '../../../../constants/indexer';
 import OrdersContainer from '../../../../containers/OrdersContainer/OrdersContainer';
 import { filterCollectionTokenBySearchValue } from '../../../../entities/CollectionToken/CollectionTokenHelpers';
 import useCollectionTokens from '../../../../hooks/useCollectionTokens';
-import useDefaultProvider from '../../../../hooks/useDefaultProvider';
 import useScrollToBottom from '../../../../hooks/useScrollToBottom';
 import { useAppDispatch, useAppSelector } from '../../../../redux/hooks';
 import { getCollectionOrders } from '../../../../redux/stores/collection/collectionApi';
@@ -22,12 +22,12 @@ import CollectionPortrait from '../CollectionPortrait/CollectionPortrait';
 
 interface ConnectedCollectionWidgetProps {
   currencyTokenInfo: TokenInfo;
+  provider: BaseProvider;
   className?: string;
 }
 
-const ConnectedCollectionWidget: FC<ConnectedCollectionWidgetProps> = ({ currencyTokenInfo, className = '' }) => {
+const ConnectedCollectionWidget: FC<ConnectedCollectionWidgetProps> = ({ currencyTokenInfo, provider, className = '' }) => {
   const dispatch = useAppDispatch();
-  const provider = useDefaultProvider();
 
   const scrolledToBottom = useScrollToBottom();
   const { collectionImage, collectionToken, collectionName } = useAppSelector((state) => state.config);
@@ -43,7 +43,7 @@ const ConnectedCollectionWidget: FC<ConnectedCollectionWidgetProps> = ({ currenc
   const [searchValue, setSearchValue] = useState<string>('');
 
   const getOrders = () => {
-    if (isLoading || isTotalOrdersReached || !provider) {
+    if (isLoading || isTotalOrdersReached) {
       return;
     }
 

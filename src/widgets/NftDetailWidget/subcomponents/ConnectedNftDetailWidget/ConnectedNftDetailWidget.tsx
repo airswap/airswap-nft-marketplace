@@ -62,13 +62,13 @@ const ConnectedNftDetailWidget: FC<ConnectedNftDetailWidgetProps> = ({
   const listRoute = (accountIsOwner && !order) ? routes.listNft(collectionTokenInfo.id) : undefined;
 
   useEffect(() => {
-    dispatch(getNftOrderByTokenId(collectionTokenInfo.id));
+    dispatch(getNftOrderByTokenId({ tokenId: collectionTokenInfo.id, provider: library }));
     dispatch(getNftTransactionReceipts({ provider: library, tokenId: collectionTokenInfo.id }));
 
     return () => {
       dispatch(reset());
     };
-  }, [collectionTokenInfo]);
+  }, [collectionTokenInfo, library]);
 
   return (
     <div className={`nft-detail-widget ${className}`}>
