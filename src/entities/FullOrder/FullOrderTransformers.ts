@@ -4,7 +4,7 @@ import { FullOrderState } from '../../types/FullOrderState';
 import { ExtendedFullOrder } from './FullOrder';
 import { getFullOrderKey, isFullOrderExpired } from './FullOrderHelpers';
 
-const getFullOrderState = (fullOrder: FullOrder, isTaken: boolean): FullOrderState => {
+const getFullOrderState = (fullOrder: FullOrder, isTaken: boolean, isValid: boolean): FullOrderState => {
   const isExpired = isFullOrderExpired(fullOrder);
 
   if (isTaken) {
@@ -15,12 +15,16 @@ const getFullOrderState = (fullOrder: FullOrder, isTaken: boolean): FullOrderSta
     return FullOrderState.expired;
   }
 
+  if (!isValid) {
+    return FullOrderState.invalid;
+  }
+
   return FullOrderState.open;
 };
 
-export const transformToFullOrder = (fullOrder: FullOrder, isTaken: boolean): ExtendedFullOrder => ({
+export const transformToFullOrder = (fullOrder: FullOrder, isTaken: boolean, isValid: boolean): ExtendedFullOrder => ({
   ...fullOrder,
   key: getFullOrderKey(fullOrder),
-  state: getFullOrderState(fullOrder, isTaken),
+  state: getFullOrderState(fullOrder, isTaken, isValid),
 });
 

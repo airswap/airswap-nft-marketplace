@@ -3,7 +3,7 @@ import { FullOrder, IndexedOrder, OrderResponse } from '@airswap/types';
 import { BaseProvider } from '@ethersproject/providers';
 
 import { INDEXER_ORDER_RESPONSE_TIME_MS } from '../constants/indexer';
-import { getFullOrdersNonceUsed } from '../entities/FullOrder/FullOrderHelpers';
+import { getFullOrdersIsValid, getFullOrdersNonceUsed } from '../entities/FullOrder/FullOrderHelpers';
 import { transformToFullOrder } from '../entities/FullOrder/FullOrderTransformers';
 import { OrderFilter } from '../entities/OrderFilter/OrderFilter';
 import { getOrdersFromServer, getServers } from '../redux/stores/indexer/indexerHelpers';
@@ -49,12 +49,13 @@ export const getOrdersFromIndexers = async (filter: OrderFilter, indexerUrls: st
     }), {});
 
   const fullOrders = Object.values(indexedOrders).map(indexedOrder => indexedOrder.order);
+
   if (provider) {
     const noncesUsed = await getFullOrdersNonceUsed(fullOrders, provider);
-    console.log(noncesUsed);
+    const validOrders = await getFullOrdersIsValid(fullOrders, provider);
 
     const extendedFullOrders = fullOrders.map((fullOrder, index) => (
-      transformToFullOrder(fullOrder, noncesUsed[index])
+      transformToFullOrder(fullOrder, noncesUsed[index], validOrders[index])
     ));
 
     console.log(extendedFullOrders);

@@ -45,7 +45,12 @@ const ConnectedProfileOrdersWidget: FC<ConnectedProfileOrdersWidgetProps> = ({
 
   const scrolledToBottom = useScrollToBottom();
 
-  const { chainId, collectionToken, collectionImage } = useAppSelector((state) => state.config);
+  const {
+    chainId,
+    collectionToken,
+    collectionImage,
+    currencyToken,
+  } = useAppSelector((state) => state.config);
   const { tokenIdsWithBalance: userTokenIdsWithBalance } = useAppSelector((state) => state.balances);
   const { avatarUrl } = useAppSelector((state) => state.user);
   const {
@@ -81,6 +86,7 @@ const ConnectedProfileOrdersWidget: FC<ConnectedProfileOrdersWidgetProps> = ({
     }
 
     dispatch(getProfileOrders({
+      senderToken: currencyToken,
       signerToken: collectionToken,
       signerWallet: profileAccount,
       offset,
