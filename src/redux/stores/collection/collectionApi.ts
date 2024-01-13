@@ -1,7 +1,7 @@
-import { FullOrder } from '@airswap/types';
 import { BaseProvider } from '@ethersproject/providers';
 import { createAsyncThunk } from '@reduxjs/toolkit';
 
+import { ExtendedFullOrder } from '../../../entities/FullOrder/FullOrder';
 import { getOrdersFromIndexers } from '../../../helpers/indexers';
 import { AppThunkApiConfig } from '../../store';
 import { addGetOrderFailedToast } from '../toasts/toastsActions';
@@ -14,7 +14,7 @@ interface GetCollectionOrdersParams {
 }
 
 export const getCollectionOrders = createAsyncThunk<
-FullOrder[],
+ExtendedFullOrder[],
 GetCollectionOrdersParams,
 AppThunkApiConfig
 >('collection/getCollectionOrders', async ({ provider, ...filter }, { dispatch, getState }) => {

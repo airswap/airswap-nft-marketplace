@@ -3,6 +3,11 @@
 .nft-card {
     @extend %nft-card;
 
+    &--is-disabled {
+        opacity: .6;
+        cursor: not-allowed;
+    }
+
     &--is-highlighted {
         @extend %nft-card--is-highlighted;
     }

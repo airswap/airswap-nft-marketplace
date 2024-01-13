@@ -1,7 +1,7 @@
-import { FullOrder } from '@airswap/types';
 import { createSlice, PayloadAction } from '@reduxjs/toolkit';
 
 import { INDEXER_ORDERS_OFFSET } from '../../../constants/indexer';
+import { ExtendedFullOrder } from '../../../entities/FullOrder/FullOrder';
 import { getProfileOrders } from './profileOrdersApi';
 
 export interface ProfileOrdersState {
@@ -9,7 +9,7 @@ export interface ProfileOrdersState {
   isLoading: boolean;
   isTotalOrdersReached: boolean;
   offset: number;
-  orders: FullOrder[];
+  orders: ExtendedFullOrder[];
 }
 
 const initialState: ProfileOrdersState = {
@@ -27,7 +27,7 @@ const profileSlice = createSlice({
     reset: (): ProfileOrdersState => ({
       ...initialState,
     }),
-    setOrders: (state, action: PayloadAction<FullOrder[]>): ProfileOrdersState => ({
+    setOrders: (state, action: PayloadAction<ExtendedFullOrder[]>): ProfileOrdersState => ({
       ...state,
       orders: action.payload,
     }),

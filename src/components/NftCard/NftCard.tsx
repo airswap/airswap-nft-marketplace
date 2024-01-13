@@ -6,6 +6,7 @@ import { NavLink, NavLinkProps } from 'react-router-dom';
 import './NftCard.scss';
 
 interface NftCardProps extends NavLinkProps {
+  isDisabled?: boolean;
   isHighlighted?: boolean;
   balance?: string;
   expiry?: Date;
@@ -18,6 +19,7 @@ interface NftCardProps extends NavLinkProps {
 }
 
 const NftCard = ({
+  isDisabled,
   isHighlighted,
   balance,
   expiry,
@@ -30,6 +32,7 @@ const NftCard = ({
   className = '',
 }: NftCardProps) => {
   const linkClassName = classNames('nft-card', {
+    'nft-card--is-disabled': isDisabled,
     'nft-card--is-highlighted': isHighlighted,
   }, className);
 

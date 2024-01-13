@@ -1,7 +1,7 @@
-import { FullOrder } from '@airswap/types';
 import { BaseProvider } from '@ethersproject/providers';
 import { createAsyncThunk } from '@reduxjs/toolkit';
 
+import { ExtendedFullOrder } from '../../../entities/FullOrder/FullOrder';
 import { OrderFilter } from '../../../entities/OrderFilter/OrderFilter';
 import { getOrdersFromIndexers } from '../../../helpers/indexers';
 import { AppThunkApiConfig } from '../../store';
@@ -13,7 +13,7 @@ interface GetProfileOrdersParams extends OrderFilter {
 }
 
 export const getProfileOrders = createAsyncThunk<
-FullOrder[],
+ExtendedFullOrder[],
 GetProfileOrdersParams,
 AppThunkApiConfig
 >('profileOrders/getProfileOrders', async ({ provider, ...filter }, { dispatch, getState }) => {
