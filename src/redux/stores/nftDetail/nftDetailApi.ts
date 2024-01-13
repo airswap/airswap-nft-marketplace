@@ -21,14 +21,13 @@ FullOrder | undefined,
 GetNftOrderByTokenIdParams,
 AppThunkApiConfig
 >('nftDetail/getNftOrderByTokenId', async ({ tokenId, provider }, { dispatch, getState }) => {
-  const { config, indexer } = getState();
+  const { indexer } = getState();
 
   dispatch(setTokenId(tokenId));
 
   try {
     const orders = await getOrdersFromIndexers(
       {
-        signerToken: config.collectionToken,
         signerId: tokenId,
         offset: 0,
         limit: 999,

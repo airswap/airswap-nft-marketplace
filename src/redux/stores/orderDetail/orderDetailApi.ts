@@ -18,13 +18,12 @@ FullOrder | undefined,
 GetNftOrderByOrderNonceParams,
 AppThunkApiConfig
 >('orderDetail/getNftOrderByNonce', async ({ orderNonce, signerWallet, provider }, { dispatch, getState }) => {
-  const { config, indexer } = getState();
+  const { indexer } = getState();
 
   try {
     const orders = await getOrdersFromIndexers(
       {
         signerWallet,
-        signerToken: config.collectionToken,
         offset: 0,
         limit: 999,
       },

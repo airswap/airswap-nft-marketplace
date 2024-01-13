@@ -8,6 +8,8 @@ import { getUndefinedAfterTimeout, isPromiseFulfilledResult, isSuccessResponse }
 
 export const getOrdersFromServer = async (server: Server, filter: OrderFilter): Promise<OrderResponse<FullOrder> | undefined> => {
   const defaultFilter: Partial<OrderFilter> = {
+    signerToken: process.env.REACT_APP_COLLECTION_TOKEN,
+    senderToken: process.env.REACT_APP_CURRENCY_TOKEN,
     sortField: SortField.NONCE,
     sortOrder: SortOrder.DESC,
   };
