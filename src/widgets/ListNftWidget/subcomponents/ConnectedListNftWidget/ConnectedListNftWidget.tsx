@@ -5,6 +5,7 @@ import { Web3Provider } from '@ethersproject/providers';
 
 import { expiryAmounts } from '../../../../constants/expiry';
 import { isCollectionTokenInfo } from '../../../../entities/CollectionToken/CollectionTokenHelpers';
+import { ExtendedFullOrder } from '../../../../entities/FullOrder/FullOrder';
 import { SubmittedTransactionStatus } from '../../../../entities/SubmittedTransaction/SubmittedTransaction';
 import { AppErrorType, isAppError } from '../../../../errors/appError';
 import { toMaxAllowedDecimalsNumberString } from '../../../../helpers/input';
@@ -46,7 +47,7 @@ interface ListNftWidgetProps {
   currencyTokenInfo: TokenInfo;
   defaultSelectedTokenId?: string;
   library: Web3Provider
-  userOrders: FullOrder[];
+  userOrders: ExtendedFullOrder[];
   userTokens: string[];
   className?: string;
 }

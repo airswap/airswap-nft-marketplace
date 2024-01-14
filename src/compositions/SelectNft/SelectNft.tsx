@@ -8,12 +8,13 @@ import {
   useState,
 } from 'react';
 
-import { CollectionTokenInfo, FullOrder } from '@airswap/types';
-// eslint-disable-next-line import/no-extraneous-dependencies
+import { CollectionTokenInfo } from '@airswap/types';
 import { useDebounce } from 'react-use';
 
 import SearchInput from '../../components/SearchInput/SearchInput';
+import { ExtendedFullOrder } from '../../entities/FullOrder/FullOrder';
 import { TokenIdsWithBalance } from '../../entities/TokenIdsWithBalance/TokenIdsWithBalance';
+import { FullOrderState } from '../../types/FullOrderState';
 import EmptyState from '../EmptyState/EmptyState';
 import { getSelectNftOptions } from '../SelectNftButton/helpers/getSelectNftOptions';
 import { filterTokenBySearchValue } from './helpers/filterTokenBySearchValue';
@@ -27,7 +28,7 @@ interface SelectNftProps {
   tokenInfo: CollectionTokenInfo[];
   tokens: string[];
   loadingTokens?: string[];
-  orders: FullOrder[];
+  orders: ExtendedFullOrder[];
   onClickNft: (id: string) => void;
   onScroll: (tokens: string[]) => void;
   className?: string;
@@ -111,7 +112,7 @@ const SelectNft: FC<SelectNftProps> = ({
         {options.map(option => {
           const nft = tokenInfo.find(token => token.id === option.value);
           const isLoading = !nft && loadingTokens.some(token => token === option.value);
-          const isListed = orders.some(order => order.signer.id === option.value);
+          const isListed = orders.some(order => order.state === FullOrderState.open && order.signer.id === option.value);
           const balance = tokenIdsWithBalance[option.value];
 
           return (
