@@ -10,6 +10,7 @@ export const transformTransactionReceiptToNftTransactionLog = (
 ): NftTransactionLog => ({
   recipient,
   timestamp,
+  key: `${transactionReceipt.transactionHash}:${transactionReceipt.from}:${transactionReceipt.to}`,
   blockNumber: transactionReceipt.blockNumber,
   to: transactionReceipt.to,
   from: transactionReceipt.from,
@@ -18,6 +19,7 @@ export const transformTransactionReceiptToNftTransactionLog = (
 });
 
 export const transformNftSalesToNftTransactionLog = (nftSale: NftSale): NftTransactionLog => ({
+  key: `${nftSale.transactionHash}:${nftSale.sellerAddress}:${nftSale.buyerAddress}`,
   recipient: nftSale.buyerAddress,
   blockNumber: nftSale.blockNumber,
   to: nftSale.contractAddress,

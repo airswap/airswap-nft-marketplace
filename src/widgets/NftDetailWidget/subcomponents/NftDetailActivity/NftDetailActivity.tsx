@@ -33,8 +33,8 @@ const NftDetailActivity: FC<NftDetailActivityProps> = ({
         {logs.length === 0 && 'No activity found'}
         {logs.map(log => (
           <NftDetailActivityItem
+            key={log.key}
             chainId={chainId}
-            key={log.transactionHash}
             log={log}
           />
         ))}
