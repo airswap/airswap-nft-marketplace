@@ -36,6 +36,9 @@ const NftCard = ({
     'nft-card--is-highlighted': isHighlighted,
   }, className);
 
+  const isExpired = expiry && expiry < new Date();
+  const expiryTranslation = isExpired ? 'Sale ended' : 'Sale ends';
+
   return (
     <NavLink to={to} className={linkClassName}>
       <img className="nft-card__img" src={imageURI} alt={name} />
@@ -51,7 +54,7 @@ const NftCard = ({
           {(price && symbol) ? `${price} ${symbol}` : <>&nbsp;</>}
         </h4>
         {expiry && (
-          <h5 className="nft-card__expiry">{`Sale ends ${expiry.toLocaleString()}`}</h5>
+          <h5 className="nft-card__expiry">{`${expiryTranslation} ${expiry.toLocaleString()}`}</h5>
         )}
       </div>
     </NavLink>

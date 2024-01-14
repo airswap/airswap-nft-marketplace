@@ -40,7 +40,7 @@ export const isFullOrderExpired = (fullOrder: FullOrder): boolean => getFullOrde
 export const getFullOrderNonceUsed = (
   order: FullOrder,
   provider: BaseProvider,
-// TODO: use batch call
+// TODO: use batch call when available https://github.com/airswap/airswap-marketplace/issues/192
 ): Promise<boolean> => Swap.getContract(provider, order.chainId).nonceUsed(
   order.signer.wallet,
   order.nonce,
