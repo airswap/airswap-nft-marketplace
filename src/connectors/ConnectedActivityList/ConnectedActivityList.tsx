@@ -12,10 +12,11 @@ import { getNftTransactionReceipts } from '../../redux/stores/nftActivity/nftAct
 import { reset } from '../../redux/stores/nftActivity/nftActivitySlice';
 
 interface ConnectedActivityListProps {
+  isEnabled: boolean;
   tokenId: string;
 }
 
-const ConnectedActivityList: FC<ConnectedActivityListProps> = ({ tokenId }): ReactElement => {
+const ConnectedActivityList: FC<ConnectedActivityListProps> = ({ isEnabled, tokenId }): ReactElement => {
   const dispatch = useAppDispatch();
   const library = useDefaultLibrary();
   const { chainId } = useAppSelector(state => state.config);
@@ -31,10 +32,15 @@ const ConnectedActivityList: FC<ConnectedActivityListProps> = ({ tokenId }): Rea
   };
 
   useEffect(() => {
-    if (library) {
+    if (library && isEnabled) {
       dispatch(getNftTransactionReceipts({ provider: library, tokenId }));
     }
-  }, [library, tokenId, page]);
+  }, [
+    library,
+    tokenId,
+    page,
+    isEnabled,
+  ]);
 
   useEffect(() => {
     dispatch(reset());

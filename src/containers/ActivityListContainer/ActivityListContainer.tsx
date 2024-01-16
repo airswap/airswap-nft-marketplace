@@ -1,4 +1,4 @@
-import { FC, useRef } from 'react';
+import { FC, ReactElement, useRef } from 'react';
 
 import Icon from '../../components/Icon/Icon';
 import LoadingSpinner from '../../components/LoadingSpinner/LoadingSpinner';
@@ -23,12 +23,12 @@ const ActivityListContainer: FC<NftDetailActivityProps> = ({
   logs,
   onScrolledToBottom,
   className = '',
-}) => {
-  const elementRef = useRef<HTMLDivElement>(null);
+}): ReactElement => {
+  const scrollRef = useRef<HTMLDivElement>(null);
 
   const handleElementScroll = () => {
-    if (elementRef.current && !isEndOfList) {
-      const { scrollTop, clientHeight, scrollHeight } = elementRef.current;
+    if (scrollRef.current && !isEndOfList) {
+      const { scrollTop, clientHeight, scrollHeight } = scrollRef.current;
       if (scrollTop + clientHeight === scrollHeight) {
         onScrolledToBottom();
       }
@@ -52,12 +52,12 @@ const ActivityListContainer: FC<NftDetailActivityProps> = ({
   }
 
   return (
-    <div
-      ref={elementRef}
-      onScroll={handleElementScroll}
-      className={`activity-list-container ${className}`}
-    >
-      <div className="activity-list-container__scroller">
+    <div className={`activity-list-container ${className}`}>
+      <div
+        ref={scrollRef}
+        onScroll={handleElementScroll}
+        className="activity-list-container__scroller"
+      >
         <ul className="activity-list-container__items-list">
           {logs.map(log => (
             <NftDetailActivityItem

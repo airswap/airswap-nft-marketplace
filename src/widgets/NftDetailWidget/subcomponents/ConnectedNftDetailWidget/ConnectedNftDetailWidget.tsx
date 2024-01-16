@@ -1,4 +1,9 @@
-import React, { FC, useEffect } from 'react';
+import React, {
+  FC,
+  useEffect,
+  useRef,
+  useState,
+} from 'react';
 
 import { CollectionTokenInfo, TokenInfo } from '@airswap/types';
 import { BaseProvider } from '@ethersproject/providers';
@@ -38,6 +43,7 @@ const ConnectedNftDetailWidget: FC<ConnectedNftDetailWidgetProps> = ({
   className = '',
 }) => {
   const dispatch = useAppDispatch();
+  const activityListRef = useRef<HTMLDivElement>(null);
 
   const { chainId, collectionToken, collectionImage } = useAppSelector((state) => state.config);
   const { account } = useAppSelector((state) => state.web3);
@@ -46,6 +52,7 @@ const ConnectedNftDetailWidget: FC<ConnectedNftDetailWidgetProps> = ({
   const { isLoading: isPriceLoading, order } = useAppSelector(state => state.nftDetail);
 
   const [showOwnersModal, toggleShowOwnersModal] = useToggle(false);
+  const [showActivityList, setShowActivityList] = useState(false);
 
   const [owner, ownersLength, isOwnerLoading] = useNftTokenOwners(collectionTokenInfo);
 
@@ -68,6 +75,26 @@ const ConnectedNftDetailWidget: FC<ConnectedNftDetailWidgetProps> = ({
       dispatch(reset());
     };
   }, [collectionTokenInfo, library]);
+
+  useEffect(() => {
+    const observer = new IntersectionObserver((entries) => {
+      entries.forEach((entry) => {
+        if (entry.isIntersecting) {
+          setShowActivityList(true);
+        }
+      });
+    });
+
+    if (activityListRef.current) {
+      observer.observe(activityListRef.current);
+    }
+
+    return () => {
+      if (activityListRef.current) {
+        observer.unobserve(activityListRef.current);
+      }
+    };
+  }, [activityListRef]);
 
   return (
     <div className={wrapperClassName}>
@@ -125,23 +152,31 @@ const ConnectedNftDetailWidget: FC<ConnectedNftDetailWidgetProps> = ({
       </Details>
 
       <Details
+        summary="Item activity"
+        className="nft-detail-widget__activity"
+      >
+        <div
+          ref={activityListRef}
+          className="nft-detail-widget__activity-list-wrapper"
+        >
+          <ConnectedActivityList
+            isEnabled={showActivityList}
+            tokenId={collectionTokenInfo.id}
+          />
+        </div>
+      </Details>
+
+      <Details
         summary="Details"
         className="nft-detail-widget__details"
       >
         <NftDetailList
           address={collectionToken}
-          id={collectionTokenInfo.id}
           chainId={chainId}
-          standard={collectionTokenInfo.kind}
           fee={protocolFee / 100}
+          id={collectionTokenInfo.id}
+          standard={collectionTokenInfo.kind}
         />
-      </Details>
-
-      <Details
-        summary="Item activity"
-        className="nft-detail-widget__activity"
-      >
-        <ConnectedActivityList tokenId={collectionTokenInfo.id} />
       </Details>
 
       {showOwnersModal && (
