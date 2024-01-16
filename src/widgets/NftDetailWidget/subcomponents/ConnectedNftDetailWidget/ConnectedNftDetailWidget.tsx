@@ -81,6 +81,13 @@ const ConnectedNftDetailWidget: FC<ConnectedNftDetailWidgetProps> = ({
           onOwnersButtonClick={toggleShowOwnersModal}
         />
 
+        <NftDetailSaleInfo
+          isLoading={isLoading}
+          order={order}
+          tokenInfo={currencyTokenInfo}
+          className="nft-detail-widget__main-info-price"
+        />
+
         {showButton && (
           <NftDetailProceedButton
             accountIsOwner={accountIsOwner}

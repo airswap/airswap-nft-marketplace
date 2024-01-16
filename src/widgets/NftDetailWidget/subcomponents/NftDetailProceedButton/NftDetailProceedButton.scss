@@ -14,10 +14,11 @@
 		position: relative;
 		bottom: unset;
 		left: unset;
-		background-color: transparent;
 		margin-block-start: 3rem;
-		padding: 0;
 		width: 12.1875rem;
+		height: fit-content;
+		padding: 0;
+		background-color: transparent;
 	}
 
 	&__link {

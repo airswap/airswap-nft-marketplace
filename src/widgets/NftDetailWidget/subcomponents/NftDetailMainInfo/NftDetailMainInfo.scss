@@ -30,7 +30,16 @@
 
         @include for-size(tablet-portrait-up) {
             display: block;
-            margin-top: 2rem;
+            margin-block-start: 2rem;
         }
+    }
+
+    &__sub-title {
+        font-size: 1rem;
+        color: var(--c-text-grey);
+    }
+
+    &__paragraph {
+        margin-block-start: .75rem;
     }
 }

@@ -1,15 +1,18 @@
 @import "src/styles/index";
 
 .activity-list-container {
-    @extend %scrollbar;
-
-    max-height: 13.5rem;
-    overflow-y: auto;
 
     @include for-size(tablet-portrait-up) {
         border: 1px solid var(--c-dark-border);
         border-radius: .25rem;
         padding: 1.5rem 1rem 1rem;
+    }
+
+    &__scroller {
+        @extend %scrollbar;
+
+        max-height: 13.5rem;
+        overflow-y: auto;
     }
 
     &__items-list {

@@ -57,26 +57,26 @@ const ActivityListContainer: FC<NftDetailActivityProps> = ({
       onScroll={handleElementScroll}
       className={`activity-list-container ${className}`}
     >
-      <ul
-        className="activity-list-container__items-list"
-      >
-        {logs.map(log => (
-          <NftDetailActivityItem
-            key={log.key}
-            chainId={chainId}
-            log={log}
-          />
-        ))}
-        <li className="activity-list-container__last-list-item">
-          {isLoading ? (
-            <LoadingSpinner className="activity-list-container__loading-spinner" />
-          ) : (
-            <div className="activity-list-container__end-of-list">
-              {isEndOfList && <Icon name="airswap" className="activity-list-container__airswap-icon" />}
-            </div>
-          )}
-        </li>
-      </ul>
+      <div className="activity-list-container__scroller">
+        <ul className="activity-list-container__items-list">
+          {logs.map(log => (
+            <NftDetailActivityItem
+              key={log.key}
+              chainId={chainId}
+              log={log}
+            />
+          ))}
+          <li className="activity-list-container__last-list-item">
+            {isLoading ? (
+              <LoadingSpinner className="activity-list-container__loading-spinner" />
+            ) : (
+              <div className="activity-list-container__end-of-list">
+                {isEndOfList && <Icon name="airswap" className="activity-list-container__airswap-icon" />}
+              </div>
+            )}
+          </li>
+        </ul>
+      </div>
     </div>
   );
 };

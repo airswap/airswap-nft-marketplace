@@ -3,7 +3,6 @@ import React, { FC } from 'react';
 import { Link } from 'react-router-dom';
 
 import Button from '../../../../components/Button/Button';
-import Details from '../../../../components/Details/Details';
 
 import './NftDetailMainInfo.scss';
 
@@ -51,12 +50,13 @@ const NftDetailMainInfo: FC<INftDetailMainInfoProps> = ({
       )}
     </span>
 
-    <Details
-      summary="Description"
-      className="nft-detail-main-info__description"
-    >
-      <p>{description}</p>
-    </Details>
+    {description && (
+      <div className="nft-detail-main-info__description">
+        <h2 className="nft-detail-main-info__sub-title">Description</h2>
+        <p className="nft-detail-main-info__paragraph">{description}</p>
+      </div>
+    )}
+
   </div>
 );
 

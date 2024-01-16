@@ -45,17 +45,34 @@
         grid-area: main-info;
 
         @include for-size(tablet-portrait-up) {
-            padding-block-start: 2.5rem;
             padding-inline-start: 1rem;
         }
 
         @include for-size(tablet-landscape-up) {
+            padding-block-start: 2.5rem;
             padding-inline-start: 2.5rem;
+        }
+    }
+
+    &__main-info-price {
+        display: none;
+
+        @include for-size(tablet-portrait-up) {
+            display: block;
+            margin-block-start: 2rem;
+        }
+    }
+
+    &__price {
+
+        @include for-size(tablet-portrait-up) {
+            display: none;
         }
     }
 
     &__description {
         grid-area: description;
+        margin-block-start: 1rem;
 
         @include for-size(tablet-portrait-up) {
             display: none;

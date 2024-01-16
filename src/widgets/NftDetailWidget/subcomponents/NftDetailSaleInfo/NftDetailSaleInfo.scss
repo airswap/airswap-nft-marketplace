@@ -1,11 +1,16 @@
 @import "src/styles/index";
 
 .nft-detail-sale-info {
-    margin-bottom: 1.5rem;
+    display: flex;
+    justify-content: space-between;
+    width: 100%;
+
+    @include for-size(tiny-phone-only) {
+        flex-direction: column;
+    }
 
     @include for-size(tablet-portrait-up) {
-        margin-bottom: 2rem;
-        margin-top: 1rem;
+        flex-direction: column;
     }
 
     &__price {
@@ -19,7 +24,6 @@
     }
 
     &__expiry {
-        margin-top: .25rem;
         font-size: .875rem;
         font-weight: var(--fw-400);
         color: var(--c-text-grey);
