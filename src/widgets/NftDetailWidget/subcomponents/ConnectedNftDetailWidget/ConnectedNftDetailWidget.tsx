@@ -2,6 +2,7 @@ import React, { FC, useEffect } from 'react';
 
 import { CollectionTokenInfo, TokenInfo } from '@airswap/types';
 import { BaseProvider } from '@ethersproject/providers';
+import classNames from 'classnames';
 import { useToggle } from 'react-use';
 
 import Details from '../../../../components/Details/Details';
@@ -54,6 +55,11 @@ const ConnectedNftDetailWidget: FC<ConnectedNftDetailWidgetProps> = ({
   const accountRoute = owner ? routes.profile(owner) : undefined;
   const orderRoute = order ? routes.orderDetail(order.signer.wallet, order.nonce) : undefined;
   const listRoute = (accountIsOwner && !order) ? routes.listNft(collectionTokenInfo.id) : undefined;
+  const showButton = (orderRoute || listRoute) && ownersLength && account && !isLoading;
+
+  const wrapperClassName = classNames('nft-detail-widget', {
+    'nft-detail-widget--has-button': showButton,
+  }, className);
 
   useEffect(() => {
     dispatch(getNftOrderByTokenId({ tokenId: collectionTokenInfo.id, provider: library }));
@@ -64,16 +70,26 @@ const ConnectedNftDetailWidget: FC<ConnectedNftDetailWidgetProps> = ({
   }, [collectionTokenInfo, library]);
 
   return (
-    <div className={`nft-detail-widget ${className}`}>
-      <NftDetailMainInfo
-        accountRoute={accountRoute}
-        description={collectionTokenInfo.description}
-        owner={readableOwnerAddress}
-        ownersLength={ownersLength}
-        title={collectionTokenInfo.name}
-        onOwnersButtonClick={toggleShowOwnersModal}
-        className="nft-detail-widget__main-info"
-      />
+    <div className={wrapperClassName}>
+      <div className="nft-detail-widget__main-info">
+        <NftDetailMainInfo
+          accountRoute={accountRoute}
+          description={collectionTokenInfo.description}
+          owner={readableOwnerAddress}
+          ownersLength={ownersLength}
+          title={collectionTokenInfo.name}
+          onOwnersButtonClick={toggleShowOwnersModal}
+        />
+
+        {showButton && (
+          <NftDetailProceedButton
+            accountIsOwner={accountIsOwner}
+            isExpired={isExpired}
+            orderRoute={orderRoute}
+            listRoute={listRoute}
+          />
+        )}
+      </div>
 
       <NftDetailPortrait
         backgroundImage={collectionTokenInfo.image || collectionImage}
@@ -93,15 +109,6 @@ const ConnectedNftDetailWidget: FC<ConnectedNftDetailWidgetProps> = ({
       >
         <p>{collectionTokenInfo.description}</p>
       </Details>
-
-      {((orderRoute || listRoute) && ownersLength && account && !isLoading) && (
-        <NftDetailProceedButton
-          accountIsOwner={accountIsOwner}
-          isExpired={isExpired}
-          orderRoute={orderRoute}
-          listRoute={listRoute}
-        />
-      )}
 
       <Details
         summary="Properties"

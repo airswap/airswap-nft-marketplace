@@ -8,14 +8,16 @@
 	height: calc(3rem + var(--page-padding) * 2);
 	background-color: var(--c-grey);
 	padding: var(--page-padding);
+	z-index: 10;
 
-	@include for-size(desktop-up) {
+	@include for-size(tablet-portrait-up) {
 		position: relative;
-		bottom: auto;
-		left: auto;
+		bottom: unset;
+		left: unset;
 		background-color: transparent;
+		margin-block-start: 3rem;
 		padding: 0;
-		width: 12.1875rem; // Target 195px
+		width: 12.1875rem;
 	}
 
 	&__link {

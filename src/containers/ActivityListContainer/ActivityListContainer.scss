@@ -9,7 +9,7 @@
     @include for-size(tablet-portrait-up) {
         border: 1px solid var(--c-dark-border);
         border-radius: .25rem;
-        padding: 1.5rem 1rem;
+        padding: 1.5rem 1rem 1rem;
     }
 
     &__items-list {
@@ -19,7 +19,7 @@
     &__loading-spinner,
     &__end-of-list {
         order: 1;
-        margin: 0 auto;
+        margin: .75rem auto 0;
         height: 2.5rem;
     }
 

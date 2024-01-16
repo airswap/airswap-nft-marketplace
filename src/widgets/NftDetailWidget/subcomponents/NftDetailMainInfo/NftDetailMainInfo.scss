@@ -2,15 +2,6 @@
 
 .nft-detail-main-info {
 
-    @include for-size(tablet-portrait-up) {
-        padding-block-start: 2.5rem;
-        padding-inline-start: 1rem;
-    }
-
-    @include for-size(tablet-landscape-up) {
-        padding-inline-start: 3rem;
-    }
-
     &__owner {
         display: flex;
         margin-top: 1rem;

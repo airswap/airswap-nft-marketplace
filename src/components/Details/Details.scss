@@ -29,6 +29,7 @@ $component: details;
         list-style: none;
         cursor: pointer;
         color: var(--c-text-grey);
+        opacity: .75;
 
         &::-webkit-details-marker {
             display: none;
