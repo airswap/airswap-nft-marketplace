@@ -15,7 +15,6 @@ import { getNftOrderByTokenId } from '../../../../redux/stores/nftDetail/nftDeta
 import { reset } from '../../../../redux/stores/nftDetail/nftDetailSlice';
 import { routes } from '../../../../routes';
 import NftDetailAttributes from '../NftDetailAttributes/NftDetailAttributes';
-import NftDetailContentContainer from '../NftDetailContentContainer/NftDetailContentContainer';
 import NftDetailList from '../NftDetailList/NftDetailList';
 import NftDetailMainInfo from '../NftDetailMainInfo/NftDetailMainInfo';
 import NftDetailPortrait from '../NftDetailPortrait/NftDetailPortrait';
@@ -66,128 +65,76 @@ const ConnectedNftDetailWidget: FC<ConnectedNftDetailWidgetProps> = ({
 
   return (
     <div className={`nft-detail-widget ${className}`}>
-      <NftDetailContentContainer className="nft-detail-widget__mobile-view">
-        <NftDetailMainInfo
-          accountRoute={accountRoute}
-          owner={readableOwnerAddress}
-          ownersLength={ownersLength}
-          title={collectionTokenInfo.name}
-          onOwnersButtonClick={toggleShowOwnersModal}
-          className="nft-detail-widget__main-info"
+      <NftDetailMainInfo
+        accountRoute={accountRoute}
+        description={collectionTokenInfo.description}
+        owner={readableOwnerAddress}
+        ownersLength={ownersLength}
+        title={collectionTokenInfo.name}
+        onOwnersButtonClick={toggleShowOwnersModal}
+        className="nft-detail-widget__main-info"
+      />
+
+      <NftDetailPortrait
+        backgroundImage={collectionTokenInfo.image || collectionImage}
+        className="nft-detail-widget__portrait"
+      />
+
+      <NftDetailSaleInfo
+        isLoading={isLoading}
+        order={order}
+        tokenInfo={currencyTokenInfo}
+        className="nft-detail-widget__price"
+      />
+
+      <Accordion
+        isDefaultOpen
+        label="Description"
+        content={(
+          <p>{collectionTokenInfo.description}</p>
+        )}
+        className="nft-detail-widget__description"
+      />
+
+      {((orderRoute || listRoute) && ownersLength && account && !isLoading) && (
+        <NftDetailProceedButton
+          accountIsOwner={accountIsOwner}
+          isExpired={isExpired}
+          orderRoute={orderRoute}
+          listRoute={listRoute}
         />
-        <NftDetailPortrait
-          backgroundImage={collectionTokenInfo.image || collectionImage}
-          className="nft-detail-widget__portrait"
-        />
-        <NftDetailSaleInfo
-          isLoading={isLoading}
-          order={order}
-          tokenInfo={currencyTokenInfo}
-          className="nft-detail-widget__price"
-        />
-        <Accordion
-          isDefaultOpen
-          label="Description"
-          content={(
-            <p>{collectionTokenInfo.description}</p>
-          )}
-          className="nft-detail-widget__description-accordion"
-        />
-        {((orderRoute || listRoute) && ownersLength && account && !isLoading) && (
-          <NftDetailProceedButton
-            accountIsOwner={accountIsOwner}
-            isExpired={isExpired}
-            orderRoute={orderRoute}
-            listRoute={listRoute}
+      )}
+
+      <Accordion
+        label="Properties"
+        content={(
+          <NftDetailAttributes attrs={collectionTokenInfo.attributes} />
+        )}
+        className="nft-detail-widget__properties"
+        isDefaultOpen
+      />
+
+      <Accordion
+        label="Details"
+        content={(
+          <NftDetailList
+            address={collectionToken}
+            id={collectionTokenInfo.id}
+            chainId={chainId}
+            standard={collectionTokenInfo.kind}
+            fee={protocolFee / 100}
           />
         )}
-        <Accordion
-          label="Properties"
-          content={(
-            <NftDetailAttributes attrs={collectionTokenInfo.attributes} />
-          )}
-          className="nft-detail-widget__properties-accordion"
-          isDefaultOpen
-        />
-        <Accordion
-          label="Details"
-          content={(
-            <NftDetailList
-              address={collectionToken}
-              id={collectionTokenInfo.id}
-              chainId={chainId}
-              standard={collectionTokenInfo.kind}
-              fee={protocolFee / 100}
-            />
-          )}
-          className="nft-detail-widget__description-accordion"
-        />
-        <Accordion
-          label="Item Activity"
-          content={(
-            // <ConnectedActivityList tokenId={collectionTokenInfo.id} />
-            <div />
-          )}
-          className="nft-detail-widget__description-accordion"
-        />
-      </NftDetailContentContainer>
-      <NftDetailContentContainer className="nft-detail-widget__desktop-view">
-        <div className="nft-detail-widget__column">
-          <NftDetailPortrait
-            backgroundImage={collectionTokenInfo.image || collectionImage}
-            className="nft-detail-widget__portrait"
-          />
-          <div className="nft-detail-widget__meta-container">
-            <h2 className="nft-detail-widget__meta-container-label">Details</h2>
-            <div className="accordion__content accordion__content--has-border">
-              <NftDetailList
-                address={collectionToken}
-                id={collectionTokenInfo.id}
-                chainId={chainId}
-                standard={collectionTokenInfo.kind}
-                fee={protocolFee / 100}
-              />
-            </div>
-          </div>
-          <div className="nft-detail-widget__meta-container">
-            <h2 className="nft-detail-widget__meta-container-label">Item activity</h2>
-            <div className="accordion__content accordion__content--has-border">
-              <ConnectedActivityList tokenId={collectionTokenInfo.id} />
-            </div>
-          </div>
-          <div className="nft-detail-widget__meta-container">
-            <NftDetailAttributes attrs={collectionTokenInfo.attributes} />
-          </div>
-        </div>
-        <div className="nft-detail-widget__column">
-          <NftDetailMainInfo
-            accountRoute={accountRoute}
-            owner={readableOwnerAddress}
-            ownersLength={ownersLength}
-            title={collectionTokenInfo.name}
-            onOwnersButtonClick={toggleShowOwnersModal}
-            className="nft-detail-widget__main-info"
-          />
-          <div className="nft-detail-widget__meta-container">
-            <h2 className="nft-detail-widget__meta-container-label">Description</h2>
-            <p>{collectionTokenInfo.description}</p>
-          </div>
-          <NftDetailSaleInfo
-            isLoading={isLoading}
-            order={order}
-            tokenInfo={currencyTokenInfo}
-            className="nft-detail-widget__price"
-          />
-          {((orderRoute || listRoute) && ownersLength && account && !isLoading) && (
-            <NftDetailProceedButton
-              accountIsOwner={accountIsOwner}
-              isExpired={isExpired}
-              listRoute={listRoute}
-              orderRoute={orderRoute}
-            />
-          )}
-        </div>
-      </NftDetailContentContainer>
+        className="nft-detail-widget__details"
+      />
+
+      <Accordion
+        label="Item Activity"
+        content={(
+          <ConnectedActivityList tokenId={collectionTokenInfo.id} />
+        )}
+        className="nft-detail-widget__activity"
+      />
 
       {showOwnersModal && (
         <ConnectedOwnersList

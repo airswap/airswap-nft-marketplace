@@ -2,25 +2,52 @@
 
 .nft-detail-widget {
 
-    &__desktop-view {
-        display: none;
-        @include for-size(desktop-up) {
-            display: flex;
-            justify-content: space-between;
-        }
+    @include for-size(tablet-portrait-up) {
+        display: grid;
+        grid-template-columns: repeat(2, 1fr);
+        grid-template-rows: auto auto;
+        grid-gap: 1rem;
+        grid-template-areas:
+            "portrait main-info"
+            "portrait main-info"
+            "description description"
+            "properties properties"
+            "details details"
+            "activity activity";
     }
 
-    &__mobile-view {
-        @include for-size(desktop-up) {
-            display: none;
-        }
+    @include for-size(tablet-landscape-up) {
+        grid-template-areas:
+            "portrait main-info"
+            "portrait main-info"
+            "description main-info"
+            "properties main-info"
+            "details main-info"
+            "activity main-info";
     }
 
-    &__column {
-        display: flex;
-        flex-direction: column;
-        width: 100%;
-        max-width: 47.5%;
+    &__portrait {
+        grid-area: portrait
+    }
+
+    &___main-info {
+        grid-area: main-info;
+    }
+
+    &__description {
+        grid-area: description;
+    }
+
+    &__properties {
+        grid-area: properties;
+    }
+
+    &__details {
+        grid-area: details;
+    }
+
+    &__activity {
+        grid-area: activity;
     }
 
     &__loading-spinner {

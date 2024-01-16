@@ -5,7 +5,7 @@
 
     &__header {
         display: flex;
-        font-size: .75rem;
+        font-size: 1.125rem;
         font-weight: var(--fw-700);
 
         &:focus {
@@ -37,7 +37,6 @@
         transition-property: height;
         overflow: hidden;
         will-change: height;
-        font-size: .75rem;
 
         &--has-border {
             border: 1px solid var(--c-grey);
