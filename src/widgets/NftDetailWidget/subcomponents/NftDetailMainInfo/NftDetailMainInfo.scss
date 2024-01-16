@@ -3,17 +3,17 @@
 .nft-detail-main-info {
 
     @include for-size(tablet-portrait-up) {
-        margin-top: 2.5rem;
+        padding-block-start: 2.5rem;
+        padding-inline-start: 1rem;
+    }
+
+    @include for-size(tablet-landscape-up) {
+        padding-inline-start: 3rem;
     }
 
     &__owner {
         display: flex;
-        font-size: .75rem; // Target 12px
-        margin-bottom: 2em;
-
-        @include for-size(desktop-up) {
-            font-size: 1rem; // Target 16px
-        }
+        margin-top: 1rem;
     }
 
     &__owner-label {
@@ -34,5 +34,12 @@
         padding: 0;
     }
 
-    
+    &__description {
+        display: none;
+
+        @include for-size(tablet-portrait-up) {
+            display: block;
+            margin-top: 2rem;
+        }
+    }
 }

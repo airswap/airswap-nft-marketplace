@@ -4,7 +4,7 @@ import { CollectionTokenInfo, TokenInfo } from '@airswap/types';
 import { BaseProvider } from '@ethersproject/providers';
 import { useToggle } from 'react-use';
 
-import Accordion from '../../../../components/Accordion/Accordion';
+import Details from '../../../../components/Details/Details';
 import ConnectedActivityList from '../../../../connectors/ConnectedActivityList/ConnectedActivityList';
 import ConnectedOwnersList from '../../../../connectors/ConnectedOwnersList/ConnectedOwnersList';
 import { isFullOrderExpired } from '../../../../entities/FullOrder/FullOrderHelpers';
@@ -87,14 +87,12 @@ const ConnectedNftDetailWidget: FC<ConnectedNftDetailWidgetProps> = ({
         className="nft-detail-widget__price"
       />
 
-      <Accordion
-        isDefaultOpen
-        label="Description"
-        content={(
-          <p>{collectionTokenInfo.description}</p>
-        )}
+      <Details
+        summary="Description"
         className="nft-detail-widget__description"
-      />
+      >
+        <p>{collectionTokenInfo.description}</p>
+      </Details>
 
       {((orderRoute || listRoute) && ownersLength && account && !isLoading) && (
         <NftDetailProceedButton
@@ -105,36 +103,32 @@ const ConnectedNftDetailWidget: FC<ConnectedNftDetailWidgetProps> = ({
         />
       )}
 
-      <Accordion
-        label="Properties"
-        content={(
-          <NftDetailAttributes attrs={collectionTokenInfo.attributes} />
-        )}
-        className="nft-detail-widget__properties"
-        isDefaultOpen
-      />
+      <Details
+        summary="Properties"
+        className="nft-detail-widget__attributes"
+      >
+        <NftDetailAttributes attrs={collectionTokenInfo.attributes} />
+      </Details>
 
-      <Accordion
-        label="Details"
-        content={(
-          <NftDetailList
-            address={collectionToken}
-            id={collectionTokenInfo.id}
-            chainId={chainId}
-            standard={collectionTokenInfo.kind}
-            fee={protocolFee / 100}
-          />
-        )}
+      <Details
+        summary="Details"
         className="nft-detail-widget__details"
-      />
+      >
+        <NftDetailList
+          address={collectionToken}
+          id={collectionTokenInfo.id}
+          chainId={chainId}
+          standard={collectionTokenInfo.kind}
+          fee={protocolFee / 100}
+        />
+      </Details>
 
-      <Accordion
-        label="Item Activity"
-        content={(
-          <ConnectedActivityList tokenId={collectionTokenInfo.id} />
-        )}
+      <Details
+        summary="Item activity"
         className="nft-detail-widget__activity"
-      />
+      >
+        <ConnectedActivityList tokenId={collectionTokenInfo.id} />
+      </Details>
 
       {showOwnersModal && (
         <ConnectedOwnersList

@@ -1,6 +1,9 @@
 @import "src/styles/index";
 
 .nft-detail-widget {
+    display: flex;
+    flex-direction: column;
+    gap: 1rem;
 
     @include for-size(tablet-portrait-up) {
         display: grid;
@@ -11,9 +14,9 @@
             "portrait main-info"
             "portrait main-info"
             "description description"
-            "properties properties"
             "details details"
-            "activity activity";
+            "activity activity"
+            "attributes attributes";
     }
 
     @include for-size(tablet-landscape-up) {
@@ -21,9 +24,9 @@
             "portrait main-info"
             "portrait main-info"
             "description main-info"
-            "properties main-info"
             "details main-info"
-            "activity main-info";
+            "activity main-info"
+            "attributes main-info";
     }
 
     &__portrait {
@@ -36,10 +39,14 @@
 
     &__description {
         grid-area: description;
+
+        @include for-size(tablet-portrait-up) {
+            display: none;
+        }
     }
 
-    &__properties {
-        grid-area: properties;
+    &__attributes {
+        grid-area: attributes;
     }
 
     &__details {
