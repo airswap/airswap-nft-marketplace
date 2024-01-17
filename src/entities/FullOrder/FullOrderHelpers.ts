@@ -50,15 +50,27 @@ export const getFullOrdersNonceUsed = (orders: FullOrder[], provider: BaseProvid
   orders.map(order => getFullOrderNonceUsed(order, provider)),
 );
 
+// TODO: fix getNoncesUsed
+// export const getFullOrdersNonceUsed = (orders: FullOrder[], provider: BaseProvider): Promise<boolean[]> => {
+//   if (orders.length !== 0) {
+//     return Promise.resolve([]);
+//   }
+//
+//   const { chainId } = orders[0];
+//   const contract = BatchCall.getContract(provider, chainId);
+//
+//   return contract.getNoncesUsed(orders.map(order => order.nonce));
+// };
+
 export const getFullOrdersIsValid = async (orders: FullOrder[], provider: BaseProvider): Promise<boolean[]> => {
   if (orders.length === 0) {
-    return [];
+    return Promise.resolve([]);
   }
 
   const { chainId } = orders[0];
   const contract = BatchCall.getContract(provider, chainId);
 
-  return contract.checkOrders(
+  return contract.getOrdersValid(
     nativeCurrencyAddress,
     orders,
     Swap.getContract(provider, chainId).address,

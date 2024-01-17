@@ -15,16 +15,14 @@ const getFullOrderState = (fullOrder: FullOrder, isTaken: boolean, isValid: bool
     return FullOrderState.expired;
   }
 
-  // TODO: enable when checkOrders is fixed https://github.com/airswap/airswap-marketplace/issues/192
-  const isValidDisabled = true;
-  if (!isValid && !isValidDisabled) {
+  if (!isValid) {
     return FullOrderState.invalid;
   }
 
   return FullOrderState.open;
 };
 
-export const transformToFullOrder = (fullOrder: FullOrder, isTaken: boolean, isValid: boolean): ExtendedFullOrder => ({
+export const transformToExtendedFullOrder = (fullOrder: FullOrder, isTaken: boolean, isValid: boolean): ExtendedFullOrder => ({
   ...fullOrder,
   key: getFullOrderKey(fullOrder),
   state: getFullOrderState(fullOrder, isTaken, isValid),
