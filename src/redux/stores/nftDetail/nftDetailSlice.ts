@@ -2,11 +2,10 @@ import { FullOrder } from '@airswap/types';
 import { createSlice, PayloadAction } from '@reduxjs/toolkit';
 
 import { NftTransactionLog } from '../../../entities/NftTransactionLog/NftTransactionLog';
-import { getNftOrderByTokenId, getNftTransactionReceipts } from './nftDetailApi';
+import { getNftOrderByTokenId } from './nftDetailApi';
 
 export interface NftDetailState {
   isLoading: boolean;
-  isLoadingTransactionReceipts: boolean;
   isOrderNotFound: boolean;
   order?: FullOrder;
   tokenId?: string;
@@ -15,7 +14,6 @@ export interface NftDetailState {
 
 const initialState: NftDetailState = {
   isLoading: false,
-  isLoadingTransactionReceipts: false,
   isOrderNotFound: false,
   transactionLogs: [],
 };
@@ -47,20 +45,6 @@ export const nftDetailSlice = createSlice({
     builder.addCase(getNftOrderByTokenId.rejected, (state): NftDetailState => ({
       ...state,
       isLoading: false,
-    }));
-    builder.addCase(getNftTransactionReceipts.pending, (state): NftDetailState => ({
-      ...state,
-      isLoadingTransactionReceipts: true,
-    }));
-    builder.addCase(getNftTransactionReceipts.fulfilled, (state, action): NftDetailState => ({
-      ...state,
-      transactionLogs: action.payload,
-      isLoadingTransactionReceipts: false,
-    }));
-    builder.addCase(getNftTransactionReceipts.rejected, (state): NftDetailState => ({
-      ...state,
-      transactionLogs: [],
-      isLoadingTransactionReceipts: false,
     }));
   },
 });

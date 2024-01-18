@@ -4,13 +4,13 @@ import { Address } from '../../../entities/Address/Address';
 import { getErc1155OwnerAddresses } from './ownersApi';
 
 export interface NftDetailState {
-  isLoadingOwners: boolean;
+  isLoading: boolean;
   owners: Address[];
-  ownersPageKey?: string | null;
+  pageKey?: string | null;
 }
 
 const initialState: NftDetailState = {
-  isLoadingOwners: false,
+  isLoading: false,
   owners: [],
 };
 
@@ -25,17 +25,17 @@ export const ownersSlice = createSlice({
   extraReducers: (builder) => {
     builder.addCase(getErc1155OwnerAddresses.pending, (state): NftDetailState => ({
       ...state,
-      isLoadingOwners: true,
+      isLoading: true,
     }));
     builder.addCase(getErc1155OwnerAddresses.fulfilled, (state, action): NftDetailState => ({
       ...state,
-      isLoadingOwners: false,
+      isLoading: false,
       owners: action.payload.owners,
-      ownersPageKey: action.payload.pageKey,
+      pageKey: action.payload.pageKey,
     }));
     builder.addCase(getErc1155OwnerAddresses.rejected, (state): NftDetailState => ({
       ...state,
-      isLoadingOwners: false,
+      isLoading: false,
     }));
   },
 });

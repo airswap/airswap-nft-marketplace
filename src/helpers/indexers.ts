@@ -43,7 +43,6 @@ export const getOrdersFromIndexers = async (filter: OrderFilter, indexerUrls: st
   const uniqueOrders: FullOrder[] = getUniqueArrayChildren<FullOrder>(allOrders, 'nonce');
 
   const noncesUsed = await getFullOrdersNonceUsed(uniqueOrders, provider);
-  console.log(noncesUsed);
   const validOrders = await getFullOrdersIsValid(uniqueOrders, provider);
 
   return uniqueOrders.map((fullOrder, index) => (

@@ -27,35 +27,39 @@ const NftDetailActivityItem: FC<NftDetailActivityItemProps> = ({
   const link = routes.profile(log.recipient);
   const transactionLink = useMemo(() => getReceiptUrl(chainId, log.transactionHash), [chainId, log.transactionHash]);
   const timeAgo = useMemo(() => (
-      log.timestamp ? getTimeBetweenTwoDates(new Date(), new Date(log.timestamp * 1000)) : undefined
+        log.timestamp ? getTimeBetweenTwoDates(new Date(), new Date(log.timestamp * 1000)) : undefined
   ), [log.timestamp]);
 
   return (
-    <div className={`nft-detail-activity-item ${className}`}>
+    <li className={`nft-detail-activity-item ${className}`}>
       <Icon
         name="swap-horizontal"
         className="nft-detail-activity-item__swap-icon"
       />
+
       <div className="nft-detail-activity-item__label">
         Transferred to
       </div>
+
       <NavLink
         to={link}
         className="nft-detail-activity-item__link"
       >
         {readableAddressName}
       </NavLink>
+
       {timeAgo && (
         <div className="nft-detail-activity-item__time">
           {timeAgo}
         </div>
       )}
+
       <TransactionLink
         hideLabel
         to={transactionLink}
         className="nft-detail-activity-item__transaction-icon"
       />
-    </div>
+    </li>
   );
 };
 

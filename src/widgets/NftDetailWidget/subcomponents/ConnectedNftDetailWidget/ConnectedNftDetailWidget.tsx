@@ -5,15 +5,15 @@ import { BaseProvider } from '@ethersproject/providers';
 import { useToggle } from 'react-use';
 
 import Accordion from '../../../../components/Accordion/Accordion';
+import ConnectedActivityList from '../../../../connectors/ConnectedActivityList/ConnectedActivityList';
 import ConnectedOwnersList from '../../../../connectors/ConnectedOwnersList/ConnectedOwnersList';
 import { isFullOrderExpired } from '../../../../entities/FullOrder/FullOrderHelpers';
 import useAddressOrEnsName from '../../../../hooks/useAddressOrEnsName';
 import useNftTokenOwners from '../../../../hooks/useNftTokenOwners';
 import { useAppDispatch, useAppSelector } from '../../../../redux/hooks';
-import { getNftOrderByTokenId, getNftTransactionReceipts } from '../../../../redux/stores/nftDetail/nftDetailApi';
+import { getNftOrderByTokenId } from '../../../../redux/stores/nftDetail/nftDetailApi';
 import { reset } from '../../../../redux/stores/nftDetail/nftDetailSlice';
 import { routes } from '../../../../routes';
-import NftDetailActivity from '../NftDetailActivity/NftDetailActivity';
 import NftDetailAttributes from '../NftDetailAttributes/NftDetailAttributes';
 import NftDetailContentContainer from '../NftDetailContentContainer/NftDetailContentContainer';
 import NftDetailList from '../NftDetailList/NftDetailList';
@@ -43,12 +43,7 @@ const ConnectedNftDetailWidget: FC<ConnectedNftDetailWidgetProps> = ({
   const { account } = useAppSelector((state) => state.web3);
 
   const { protocolFee } = useAppSelector(state => state.metadata);
-  const {
-    isLoading: isPriceLoading,
-    isLoadingTransactionReceipts,
-    order,
-    transactionLogs,
-  } = useAppSelector(state => state.nftDetail);
+  const { isLoading: isPriceLoading, order } = useAppSelector(state => state.nftDetail);
 
   const [showOwnersModal, toggleShowOwnersModal] = useToggle(false);
 
@@ -63,7 +58,6 @@ const ConnectedNftDetailWidget: FC<ConnectedNftDetailWidgetProps> = ({
 
   useEffect(() => {
     dispatch(getNftOrderByTokenId({ tokenId: collectionTokenInfo.id, provider: library }));
-    dispatch(getNftTransactionReceipts({ provider: library, tokenId: collectionTokenInfo.id }));
 
     return () => {
       dispatch(reset());
@@ -131,11 +125,8 @@ const ConnectedNftDetailWidget: FC<ConnectedNftDetailWidgetProps> = ({
         <Accordion
           label="Item Activity"
           content={(
-            <NftDetailActivity
-              isLoading={isLoadingTransactionReceipts}
-              chainId={chainId}
-              logs={transactionLogs}
-            />
+            // <ConnectedActivityList tokenId={collectionTokenInfo.id} />
+            <div />
           )}
           className="nft-detail-widget__description-accordion"
         />
@@ -161,11 +152,7 @@ const ConnectedNftDetailWidget: FC<ConnectedNftDetailWidgetProps> = ({
           <div className="nft-detail-widget__meta-container">
             <h2 className="nft-detail-widget__meta-container-label">Item activity</h2>
             <div className="accordion__content accordion__content--has-border">
-              <NftDetailActivity
-                isLoading={isLoadingTransactionReceipts}
-                chainId={chainId}
-                logs={transactionLogs}
-              />
+              <ConnectedActivityList tokenId={collectionTokenInfo.id} />
             </div>
           </div>
           <div className="nft-detail-widget__meta-container">

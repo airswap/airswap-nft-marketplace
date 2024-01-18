@@ -31,9 +31,9 @@ GetErc1155OwnerAddressesParams,
 AppThunkApiConfig
 >('owners/getErc1155OwnerAddresses', async ({ provider, tokenId }, { getState, dispatch }) => {
   const { collectionToken } = getState().config;
-  const { owners, ownersPageKey } = getState().owners;
+  const { owners, pageKey } = getState().owners;
   const { ensAddresses } = getState().metadata;
-  const sales = await alchemy.nft.getOwnersForNft(collectionToken, tokenId, { pageSize: 20, pageKey: ownersPageKey });
+  const sales = await alchemy.nft.getOwnersForNft(collectionToken, tokenId, { pageSize: 20, pageKey });
 
   const newOwners: string[] = sales.owners;
 
