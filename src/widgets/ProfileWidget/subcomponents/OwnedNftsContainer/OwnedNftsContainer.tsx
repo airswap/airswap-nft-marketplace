@@ -1,10 +1,11 @@
 import { FC, ReactElement } from 'react';
 
-import { CollectionTokenInfo, FullOrder, TokenInfo } from '@airswap/types';
+import { CollectionTokenInfo, TokenInfo } from '@airswap/types';
 
 import Icon from '../../../../components/Icon/Icon';
 import LoadingSpinner from '../../../../components/LoadingSpinner/LoadingSpinner';
 import NftCard from '../../../../components/NftCard/NftCard';
+import { ExtendedFullOrder } from '../../../../entities/FullOrder/FullOrder';
 import { getFullOrderReadableSenderAmountPlusTotalFees } from '../../../../entities/FullOrder/FullOrderHelpers';
 import { TokenIdsWithBalance } from '../../../../entities/TokenIdsWithBalance/TokenIdsWithBalance';
 import { routes } from '../../../../routes';
@@ -16,7 +17,7 @@ interface OwnedNftsContainerProps {
   isLoading: boolean;
   currencyTokenInfo: TokenInfo;
   highlightTokenId?: string;
-  orders: FullOrder[];
+  orders: ExtendedFullOrder[];
   tokenIdsWithBalance: TokenIdsWithBalance;
   tokens: CollectionTokenInfo[];
   className?: string;

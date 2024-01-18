@@ -6,6 +6,7 @@ import React, {
 } from 'react';
 
 import { TokenInfo } from '@airswap/types';
+import { BaseProvider } from '@ethersproject/providers';
 
 import SearchInput from '../../../../components/SearchInput/SearchInput';
 import { INDEXER_ORDERS_OFFSET } from '../../../../constants/indexer';
@@ -21,10 +22,11 @@ import CollectionPortrait from '../CollectionPortrait/CollectionPortrait';
 
 interface ConnectedCollectionWidgetProps {
   currencyTokenInfo: TokenInfo;
+  provider: BaseProvider;
   className?: string;
 }
 
-const ConnectedCollectionWidget: FC<ConnectedCollectionWidgetProps> = ({ currencyTokenInfo, className = '' }) => {
+const ConnectedCollectionWidget: FC<ConnectedCollectionWidgetProps> = ({ currencyTokenInfo, provider, className = '' }) => {
   const dispatch = useAppDispatch();
 
   const scrolledToBottom = useScrollToBottom();
@@ -48,6 +50,7 @@ const ConnectedCollectionWidget: FC<ConnectedCollectionWidgetProps> = ({ currenc
     dispatch(getCollectionOrders({
       offset,
       limit: INDEXER_ORDERS_OFFSET,
+      provider,
     }));
   };
 
@@ -55,7 +58,7 @@ const ConnectedCollectionWidget: FC<ConnectedCollectionWidgetProps> = ({ currenc
     getOrders();
 
     return () => dispatch(reset());
-  }, []);
+  }, [provider]);
 
   useEffect(() => {
     if (scrolledToBottom) {

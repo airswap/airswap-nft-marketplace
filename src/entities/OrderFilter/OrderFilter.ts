@@ -1,4 +1,4 @@
-import { OrderFilter as AirswapOrderFilter, SortField, SortOrder } from '@airswap/types/build/src/server';
+import { Direction, Indexes, OrderFilter as AirswapOrderFilter } from '@airswap/types';
 
 export interface OrderFilter {
   chainId?: AirswapOrderFilter['chainId'];
@@ -9,6 +9,6 @@ export interface OrderFilter {
   senderToken?: AirswapOrderFilter['senderToken'];
   offset?: number;
   limit?: number;
-  sortField?: SortField;
-  sortOrder?: SortOrder;
+  sortField?: Indexes;
+  sortOrder?: Direction;
 }

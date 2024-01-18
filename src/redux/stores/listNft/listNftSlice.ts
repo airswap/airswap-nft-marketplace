@@ -1,13 +1,14 @@
 import { FullOrder } from '@airswap/types';
 import { createSlice, PayloadAction } from '@reduxjs/toolkit';
 
+import { ExtendedFullOrder } from '../../../entities/FullOrder/FullOrder';
 import { AppError } from '../../../errors/appError';
-import { getUserOrders } from './listNftApi';
+import { getActiveUserOrders } from './listNftApi';
 
 export interface ListNftState {
   isLoadingUserOrders: boolean;
   lastUserOrder?: FullOrder;
-  userOrders: FullOrder[];
+  userOrders: ExtendedFullOrder[];
   error?: AppError;
 }
 
@@ -49,15 +50,15 @@ export const listNftSlice = createSlice({
     reset: (): ListNftState => initialState,
   },
   extraReducers: (builder) => {
-    builder.addCase(getUserOrders.pending, (state): ListNftState => ({
+    builder.addCase(getActiveUserOrders.pending, (state): ListNftState => ({
       ...state,
       isLoadingUserOrders: true,
     }));
-    builder.addCase(getUserOrders.rejected, (state): ListNftState => ({
+    builder.addCase(getActiveUserOrders.rejected, (state): ListNftState => ({
       ...state,
       isLoadingUserOrders: false,
     }));
-    builder.addCase(getUserOrders.fulfilled, (state, action): ListNftState => ({
+    builder.addCase(getActiveUserOrders.fulfilled, (state, action): ListNftState => ({
       ...state,
       isLoadingUserOrders: false,
       userOrders: action.payload,

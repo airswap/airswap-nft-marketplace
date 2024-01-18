@@ -7,6 +7,7 @@ import React, {
 } from 'react';
 
 import { TokenInfo } from '@airswap/types';
+import { BaseProvider } from '@ethersproject/providers';
 import { useSearchParams } from 'react-router-dom';
 
 import SearchInput from '../../../../components/SearchInput/SearchInput';
@@ -28,6 +29,7 @@ interface ConnectedProfileOrdersWidgetProps {
   account?: string;
   currencyTokenInfo: TokenInfo;
   profileAccount: string;
+  provider: BaseProvider;
   className?: string;
 }
 
@@ -35,6 +37,7 @@ const ConnectedProfileOrdersWidget: FC<ConnectedProfileOrdersWidgetProps> = ({
   account,
   currencyTokenInfo,
   profileAccount,
+  provider,
   className = '',
 }): ReactElement => {
   const dispatch = useAppDispatch();
@@ -78,10 +81,10 @@ const ConnectedProfileOrdersWidget: FC<ConnectedProfileOrdersWidgetProps> = ({
     }
 
     dispatch(getProfileOrders({
-      signerToken: collectionToken,
       signerWallet: profileAccount,
       offset,
       limit: INDEXER_ORDERS_OFFSET,
+      provider,
     }));
   };
 

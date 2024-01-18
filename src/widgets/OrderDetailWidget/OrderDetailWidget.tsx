@@ -3,6 +3,7 @@ import React, { FC, ReactElement, useEffect } from 'react';
 import { useWeb3React } from '@web3-react/core';
 
 import DisconnectedOrderDetail from '../../compositions/DisconnectedOrderDetail/DisconnectedOrderDetail';
+import useDefaultProvider from '../../hooks/useDefaultProvider';
 import { useAppDispatch, useAppSelector } from '../../redux/hooks';
 import { getNftOrderByOrderNonce } from '../../redux/stores/orderDetail/orderDetailApi';
 import ConnectedOrderDetailWidget from './subcomponents/ConnectedOrderDetailWidget/ConnectedOrderDetailWidget';
@@ -16,7 +17,10 @@ interface OrderDetailWidgetProps {
 }
 
 const OrderDetailWidget: FC<OrderDetailWidgetProps> = ({ orderNonce, signerWallet, className = '' }): ReactElement => {
+  const { chainId } = useAppSelector((state) => state.config);
+
   const dispatch = useAppDispatch();
+  const provider = useDefaultProvider(chainId);
   const { account } = useWeb3React();
 
   const { isInitialized, isLoading: isIndexerLoading } = useAppSelector(state => state.indexer);
@@ -24,12 +28,12 @@ const OrderDetailWidget: FC<OrderDetailWidgetProps> = ({ orderNonce, signerWalle
   const isLoading = isIndexerLoading || isOrderLoading;
 
   useEffect(() => {
-    if (!isInitialized || !orderNonce) {
+    if (!isInitialized || !orderNonce || !provider) {
       return;
     }
 
-    dispatch(getNftOrderByOrderNonce({ orderNonce, signerWallet }));
-  }, [isInitialized, orderNonce]);
+    dispatch(getNftOrderByOrderNonce({ orderNonce, signerWallet, provider }));
+  }, [isInitialized, orderNonce, provider]);
 
   if (
     isInitialized

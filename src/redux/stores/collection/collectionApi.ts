@@ -1,32 +1,29 @@
-import { FullOrder } from '@airswap/types';
+import { BaseProvider } from '@ethersproject/providers';
 import { createAsyncThunk } from '@reduxjs/toolkit';
 
+import { ExtendedFullOrder } from '../../../entities/FullOrder/FullOrder';
+import { getOrdersFromIndexers } from '../../../helpers/indexers';
 import { AppThunkApiConfig } from '../../store';
-import { getOrdersFromIndexers } from '../indexer/indexerHelpers';
 import { addGetOrderFailedToast } from '../toasts/toastsActions';
 import { setOffset } from './collectionSlice';
 
-export const getCollectionOrders = createAsyncThunk<
-FullOrder[],
-{ limit: number; offset: number },
-AppThunkApiConfig
->('collection/getCollectionOrders', async (filter, { dispatch, getState }) => {
-  const { config, indexer } = getState();
+interface GetCollectionOrdersParams {
+  limit: number;
+  offset: number;
+  provider: BaseProvider;
+}
 
-  const { collectionToken, currencyToken } = config;
-  // const { transactions } = transactionsState;
-  // const orderTransactions = transactions.filter(isOrderTransaction);
-  // const cancelTransactions = transactions.filter(isCancelOrderTransaction);
-  // const excludeNonces = [...orderTransactions, ...cancelTransactions].map(transaction => transaction.order.nonce);
+export const getCollectionOrders = createAsyncThunk<
+ExtendedFullOrder[],
+GetCollectionOrdersParams,
+AppThunkApiConfig
+>('collection/getCollectionOrders', async ({ provider, ...filter }, { dispatch, getState }) => {
+  const { indexer } = getState();
 
   dispatch(setOffset(filter.limit + filter.offset));
 
   try {
-    return await getOrdersFromIndexers({
-      ...filter,
-      signerToken: collectionToken,
-      senderToken: currencyToken,
-    }, indexer.urls);
+    return await getOrdersFromIndexers(filter, indexer.urls, provider);
   } catch {
     dispatch(addGetOrderFailedToast());
 

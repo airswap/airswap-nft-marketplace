@@ -2,7 +2,7 @@ import { useEffect, useState } from 'react';
 
 import { FullOrder } from '@airswap/types';
 
-import { getNonceUsed } from '../redux/stores/orders/ordersApi';
+import { getFullOrderNonceUsed } from '../entities/FullOrder/FullOrderHelpers';
 import useDefaultProvider from './useDefaultProvider';
 
 const useFullOrderNonceUsed = (fullOrder?: FullOrder, usePolling = true): [boolean, boolean] => {
@@ -15,7 +15,7 @@ const useFullOrderNonceUsed = (fullOrder?: FullOrder, usePolling = true): [boole
       return;
     }
 
-    const response = await getNonceUsed(fullOrder, library);
+    const response = await getFullOrderNonceUsed(fullOrder, library);
 
     setIsNonceUsed(response);
     setIsLoading(!response);
@@ -29,7 +29,7 @@ const useFullOrderNonceUsed = (fullOrder?: FullOrder, usePolling = true): [boole
         return;
       }
 
-      const response = await getNonceUsed(fullOrder, library);
+      const response = await getFullOrderNonceUsed(fullOrder, library);
 
       if (response || !usePolling) {
         clearInterval(timer);

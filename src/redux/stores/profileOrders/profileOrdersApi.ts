@@ -1,23 +1,28 @@
-import { FullOrder } from '@airswap/types';
+import { BaseProvider } from '@ethersproject/providers';
 import { createAsyncThunk } from '@reduxjs/toolkit';
 
+import { ExtendedFullOrder } from '../../../entities/FullOrder/FullOrder';
 import { OrderFilter } from '../../../entities/OrderFilter/OrderFilter';
+import { getOrdersFromIndexers } from '../../../helpers/indexers';
 import { AppThunkApiConfig } from '../../store';
-import { getOrdersFromIndexers } from '../indexer/indexerHelpers';
 import { addGetOrderFailedToast } from '../toasts/toastsActions';
 import { setOrdersOffset } from './profileOrdersSlice';
 
+interface GetProfileOrdersParams extends OrderFilter {
+  provider: BaseProvider;
+}
+
 export const getProfileOrders = createAsyncThunk<
-FullOrder[],
-OrderFilter,
+ExtendedFullOrder[],
+GetProfileOrdersParams,
 AppThunkApiConfig
->('profileOrders/getProfileOrders', async (filter, { dispatch, getState }) => {
+>('profileOrders/getProfileOrders', async ({ provider, ...filter }, { dispatch, getState }) => {
   const { indexer } = getState();
 
   try {
     dispatch(setOrdersOffset((filter.limit || 0) + (filter.offset || 0)));
 
-    return await getOrdersFromIndexers(filter, indexer.urls);
+    return await getOrdersFromIndexers(filter, indexer.urls, provider);
   } catch {
     dispatch(addGetOrderFailedToast());
 

@@ -1,7 +1,7 @@
-import { FullOrder } from '@airswap/types';
 import { createSlice, PayloadAction } from '@reduxjs/toolkit';
 
 import { INDEXER_ORDERS_OFFSET } from '../../../constants/indexer';
+import { ExtendedFullOrder } from '../../../entities/FullOrder/FullOrder';
 import { getUniqueArrayChildren } from '../../../helpers/array';
 import { getCollectionOrders } from './collectionApi';
 
@@ -9,7 +9,7 @@ export interface CollectionState {
   hasServerError: boolean;
   isTotalOrdersReached: boolean;
   offset: number;
-  orders: FullOrder[];
+  orders: ExtendedFullOrder[];
   isLoading: boolean;
 }
 
@@ -32,13 +32,13 @@ export const collectionSlice = createSlice({
       ...state,
       offset: action.payload,
     }),
-    setOrders: (state, action: PayloadAction<FullOrder[]>): CollectionState => ({
+    setOrders: (state, action: PayloadAction<ExtendedFullOrder[]>): CollectionState => ({
       ...state,
       orders: action.payload,
     }),
   },
   extraReducers: (builder) => {
-    builder.addCase(getCollectionOrders.fulfilled, (state, action: PayloadAction<FullOrder[]>): CollectionState => {
+    builder.addCase(getCollectionOrders.fulfilled, (state, action: PayloadAction<ExtendedFullOrder[]>): CollectionState => {
       const newOrders = getUniqueArrayChildren([
         ...state.orders,
         ...action.payload,

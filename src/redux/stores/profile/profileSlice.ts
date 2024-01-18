@@ -1,6 +1,6 @@
-import { FullOrder } from '@airswap/types';
 import { createSlice, PayloadAction } from '@reduxjs/toolkit';
 
+import { ExtendedFullOrder } from '../../../entities/FullOrder/FullOrder';
 import { TokenIdsWithBalance } from '../../../entities/TokenIdsWithBalance/TokenIdsWithBalance';
 import { getProfileOrders, getProfileTokens } from './profileApi';
 
@@ -8,7 +8,7 @@ export interface ProfileState {
   isLoadingOrders: boolean;
   isLoadingTokens: boolean;
   isTotalOrdersReached: boolean;
-  orders: FullOrder[];
+  orders: ExtendedFullOrder[];
   tokenIdsWithBalance: TokenIdsWithBalance;
   tokensOffset: number;
 }

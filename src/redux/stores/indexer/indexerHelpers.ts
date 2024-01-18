@@ -1,30 +1,21 @@
-import { Server, SuccessResponse } from '@airswap/libraries';
+import { Server } from '@airswap/libraries';
 import {
+  Direction,
   FullOrder,
-  IndexedOrder,
+  Indexes,
   OrderResponse,
 } from '@airswap/types';
-import { SortField, SortOrder } from '@airswap/types/build/src/server';
 
 import { INDEXER_ORDER_RESPONSE_TIME_MS } from '../../../constants/indexer';
 import { OrderFilter } from '../../../entities/OrderFilter/OrderFilter';
-
-const isPromiseFulfilledResult = <T>(result: any): result is PromiseFulfilledResult<T> => result && result.status === 'fulfilled' && 'value' in result;
-
-const isOrderResponse = <T>(resource: any): resource is OrderResponse<T> => (resource && 'orders' in resource);
-
-const isSuccessResponse = (response: any): response is SuccessResponse => response
-  && typeof response.message === 'string'
-  && !('code' in response);
-
-const getUndefinedAfterTimeout = (time: number): Promise<undefined> => new Promise<undefined>((resolve) => {
-  setTimeout(() => resolve(undefined), time);
-});
+import { getUndefinedAfterTimeout, isPromiseFulfilledResult } from '../../../helpers/indexers';
 
 export const getOrdersFromServer = async (server: Server, filter: OrderFilter): Promise<OrderResponse<FullOrder> | undefined> => {
   const defaultFilter: Partial<OrderFilter> = {
-    sortField: SortField.NONCE,
-    sortOrder: SortOrder.DESC,
+    signerToken: process.env.REACT_APP_COLLECTION_TOKEN,
+    senderToken: process.env.REACT_APP_CURRENCY_TOKEN,
+    sortField: Indexes.NONCE,
+    sortOrder: Direction.DESC,
   };
 
   const filterWithDefaults: OrderFilter = {
@@ -33,10 +24,12 @@ export const getOrdersFromServer = async (server: Server, filter: OrderFilter): 
   };
 
   try {
+    // @ts-ignore
     return await server.getOrders(
       filterWithDefaults,
       filterWithDefaults.offset || 0,
       filterWithDefaults.limit || 9999,
+      // @ts-ignore
       filterWithDefaults.sortField,
       filterWithDefaults.sortOrder,
     );
@@ -60,7 +53,7 @@ export const getServers = async (indexerUrls: string[]): Promise<Server[]> => {
   return fulfilledResults.map((result) => result.value);
 };
 
-const addOrderHelper = (server: Server, order: FullOrder): Promise<SuccessResponse> => new Promise((resolve, reject) => {
+const addOrderHelper = (server: Server, order: FullOrder): Promise<boolean> => new Promise((resolve, reject) => {
   server
     .addOrder(order)
     .then((response) => {
@@ -78,48 +71,16 @@ const addOrderHelper = (server: Server, order: FullOrder): Promise<SuccessRespon
 export const sendOrderToIndexers = async (
   order: FullOrder,
   indexerUrls: string[],
-): Promise<boolean> => {
+): Promise<boolean | undefined> => {
   const servers = await getServers(indexerUrls);
 
   if (!servers.length) {
     console.error('[sendOrderToIndexers] No indexer servers provided');
   }
 
-  const response = await Promise.any([
+  return Promise.any([
     ...servers.map(server => addOrderHelper(server, order)),
     getUndefinedAfterTimeout(INDEXER_ORDER_RESPONSE_TIME_MS),
   ]);
-
-  return isSuccessResponse(response);
 };
 
-export const getOrdersFromIndexers = async (filter: OrderFilter, indexerUrls: string[]): Promise<FullOrder[]> => {
-  if (!indexerUrls.length) {
-    console.error('[getOrdersFromIndexers] No indexer urls provided');
-  }
-
-  const servers = await getServers(indexerUrls);
-
-  const responses = await Promise.all(
-    servers.map(server => Promise.race([
-      getOrdersFromServer(server, filter),
-      getUndefinedAfterTimeout(INDEXER_ORDER_RESPONSE_TIME_MS),
-    ])),
-  );
-
-  const orderResponses = responses.filter(isOrderResponse<FullOrder>);
-
-  if (orderResponses.length === 0) {
-    console.error('[getOrdersFromIndexers] No order responses received');
-
-    throw new Error('No order responses received');
-  }
-
-  const indexedOrders: Record<string, IndexedOrder<FullOrder>> = orderResponses
-    .reduce((total, orderResponse) => ({
-      ...total,
-      ...orderResponse.orders,
-    }), {});
-
-  return Object.values(indexedOrders).map(indexedOrder => indexedOrder.order);
-};

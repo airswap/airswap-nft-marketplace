@@ -5,30 +5,35 @@ import { createAsyncThunk } from '@reduxjs/toolkit';
 
 import { NftTransactionLog } from '../../../entities/NftTransactionLog/NftTransactionLog';
 import { transformNftSalesToNftTransactionLog } from '../../../entities/NftTransactionLog/NftTransactionLogTransformers';
+import { getOrdersFromIndexers } from '../../../helpers/indexers';
 import { AppThunkApiConfig } from '../../store';
-import { getOrdersFromIndexers } from '../indexer/indexerHelpers';
 import { addGetOrderFailedToast } from '../toasts/toastsActions';
 import { getErc721Logs } from './nftDetailHelpers';
 import { setTokenId } from './nftDetailSlice';
 
+interface GetNftOrderByTokenIdParams {
+  tokenId: string;
+  provider: BaseProvider;
+}
+
 export const getNftOrderByTokenId = createAsyncThunk<
 FullOrder | undefined,
-string,
+GetNftOrderByTokenIdParams,
 AppThunkApiConfig
->('nftDetail/getNftOrderByTokenId', async (tokenId, { dispatch, getState }) => {
-  const { config, indexer } = getState();
+>('nftDetail/getNftOrderByTokenId', async ({ tokenId, provider }, { dispatch, getState }) => {
+  const { indexer } = getState();
 
   dispatch(setTokenId(tokenId));
 
   try {
     const orders = await getOrdersFromIndexers(
       {
-        signerToken: config.collectionToken,
         signerId: tokenId,
         offset: 0,
         limit: 999,
       },
       indexer.urls,
+      provider,
     );
 
     return orders[0];

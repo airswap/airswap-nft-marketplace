@@ -4,6 +4,7 @@ import { Web3Provider } from '@ethersproject/providers';
 import { createAsyncThunk } from '@reduxjs/toolkit';
 import { Transaction } from 'ethers';
 
+import { getFullOrderNonceUsed } from '../../../entities/FullOrder/FullOrderHelpers';
 import {
   AppError,
   AppErrorType,
@@ -20,8 +21,9 @@ import {
 } from '../transactions/transactionsActions';
 import {
   approveErc20Token,
-  approveNftToken, cancelOrder,
-  checkOrder, getNonceUsed,
+  approveNftToken,
+  cancelOrder,
+  checkOrder,
   takeOrder,
 } from './ordersApi';
 import { setError } from './ordersSlice';
@@ -149,7 +151,7 @@ CancelParams,
   state: RootState;
 }
 >('orders/cancel', async (params, { dispatch, rejectWithValue }) => {
-  const isNonceUsed = await getNonceUsed(params.order, params.library);
+  const isNonceUsed = await getFullOrderNonceUsed(params.order, params.library);
 
   if (isNonceUsed) {
     return rejectWithValue(transformToAppError(AppErrorType.nonceAlreadyUsed));

@@ -120,16 +120,6 @@ export async function checkOrder(
   return errors.map((error) => transformSwapErrorToAppError(error));
 }
 
-export async function getNonceUsed(
-  order: FullOrder,
-  provider: ethers.providers.BaseProvider,
-): Promise<boolean> {
-  return Swap.getContract(provider, order.chainId).nonceUsed(
-    order.signer.wallet,
-    order.nonce,
-  );
-}
-
 const getContractApproved = async (
   contract: ethers.Contract,
   contractAddress: string,

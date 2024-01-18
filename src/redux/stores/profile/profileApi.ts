@@ -1,21 +1,33 @@
-import { FullOrder } from '@airswap/types';
+import { BaseProvider } from '@ethersproject/providers';
 import { createAsyncThunk } from '@reduxjs/toolkit';
 import { ethers } from 'ethers';
 
+import { ExtendedFullOrder } from '../../../entities/FullOrder/FullOrder';
 import { OrderFilter } from '../../../entities/OrderFilter/OrderFilter';
 import { TokenIdsWithBalance } from '../../../entities/TokenIdsWithBalance/TokenIdsWithBalance';
+import { getOrdersFromIndexers } from '../../../helpers/indexers';
+import { FullOrderState } from '../../../types/FullOrderState';
 import { AppThunkApiConfig } from '../../store';
 import { getOwnedTokenIdsOfWallet } from '../balances/balancesHelpers';
-import { getOrdersFromIndexers } from '../indexer/indexerHelpers';
+
+interface GetProfileOrdersParams extends OrderFilter {
+  provider: BaseProvider;
+}
 
 export const getProfileOrders = createAsyncThunk<
-FullOrder[],
-OrderFilter,
+ExtendedFullOrder[],
+GetProfileOrdersParams,
 AppThunkApiConfig
->('profile/getProfileOrders', async (filter, { getState }) => {
+>('profile/getProfileOrders', async ({ provider, ...filter }, { getState }) => {
   const { indexer } = getState();
 
-  return getOrdersFromIndexers(filter, indexer.urls);
+  const orders = await getOrdersFromIndexers({
+    ...filter,
+    offset: 0,
+    limit: 9999,
+  }, indexer.urls, provider);
+
+  return orders.filter((order) => order.state === FullOrderState.open);
 });
 
 interface GetOwnedTokensOfAccountParams {

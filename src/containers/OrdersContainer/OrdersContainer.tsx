@@ -1,17 +1,13 @@
 import React, { FC, ReactElement } from 'react';
 
-import { CollectionTokenInfo, FullOrder, TokenInfo } from '@airswap/types';
+import { CollectionTokenInfo, TokenInfo } from '@airswap/types';
 
 import Icon from '../../components/Icon/Icon';
 import LoadingSpinner from '../../components/LoadingSpinner/LoadingSpinner';
-import NftCard from '../../components/NftCard/NftCard';
-import NftCardSkeleton from '../../components/NftCardSkeleton/NftCardSkeleton';
 import EmptyState from '../../compositions/EmptyState/EmptyState';
-import {
-  getFullOrderExpiryDate,
-  getFullOrderReadableSenderAmountPlusTotalFees,
-} from '../../entities/FullOrder/FullOrderHelpers';
+import { ExtendedFullOrder } from '../../entities/FullOrder/FullOrder';
 import { routes } from '../../routes';
+import OrdersListItem from './subcomponents/OrdersListItem/OrdersListItem';
 
 import './OrdersContainer.scss';
 
@@ -23,7 +19,7 @@ interface OrdersContainerProps {
   currencyTokenInfo: TokenInfo;
   highlightOrderNonce?: string;
   listCallToActionText?: string;
-  orders: FullOrder[];
+  orders: ExtendedFullOrder[];
   tokens: CollectionTokenInfo[];
   className?: string;
 }
@@ -56,42 +52,20 @@ const OrdersContainer: FC<OrdersContainerProps> = ({
 
   return (
     <div className={`orders-container ${className}`}>
-      <div className="orders-container__orders">
+      <ul className="orders-container__orders">
         {orders
-          .map(order => {
-            const orderToken = tokens.find(token => token.id === order.signer.id);
-            const price = getFullOrderReadableSenderAmountPlusTotalFees(order, currencyTokenInfo);
-            const isHighlighted = order.nonce === highlightOrderNonce;
-
-            if (!orderToken) {
-              return (
-                <NftCardSkeleton
-                  key={order.nonce}
-                  isHighlighted={order.nonce === highlightOrderNonce}
-                  price={price.toString()}
-                  symbol={currencyTokenInfo.symbol}
-                  to={routes.nftDetail(order.signer.id)}
-                  className="collection-widget__nft-card"
-                />
-              );
-            }
-
-            return (
-              <NftCard
-                key={order.nonce}
-                isHighlighted={isHighlighted}
-                expiry={showExpiryDate ? getFullOrderExpiryDate(order) : undefined}
-                imageURI={orderToken.image}
-                label={isHighlighted ? 'Newly listed' : undefined}
-                price={price.toString()}
-                name={orderToken.name}
-                symbol={currencyTokenInfo.symbol}
-                to={routes.nftDetail(order.signer.id)}
-                className="collection-widget__nft-card"
+          .map(order => (
+            <li key={order.key}>
+              <OrdersListItem
+                showExpiryDate={showExpiryDate}
+                currencyTokenInfo={currencyTokenInfo}
+                highlightOrderNonce={highlightOrderNonce}
+                order={order}
+                tokens={tokens}
               />
-            );
-          })}
-      </div>
+            </li>
+          ))}
+      </ul>
       {isLoading && <LoadingSpinner className="orders-container__loading-spinner" />}
       <div className="orders-container__end-of-orders-icon-wrapper">
         {(!isLoading && isEndOfOrders) && <Icon name="airswap" className="orders-container__end-of-orders-icon" />}
