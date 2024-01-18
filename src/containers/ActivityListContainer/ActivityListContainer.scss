@@ -5,7 +5,7 @@
     @include for-size(tablet-portrait-up) {
         border: 1px solid var(--c-dark-border);
         border-radius: .25rem;
-        padding: 1.5rem 1rem 1rem;
+        padding: 1.5rem;
     }
 
     &__scroller {
@@ -23,6 +23,7 @@
     &__end-of-list {
         order: 1;
         margin: .75rem auto 0;
+        width: 2.5rem;
         height: 2.5rem;
     }
 
