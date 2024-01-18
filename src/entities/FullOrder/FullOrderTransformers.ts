@@ -15,7 +15,9 @@ const getFullOrderState = (fullOrder: FullOrder, isTaken: boolean, isValid: bool
     return FullOrderState.expired;
   }
 
-  if (!isValid) {
+  // TODO: enable when checkOrders is fixed https://github.com/airswap/airswap-marketplace/issues/192
+  const isValidDisabled = true;
+  if (!isValid && !isValidDisabled) {
     return FullOrderState.invalid;
   }
 

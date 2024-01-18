@@ -40,27 +40,25 @@ export const isFullOrderExpired = (fullOrder: FullOrder): boolean => getFullOrde
 export const getFullOrderNonceUsed = (
   order: FullOrder,
   provider: BaseProvider,
-// TODO: use batch call when available https://github.com/airswap/airswap-marketplace/issues/192
 ): Promise<boolean> => Swap.getContract(provider, order.chainId).nonceUsed(
   order.signer.wallet,
   order.nonce,
 );
 
-export const getFullOrdersNonceUsed = (orders: FullOrder[], provider: BaseProvider): Promise<boolean[]> => Promise.all(
-  orders.map(order => getFullOrderNonceUsed(order, provider)),
-);
+export const getFullOrdersNonceUsed = (orders: FullOrder[], provider: BaseProvider): Promise<boolean[]> => {
+  if (orders.length === 0) {
+    return Promise.resolve([]);
+  }
 
-// TODO: fix getNoncesUsed
-// export const getFullOrdersNonceUsed = (orders: FullOrder[], provider: BaseProvider): Promise<boolean[]> => {
-//   if (orders.length !== 0) {
-//     return Promise.resolve([]);
-//   }
-//
-//   const { chainId } = orders[0];
-//   const contract = BatchCall.getContract(provider, chainId);
-//
-//   return contract.getNoncesUsed(orders.map(order => order.nonce));
-// };
+  const { chainId } = orders[0];
+  const contract = BatchCall.getContract(provider, chainId);
+
+  return contract.getNoncesUsed(
+    orders.map(order => order.signer.wallet),
+    orders.map(order => order.nonce),
+    Swap.getContract(provider, chainId).address,
+  );
+};
 
 export const getFullOrdersIsValid = async (orders: FullOrder[], provider: BaseProvider): Promise<boolean[]> => {
   if (orders.length === 0) {
