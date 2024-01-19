@@ -31,7 +31,7 @@ const NftDetailMainInfo: FC<INftDetailMainInfoProps> = ({
     <span className="nft-detail-main-info__owner">
       <p className="nft-detail-main-info__owner-label">Owned by&nbsp;</p>
 
-      {(owner && ownersLength === 1 && accountRoute) && (
+      {!!(owner && ownersLength === 1 && accountRoute) && (
         <Link
           to={accountRoute}
           className="nft-detail-main-info__owner-name"

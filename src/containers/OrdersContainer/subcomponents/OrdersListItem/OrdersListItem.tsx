@@ -54,6 +54,7 @@ const OrdersListItem: FC<OrdersListItemProps> = ({
       isDisabled={order.state !== FullOrderState.open}
       isHighlighted={isHighlighted}
       expiry={showExpiryDate ? getFullOrderExpiryDate(order) : undefined}
+      id={order.signer.id}
       imageURI={orderToken.image}
       label={label}
       price={price.toString()}
