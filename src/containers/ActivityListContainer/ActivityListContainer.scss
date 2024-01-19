@@ -1,22 +1,30 @@
 @import "src/styles/index";
 
-.activity-list-container {
+$component: "activity-list-container";
+
+.#{$component} {
+
+    &--has-scrollbar {
+
+        .#{$component}__scroller {
+            @extend %scrollbar;
+
+            max-height: 15rem;
+            overflow-y: scroll;
+        }
+    }
+
+    &--is-end-of-list:not(.#{$component}--has-scrollbar) {
+
+        .#{$component}__last-list-item {
+            display: none;
+        }
+    }
 
     @include for-size(tablet-portrait-up) {
         border: 1px solid var(--c-dark-border);
         border-radius: .25rem;
         padding: 1.5rem;
-    }
-
-    &__scroller {
-        @extend %scrollbar;
-
-        max-height: 13.5rem;
-        overflow-y: auto;
-    }
-
-    &__items-list {
-        @extend %scrollbar;
     }
 
     &__loading-spinner,
@@ -34,6 +42,7 @@
     }
 
     &__airswap-icon {
+        display: block;
         margin: 0 auto;
         width: 1.5rem;
         height: 1.5rem;

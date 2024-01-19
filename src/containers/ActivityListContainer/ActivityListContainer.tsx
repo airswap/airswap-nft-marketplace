@@ -1,5 +1,7 @@
 import { FC, ReactElement, useRef } from 'react';
 
+import classNames from 'classnames';
+
 import Icon from '../../components/Icon/Icon';
 import LoadingSpinner from '../../components/LoadingSpinner/LoadingSpinner';
 import { NftTransactionLog } from '../../entities/NftTransactionLog/NftTransactionLog';
@@ -26,6 +28,11 @@ const ActivityListContainer: FC<NftDetailActivityProps> = ({
 }): ReactElement => {
   const scrollRef = useRef<HTMLDivElement>(null);
 
+  const wrapperClassName = classNames('activity-list-container', {
+    'activity-list-container--has-scrollbar': logs.length > 4,
+    'activity-list-container--is-end-of-list': isEndOfList,
+  }, className);
+
   const handleElementScroll = () => {
     if (scrollRef.current && !isEndOfList) {
       const { scrollTop, clientHeight, scrollHeight } = scrollRef.current;
@@ -37,7 +44,7 @@ const ActivityListContainer: FC<NftDetailActivityProps> = ({
 
   if (isLoading && !logs.length) {
     return (
-      <div className={`activity-list-container ${className}`}>
+      <div className={wrapperClassName}>
         <LoadingSpinner className="activity-list-container__loading-spinner" />
       </div>
     );
@@ -45,14 +52,14 @@ const ActivityListContainer: FC<NftDetailActivityProps> = ({
 
   if (!logs.length) {
     return (
-      <div className={`activity-list-container ${className}`}>
+      <div className={wrapperClassName}>
         No activity found
       </div>
     );
   }
 
   return (
-    <div className={`activity-list-container ${className}`}>
+    <div className={wrapperClassName}>
       <div
         ref={scrollRef}
         onScroll={handleElementScroll}

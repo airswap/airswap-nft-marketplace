@@ -29,6 +29,10 @@
             "attributes main-info";
     }
 
+    &--is-disconnected {
+        display: block;
+    }
+
     &--has-button {
         padding-block-end: 4.5rem;
 
