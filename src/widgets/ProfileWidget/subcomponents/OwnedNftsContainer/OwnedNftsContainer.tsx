@@ -46,6 +46,7 @@ const OwnedNftsContainer: FC<OwnedNftsContainerProps> = ({
             key={nft.id}
             isHighlighted={isHighlighted}
             balance={(balance && balance !== '1') ? balance : undefined}
+            id={nft.id}
             imageURI={nft.image}
             label={isHighlighted ? 'Newly bought' : undefined}
             name={nft.name}

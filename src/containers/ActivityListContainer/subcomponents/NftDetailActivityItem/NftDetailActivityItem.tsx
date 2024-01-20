@@ -1,5 +1,6 @@
 import React, { FC, ReactElement, useMemo } from 'react';
 
+// @ts-ignore
 import { getReceiptUrl } from '@airswap/utils';
 import { NavLink } from 'react-router-dom';
 

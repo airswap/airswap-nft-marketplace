@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { CSSProperties } from 'react';
 
 import classNames from 'classnames';
 import { NavLink, NavLinkProps } from 'react-router-dom';
@@ -10,6 +10,7 @@ interface NftCardProps extends NavLinkProps {
   isHighlighted?: boolean;
   balance?: string;
   expiry?: Date;
+  id: string;
   imageURI?: string;
   label?: string;
   name?: string;
@@ -22,6 +23,7 @@ const NftCard = ({
   isDisabled,
   isHighlighted,
   balance,
+  id,
   expiry,
   imageURI,
   label,
@@ -39,9 +41,22 @@ const NftCard = ({
   const isExpired = expiry && expiry < new Date();
   const expiryTranslation = isExpired ? 'Sale ended' : 'Sale ends';
 
+  const cssProperties: CSSProperties = {
+    viewTransitionName: `nft-image-${id}`,
+  };
+
   return (
-    <NavLink to={to} className={linkClassName}>
-      <img className="nft-card__img" src={imageURI} alt={name} />
+    <NavLink
+      unstable_viewTransition
+      to={to}
+      className={linkClassName}
+    >
+      <img
+        src={imageURI}
+        alt={name}
+        style={cssProperties}
+        className="nft-card__img"
+      />
       {(label || balance) && (
         <div className="nft-card__header">
           {label && <div className="nft-card__label">{label}</div>}
