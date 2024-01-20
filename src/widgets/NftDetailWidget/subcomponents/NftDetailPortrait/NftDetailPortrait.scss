@@ -6,13 +6,9 @@
     justify-content: center;
     position: relative;
     border-radius: var(--portrait-border-radius);
-    margin-bottom: var(--page-padding);
     width: 100%;
     aspect-ratio: 1;
-
-    @include for-size(desktop-up) {
-        margin-bottom: 2rem;
-    }
+    overflow: hidden;
 
     &__image {
         position: absolute;

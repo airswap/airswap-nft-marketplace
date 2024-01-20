@@ -1,0 +1,52 @@
+@import "src/styles";
+
+$component: details;
+
+.#{$component} {
+    &[open] {
+        padding-bottom: 1rem;
+
+        .#{$component}__content {
+            margin-top: 1rem;
+
+            @include for-size(tablet-portrait-up) {
+                margin-top: 2rem;
+            }
+        }
+
+        .#{$component}__summary-icon {
+            transform: rotate(180deg);
+        }
+    }
+
+    &__summary {
+        display: flex;
+        align-items: center;
+        gap: .25rem;
+        position: relative;
+        font-size: 1rem;
+        font-weight: var(--fw-700);
+        list-style: none;
+        cursor: pointer;
+        color: var(--c-text-grey);
+
+        &::-webkit-details-marker {
+            display: none;
+        }
+
+        @include for-size(tablet-portrait-up) {
+            padding-inline-end: 4rem;
+            font-size: 1.125em;
+            pointer-events: none;
+        }
+    }
+
+    &__summary-icon {
+        margin-block-start: .125rem;
+
+        @include for-size(tablet-portrait-up) {
+            display: none;
+        }
+    }
+
+}

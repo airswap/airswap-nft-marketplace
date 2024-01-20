@@ -12,6 +12,7 @@ import { getUndefinedAfterTimeout, isPromiseFulfilledResult } from '../../../hel
 
 export const getOrdersFromServer = async (server: Server, filter: OrderFilter): Promise<OrderResponse<FullOrder> | undefined> => {
   const defaultFilter: Partial<OrderFilter> = {
+    chainId: +(process.env.REACT_APP_CHAIN_ID || '1'),
     signerToken: process.env.REACT_APP_COLLECTION_TOKEN,
     senderToken: process.env.REACT_APP_CURRENCY_TOKEN,
     sortField: Indexes.NONCE,

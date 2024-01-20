@@ -23,15 +23,15 @@ interface ConnectedOwnersListProps {
 const ConnectedOwnersList: FC<ConnectedOwnersListProps> = ({ library, tokenId, onClose }): ReactElement => {
   const dispatch = useAppDispatch();
 
-  const { isLoadingOwners, owners, ownersPageKey } = useAppSelector((state) => state.owners);
+  const { isLoading, owners, pageKey } = useAppSelector((state) => state.owners);
 
   const dialogRef = useRef<HTMLDialogElement>(null);
-  const [pageKey, setPageKey] = useState(1);
-  const isEndOfList = ownersPageKey === null;
+  const [page, setPage] = useState(1);
+  const isEndOfList = pageKey === null;
 
   const handleScrolledToBottom = () => {
-    if (!isLoadingOwners && !isEndOfList) {
-      setPageKey(pageKey + 1);
+    if (!isLoading && !isEndOfList) {
+      setPage(page + 1);
     }
   };
 
@@ -41,7 +41,7 @@ const ConnectedOwnersList: FC<ConnectedOwnersListProps> = ({ library, tokenId, o
 
   useEffect(() => {
     dispatch(getErc1155OwnerAddresses({ tokenId, provider: library }));
-  }, [pageKey, tokenId]);
+  }, [page, tokenId]);
 
   useEffect(() => {
     if (dialogRef.current) {
@@ -56,7 +56,7 @@ const ConnectedOwnersList: FC<ConnectedOwnersListProps> = ({ library, tokenId, o
     >
       <OwnersContainer
         isEndOfList={isEndOfList}
-        isLoading={isLoadingOwners}
+        isLoading={isLoading}
         owners={owners}
         onScrolledToBottom={handleScrolledToBottom}
       />

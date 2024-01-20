@@ -1,26 +1,98 @@
 @import "src/styles/index";
 
 .nft-detail-widget {
+    display: flex;
+    flex-direction: column;
+    gap: 1rem;
 
-    &__desktop-view {
-        display: none;
-        @include for-size(desktop-up) {
-            display: flex;
-            justify-content: space-between;
+    @include for-size(tablet-portrait-up) {
+        display: grid;
+        grid-template-columns: repeat(2, 1fr);
+        grid-template-rows: auto auto;
+        grid-gap: 1rem;
+        grid-template-areas:
+            "portrait main-info"
+            "portrait main-info"
+            "description description"
+            "details details"
+            "activity activity"
+            "attributes attributes";
+    }
+
+    @include for-size(tablet-landscape-up) {
+        grid-template-areas:
+            "portrait main-info"
+            "portrait main-info"
+            "description main-info"
+            "details main-info"
+            "activity main-info"
+            "attributes main-info";
+    }
+
+    &--is-disconnected {
+        display: block;
+    }
+
+    &--has-button {
+        padding-block-end: 4.5rem;
+
+        @include for-size(tablet-portrait-up) {
+            padding-block-end: 0;
         }
     }
 
-    &__mobile-view {
-        @include for-size(desktop-up) {
+    &__portrait {
+        grid-area: portrait
+    }
+
+    &__main-info {
+        grid-area: main-info;
+
+        @include for-size(tablet-portrait-up) {
+            padding-inline-start: 1rem;
+        }
+
+        @include for-size(tablet-landscape-up) {
+            padding-block-start: 2.5rem;
+            padding-inline-start: 2.5rem;
+        }
+    }
+
+    &__main-info-price {
+        display: none;
+
+        @include for-size(tablet-portrait-up) {
+            display: block;
+            margin-block-start: 2rem;
+        }
+    }
+
+    &__price {
+
+        @include for-size(tablet-portrait-up) {
             display: none;
         }
     }
 
-    &__column {
-        display: flex;
-        flex-direction: column;
-        width: 100%;
-        max-width: 47.5%;
+    &__description {
+        grid-area: description;
+        margin-block-start: 1rem;
+
+        @include for-size(tablet-portrait-up) {
+            display: none;
+        }
+    }
+
+    &__attributes {
+        grid-area: attributes;
+    }
+
+    &__details {
+        grid-area: details;
+    }
+
+    &__activity {
+        grid-area: activity;
     }
 
     &__loading-spinner {

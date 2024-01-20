@@ -1,4 +1,5 @@
 export interface NftTransactionLog {
+  key: string;
   blockNumber: number;
   from: string;
   recipient: string;

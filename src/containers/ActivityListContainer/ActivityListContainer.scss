@@ -1,0 +1,52 @@
+@import "src/styles/index";
+
+$component: "activity-list-container";
+
+.#{$component} {
+
+    &--has-scrollbar {
+
+        .#{$component}__scroller {
+            @extend %scrollbar;
+
+            max-height: 15rem;
+            overflow-y: scroll;
+        }
+    }
+
+    &--is-end-of-list:not(.#{$component}--has-scrollbar) {
+
+        .#{$component}__last-list-item {
+            display: none;
+        }
+    }
+
+    @include for-size(tablet-portrait-up) {
+        border: 1px solid var(--c-dark-border);
+        border-radius: .25rem;
+        padding: 1.5rem;
+    }
+
+    &__loading-spinner,
+    &__end-of-list {
+        order: 1;
+        margin: .75rem auto 0;
+        width: 2.5rem;
+        height: 2.5rem;
+    }
+
+    &__end-of-list {
+        display: flex;
+        align-items: center;
+        justify-content: center;
+    }
+
+    &__airswap-icon {
+        display: block;
+        margin: 0 auto;
+        width: 1.5rem;
+        height: 1.5rem;
+        color: var(--c-white);
+        opacity: .5;
+    }
+}

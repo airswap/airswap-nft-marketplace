@@ -56,7 +56,7 @@ export const getFullOrdersNonceUsed = (orders: FullOrder[], provider: BaseProvid
   return contract.getNoncesUsed(
     orders.map(order => order.signer.wallet),
     orders.map(order => order.nonce),
-    Swap.getContract(provider, chainId).address,
+    Swap.getAddress(chainId),
   );
 };
 
@@ -71,7 +71,7 @@ export const getFullOrdersIsValid = async (orders: FullOrder[], provider: BasePr
   return contract.getOrdersValid(
     nativeCurrencyAddress,
     orders,
-    Swap.getContract(provider, chainId).address,
+    Swap.getAddress(chainId),
   );
 };
 
