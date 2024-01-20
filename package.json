@@ -9,9 +9,12 @@
     "eject": "react-scripts eject"
   },
   "dependencies": {
+    "@airswap/balances": "4.0.4",
+    "@airswap/constants": "4.2.0-beta.1",
     "@airswap/libraries": "4.2.1-beta.0",
     "@airswap/metadata": "4.1.16",
     "@airswap/types": "4.1.4",
+    "@airswap/utils": "4.2.0-beta.0",
     "@coinbase/wallet-sdk": "^3.7.2",
     "@ethersproject/abi": "^5.7.0",
     "@ethersproject/providers": "^5.7.2",
@@ -46,7 +49,7 @@
     "react-helmet": "^6.1.0",
     "react-icons": "^4.7.1",
     "react-redux": "^7.2.9",
-    "react-router-dom": "^6.21.3",
+    "react-router-dom": "^6.6.0",
     "react-scripts": "4.0.3",
     "react-use": "^17.4.0",
     "truncate-eth-address": "^1.0.2",
