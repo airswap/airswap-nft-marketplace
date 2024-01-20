@@ -172,18 +172,3 @@ export async function getNftTokenApproved(
     return false;
   }
 }
-
-export async function getErc20TokenAllowance(
-  address: string,
-  account: string,
-  spenderAddress: string,
-  provider: ethers.providers.Web3Provider,
-): Promise<ethers.BigNumber> {
-  const contract = new ethers.Contract(
-    address,
-    erc20Interface,
-    provider.getSigner(),
-  );
-
-  return contract.allowance(account, spenderAddress);
-}

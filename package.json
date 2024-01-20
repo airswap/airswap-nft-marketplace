@@ -9,7 +9,6 @@
     "eject": "react-scripts eject"
   },
   "dependencies": {
-    "@airswap/balances": "4.0.4",
     "@airswap/constants": "4.2.0-beta.1",
     "@airswap/libraries": "4.2.1-beta.0",
     "@airswap/metadata": "4.1.16",
@@ -58,6 +57,7 @@
     "web-vitals": "^2.1.0"
   },
   "devDependencies": {
+    "@babel/plugin-proposal-private-property-in-object": "^7.21.11",
     "@craco/craco": "^6.4.1",
     "@types/date-fns": "^2.6.0",
     "@types/jest": "^27.0.1",

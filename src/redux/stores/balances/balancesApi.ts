@@ -1,26 +1,9 @@
-import BalanceChecker from '@airswap/balances/build/contracts/BalanceChecker.sol/BalanceChecker.json';
-// @ts-ignore
-import balancesDeploys from '@airswap/balances/deploys';
-import { Swap } from '@airswap/libraries';
+import { BatchCall, Swap } from '@airswap/libraries';
 import { createAsyncThunk } from '@reduxjs/toolkit';
-import { ethers, providers } from 'ethers';
+import { ethers } from 'ethers';
 
 import { TokenIdsWithBalance } from '../../../entities/TokenIdsWithBalance/TokenIdsWithBalance';
-import { getErc20TokenAllowance } from '../orders/ordersApi';
 import { getOwnedTokenIdsOfWallet } from './balancesHelpers';
-
-const balancesInterface = new ethers.utils.Interface(
-  JSON.stringify(BalanceChecker.abi),
-);
-
-const getBalancesContract = (
-  chainId: keyof typeof balancesDeploys,
-  provider: ethers.providers.Web3Provider,
-) => new ethers.Contract(
-  balancesDeploys[chainId],
-  balancesInterface,
-  provider as providers.Provider,
-);
 
 interface WalletParams {
   chainId: number;
@@ -32,7 +15,7 @@ interface WalletParams {
 export const fetchCurrencyTokenBalance = createAsyncThunk<string, WalletParams>(
   'balances/fetchBalances',
   async (params) => {
-    const contract = getBalancesContract(params.chainId, params.provider);
+    const contract = BatchCall.getContract(params.provider, params.chainId);
 
     const response = await contract.walletBalances(params.walletAddress, [params.collectionTokenAddress]);
 
@@ -43,11 +26,12 @@ export const fetchCurrencyTokenBalance = createAsyncThunk<string, WalletParams>(
 export const fetchCurrencyTokenAllowance = createAsyncThunk<string, WalletParams>(
   'balances/fetchAllowances',
   async (params) => {
-    const response = await getErc20TokenAllowance(
-      params.collectionTokenAddress,
+    const contract = BatchCall.getContract(params.provider, params.chainId);
+
+    const response = await contract.tokenAllowance(
       params.walletAddress,
       Swap.getAddress(params.chainId) || '',
-      params.provider,
+      params.collectionTokenAddress,
     );
 
     return response.toString();
