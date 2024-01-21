@@ -27,17 +27,25 @@ jobs:
         run: |
           yarn
           yarn build
-      - name: Pages Deploy 🚀
+
+      - name: Pages Deploy
         uses: JamesIves/github-pages-deploy-action@4.1.4
         with:
           branch: gh-pages
           folder: build
-      - name: IPFS Deploy 🚀
+
+      - name: IPFS (Infura)
         uses: aquiladev/ipfs-action@master
         with:
           path: ./build
           service: infura
-          host: ${{ vars.IPFS_HOST }}
-          pin: true
           infuraProjectId: ${{ secrets.INFURA_PROJECT_ID }}
           infuraProjectSecret: ${{ secrets.INFURA_PROJECT_SECRET }}
+
+      - name: IPFS (Pinata)
+        uses: aquiladev/ipfs-action@master
+        with:
+          path: ./build
+          service: pinata
+          pinataKey: ${{ secrets.PINATA_KEY }}
+          pinataSecret: ${{ secrets.PINATA_SECRET }}
