@@ -6,7 +6,7 @@ export const saveLastProviderToLocalStorage = (type: ConnectionType) => {
   localStorage.setItem(LAST_PROVIDER_LOCAL_STORAGE_KEY, type);
 };
 
-export const clearLastProvider = () => {
+export const clearLastProviderFromLocalStorage = () => {
   localStorage.setItem(LAST_PROVIDER_LOCAL_STORAGE_KEY, '');
 };
 

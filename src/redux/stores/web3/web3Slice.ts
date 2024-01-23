@@ -1,7 +1,7 @@
 import { createSlice, PayloadAction } from '@reduxjs/toolkit';
 
 import { ConnectionType } from '../../../web3-connectors/connections';
-import { saveLastProviderToLocalStorage } from './web3Api';
+import { clearLastProviderFromLocalStorage, saveLastProviderToLocalStorage } from './web3Api';
 
 
 export interface Web3State {
@@ -33,9 +33,11 @@ export const web3Slice = createSlice({
       ...state,
       ...action.payload,
     }),
-    setConnectionType: (state, action: PayloadAction<ConnectionType>) => {
+    setConnectionType: (state, action: PayloadAction<ConnectionType | undefined>) => {
       if (action.payload) {
         saveLastProviderToLocalStorage(action.payload);
+      } else {
+        clearLastProviderFromLocalStorage();
       }
 
       return {
