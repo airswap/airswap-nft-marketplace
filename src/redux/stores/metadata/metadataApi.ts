@@ -2,6 +2,7 @@ import { SwapERC20 } from '@airswap/libraries';
 import { getTokenInfo } from '@airswap/metadata';
 import { TokenInfo } from '@airswap/types';
 import { createAsyncThunk } from '@reduxjs/toolkit';
+import { NftContract } from 'alchemy-sdk';
 import { ethers } from 'ethers';
 
 interface GetCurrencyTokenInfoParams {
@@ -24,3 +25,12 @@ export const getProtocolFee = async (
   const protocolFee = await SwapERC20.getContract(provider, chainId).protocolFee();
   return protocolFee.toNumber();
 };
+
+export const getCollectionImageBanner = createAsyncThunk<
+string | null,
+string
+>('metadata/getCollectionImageBanner', async (collectionToken: string) => {
+  const response: NftContract = await alchemy.nft.getContractMetadata(collectionToken);
+
+  return response.openSeaMetadata?.imageBannerUrl || null;
+});

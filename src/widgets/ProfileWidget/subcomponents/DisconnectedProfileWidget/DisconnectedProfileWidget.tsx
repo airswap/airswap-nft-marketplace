@@ -3,6 +3,7 @@ import { FC, useMemo } from 'react';
 import LoadingSpinner from '../../../../components/LoadingSpinner/LoadingSpinner';
 import SearchInput from '../../../../components/SearchInput/SearchInput';
 import getOwnedTokensByAccountUrl from '../../../../helpers/airswap/getOwnedTokensByAccountUrl';
+import useCollectionImage from '../../../../hooks/useCollectionImage';
 import useEnsAddress from '../../../../hooks/useEnsAddress';
 import { useAppSelector } from '../../../../redux/hooks';
 import ProfileHeader from '../ProfileHeader/ProfileHeader';
@@ -16,7 +17,9 @@ const ConnectedProfileWidget: FC<ConnectedProfileWidgetProps> = ({
   profileAccount,
   className = '',
 }) => {
-  const { chainId, collectionToken, collectionImage } = useAppSelector((state) => state.config);
+  const { bannerImage } = useCollectionImage();
+
+  const { chainId, collectionToken } = useAppSelector((state) => state.config);
   const { avatarUrl } = useAppSelector((state) => state.user);
 
   const ensAddress = useEnsAddress(profileAccount);
@@ -29,7 +32,7 @@ const ConnectedProfileWidget: FC<ConnectedProfileWidgetProps> = ({
       <ProfileHeader
         accountUrl={accountUrl}
         avatarUrl={avatarUrl}
-        backgroundImage={collectionImage}
+        backgroundImage={bannerImage}
         ensAddress={ensAddress}
         address={profileAccount}
         className="profile-widget__header"

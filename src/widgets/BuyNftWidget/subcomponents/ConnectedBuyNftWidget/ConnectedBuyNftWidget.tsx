@@ -12,6 +12,7 @@ import OrderWidgetHeader from '../../../../compositions/OrderWidgetHeader/OrderW
 import { getFullOrderSenderAmountPlusTotalFees } from '../../../../entities/FullOrder/FullOrderHelpers';
 import { AppErrorType, isAppError } from '../../../../errors/appError';
 import useApproveCurrencyTokenTransaction from '../../../../hooks/useApproveCurrencyTokenTransaction';
+import useCollectionImage from '../../../../hooks/useCollectionImage';
 import useFullOrderExpired from '../../../../hooks/useFullOrderExpired';
 import useInsufficientBalance from '../../../../hooks/useInsufficientBalance';
 import useOrderTransaction from '../../../../hooks/useOrderTransaction';
@@ -56,7 +57,9 @@ const BuyNftWidget: FC<ConnectedBuyNftWidgetProps> = ({
   className = '',
 }) => {
   const dispatch = useAppDispatch();
-  const { collectionImage, collectionName } = useAppSelector(state => state.config);
+  const { bannerImage } = useCollectionImage();
+
+  const { collectionName } = useAppSelector(state => state.config);
   const { error } = useAppSelector(state => state.orders);
 
   const [widgetState, setWidgetState] = useState<BuyNftState>(BuyNftState.details);
@@ -159,7 +162,7 @@ const BuyNftWidget: FC<ConnectedBuyNftWidgetProps> = ({
 
       <BuyNftWidgetDetailsContainer
         chainId={chainId}
-        collectionImage={collectionImage}
+        collectionImage={bannerImage}
         collectionName={collectionName}
         collectionTokenInfo={collectionTokenInfo}
         currencyTokenInfo={currencyTokenInfo}

@@ -4,11 +4,16 @@ import { createSlice, PayloadAction } from '@reduxjs/toolkit';
 import { EnsAddressesMap } from '../../../entities/Address/Address';
 import { CollectionTokenInfoMap } from '../../../entities/CollectionToken/CollectionToken';
 import { fetchProtocolFee } from './metadataActions';
-import { getCurrencyTokenInfo } from './metadataApi';
-import { getCollectionTokensLocalStorageKey } from './metdataHelpers';
+import { getCollectionImageBanner, getCurrencyTokenInfo } from './metadataApi';
+import {
+  getCollectionTokensLocalStorageKey,
+  getLocalStorageCollectionImage,
+  setLocalStorageCollectionImageBanner,
+} from './metdataHelpers';
 
 export interface MetadataState {
   isLoading: boolean;
+  bannerImage?: string | null;
   currencyTokenInfo?: TokenInfo;
   collectionTokens: CollectionTokenInfoMap;
   ensAddresses: EnsAddressesMap
@@ -18,6 +23,7 @@ export interface MetadataState {
 
 const initialState: MetadataState = {
   isLoading: false,
+  bannerImage: getLocalStorageCollectionImage(),
   collectionTokens: {},
   ensAddresses: {},
   projectFee: 0,
@@ -28,11 +34,11 @@ const metadataSlice = createSlice({
   name: 'metadata',
   initialState,
   reducers: {
-    setIsLoading: (state, action: PayloadAction<boolean>) => ({
+    setIsLoading: (state, action: PayloadAction<boolean>): MetadataState => ({
       ...state,
       isLoading: action.payload,
     }),
-    setCollectionTokens: (state, action: PayloadAction<CollectionTokenInfoMap>) => {
+    setCollectionTokens: (state, action: PayloadAction<CollectionTokenInfoMap>): MetadataState => {
       const values = Object.values(action.payload);
 
       if (values.length) {
@@ -44,24 +50,24 @@ const metadataSlice = createSlice({
         collectionTokens: action.payload,
       };
     },
-    setEnsAddresses: (state, action: PayloadAction<EnsAddressesMap>) => ({
+    setEnsAddresses: (state, action: PayloadAction<EnsAddressesMap>): MetadataState => ({
       ...state,
       ensAddresses: action.payload,
     }),
   },
   extraReducers: builder => {
-    builder.addCase(getCurrencyTokenInfo.pending, (state) => ({
+    builder.addCase(getCurrencyTokenInfo.pending, (state): MetadataState => ({
       ...state,
       isLoading: true,
     }));
 
-    builder.addCase(getCurrencyTokenInfo.fulfilled, (state, action) => ({
+    builder.addCase(getCurrencyTokenInfo.fulfilled, (state, action): MetadataState => ({
       ...state,
       isLoading: false,
       currencyTokenInfo: action.payload,
     }));
 
-    builder.addCase(getCurrencyTokenInfo.rejected, (state, action) => {
+    builder.addCase(getCurrencyTokenInfo.rejected, (state, action): MetadataState => {
       console.error(action.error);
 
       return {
@@ -69,10 +75,19 @@ const metadataSlice = createSlice({
       };
     });
 
-    builder.addCase(fetchProtocolFee.fulfilled, (state, action) => ({
+    builder.addCase(fetchProtocolFee.fulfilled, (state, action): MetadataState => ({
       ...state,
       protocolFee: action.payload,
     }));
+
+    builder.addCase(getCollectionImageBanner.fulfilled, (state, action): MetadataState => {
+      setLocalStorageCollectionImageBanner(action.payload);
+
+      return {
+        ...state,
+        bannerImage: action.payload,
+      };
+    });
   },
 });
 

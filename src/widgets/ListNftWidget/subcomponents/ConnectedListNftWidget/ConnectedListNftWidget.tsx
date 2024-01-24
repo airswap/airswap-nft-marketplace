@@ -10,6 +10,7 @@ import { SubmittedTransactionStatus } from '../../../../entities/SubmittedTransa
 import { AppErrorType, isAppError } from '../../../../errors/appError';
 import { toMaxAllowedDecimalsNumberString } from '../../../../helpers/input';
 import useApproveNftTransaction from '../../../../hooks/useApproveNftTransaction';
+import useCollectionImage from '../../../../hooks/useCollectionImage';
 import useCollectionToken from '../../../../hooks/useCollectionToken';
 import useIndexedOrderResult from '../../../../hooks/useIndexedOrderResult';
 import useInsufficientAmount from '../../../../hooks/useInsufficientAmount';
@@ -63,11 +64,12 @@ const ConnectedListNftWidget: FC<ListNftWidgetProps> = ({
   className = '',
 }) => {
   const dispatch = useAppDispatch();
+  const { bannerImage } = useCollectionImage();
 
   // Store data
   const { error: ordersError } = useAppSelector(state => state.orders);
   const { error: listNftError } = useAppSelector(state => state.listNft);
-  const { collectionImage, collectionToken, collectionName } = useAppSelector(state => state.config);
+  const { collectionToken, collectionName } = useAppSelector(state => state.config);
   const { protocolFee, projectFee } = useAppSelector(state => state.metadata);
 
   // User input states
@@ -217,7 +219,7 @@ const ConnectedListNftWidget: FC<ListNftWidgetProps> = ({
 
       <ListNftDetailContainer
         chainId={chainId}
-        collectionImage={collectionImage}
+        collectionImage={bannerImage}
         collectionName={collectionName}
         collectionTokenInfo={collectionTokenInfo}
         currencyTokenAmount={currencyTokenAmount}
