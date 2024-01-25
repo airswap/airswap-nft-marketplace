@@ -1,9 +1,10 @@
-import React, { FC, useEffect } from 'react';
+import React, { FC, useEffect, useState } from 'react';
 
 import { Connector } from '@web3-react/types';
+import { useDebounce } from 'react-use';
 
 import IconButton from '../../compositions/IconButton/IconButton';
-import { useAppDispatch } from '../../redux/hooks';
+import { useAppDispatch, useAppSelector } from '../../redux/hooks';
 import { getLastProviderFromLocalStorage } from '../../redux/stores/web3/web3Api';
 import { setConnectionType, setIsInitialized, setUserHasClosedConnectModal } from '../../redux/stores/web3/web3Slice';
 import { ConnectionType, getConnection } from '../../web3-connectors/connections';
@@ -19,7 +20,11 @@ interface WalletConnectorProps {
 }
 
 const WalletConnector: FC<WalletConnectorProps> = ({ onCloseButtonClick, className = '' }) => {
+  const { isActive, isInitialized } = useAppSelector((state) => state.web3);
+
   const dispatch = useAppDispatch();
+  const [triedToEagerlyConnect, setTriedToEagerlyConnect] = useState(false);
+  const [isActiveState, setIsActiveState] = useState(false);
 
   const activateWallet = async (provider: WalletProvider) => {
     try {
@@ -35,19 +40,32 @@ const WalletConnector: FC<WalletConnectorProps> = ({ onCloseButtonClick, classNa
   const activateWalletEagerly = async (connector: Connector, type: ConnectionType) => {
     try {
       if (connector.connectEagerly) {
+        // Currently connectEagerly does not throw error if connectEagerly fails. So we need to check if it is connected
+        // by using the triedToEagerlyConnect state.
         await connector.connectEagerly();
         dispatch(setConnectionType(type));
       }
     } catch (error) {
       console.error(error);
-    } finally {
       dispatch(setIsInitialized(true));
+    } finally {
+      setTriedToEagerlyConnect(true);
     }
   };
 
   const handleCloseButtonClick = (): void => {
     dispatch(setUserHasClosedConnectModal(true));
     onCloseButtonClick();
+  };
+
+  const handleWalletProviderButtonClick = (provider: WalletProvider): void => {
+    if (!provider.isInstalled) {
+      window.open(provider.url, '_blank');
+
+      return;
+    }
+
+    activateWallet(provider);
   };
 
   useEffect(() => {
@@ -62,15 +80,20 @@ const WalletConnector: FC<WalletConnectorProps> = ({ onCloseButtonClick, classNa
     activateWalletEagerly(getConnection(type).connector, type);
   }, []);
 
-  const handleWalletProviderButtonClick = (provider: WalletProvider): void => {
-    if (!provider.isInstalled) {
-      window.open(provider.url, '_blank');
+  useEffect(() => {
+    setIsActiveState(isActive);
 
-      return;
+    if (!isActive && isActiveState) {
+      dispatch(setConnectionType(undefined));
     }
+  }, [isActive]);
 
-    activateWallet(provider);
-  };
+  useDebounce(() => {
+    if (triedToEagerlyConnect && !isInitialized) {
+      dispatch(setIsInitialized(true));
+      setTriedToEagerlyConnect(false);
+    }
+  }, 100, [triedToEagerlyConnect, isActive, isInitialized]);
 
   return (
     <div className={`wallet-connector ${className}`}>

@@ -6,7 +6,7 @@ import { Helmet } from 'react-helmet';
 import Button from '../../components/Button/Button';
 import useEnsAddress from '../../hooks/useEnsAddress';
 import { useAppDispatch, useAppSelector } from '../../redux/hooks';
-import { clearLastProvider } from '../../redux/stores/web3/web3Api';
+import { clearLastProviderFromLocalStorage } from '../../redux/stores/web3/web3Api';
 import { setShowConnectModal } from '../../redux/stores/web3/web3Slice';
 import { getConnection } from '../../web3-connectors/connections';
 import { tryDeactivateConnector } from '../../web3-connectors/helpers';
@@ -50,7 +50,7 @@ const Page: FC<PageProps> = ({ className = '', contentClassName = '', children }
     }
 
     tryDeactivateConnector(getConnection(connectionType).connector);
-    clearLastProvider();
+    clearLastProviderFromLocalStorage();
   };
 
   const toggleShowWalletConnector = (): void => {
