@@ -16,6 +16,7 @@
 .DS_Store
 .env
 .env.goerli
+.env.sepolia
 .env.main
 .env.local
 .env.development.local

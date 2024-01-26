@@ -28,4 +28,22 @@ export const chainInfo: { [key: string]: ChainInfo } = {
     nativeCurrency: nativeCurrency[ChainIds.GOERLI],
     rpcUrl: rpcUrls[ChainIds.GOERLI] as string,
   },
+  [ChainIds.SEPOLIA]: {
+    explorer: 'https://sepolia.etherscan.io/',
+    label: 'Sepolia',
+    nativeCurrency: nativeCurrency[ChainIds.SEPOLIA],
+    rpcUrl: rpcUrls[ChainIds.SEPOLIA] as string,
+  },
+  [ChainIds.POLYGON]: {
+    explorer: 'https://polygonscan.com/',
+    label: 'Polygon',
+    nativeCurrency: nativeCurrency[ChainIds.POLYGON],
+    rpcUrl: rpcUrls[ChainIds.POLYGON] as string,
+  },
+  [ChainIds.MUMBAI]: {
+    explorer: 'https://mumbai.polygonscan.com/',
+    label: 'Mumbai',
+    nativeCurrency: nativeCurrency[ChainIds.MUMBAI],
+    rpcUrl: rpcUrls[ChainIds.MUMBAI] as string,
+  },
 };

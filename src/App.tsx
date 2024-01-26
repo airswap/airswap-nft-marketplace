@@ -9,6 +9,7 @@ import useSwitchChain from './hooks/useSwitchChain';
 import DebugPage from './pages/DebugPage/DebugPage';
 import { useAppSelector } from './redux/hooks';
 import { useConfig } from './redux/stores/config/configHooks';
+import { selectConfigFailed } from './redux/stores/config/configSlice';
 import { useIndexers } from './redux/stores/indexer/indexerHooks';
 import { useMetadata } from './redux/stores/metadata/metadataHooks';
 import { useTransactions } from './redux/stores/transactions/transactionsHooks';
@@ -17,7 +18,7 @@ import { prioritizedConnectors } from './web3-connectors/connections';
 import ToastsWidget from './widgets/ToastsWidget/ToastsWidget';
 
 const ConnectedApp = () => {
-  const { isFailed } = useAppSelector(state => state.config);
+  const isFailed = useAppSelector(selectConfigFailed);
 
   useConfig();
   useMapWeb3ReactToStore();

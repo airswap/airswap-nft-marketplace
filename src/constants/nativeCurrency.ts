@@ -1,3 +1,4 @@
+import { ChainIds } from '@airswap/constants';
 import { TokenInfo as AirswapTokenInfo } from '@airswap/types';
 
 export const nativeCurrencyAddress = '0x0000000000000000000000000000000000000000';
@@ -9,7 +10,7 @@ interface TokenInfo extends Partial<AirswapTokenInfo> {
 }
 
 const nativeCurrency: Record<number, TokenInfo> = {
-  1: {
+  [ChainIds.MAINNET]: {
     chainId: 1,
     address: nativeCurrencyAddress,
     name: 'Ether',
@@ -17,7 +18,7 @@ const nativeCurrency: Record<number, TokenInfo> = {
     symbol: 'ETH',
     logoURI: 'images/ethereum-logo.png',
   },
-  5: {
+  [ChainIds.GOERLI]: {
     chainId: 5,
     address: nativeCurrencyAddress,
     name: 'Ether',
@@ -25,7 +26,7 @@ const nativeCurrency: Record<number, TokenInfo> = {
     symbol: 'ETH',
     logoURI: 'images/ethereum-logo.png',
   },
-  30: {
+  [ChainIds.RSK]: {
     chainId: 30,
     address: nativeCurrencyAddress,
     name: 'RBTC',
@@ -33,7 +34,7 @@ const nativeCurrency: Record<number, TokenInfo> = {
     symbol: 'RBTC',
     logoURI: 'images/rbtc-logo.png',
   },
-  56: {
+  [ChainIds.BSC]: {
     chainId: 56,
     address: nativeCurrencyAddress,
     name: 'BNB',
@@ -41,7 +42,7 @@ const nativeCurrency: Record<number, TokenInfo> = {
     symbol: 'BNB',
     logoURI: 'images/bnb-logo.png',
   },
-  97: {
+  [ChainIds.BSCTESTNET]: {
     chainId: 97,
     address: nativeCurrencyAddress,
     name: 'BNB',
@@ -49,7 +50,7 @@ const nativeCurrency: Record<number, TokenInfo> = {
     symbol: 'BNB',
     logoURI: 'images/bnb-logo.png',
   },
-  137: {
+  [ChainIds.POLYGON]: {
     chainId: 137,
     address: nativeCurrencyAddress,
     name: 'MATIC',
@@ -57,7 +58,15 @@ const nativeCurrency: Record<number, TokenInfo> = {
     symbol: 'MATIC',
     logoURI: 'images/matic-logo.png',
   },
-  43113: {
+  [ChainIds.MUMBAI]: {
+    chainId: 137,
+    address: nativeCurrencyAddress,
+    name: 'MATIC',
+    decimals: 18,
+    symbol: 'MATIC',
+    logoURI: 'images/matic-logo.png',
+  },
+  [ChainIds.AVALANCHE]: {
     chainId: 43113,
     address: nativeCurrencyAddress,
     name: 'AVAX',
@@ -65,28 +74,14 @@ const nativeCurrency: Record<number, TokenInfo> = {
     symbol: 'AVAX',
     logoURI: 'images/avalanche-logo.png',
   },
-  43114: {
-    chainId: 43114,
+  [ChainIds.SEPOLIA]: {
+    chainId: ChainIds.SEPOLIA,
     address: nativeCurrencyAddress,
-    name: 'AVAX',
+    name: 'Ether',
     decimals: 18,
-    symbol: 'AVAX',
-    logoURI: 'images/avalanche-logo.png',
+    symbol: 'ETH',
+    logoURI: 'images/ethereum-logo.png',
   },
-  80001: {
-    chainId: 80001,
-    address: nativeCurrencyAddress,
-    name: 'MATIC',
-    decimals: 18,
-    symbol: 'MATIC',
-    logoURI: 'images/matic-logo.png',
-  },
-};
-
-export const nativeCurrencySafeTransactionFee: Partial<Record<number, number>> = {
-  1: 0.01,
-  4: 0.001,
-  5: 0.001,
 };
 
 export default nativeCurrency;
