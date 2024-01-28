@@ -9,8 +9,8 @@
     "eject": "react-scripts eject"
   },
   "dependencies": {
-    "@airswap/constants": "4.2.0-beta.1",
-    "@airswap/libraries": "4.2.1-beta.1",
+    "@airswap/constants": "4.2.0",
+    "@airswap/libraries": "4.2.1",
     "@airswap/metadata": "4.1.17",
     "@airswap/types": "4.1.4",
     "@airswap/utils": "4.2.0-beta.0",

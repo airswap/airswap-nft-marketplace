@@ -26,7 +26,7 @@ export const configureUserSubscriber = () => {
 
       userAccount = web3.account;
 
-      const ensAddress = await library.lookupAddress(web3.account);
+      const ensAddress = web3.chainId === 1 ? await library.lookupAddress(web3.account) : undefined;
       store.dispatch(fetchAvatarByAddress({ address: ensAddress || web3.account }));
     }
   });

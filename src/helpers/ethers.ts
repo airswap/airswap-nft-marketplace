@@ -1,6 +1,7 @@
 import { Web3Provider } from '@ethersproject/providers';
 
 import { rpcUrls } from '../constants/rpc';
+import { SupportedChain } from '../constants/supportedChains';
 
 let cachedLibrary: Record<number, Web3Provider> = {};
 
@@ -18,7 +19,7 @@ export const clearedCachedLibrary = (): void => {
 export const getLibrary = (chainId: number): Web3Provider => cachedLibrary[chainId];
 
 export const getRpcUrl = (chainId: number): string | undefined => {
-  const rpcUrl = rpcUrls[chainId];
+  const rpcUrl = rpcUrls[chainId as SupportedChain] as string;
 
   if (!rpcUrl) {
     console.error(

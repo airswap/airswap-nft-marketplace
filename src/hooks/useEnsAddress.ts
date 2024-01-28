@@ -10,6 +10,7 @@ const useEnsAddress = (address?: string): string | undefined => {
   const dispatch = useAppDispatch();
   const { library } = useWeb3ReactLibrary();
 
+  const { chainId } = useAppSelector((state) => state.config);
   const { ensAddresses } = useAppSelector((state) => state.metadata);
 
   const [lookedUpAddress, setLookedUpAddress] = useState<string | null>(null);
@@ -21,7 +22,7 @@ const useEnsAddress = (address?: string): string | undefined => {
   };
 
   useEffect(() => {
-    if (!library || !address) {
+    if (!library || !address || chainId !== 1) {
       return;
     }
 
