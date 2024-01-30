@@ -1,7 +1,11 @@
 import React, { FC, ReactElement, useMemo } from 'react';
 
-import { CollectionTokenInfo, FullOrder, TokenInfo } from '@airswap/types';
-import { getReceiptUrl } from '@airswap/utils';
+import {
+  CollectionTokenInfo,
+  FullOrder,
+  getReceiptUrl,
+  TokenInfo,
+} from '@airswap/utils';
 import classNames from 'classnames';
 
 import ExpiryDateInfo from '../../../../components/ExpiryDateInfo/ExpiryDateInfo';

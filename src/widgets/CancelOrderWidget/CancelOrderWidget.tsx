@@ -1,6 +1,6 @@
 import { FC, ReactElement } from 'react';
 
-import { FullOrder } from '@airswap/types';
+import { FullOrder } from '@airswap/utils';
 
 import useCollectionToken from '../../hooks/useCollectionToken';
 import useFullOrderNonceUsed from '../../hooks/useFullOrderNonceUsed';

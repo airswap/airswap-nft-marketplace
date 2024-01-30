@@ -1,4 +1,4 @@
-import { ChainIds } from '@airswap/constants';
+import { ChainIds } from '@airswap/utils';
 
 export const supportedChains = [
   ChainIds.MAINNET,

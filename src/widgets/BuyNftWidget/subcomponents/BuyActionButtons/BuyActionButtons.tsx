@@ -1,6 +1,6 @@
 import React, { FC, useCallback } from 'react';
 
-import { CollectionTokenInfo } from '@airswap/types';
+import { CollectionTokenInfo } from '@airswap/utils';
 import { NavLink } from 'react-router-dom';
 
 import Button from '../../../../components/Button/Button';

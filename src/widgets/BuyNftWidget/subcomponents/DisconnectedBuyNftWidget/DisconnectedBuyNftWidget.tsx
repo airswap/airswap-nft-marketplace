@@ -1,7 +1,11 @@
 import React, { FC, ReactElement } from 'react';
 
-import { chainNames } from '@airswap/constants';
-import { CollectionTokenInfo, FullOrder, TokenInfo } from '@airswap/types';
+import {
+  chainNames,
+  CollectionTokenInfo,
+  FullOrder,
+  TokenInfo,
+} from '@airswap/utils';
 
 import Button from '../../../../components/Button/Button';
 import LoadingSpinner from '../../../../components/LoadingSpinner/LoadingSpinner';

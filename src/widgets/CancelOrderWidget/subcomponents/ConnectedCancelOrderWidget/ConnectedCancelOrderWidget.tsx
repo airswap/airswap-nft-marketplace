@@ -6,7 +6,7 @@ import {
   useState,
 } from 'react';
 
-import { CollectionTokenInfo, FullOrder, TokenInfo } from '@airswap/types';
+import { CollectionTokenInfo, FullOrder, TokenInfo } from '@airswap/utils';
 import { Web3Provider } from '@ethersproject/providers';
 
 import OrderWidgetHeader from '../../../../compositions/OrderWidgetHeader/OrderWidgetHeader';

@@ -1,5 +1,4 @@
-import { ChainIds } from '@airswap/constants';
-import { TokenInfo as AirswapTokenInfo } from '@airswap/types';
+import { ChainIds, TokenInfo as AirswapTokenInfo } from '@airswap/utils';
 
 import { SupportedChain } from './supportedChains';
 

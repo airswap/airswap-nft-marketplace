@@ -1,7 +1,6 @@
 import { useEffect, useState } from 'react';
 
-import { TokenKinds } from '@airswap/constants';
-import { CollectionTokenInfo } from '@airswap/types';
+import { CollectionTokenInfo, TokenKinds } from '@airswap/utils';
 
 import { isCollectionTokenInfo } from '../entities/CollectionToken/CollectionTokenHelpers';
 import { getNftTokenApproved } from '../redux/stores/orders/ordersApi';

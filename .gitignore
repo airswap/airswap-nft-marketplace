@@ -17,6 +17,7 @@
 .env
 .env.goerli
 .env.sepolia
+.env.mumbai
 .env.main
 .env.local
 .env.development.local

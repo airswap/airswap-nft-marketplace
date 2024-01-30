@@ -1,4 +1,4 @@
-import { ChainIds } from '@airswap/constants';
+import { ChainIds } from '@airswap/utils';
 import { AddEthereumChainParameter } from '@web3-react/types';
 
 import nativeCurrency from '../constants/nativeCurrency';

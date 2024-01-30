@@ -1,6 +1,6 @@
 import { useEffect, useState } from 'react';
 
-import { chainNames } from '@airswap/constants';
+import { chainNames } from '@airswap/utils';
 
 import { getRandomUuid } from '../helpers/crypto';
 import { useAppDispatch, useAppSelector } from '../redux/hooks';

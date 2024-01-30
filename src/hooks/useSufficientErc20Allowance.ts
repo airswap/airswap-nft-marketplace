@@ -1,6 +1,6 @@
 import { useEffect, useState } from 'react';
 
-import { FullOrder } from '@airswap/types';
+import { FullOrder } from '@airswap/utils';
 import { BigNumber } from 'bignumber.js';
 
 import { getFullOrderSenderAmountPlusTotalFees } from '../entities/FullOrder/FullOrderHelpers';

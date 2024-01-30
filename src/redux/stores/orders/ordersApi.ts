@@ -1,7 +1,10 @@
-import { TokenKinds } from '@airswap/constants';
 import { Swap } from '@airswap/libraries';
-import { FullOrder, TokenInfo } from '@airswap/types';
-import { checkResultToErrors } from '@airswap/utils';
+import {
+  FullOrder,
+  parseCheckResult,
+  TokenInfo,
+  TokenKinds,
+} from '@airswap/utils';
 import erc20Contract from '@openzeppelin/contracts/build/contracts/ERC20.json';
 import erc721Contract from '@openzeppelin/contracts/build/contracts/ERC721.json';
 import erc1155Contract from '@openzeppelin/contracts/build/contracts/ERC1155.json';
@@ -111,7 +114,7 @@ export async function checkOrder(
   const { chainId } = provider.network;
 
   const [count, checkErrors] = await Swap.getContract(provider.getSigner(), chainId).check(senderWallet, order);
-  const errors = (count && checkErrors) ? checkResultToErrors(checkErrors, count) as SwapError[] : [];
+  const errors = (count && checkErrors) ? parseCheckResult(checkErrors) as SwapError[] : [];
 
   if (errors.length) {
     console.error(errors);

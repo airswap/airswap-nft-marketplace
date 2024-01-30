@@ -1,4 +1,4 @@
-import { Order } from '@airswap/types';
+import { Order } from '@airswap/utils';
 
 import {
   CancelOrderTransaction,

@@ -1,6 +1,6 @@
 import { useEffect, useState } from 'react';
 
-import { FullOrder } from '@airswap/types';
+import { FullOrder } from '@airswap/utils';
 
 import { getFullOrderNonceUsed } from '../entities/FullOrder/FullOrderHelpers';
 import useDefaultProvider from './useDefaultProvider';

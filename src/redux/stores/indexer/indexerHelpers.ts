@@ -4,7 +4,7 @@ import {
   FullOrder,
   Indexes,
   OrderResponse,
-} from '@airswap/types';
+} from '@airswap/utils';
 
 import { INDEXER_ORDER_RESPONSE_TIME_MS } from '../../../constants/indexer';
 import { transformOrderFilterToAirswapOrderFilter } from '../../../entities/OrderFilter/OrderFilerTransformers';
@@ -26,11 +26,9 @@ export const getOrdersFromServer = async (server: Server, filter: OrderFilter): 
   try {
     return await server.getOrders(
       transformOrderFilterToAirswapOrderFilter(filterWithDefaults),
-      [],
       filterWithDefaults.offset || 0,
       filterWithDefaults.limit || 9999,
       Indexes.NONCE,
-      // @ts-ignore
       Direction.DESC,
     );
   } catch (e: any) {
@@ -55,7 +53,6 @@ export const getServers = async (indexerUrls: string[]): Promise<Server[]> => {
 
 const addOrderHelper = (server: Server, order: FullOrder): Promise<boolean> => new Promise((resolve, reject) => {
   server
-    // @ts-ignore
     .addOrder(order, ['Background:Mold'])
     .then((response) => {
       resolve(response);

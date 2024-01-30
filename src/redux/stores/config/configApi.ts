@@ -1,5 +1,5 @@
-import { TokenKinds } from '@airswap/constants';
 import { Swap } from '@airswap/libraries/build/src/Contracts';
+import { TokenKinds } from '@airswap/utils';
 import { createAsyncThunk } from '@reduxjs/toolkit';
 import { ethers } from 'ethers';
 

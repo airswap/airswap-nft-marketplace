@@ -1,4 +1,4 @@
-import { Order } from '@airswap/types';
+import { Order } from '@airswap/utils';
 
 export enum SubmittedTransactionType {
   erc20Approval = 'erc20-approval',

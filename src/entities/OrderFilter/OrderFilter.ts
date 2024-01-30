@@ -1,4 +1,4 @@
-import { OrderFilter as AirswapOrderFilter } from '@airswap/types';
+import { OrderFilter as AirswapOrderFilter } from '@airswap/utils';
 
 export interface OrderFilter {
   chainId?: AirswapOrderFilter['chainId'];

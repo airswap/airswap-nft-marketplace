@@ -1,4 +1,4 @@
-import { TokenKinds } from '@airswap/constants';
+import { TokenKinds } from '@airswap/utils';
 
 export type NftTokenKind = TokenKinds.ERC1155 | TokenKinds.ERC721;
 

@@ -29,10 +29,8 @@ export const useConfig = (): void => {
   }, [library?.connection.url, chainId]);
 
   useEffect(() => {
-    if (chainId) {
-      dispatch(getSwapContractAddress(chainId));
-    }
-  }, [chainId]);
+    dispatch(getSwapContractAddress(configChainId));
+  }, [configChainId]);
 
   useEffect(() => {
     if (

@@ -5,7 +5,7 @@ import React, {
   useState,
 } from 'react';
 
-import { CollectionTokenInfo, TokenInfo } from '@airswap/types';
+import { CollectionTokenInfo, TokenInfo } from '@airswap/utils';
 import { BaseProvider } from '@ethersproject/providers';
 import classNames from 'classnames';
 import { useToggle } from 'react-use';

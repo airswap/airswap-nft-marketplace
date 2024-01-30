@@ -1,4 +1,4 @@
-import { TokenKinds } from '@airswap/constants';
+import { TokenKinds } from '@airswap/utils';
 
 export const supportedCollectionTokenKinds: TokenKinds[] = [
   TokenKinds.ERC721,

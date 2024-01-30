@@ -1,4 +1,4 @@
-import { FullOrder, OrderResponse } from '@airswap/types';
+import { FullOrder, OrderResponse } from '@airswap/utils';
 import { BaseProvider } from '@ethersproject/providers';
 
 import { INDEXER_ORDER_RESPONSE_TIME_MS } from '../constants/indexer';

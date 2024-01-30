@@ -1,6 +1,6 @@
 import React, { FC } from 'react';
 
-import { CollectionTokenInfo } from '@airswap/types';
+import { CollectionTokenInfo } from '@airswap/utils';
 
 import Button from '../../components/Button/Button';
 import Icon from '../../components/Icon/Icon';

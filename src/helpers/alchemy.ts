@@ -1,4 +1,4 @@
-import { ChainIds } from '@airswap/constants';
+import { ChainIds } from '@airswap/utils';
 import { Network } from 'alchemy-sdk';
 
 import { SupportedChain } from '../constants/supportedChains';

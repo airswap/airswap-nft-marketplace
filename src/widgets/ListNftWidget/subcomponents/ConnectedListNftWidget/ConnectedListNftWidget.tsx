@@ -1,6 +1,6 @@
 import React, { FC, useEffect, useState } from 'react';
 
-import { FullOrder, TokenInfo } from '@airswap/types';
+import { FullOrder, TokenInfo } from '@airswap/utils';
 import { Web3Provider } from '@ethersproject/providers';
 
 import { expiryAmounts } from '../../../../constants/expiry';

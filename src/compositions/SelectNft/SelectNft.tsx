@@ -8,7 +8,7 @@ import {
   useState,
 } from 'react';
 
-import { CollectionTokenInfo } from '@airswap/types';
+import { CollectionTokenInfo } from '@airswap/utils';
 import { useDebounce } from 'react-use';
 
 import SearchInput from '../../components/SearchInput/SearchInput';

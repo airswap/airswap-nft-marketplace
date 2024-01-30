@@ -1,4 +1,4 @@
-import { TokenKinds } from '@airswap/constants';
+import { TokenKinds } from '@airswap/utils';
 import { createSlice } from '@reduxjs/toolkit';
 
 import { RootState } from '../../store';

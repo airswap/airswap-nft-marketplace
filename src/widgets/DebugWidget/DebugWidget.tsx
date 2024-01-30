@@ -1,6 +1,6 @@
 import { FC, ReactElement } from 'react';
 
-import { chainNames } from '@airswap/constants';
+import { chainNames } from '@airswap/utils';
 
 import LoadingSpinner from '../../components/LoadingSpinner/LoadingSpinner';
 import { useAppSelector } from '../../redux/hooks';

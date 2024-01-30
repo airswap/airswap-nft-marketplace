@@ -1,4 +1,4 @@
-import { ChainIds } from '@airswap/constants';
+import { ChainIds } from '@airswap/utils';
 import { initializeConnector } from '@web3-react/core';
 import { WalletConnect } from '@web3-react/walletconnect-v2';
 

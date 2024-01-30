@@ -1,5 +1,5 @@
-import { Protocols } from '@airswap/constants';
 import { Registry } from '@airswap/libraries';
+import { ProtocolIds } from '@airswap/utils';
 import { createAsyncThunk } from '@reduxjs/toolkit';
 import { ethers } from 'ethers';
 
@@ -22,6 +22,6 @@ AppThunkApiConfig
   return Registry.getServerURLs(
     provider,
     chainId,
-    Protocols.Indexing,
+    ProtocolIds.Indexing,
   );
 });

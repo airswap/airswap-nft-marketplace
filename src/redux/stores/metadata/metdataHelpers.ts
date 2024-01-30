@@ -1,4 +1,4 @@
-import { CollectionTokenInfo } from '@airswap/types';
+import { CollectionTokenInfo } from '@airswap/utils';
 
 import { isCollectionTokenInfo } from '../../../entities/CollectionToken/CollectionTokenHelpers';
 import { parseJsonObject } from '../../../helpers/json';

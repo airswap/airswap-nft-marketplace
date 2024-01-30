@@ -1,4 +1,4 @@
-import { TokenInfo } from '@airswap/types';
+import { TokenInfo } from '@airswap/utils';
 import { createSlice, PayloadAction } from '@reduxjs/toolkit';
 
 import { EnsAddressesMap } from '../../../entities/Address/Address';
@@ -27,7 +27,7 @@ const initialState: MetadataState = {
   collectionTokens: {},
   ensAddresses: {},
   projectFee: 0,
-  protocolFee: 7,
+  protocolFee: 5,
 };
 
 const metadataSlice = createSlice({

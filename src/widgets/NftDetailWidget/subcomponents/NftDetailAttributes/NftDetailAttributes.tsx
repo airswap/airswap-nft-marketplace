@@ -1,6 +1,6 @@
 import React, { FC } from 'react';
 
-import { CollectionTokenAttribute } from '@airswap/types';
+import { CollectionTokenAttribute } from '@airswap/utils';
 
 import NftDetailAttributeCard from '../NftDetailAttributeCard/NftDetailAttributeCard';
 

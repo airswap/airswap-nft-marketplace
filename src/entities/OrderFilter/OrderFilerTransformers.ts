@@ -1,4 +1,4 @@
-import { OrderFilter as AirswapOrderFilter } from '@airswap/types';
+import { OrderFilter as AirswapOrderFilter } from '@airswap/utils';
 
 import { OrderFilter } from './OrderFilter';
 

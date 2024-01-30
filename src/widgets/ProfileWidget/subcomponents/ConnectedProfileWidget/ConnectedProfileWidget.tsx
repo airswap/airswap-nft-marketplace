@@ -5,7 +5,7 @@ import {
   useState,
 } from 'react';
 
-import { TokenInfo } from '@airswap/types';
+import { TokenInfo } from '@airswap/utils';
 import { BaseProvider } from '@ethersproject/providers';
 import { useSearchParams } from 'react-router-dom';
 
