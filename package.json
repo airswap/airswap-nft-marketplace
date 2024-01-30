@@ -10,8 +10,6 @@
   },
   "dependencies": {
     "@airswap/libraries": "4.2.4",
-    "@airswap/metadata": "4.1.17",
-    "@airswap/types": "4.2.0",
     "@airswap/utils": "4.2.3",
     "@coinbase/wallet-sdk": "^3.7.2",
     "@ethersproject/abi": "^5.7.0",

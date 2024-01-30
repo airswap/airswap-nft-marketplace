@@ -60,7 +60,7 @@ const ConnectedCollectionWidget: FC<ConnectedCollectionWidgetProps> = ({ currenc
     getOrders();
 
     return () => dispatch(reset());
-  }, [provider]);
+  }, []);
 
   useEffect(() => {
     if (scrolledToBottom) {

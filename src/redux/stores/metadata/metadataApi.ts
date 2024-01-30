@@ -1,6 +1,5 @@
 import { Swap } from '@airswap/libraries';
-import { getTokenInfo } from '@airswap/metadata';
-import { TokenInfo } from '@airswap/utils';
+import { getTokenInfo, TokenInfo } from '@airswap/utils';
 import { createAsyncThunk } from '@reduxjs/toolkit';
 import { NftContract } from 'alchemy-sdk';
 import { ethers } from 'ethers';
