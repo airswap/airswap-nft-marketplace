@@ -1,6 +1,6 @@
 import { useLayoutEffect, useState } from 'react';
 
-import { CollectionTokenInfo } from '@airswap/types';
+import { CollectionTokenInfo } from '@airswap/utils';
 
 import { getCollectionTokenOwners } from '../entities/CollectionToken/CollectionTokenHelpers';
 import { useAppSelector } from '../redux/hooks';

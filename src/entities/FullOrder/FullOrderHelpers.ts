@@ -1,5 +1,5 @@
 import { BatchCall, Swap } from '@airswap/libraries';
-import { FullOrder, TokenInfo } from '@airswap/types';
+import { FullOrder, TokenInfo } from '@airswap/utils';
 import { BaseProvider } from '@ethersproject/providers';
 import { format } from '@greypixel_/nicenumbers';
 import { BigNumber } from 'bignumber.js';

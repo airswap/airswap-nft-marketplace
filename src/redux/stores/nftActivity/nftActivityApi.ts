@@ -1,4 +1,4 @@
-import { TokenKinds } from '@airswap/constants';
+import { TokenKinds } from '@airswap/utils';
 import { BaseProvider } from '@ethersproject/providers';
 import { createAsyncThunk } from '@reduxjs/toolkit';
 import { GetNftSalesResponse, SortingOrder } from 'alchemy-sdk';

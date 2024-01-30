@@ -1,6 +1,6 @@
 import React, { ChangeEvent, FC } from 'react';
 
-import { TokenInfo } from '@airswap/types';
+import { TokenInfo } from '@airswap/utils';
 
 import Input from '../../components/Input/Input';
 import { transformInputEventToValue } from './helpers/transformInputEventToValue';

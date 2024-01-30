@@ -4,9 +4,10 @@ import {
   FullOrder,
   Indexes,
   OrderResponse,
-} from '@airswap/types';
+} from '@airswap/utils';
 
 import { INDEXER_ORDER_RESPONSE_TIME_MS } from '../../../constants/indexer';
+import { transformOrderFilterToAirswapOrderFilter } from '../../../entities/OrderFilter/OrderFilerTransformers';
 import { OrderFilter } from '../../../entities/OrderFilter/OrderFilter';
 import { getUndefinedAfterTimeout, isPromiseFulfilledResult } from '../../../helpers/indexers';
 
@@ -15,8 +16,6 @@ export const getOrdersFromServer = async (server: Server, filter: OrderFilter): 
     chainId: +(process.env.REACT_APP_CHAIN_ID || '1'),
     signerToken: process.env.REACT_APP_COLLECTION_TOKEN,
     senderToken: process.env.REACT_APP_CURRENCY_TOKEN,
-    sortField: Indexes.NONCE,
-    sortOrder: Direction.DESC,
   };
 
   const filterWithDefaults: OrderFilter = {
@@ -25,14 +24,12 @@ export const getOrdersFromServer = async (server: Server, filter: OrderFilter): 
   };
 
   try {
-    // @ts-ignore
     return await server.getOrders(
-      filterWithDefaults,
+      transformOrderFilterToAirswapOrderFilter(filterWithDefaults),
       filterWithDefaults.offset || 0,
       filterWithDefaults.limit || 9999,
-      // @ts-ignore
-      filterWithDefaults.sortField,
-      filterWithDefaults.sortOrder,
+      Indexes.NONCE,
+      Direction.DESC,
     );
   } catch (e: any) {
     console.error(
@@ -56,7 +53,7 @@ export const getServers = async (indexerUrls: string[]): Promise<Server[]> => {
 
 const addOrderHelper = (server: Server, order: FullOrder): Promise<boolean> => new Promise((resolve, reject) => {
   server
-    .addOrder(order)
+    .addOrder(order, ['Background:Mold'])
     .then((response) => {
       resolve(response);
     })

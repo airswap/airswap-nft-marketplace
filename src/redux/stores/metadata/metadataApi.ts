@@ -1,6 +1,5 @@
-import { SwapERC20 } from '@airswap/libraries';
-import { getTokenInfo } from '@airswap/metadata';
-import { TokenInfo } from '@airswap/types';
+import { Swap } from '@airswap/libraries';
+import { getTokenInfo, TokenInfo } from '@airswap/utils';
 import { createAsyncThunk } from '@reduxjs/toolkit';
 import { NftContract } from 'alchemy-sdk';
 import { ethers } from 'ethers';
@@ -22,7 +21,7 @@ export const getProtocolFee = async (
   chainId: number,
   provider: ethers.providers.BaseProvider,
 ): Promise<number> => {
-  const protocolFee = await SwapERC20.getContract(provider, chainId).protocolFee();
+  const protocolFee = await Swap.getContract(provider, chainId).protocolFee();
   return protocolFee.toNumber();
 };
 

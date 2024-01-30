@@ -1,5 +1,9 @@
-import { TokenKinds } from '@airswap/constants';
-import { CollectionTokenInfo, FullOrder, TokenInfo } from '@airswap/types';
+import {
+  CollectionTokenInfo,
+  FullOrder,
+  TokenInfo,
+  TokenKinds,
+} from '@airswap/utils';
 import { Web3Provider } from '@ethersproject/providers';
 import { createAsyncThunk } from '@reduxjs/toolkit';
 import { Transaction } from 'ethers';

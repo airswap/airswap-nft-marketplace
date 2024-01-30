@@ -1,7 +1,11 @@
-import { TokenKinds } from '@airswap/constants';
 import { Swap } from '@airswap/libraries';
-import { CollectionTokenInfo, FullOrder, TokenInfo } from '@airswap/types';
-import { createOrder } from '@airswap/utils';
+import {
+  CollectionTokenInfo,
+  createOrder,
+  FullOrder,
+  TokenInfo,
+  TokenKinds,
+} from '@airswap/utils';
 import { Web3Provider } from '@ethersproject/providers';
 import { createAsyncThunk } from '@reduxjs/toolkit';
 

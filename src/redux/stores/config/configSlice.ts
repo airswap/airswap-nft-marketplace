@@ -1,13 +1,15 @@
-import { TokenKinds } from '@airswap/constants';
-import { createSlice, PayloadAction } from '@reduxjs/toolkit';
+import { TokenKinds } from '@airswap/utils';
+import { createSlice } from '@reduxjs/toolkit';
 
-import { getCollectionTokenKind, getCurrencyTokenKind } from './configApi';
+import { RootState } from '../../store';
+import { getCollectionTokenKind, getCurrencyTokenKind, getSwapContractAddress } from './configApi';
 
 export interface ConfigState {
-  isFailed: boolean;
+  hasFailedCollectionToken: boolean;
+  hasFailedCurrencyToken: boolean;
+  hasFailedSwapContract: boolean;
   isLoadingCollectionTokenKind: boolean;
   isLoadingCurrencyTokenKind: boolean;
-  isSuccessful: boolean;
   chainId: number;
   currencyToken: string;
   currencyTokenKind?: TokenKinds;
@@ -16,12 +18,15 @@ export interface ConfigState {
   collectionName: string;
   collectionImage: string;
   storageServerUrl: string;
+  swapContractAddress?: string | null;
 }
+
 const initialState: ConfigState = {
-  isFailed: false,
+  hasFailedCollectionToken: false,
+  hasFailedCurrencyToken: false,
+  hasFailedSwapContract: false,
   isLoadingCollectionTokenKind: false,
   isLoadingCurrencyTokenKind: false,
-  isSuccessful: false,
   chainId: process.env.REACT_APP_CHAIN_ID ? parseInt(process.env.REACT_APP_CHAIN_ID, 10) : 1,
   currencyToken: (process.env.REACT_APP_CURRENCY_TOKEN || '').toLowerCase(),
   collectionToken: (process.env.REACT_APP_COLLECTION_TOKEN || '').toLowerCase(),
@@ -37,10 +42,6 @@ const configSlice = createSlice({
     reset: (): ConfigState => ({
       ...initialState,
     }),
-    setIsSuccessful: (state, action: PayloadAction<boolean>): ConfigState => ({
-      ...state,
-      isSuccessful: action.payload,
-    }),
   },
   extraReducers: builder => {
     builder.addCase(getCollectionTokenKind.pending, (state): ConfigState => ({
@@ -55,7 +56,7 @@ const configSlice = createSlice({
     builder.addCase(getCollectionTokenKind.rejected, (state): ConfigState => ({
       ...state,
       isLoadingCollectionTokenKind: false,
-      isFailed: true,
+      hasFailedCollectionToken: true,
     }));
     builder.addCase(getCurrencyTokenKind.pending, (state): ConfigState => ({
       ...state,
@@ -69,14 +70,24 @@ const configSlice = createSlice({
     builder.addCase(getCurrencyTokenKind.rejected, (state): ConfigState => ({
       ...state,
       isLoadingCurrencyTokenKind: false,
-      isFailed: true,
+      hasFailedCurrencyToken: true,
+    }));
+    builder.addCase(getSwapContractAddress.fulfilled, (state, action): ConfigState => ({
+      ...state,
+      swapContractAddress: action.payload,
+    }));
+    builder.addCase(getSwapContractAddress.rejected, (state): ConfigState => ({
+      ...state,
+      swapContractAddress: null,
+      hasFailedSwapContract: true,
     }));
   },
 });
 
-export const {
-  setIsSuccessful,
-  reset,
-} = configSlice.actions;
+export const { reset } = configSlice.actions;
+
+export const selectConfigFailed = ({ config }: RootState): boolean => config.hasFailedCurrencyToken
+    || config.hasFailedSwapContract
+    || config.hasFailedCollectionToken;
 
 export default configSlice.reducer;

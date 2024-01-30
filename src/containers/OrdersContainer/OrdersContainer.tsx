@@ -1,6 +1,6 @@
 import React, { FC, ReactElement } from 'react';
 
-import { CollectionTokenInfo, TokenInfo } from '@airswap/types';
+import { CollectionTokenInfo, TokenInfo } from '@airswap/utils';
 
 import Icon from '../../components/Icon/Icon';
 import LoadingSpinner from '../../components/LoadingSpinner/LoadingSpinner';

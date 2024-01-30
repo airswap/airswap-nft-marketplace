@@ -1,6 +1,6 @@
 import React, { FC, ReactElement } from 'react';
 
-import { FullOrder } from '@airswap/types';
+import { FullOrder } from '@airswap/utils';
 
 import BuyNftWidget from '../../../BuyNftWidget/BuyNftWidget';
 import CancelOrderWidget from '../../../CancelOrderWidget/CancelOrderWidget';

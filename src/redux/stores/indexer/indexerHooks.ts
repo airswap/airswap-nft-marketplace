@@ -1,6 +1,6 @@
 import { useEffect } from 'react';
 
-import { FullOrder } from '@airswap/types';
+import { FullOrder } from '@airswap/utils';
 
 import useDefaultLibrary from '../../../hooks/useDefaultProvider';
 import { useAppDispatch, useAppSelector } from '../../hooks';

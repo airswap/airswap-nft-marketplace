@@ -1,4 +1,5 @@
-import { TokenKinds } from '@airswap/constants';
+import { Swap } from '@airswap/libraries/build/src/Contracts';
+import { TokenKinds } from '@airswap/utils';
 import { createAsyncThunk } from '@reduxjs/toolkit';
 import { ethers } from 'ethers';
 
@@ -25,3 +26,17 @@ AppThunkApiConfig
 >('config/getCurrencyTokenKind', async ({ address, provider }) => (
   getCurrencyTokenKindHelper(provider, address)
 ));
+
+export const getSwapContractAddress = createAsyncThunk<
+string,
+number,
+AppThunkApiConfig
+>('config/getSwapContractAddress', async (chainId) => {
+  const address = Swap.getAddress(chainId);
+
+  if (!address) {
+    throw new Error('Swap contract address not found');
+  }
+
+  return address;
+});

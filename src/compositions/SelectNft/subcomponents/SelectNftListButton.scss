@@ -28,9 +28,11 @@
         @extend %trade-window-icon;
 
         min-width: 2.375rem;
+        max-width: 2.375rem;
 
         @include for-size(tiny-phone-only) {
             min-width: 2rem;
+            max-width: 2rem;
         }
     }
 

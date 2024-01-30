@@ -1,6 +1,6 @@
 import React, { FC } from 'react';
 
-import { TokenInfo } from '@airswap/types';
+import { TokenInfo } from '@airswap/utils';
 
 import Icon from '../Icon/Icon';
 

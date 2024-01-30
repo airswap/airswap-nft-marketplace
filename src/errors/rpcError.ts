@@ -47,10 +47,6 @@ export const transformRpcErrorToAppError = (error: RpcError): AppError => {
     return transformToAppError(AppErrorType.invalidRequest, error);
   }
 
-  if (error.code === -32603) {
-    return transformToAppError(AppErrorType.approveCallerIsNotOwner, error);
-  }
-
   // Add other errors from eth-rpc-errors if necessary.
 
   return transformToAppError(AppErrorType.unknownError, error);

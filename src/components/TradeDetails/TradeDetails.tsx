@@ -1,6 +1,6 @@
 import React, { FC, useMemo } from 'react';
 
-import { CollectionTokenInfo, TokenInfo } from '@airswap/types';
+import { CollectionTokenInfo, TokenInfo } from '@airswap/utils';
 import { format } from '@greypixel_/nicenumbers';
 import { BigNumber } from 'bignumber.js';
 

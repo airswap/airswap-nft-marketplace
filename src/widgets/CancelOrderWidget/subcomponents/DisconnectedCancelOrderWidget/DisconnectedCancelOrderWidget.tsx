@@ -1,6 +1,6 @@
 import React, { FC, ReactElement } from 'react';
 
-import { FullOrder } from '@airswap/types';
+import { FullOrder } from '@airswap/utils';
 
 import LoadingSpinner from '../../../../components/LoadingSpinner/LoadingSpinner';
 import OrderWidgetHeader from '../../../../compositions/OrderWidgetHeader/OrderWidgetHeader';

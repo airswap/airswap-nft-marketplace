@@ -1,4 +1,4 @@
-import { TokenKinds } from '@airswap/constants';
+import { TokenKinds } from '@airswap/utils';
 import erc20AbiContract from '@openzeppelin/contracts/build/contracts/ERC20.json';
 import erc721AbiContract from '@openzeppelin/contracts/build/contracts/ERC721.json';
 import { ethers } from 'ethers';

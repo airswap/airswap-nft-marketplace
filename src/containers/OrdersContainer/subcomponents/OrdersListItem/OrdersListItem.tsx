@@ -1,6 +1,6 @@
 import React, { FC, ReactElement, useMemo } from 'react';
 
-import { CollectionTokenInfo, TokenInfo } from '@airswap/types';
+import { CollectionTokenInfo, TokenInfo } from '@airswap/utils';
 
 import NftCard from '../../../../components/NftCard/NftCard';
 import NftCardSkeleton from '../../../../components/NftCardSkeleton/NftCardSkeleton';

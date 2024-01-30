@@ -1,6 +1,6 @@
 import { useEffect, useMemo, useState } from 'react';
 
-import { CollectionTokenInfo } from '@airswap/types';
+import { CollectionTokenInfo } from '@airswap/utils';
 
 import { getCollectionToken, isCollectionTokenInfo } from '../entities/CollectionToken/CollectionTokenHelpers';
 import { AppError, isAppError } from '../errors/appError';

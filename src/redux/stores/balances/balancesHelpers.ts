@@ -1,4 +1,4 @@
-import { TokenKinds } from '@airswap/constants';
+import { TokenKinds } from '@airswap/utils';
 // eslint-disable-next-line import/no-extraneous-dependencies
 import { Event } from '@ethersproject/contracts';
 import erc721AbiContract from '@openzeppelin/contracts/build/contracts/ERC721.json';

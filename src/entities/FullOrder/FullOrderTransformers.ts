@@ -1,4 +1,4 @@
-import { FullOrder } from '@airswap/types';
+import { FullOrder } from '@airswap/utils';
 
 import { FullOrderState } from '../../types/FullOrderState';
 import { ExtendedFullOrder } from './FullOrder';

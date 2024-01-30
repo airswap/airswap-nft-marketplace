@@ -1,7 +1,6 @@
 import React, { FC } from 'react';
 
-import { chainNames } from '@airswap/constants';
-import { getAccountUrl } from '@airswap/utils';
+import { chainNames, getAccountUrl } from '@airswap/utils';
 import truncateEthAddress from 'truncate-eth-address';
 
 import './NftDetailList.scss';

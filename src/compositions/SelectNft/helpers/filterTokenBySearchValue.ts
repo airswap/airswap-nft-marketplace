@@ -1,4 +1,4 @@
-import { CollectionTokenInfo } from '@airswap/types';
+import { CollectionTokenInfo } from '@airswap/utils';
 
 import { filterCollectionTokenBySearchValue } from '../../../entities/CollectionToken/CollectionTokenHelpers';
 

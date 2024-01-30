@@ -1,6 +1,6 @@
 import React, { FC, useCallback } from 'react';
 
-import { FullOrder, TokenInfo } from '@airswap/types';
+import { FullOrder, TokenInfo } from '@airswap/utils';
 import classnames from 'classnames';
 import { NavLink } from 'react-router-dom';
 

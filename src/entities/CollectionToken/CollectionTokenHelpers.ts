@@ -1,6 +1,4 @@
-import { TokenKinds } from '@airswap/constants';
-import { getCollectionTokenInfo } from '@airswap/metadata';
-import { CollectionTokenInfo } from '@airswap/types';
+import { CollectionTokenInfo, getCollectionTokenInfo, TokenKinds } from '@airswap/utils';
 import erc721AbiContract from '@openzeppelin/contracts/build/contracts/ERC721.json';
 import erc721AbiEnumerableContract from '@openzeppelin/contracts/build/contracts/ERC721Enumerable.json';
 import erc1155AbiContract from '@openzeppelin/contracts/build/contracts/ERC1155.json';

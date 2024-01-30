@@ -14,6 +14,7 @@ import {
 } from '../redux/stores/balances/balancesApi';
 import { setTokens } from '../redux/stores/balances/balancesSlice';
 import { setOrders } from '../redux/stores/collection/collectionSlice';
+import { selectConfigFailed } from '../redux/stores/config/configSlice';
 import { setOrders as setProfileOrders } from '../redux/stores/profileOrders/profileOrdersSlice';
 import { addNftSoldToast } from '../redux/stores/toasts/toastsActions';
 import useWeb3ReactLibrary from './useWeb3ReactLibrary';
@@ -24,6 +25,7 @@ interface LastSoldOrder {
 }
 
 const useSwapEventsSubscriber = () => {
+  const isFailed = useAppSelector(selectConfigFailed);
   const { account } = useAppSelector(state => state.web3);
   const { chainId, collectionToken, currencyToken } = useAppSelector(state => state.config);
   const { tokenIdsWithBalance } = useAppSelector(state => state.balances);
@@ -110,7 +112,7 @@ const useSwapEventsSubscriber = () => {
   };
 
   useEffect(() => {
-    if (!library || !account) {
+    if (!library || !account || isFailed) {
       return noop;
     }
 

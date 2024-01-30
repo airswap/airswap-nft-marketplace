@@ -3,8 +3,8 @@ import { useEffect } from 'react';
 import { supportedCollectionTokenKinds, supportedCurrencyTokenKinds } from '../../../constants/supportedTokenKinds';
 import useWeb3ReactLibrary from '../../../hooks/useWeb3ReactLibrary';
 import { useAppDispatch, useAppSelector } from '../../hooks';
-import { getCollectionTokenKind, getCurrencyTokenKind } from './configApi';
-import { reset, setIsSuccessful } from './configSlice';
+import { getCollectionTokenKind, getCurrencyTokenKind, getSwapContractAddress } from './configApi';
+import { reset } from './configSlice';
 
 export const useConfig = (): void => {
   const dispatch = useAppDispatch();
@@ -16,6 +16,7 @@ export const useConfig = (): void => {
     chainId: configChainId,
     currencyToken,
     currencyTokenKind,
+    swapContractAddress,
   } = useAppSelector(state => state.config);
 
   useEffect(() => {
@@ -25,7 +26,11 @@ export const useConfig = (): void => {
 
     dispatch(getCollectionTokenKind({ address: collectionToken, provider: library }));
     dispatch(getCurrencyTokenKind({ address: currencyToken, provider: library }));
-  }, [library?.connection.url]);
+  }, [library?.connection.url, chainId]);
+
+  useEffect(() => {
+    dispatch(getSwapContractAddress(configChainId));
+  }, [configChainId]);
 
   useEffect(() => {
     if (
@@ -34,9 +39,9 @@ export const useConfig = (): void => {
       && currencyTokenKind
       && supportedCurrencyTokenKinds.includes(currencyTokenKind)
     ) {
-      dispatch(setIsSuccessful(true));
+      // dispatch(setIsSuccessful(true));
     }
-  }, [collectionTokenKind]);
+  }, [collectionTokenKind, swapContractAddress]);
 
   useEffect(() => {
     if (chainId !== configChainId) {

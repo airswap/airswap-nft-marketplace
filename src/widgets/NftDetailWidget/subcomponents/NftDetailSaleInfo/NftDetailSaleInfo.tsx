@@ -1,6 +1,6 @@
 import React, { FC, useMemo } from 'react';
 
-import { FullOrder, TokenInfo } from '@airswap/types';
+import { FullOrder, TokenInfo } from '@airswap/utils';
 
 import LoadingSpinner from '../../../../components/LoadingSpinner/LoadingSpinner';
 import {

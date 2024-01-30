@@ -5,7 +5,7 @@ import React, {
   useState,
 } from 'react';
 
-import { CollectionTokenInfo, TokenInfo } from '@airswap/types';
+import { CollectionTokenInfo, TokenInfo } from '@airswap/utils';
 import { BaseProvider } from '@ethersproject/providers';
 import classNames from 'classnames';
 import { useToggle } from 'react-use';
@@ -64,7 +64,7 @@ const ConnectedNftDetailWidget: FC<ConnectedNftDetailWidgetProps> = ({
   const accountRoute = owner ? routes.profile(owner) : undefined;
   const orderRoute = order ? routes.orderDetail(order.signer.wallet, order.nonce) : undefined;
   const listRoute = (accountIsOwner && !order) ? routes.listNft(collectionTokenInfo.id) : undefined;
-  const showButton = (orderRoute || listRoute) && ownersLength && account && !isLoading;
+  const showButton = !!((orderRoute || listRoute) && ownersLength && account && !isLoading);
 
   const wrapperClassName = classNames('nft-detail-widget', {
     'nft-detail-widget--has-button': showButton,
