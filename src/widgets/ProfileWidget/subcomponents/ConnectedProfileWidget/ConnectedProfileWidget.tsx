@@ -15,6 +15,7 @@ import Helmet from '../../../../compositions/Helmet/Helmet';
 import { INDEXER_ORDERS_OFFSET } from '../../../../constants/indexer';
 import { filterCollectionTokenBySearchValue } from '../../../../entities/CollectionToken/CollectionTokenHelpers';
 import getOwnedTokensByAccountUrl from '../../../../helpers/airswap/getOwnedTokensByAccountUrl';
+import useCollectionImage from '../../../../hooks/useCollectionImage';
 import useCollectionTokens from '../../../../hooks/useCollectionTokens';
 import useEnsAddress from '../../../../hooks/useEnsAddress';
 import useScrollToBottom from '../../../../hooks/useScrollToBottom';
@@ -41,8 +42,9 @@ const ConnectedProfileWidget: FC<ConnectedProfileWidgetProps> = ({
   const dispatch = useAppDispatch();
   const [searchParams] = useSearchParams();
   const scrolledToBottom = useScrollToBottom();
+  const { bannerImage } = useCollectionImage();
 
-  const { chainId, collectionToken, collectionImage } = useAppSelector((state) => state.config);
+  const { chainId, collectionToken } = useAppSelector((state) => state.config);
   const { avatarUrl } = useAppSelector((state) => state.user);
   const {
     isLoadingTokens: isLoadingUserTokens,
@@ -98,7 +100,7 @@ const ConnectedProfileWidget: FC<ConnectedProfileWidgetProps> = ({
         accountUrl={accountUrl}
         address={profileAccount}
         avatarUrl={avatarUrl}
-        backgroundImage={collectionImage}
+        backgroundImage={bannerImage}
         ensAddress={ensAddress}
         className="profile-widget__header"
       />

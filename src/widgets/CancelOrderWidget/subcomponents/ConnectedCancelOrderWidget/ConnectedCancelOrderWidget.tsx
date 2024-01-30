@@ -12,6 +12,7 @@ import { Web3Provider } from '@ethersproject/providers';
 import OrderWidgetHeader from '../../../../compositions/OrderWidgetHeader/OrderWidgetHeader';
 import { AppErrorType, isAppError } from '../../../../errors/appError';
 import useCancelOrderTransaction from '../../../../hooks/useCancelOrderTransaction';
+import useCollectionImage from '../../../../hooks/useCollectionImage';
 import { useAppDispatch, useAppSelector } from '../../../../redux/hooks';
 import { cancel } from '../../../../redux/stores/orders/ordersActions';
 import { addUserRejectedToast } from '../../../../redux/stores/toasts/toastsActions';
@@ -45,10 +46,11 @@ const ConnectedCancelOrderWidget: FC<ConnectedCancelOrderWidgetProps> = ({
   className = '',
 }): ReactElement => {
   const dispatch = useAppDispatch();
+  const { bannerImage } = useCollectionImage();
+
   const [widgetState, setWidgetState] = useState<CancelOrderState>(CancelOrderState.details);
   const [cancelTransactionHash, setCancelTransactionHash] = useState<string>();
 
-  const { collectionImage } = useAppSelector(state => state.config);
   const { protocolFee, projectFee } = useAppSelector(state => state.metadata);
   const cancelOrderTransaction = useCancelOrderTransaction(cancelTransactionHash);
 
@@ -101,7 +103,7 @@ const ConnectedCancelOrderWidget: FC<ConnectedCancelOrderWidgetProps> = ({
       />
       <CancelDetailsContainer
         chainId={chainId}
-        collectionImage={collectionImage}
+        collectionImage={bannerImage}
         collectionTokenInfo={collectionTokenInfo}
         currencyTokenInfo={currencyTokenInfo}
         fullOrder={fullOrder}

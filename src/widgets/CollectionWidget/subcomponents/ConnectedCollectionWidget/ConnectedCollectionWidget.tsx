@@ -12,6 +12,7 @@ import SearchInput from '../../../../components/SearchInput/SearchInput';
 import { INDEXER_ORDERS_OFFSET } from '../../../../constants/indexer';
 import OrdersContainer from '../../../../containers/OrdersContainer/OrdersContainer';
 import { filterCollectionTokenBySearchValue } from '../../../../entities/CollectionToken/CollectionTokenHelpers';
+import useCollectionImage from '../../../../hooks/useCollectionImage';
 import useCollectionTokens from '../../../../hooks/useCollectionTokens';
 import useScrollToBottom from '../../../../hooks/useScrollToBottom';
 import { useAppDispatch, useAppSelector } from '../../../../redux/hooks';
@@ -28,9 +29,10 @@ interface ConnectedCollectionWidgetProps {
 
 const ConnectedCollectionWidget: FC<ConnectedCollectionWidgetProps> = ({ currencyTokenInfo, provider, className = '' }) => {
   const dispatch = useAppDispatch();
-
   const scrolledToBottom = useScrollToBottom();
-  const { collectionImage, collectionToken, collectionName } = useAppSelector((state) => state.config);
+  const { bannerImage } = useCollectionImage();
+
+  const { collectionToken, collectionName } = useAppSelector((state) => state.config);
   const { tokenIdsWithBalance } = useAppSelector((state) => state.balances);
   const {
     hasServerError,
@@ -80,7 +82,7 @@ const ConnectedCollectionWidget: FC<ConnectedCollectionWidgetProps> = ({ currenc
   return (
     <div className={`collection-widget ${className}`}>
       <CollectionPortrait
-        backgroundImage={collectionImage}
+        backgroundImage={bannerImage}
         subTitle="Collection"
         title={collectionName}
         className="collection-widget__portrait"

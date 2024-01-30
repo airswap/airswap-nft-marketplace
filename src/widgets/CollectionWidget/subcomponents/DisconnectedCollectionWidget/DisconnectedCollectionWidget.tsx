@@ -1,5 +1,6 @@
 import React, { FC } from 'react';
 
+import useCollectionImage from '../../../../hooks/useCollectionImage';
 import { useAppSelector } from '../../../../redux/hooks';
 import CollectionPortrait from '../CollectionPortrait/CollectionPortrait';
 
@@ -8,12 +9,13 @@ interface DisconnectedCollectionWidgetProps {
 }
 
 const DisconnectedCollectionWidget: FC<DisconnectedCollectionWidgetProps> = ({ className = '' }) => {
-  const { collectionImage, collectionName } = useAppSelector((state) => state.config);
+  const { bannerImage } = useCollectionImage();
+  const { collectionName } = useAppSelector((state) => state.config);
 
   return (
     <div className={`collection-widget ${className}`}>
       <CollectionPortrait
-        backgroundImage={collectionImage}
+        backgroundImage={bannerImage}
         subTitle="Collection"
         title={collectionName}
         className="collection-widget__portrait"

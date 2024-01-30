@@ -16,6 +16,7 @@ import { INDEXER_ORDERS_OFFSET } from '../../../../constants/indexer';
 import OrdersContainer from '../../../../containers/OrdersContainer/OrdersContainer';
 import { filterCollectionTokenBySearchValue } from '../../../../entities/CollectionToken/CollectionTokenHelpers';
 import getOwnedTokensByAccountUrl from '../../../../helpers/airswap/getOwnedTokensByAccountUrl';
+import useCollectionImage from '../../../../hooks/useCollectionImage';
 import useCollectionTokens from '../../../../hooks/useCollectionTokens';
 import useEnsAddress from '../../../../hooks/useEnsAddress';
 import useScrollToBottom from '../../../../hooks/useScrollToBottom';
@@ -42,10 +43,10 @@ const ConnectedProfileOrdersWidget: FC<ConnectedProfileOrdersWidgetProps> = ({
 }): ReactElement => {
   const dispatch = useAppDispatch();
   const [searchParams] = useSearchParams();
-
+  const { bannerImage } = useCollectionImage();
   const scrolledToBottom = useScrollToBottom();
 
-  const { chainId, collectionToken, collectionImage } = useAppSelector((state) => state.config);
+  const { chainId, collectionToken } = useAppSelector((state) => state.config);
   const { tokenIdsWithBalance: userTokenIdsWithBalance } = useAppSelector((state) => state.balances);
   const { avatarUrl } = useAppSelector((state) => state.user);
   const {
@@ -107,7 +108,7 @@ const ConnectedProfileOrdersWidget: FC<ConnectedProfileOrdersWidgetProps> = ({
         accountUrl={accountUrl}
         address={profileAccount}
         avatarUrl={avatarUrl}
-        backgroundImage={collectionImage}
+        backgroundImage={bannerImage}
         ensAddress={ensAddress}
         className="profile-widget__header"
       />

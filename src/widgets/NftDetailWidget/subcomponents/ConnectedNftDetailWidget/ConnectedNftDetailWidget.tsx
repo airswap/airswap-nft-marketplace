@@ -15,6 +15,7 @@ import ConnectedActivityList from '../../../../connectors/ConnectedActivityList/
 import ConnectedOwnersList from '../../../../connectors/ConnectedOwnersList/ConnectedOwnersList';
 import { isFullOrderExpired } from '../../../../entities/FullOrder/FullOrderHelpers';
 import useAddressOrEnsName from '../../../../hooks/useAddressOrEnsName';
+import useCollectionImage from '../../../../hooks/useCollectionImage';
 import useNftTokenOwners from '../../../../hooks/useNftTokenOwners';
 import { useAppDispatch, useAppSelector } from '../../../../redux/hooks';
 import { getNftOrderByTokenId } from '../../../../redux/stores/nftDetail/nftDetailApi';
@@ -44,8 +45,9 @@ const ConnectedNftDetailWidget: FC<ConnectedNftDetailWidgetProps> = ({
 }) => {
   const dispatch = useAppDispatch();
   const activityListRef = useRef<HTMLDivElement>(null);
+  const { bannerImage } = useCollectionImage();
 
-  const { chainId, collectionToken, collectionImage } = useAppSelector((state) => state.config);
+  const { chainId, collectionToken } = useAppSelector((state) => state.config);
   const { account } = useAppSelector((state) => state.web3);
 
   const { protocolFee } = useAppSelector(state => state.metadata);
@@ -127,7 +129,7 @@ const ConnectedNftDetailWidget: FC<ConnectedNftDetailWidgetProps> = ({
 
       <NftDetailPortrait
         id={collectionTokenInfo.id}
-        backgroundImage={collectionTokenInfo.image || collectionImage}
+        backgroundImage={collectionTokenInfo.image || bannerImage}
         className="nft-detail-widget__portrait"
       />
 
