@@ -14,7 +14,7 @@ import { AppErrorType, isAppError } from '../../../errors/appError';
 import toRoundedAtomicString from '../../../helpers/airswap/getRoundedAtomicString';
 import { createOrderSignature } from '../../../helpers/createOrderSignature';
 import { NftTokenKind } from '../../../types/NftTokenKind';
-import { setError, setUserOrder } from './listNftSlice';
+import { setError, setLastUserOrder } from './listNftSlice';
 
 interface CreateOrderParams {
   expiry: string;
@@ -82,7 +82,7 @@ CreateOrderParams
         swapContract: Swap.getAddress(chainId) || '',
       };
 
-      dispatch(setUserOrder(fullOrder));
+      dispatch(setLastUserOrder({ order: fullOrder, token: params.signerTokenInfo }));
       return fullOrder;
     } catch (error) {
       console.error(error);
