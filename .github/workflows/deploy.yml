@@ -23,7 +23,7 @@ jobs:
           REACT_APP_CURRENCY_TOKEN: ${{ vars.REACT_APP_CURRENCY_TOKEN }}
           REACT_APP_STORAGE_SERVER_URL: ${{ vars.REACT_APP_STORAGE_SERVER_URL }}
           REACT_APP_WALLET_CONNECT_PROJECT_ID: ${{ vars.REACT_APP_WALLET_CONNECT_PROJECT_ID }}
-          REACT_APP_RPC_URL_5: ${{ vars.REACT_APP_RPC_URL_5 }}
+          REACT_APP_RPC_URL_11155111: ${{ vars.REACT_APP_RPC_URL_11155111 }}
         run: |
           yarn
           yarn build
