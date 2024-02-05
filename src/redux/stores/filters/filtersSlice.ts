@@ -5,6 +5,7 @@ import { getTagOptions } from './filtersApi';
 
 export interface FiltersState {
   isLoadingTags: boolean;
+  activeTags: string[];
   tagOptions: CollectionTokenAttribute[];
   search: string;
   selectedTags: string[];
@@ -12,6 +13,7 @@ export interface FiltersState {
 
 const initialState: FiltersState = {
   isLoadingTags: false,
+  activeTags: [],
   tagOptions: [],
   search: '',
   selectedTags: [],
@@ -21,6 +23,12 @@ export const FiltersSlice = createSlice({
   name: 'filtersReducer',
   initialState,
   reducers: {
+    setActiveTags(state, action: PayloadAction<string[]>): FiltersState {
+      return {
+        ...state,
+        activeTags: action.payload,
+      };
+    },
     setSelectedTags(state, action: PayloadAction<string[]>): FiltersState {
       return {
         ...state,
@@ -54,6 +62,7 @@ export const FiltersSlice = createSlice({
 });
 
 export const {
+  setActiveTags,
   setSelectedTags,
   setSearch,
 } = FiltersSlice.actions;
