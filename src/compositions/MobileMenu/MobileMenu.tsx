@@ -14,6 +14,7 @@ interface MobileMenuProp {
   address: string;
   ensAddress?: string | undefined;
   onNavLinkClick: () => void;
+  onLogoutButtonClick: () => void;
   className?: string;
 }
 
@@ -23,6 +24,7 @@ const MobileMenu: FC<MobileMenuProp> = ({
   address,
   ensAddress,
   onNavLinkClick,
+  onLogoutButtonClick,
   className = '',
 }) => {
   const mobileMenuClassName = classNames('mobile-menu', {
@@ -35,6 +37,8 @@ const MobileMenu: FC<MobileMenuProp> = ({
         avatarUrl={avatarUrl}
         address={address}
         ensAddress={ensAddress}
+        showLogOutButton
+        onLogoutButtonClick={onLogoutButtonClick}
       />
       <div className="mobile-menu__nav-links">
         <NavLink

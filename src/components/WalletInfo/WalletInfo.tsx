@@ -2,6 +2,7 @@ import React, { FC } from 'react';
 
 import classNames from 'classnames';
 
+import IconButton from '../../compositions/IconButton/IconButton';
 import { truncateAddress } from '../../helpers/string';
 import Avatar from '../Avatar/Avatar';
 import Icon from '../Icon/Icon';
@@ -10,20 +11,24 @@ import './WalletInfo.scss';
 
 interface WalletInfoProps {
   isBanner?: boolean;
+  showLogOutButton?: boolean;
   accountUrl?: string;
   address?: string;
   avatarUrl?: string;
   ensAddress?: string;
+  onLogoutButtonClick?: () => void;
   className?: string;
   avatarClassName?: string;
 }
 
 const WalletInfo: FC<WalletInfoProps> = ({
   isBanner = false,
+  showLogOutButton,
   accountUrl,
   address = '',
   avatarUrl = '',
   ensAddress = '',
+  onLogoutButtonClick,
   className = '',
   avatarClassName = '',
 }) => {
@@ -52,6 +57,16 @@ const WalletInfo: FC<WalletInfoProps> = ({
             className="wallet-info__icon"
           />
         </a>
+      )}
+      {showLogOutButton && (
+        <IconButton
+          hideLabel
+          icon="logout"
+          text="logout"
+          onClick={onLogoutButtonClick}
+          iconClassName="wallet-info__icon"
+          className="wallet-info__button"
+        />
       )}
     </div>
   );

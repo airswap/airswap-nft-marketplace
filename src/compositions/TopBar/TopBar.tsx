@@ -6,7 +6,6 @@ import React, {
 } from 'react';
 
 import classNames from 'classnames';
-import { NavLink } from 'react-router-dom';
 
 import Avatar from '../../components/Avatar/Avatar';
 import Button from '../../components/Button/Button';
@@ -23,6 +22,7 @@ interface TopBarProps {
   mobileMenuIsVisible: boolean;
   showDesktopConnectButton: boolean;
   showDesktopUserButton: boolean;
+  showMobileMenuButton: boolean;
   userWalletButtonIsDisabled: boolean;
   account?: string;
   avatarUrl?: string;
@@ -38,6 +38,7 @@ const TopBar: FC<TopBarProps> = ({
   mobileMenuIsVisible,
   showDesktopConnectButton,
   showDesktopUserButton,
+  showMobileMenuButton,
   userWalletButtonIsDisabled,
   account,
   avatarUrl,
@@ -87,7 +88,7 @@ const TopBar: FC<TopBarProps> = ({
         to="/"
         className="top-bar__airswap-button"
       />
-      {account && (
+      {showMobileMenuButton && (
         <IconButton
           hideLabel
           icon={!mobileMenuIsVisible ? 'menu' : 'close'}
@@ -115,14 +116,16 @@ const TopBar: FC<TopBarProps> = ({
         )}
         {showDesktopUserButton
           && (
-            <NavLink
-              aria-disabled={userWalletButtonIsDisabled}
-              to={routes.profile(ensAddress || account || '')}
+            <Button
+              disabled={userWalletButtonIsDisabled}
+              ref={userButtonRef}
+              text={truncateAddress(ensAddress || account || '')}
+              onClick={() => setIsPopupOpen(!isPopupOpen)}
               className="top-bar__user-button"
             >
               <Avatar avatarUrl={avatarUrl} className="top-bar__user-button-icon" />
               {truncateAddress(ensAddress || account || '')}
-            </NavLink>
+            </Button>
           )}
       </div>
       {isPopupOpen && (

@@ -36,7 +36,6 @@ $component: user-popup;
         font-size: .875rem;
         
         &:hover, &:focus {
-            font-weight: var(--fw-500);
             color: var(--c-white);
             background-color: var(--c-grey);
         }

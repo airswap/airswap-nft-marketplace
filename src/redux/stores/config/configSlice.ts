@@ -8,6 +8,7 @@ export interface ConfigState {
   hasFailedCollectionToken: boolean;
   hasFailedCurrencyToken: boolean;
   hasFailedSwapContract: boolean;
+  isDemoAccount: boolean;
   isLoadingCollectionTokenKind: boolean;
   isLoadingCurrencyTokenKind: boolean;
   chainId: number;
@@ -17,6 +18,7 @@ export interface ConfigState {
   collectionTokenKind?: TokenKinds;
   collectionName: string;
   collectionImage: string;
+  impersonateAddress?: string;
   storageServerUrl: string;
   swapContractAddress?: string | null;
 }
@@ -25,6 +27,7 @@ const initialState: ConfigState = {
   hasFailedCollectionToken: false,
   hasFailedCurrencyToken: false,
   hasFailedSwapContract: false,
+  isDemoAccount: !!process.env.REACT_APP_IMPERSONATE_ADDRESS,
   isLoadingCollectionTokenKind: false,
   isLoadingCurrencyTokenKind: false,
   chainId: process.env.REACT_APP_CHAIN_ID ? parseInt(process.env.REACT_APP_CHAIN_ID, 10) : 1,
@@ -32,6 +35,7 @@ const initialState: ConfigState = {
   collectionToken: (process.env.REACT_APP_COLLECTION_TOKEN || '').toLowerCase(),
   collectionName: process.env.REACT_APP_COLLECTION_NAME || '',
   collectionImage: process.env.REACT_APP_COLLECTION_IMAGE || '',
+  impersonateAddress: process.env.REACT_APP_IMPERSONATE_ADDRESS,
   storageServerUrl: process.env.REACT_APP_STORAGE_SERVER_URL || '',
 };
 

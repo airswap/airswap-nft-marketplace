@@ -69,7 +69,7 @@ const ConnectedListNftWidget: FC<ListNftWidgetProps> = ({
   // Store data
   const { error: ordersError } = useAppSelector(state => state.orders);
   const { error: listNftError } = useAppSelector(state => state.listNft);
-  const { collectionToken, collectionName } = useAppSelector(state => state.config);
+  const { isDemoAccount, collectionToken, collectionName } = useAppSelector(state => state.config);
   const { protocolFee, projectFee } = useAppSelector(state => state.metadata);
 
   // User input states
@@ -84,9 +84,9 @@ const ConnectedListNftWidget: FC<ListNftWidgetProps> = ({
   const [currencyTokenAmountMinusProtocolFee, protocolFeeInCurrencyToken] = useTokenAmountAndFee(currencyTokenAmount);
   const [approvalTransactionHash, setApprovalTransactionHash] = useState<string>();
   const [order, setOrder] = useState<FullOrder>();
-  const hasInsufficientAmount = useInsufficientAmount(currencyTokenAmount);
+  const hasInsufficientAmount = useInsufficientAmount(currencyTokenAmount) || !isDemoAccount;
   const hasInsufficientExpiryAmount = !expiryAmount || expiryAmount < 0;
-  const hasCollectionTokenApproval = useNftTokenApproval(collectionTokenInfo, selectedTokenId);
+  const hasCollectionTokenApproval = useNftTokenApproval(collectionTokenInfo, selectedTokenId) || isDemoAccount;
   const approveTransaction = useApproveNftTransaction(approvalTransactionHash);
   const [indexedOrderResult, indexerError] = useIndexedOrderResult(order?.nonce);
   const activeUserOrder = userOrders.find(userOrder => userOrder.signer.id === selectedTokenId);

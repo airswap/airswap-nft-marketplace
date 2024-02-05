@@ -67,6 +67,7 @@ const Page: FC<PageProps> = ({ className = '', contentClassName = '', children }
         mobileMenuIsVisible={mobileMenuIsVisible}
         showDesktopConnectButton={isInitialized && !isActive}
         showDesktopUserButton={isInitialized && isActive}
+        showMobileMenuButton={isActive}
         userWalletButtonIsDisabled={!chainIdIsCorrect}
         avatarUrl={avatarUrl}
         account={account}
@@ -76,12 +77,13 @@ const Page: FC<PageProps> = ({ className = '', contentClassName = '', children }
         onMobileMenuButtonClick={handleIconButtonClick}
         className="page__top-bar"
       />
-      {account && (
+      {(account && isActive) && (
         <MobileMenu
           isHidden={!mobileMenuIsVisible}
           avatarUrl={avatarUrl}
           address={account}
           onNavLinkClick={handleIconButtonClick}
+          onLogoutButtonClick={handleDisconnectButtonClick}
           className="page__mobile-menu"
         />
       )}
