@@ -1,19 +1,19 @@
 import React, { FC } from 'react';
 
 import Helmet from '../../compositions/Helmet/Helmet';
-import Page from '../../compositions/Page/Page';
+import ConnectedPage from '../../connectors/ConnectedPage/ConnectedPage';
 import CollectionWidget from '../../widgets/CollectionWidget/CollectionWidget';
 
 import './CollectionPage.scss';
 
 const CollectionPage: FC = () => (
-  <Page
+  <ConnectedPage
     className="collection-page"
     contentClassName="collection-page__content"
   >
     <Helmet title="All listings" />
     <CollectionWidget />
-  </Page>
+  </ConnectedPage>
 );
 
 export default CollectionPage;

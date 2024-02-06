@@ -4,7 +4,7 @@ import { useParams } from 'react-router-dom';
 
 import DisconnectedOrderDetail from '../../compositions/DisconnectedOrderDetail/DisconnectedOrderDetail';
 import Helmet from '../../compositions/Helmet/Helmet';
-import Page from '../../compositions/Page/Page';
+import ConnectedPage from '../../connectors/ConnectedPage/ConnectedPage';
 import OrderDetailWidget from '../../widgets/OrderDetailWidget/OrderDetailWidget';
 
 import './OrderDetailPage.scss';
@@ -14,17 +14,17 @@ const OrderDetailPage: FC = () => {
 
   if (!orderNonce || !account) {
     return (
-      <Page className="order-detail-page">
+      <ConnectedPage className="order-detail-page">
         <DisconnectedOrderDetail isOrderNonceUndefined />
-      </Page>
+      </ConnectedPage>
     );
   }
 
   return (
-    <Page className="order-detail-page">
+    <ConnectedPage className="order-detail-page">
       <Helmet title="Order detail" />
       <OrderDetailWidget orderNonce={orderNonce} signerWallet={account} />
-    </Page>
+    </ConnectedPage>
   );
 };
 

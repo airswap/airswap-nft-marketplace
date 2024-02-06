@@ -3,6 +3,7 @@ import React, { FC } from 'react';
 import classNames from 'classnames';
 import { NavLink } from 'react-router-dom';
 
+import Button from '../../components/Button/Button';
 import WalletInfo from '../../components/WalletInfo/WalletInfo';
 import { routes } from '../../routes';
 
@@ -10,19 +11,23 @@ import './MobileMenu.scss';
 
 interface MobileMenuProp {
   isHidden: boolean;
+  showDisableDemoAccountButton: boolean;
   avatarUrl?: string;
   address: string;
   ensAddress?: string | undefined;
+  onDisableDemoAccountButtonClick: () => void;
   onNavLinkClick: () => void;
   onLogoutButtonClick: () => void;
   className?: string;
 }
 
 const MobileMenu: FC<MobileMenuProp> = ({
-  avatarUrl,
   isHidden,
+  showDisableDemoAccountButton,
+  avatarUrl,
   address,
   ensAddress,
+  onDisableDemoAccountButtonClick,
   onNavLinkClick,
   onLogoutButtonClick,
   className = '',
@@ -62,6 +67,13 @@ const MobileMenu: FC<MobileMenuProp> = ({
         >
           List a Token
         </NavLink>
+        {showDisableDemoAccountButton && (
+          <Button
+            text="Disable Demo Account"
+            onClick={onDisableDemoAccountButtonClick}
+            className="mobile-menu__nav-link"
+          />
+        )}
       </div>
     </div>
   );

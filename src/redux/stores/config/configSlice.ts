@@ -48,7 +48,6 @@ const configSlice = createSlice({
     }),
     disableDemoAccount: (state): ConfigState => ({
       ...state,
-      isDemoAccount: false,
       impersonateAddress: undefined,
     }),
   },
