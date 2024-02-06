@@ -22,12 +22,14 @@ interface TopBarProps {
   mobileMenuIsVisible: boolean;
   showDesktopConnectButton: boolean;
   showDesktopUserButton: boolean;
+  showDisableDemoAccountButton: boolean;
   showMobileMenuButton: boolean;
   userWalletButtonIsDisabled: boolean;
   account?: string;
   avatarUrl?: string;
   ensAddress: string | undefined;
   onConnectButtonClick: () => void;
+  onDisableDemoAccountButtonClick: () => void;
   onDisconnectButtonClick: () => void;
   onMobileMenuButtonClick: () => void;
   className?: string;
@@ -38,12 +40,14 @@ const TopBar: FC<TopBarProps> = ({
   mobileMenuIsVisible,
   showDesktopConnectButton,
   showDesktopUserButton,
+  showDisableDemoAccountButton,
   showMobileMenuButton,
   userWalletButtonIsDisabled,
   account,
   avatarUrl,
   ensAddress,
   onConnectButtonClick,
+  onDisableDemoAccountButtonClick,
   onDisconnectButtonClick,
   onMobileMenuButtonClick,
   className = '',
@@ -130,9 +134,11 @@ const TopBar: FC<TopBarProps> = ({
       </div>
       {isPopupOpen && (
         <UserPopup
+          showDisableDemoAccountButton={showDisableDemoAccountButton}
           address={account || undefined}
           ensAddress={ensAddress}
           ref={userPopupRef}
+          onDisableDemoAccountButtonClick={onDisableDemoAccountButtonClick}
           onLogoutButtonClick={handleDisconnectClick}
           className="top-bar__user-popup"
         />

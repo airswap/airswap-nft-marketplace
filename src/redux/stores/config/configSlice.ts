@@ -46,6 +46,11 @@ const configSlice = createSlice({
     reset: (): ConfigState => ({
       ...initialState,
     }),
+    disableDemoAccount: (state): ConfigState => ({
+      ...state,
+      isDemoAccount: false,
+      impersonateAddress: undefined,
+    }),
   },
   extraReducers: builder => {
     builder.addCase(getCollectionTokenKind.pending, (state): ConfigState => ({
@@ -88,7 +93,7 @@ const configSlice = createSlice({
   },
 });
 
-export const { reset } = configSlice.actions;
+export const { reset, disableDemoAccount } = configSlice.actions;
 
 export const selectConfigFailed = ({ config }: RootState): boolean => config.hasFailedCurrencyToken
     || config.hasFailedSwapContract

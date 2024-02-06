@@ -6,6 +6,7 @@ import { Helmet } from 'react-helmet';
 import Button from '../../components/Button/Button';
 import useEnsAddress from '../../hooks/useEnsAddress';
 import { useAppDispatch, useAppSelector } from '../../redux/hooks';
+import { disableDemoAccount } from '../../redux/stores/config/configSlice';
 import { clearLastProviderFromLocalStorage } from '../../redux/stores/web3/web3Api';
 import { setShowConnectModal } from '../../redux/stores/web3/web3Slice';
 import { getConnection } from '../../web3-connectors/connections';
@@ -57,6 +58,10 @@ const Page: FC<PageProps> = ({ className = '', contentClassName = '', children }
     dispatch(setShowConnectModal(!showConnectModal));
   };
 
+  const handleDisableDemoAccountClick = (): void => {
+    dispatch(disableDemoAccount());
+  };
+
   return (
     <div className={pageClassName}>
       <Helmet>
@@ -67,12 +72,14 @@ const Page: FC<PageProps> = ({ className = '', contentClassName = '', children }
         mobileMenuIsVisible={mobileMenuIsVisible}
         showDesktopConnectButton={isInitialized && !isActive}
         showDesktopUserButton={isInitialized && isActive}
+        showDisableDemoAccountButton={config.isDemoAccount}
         showMobileMenuButton={isActive}
         userWalletButtonIsDisabled={!chainIdIsCorrect}
         avatarUrl={avatarUrl}
         account={account}
         ensAddress={ensAddress}
         onConnectButtonClick={toggleShowWalletConnector}
+        onDisableDemoAccountButtonClick={handleDisableDemoAccountClick}
         onDisconnectButtonClick={handleDisconnectButtonClick}
         onMobileMenuButtonClick={handleIconButtonClick}
         className="page__top-bar"
