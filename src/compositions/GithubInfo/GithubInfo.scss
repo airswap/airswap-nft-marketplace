@@ -1,0 +1,33 @@
+@import "src/styles";
+
+.github-info {
+    display: grid;
+    grid-template-columns: 2.5rem 5.125rem auto;
+    width: 100%;
+
+    &__github-link,
+    &__commit-link,
+    &__date-link {
+        @extend %button-border-style;
+        @extend %flex-align-center;
+
+        height: 2.5rem;
+        font-family: var(--f-mono);
+        font-size: .75rem;
+        text-transform: uppercase;
+
+        &:not(:hover),
+        &:not(:focus) {
+            border-color: var(--c-dark-border);
+        }
+
+        &:hover,
+        &:focus {
+            border-color: var(--c-light-grey);
+        }
+    }
+
+    &__github-link {
+        @extend %flex-align-center;
+    }
+}

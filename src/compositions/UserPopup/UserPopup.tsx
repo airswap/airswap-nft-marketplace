@@ -11,6 +11,7 @@ import { NavLink } from 'react-router-dom';
 import Button from '../../components/Button/Button';
 import WalletInfo from '../../components/WalletInfo/WalletInfo';
 import { routes } from '../../routes';
+import GithubInfo from '../GithubInfo/GithubInfo';
 
 import './UserPopup.scss';
 
@@ -42,12 +43,14 @@ const UserPopup: FC<UserPopupWithRefProps> = forwardRef(({
       className="user-popup__wallet-info"
       avatarClassName="user-popup__wallet-info-avatar"
     />
+
     {address && (
       <>
         <NavLink to={routes.profile(address)} className="user-popup__nav-link">My tokens</NavLink>
         <NavLink to={routes.userOrders(address)} className="user-popup__nav-link">My listing</NavLink>
       </>
     )}
+
     {showDisableDemoAccountButton && (
       <Button
         className="user-popup__button"
@@ -55,6 +58,10 @@ const UserPopup: FC<UserPopupWithRefProps> = forwardRef(({
       >
         Exit demo account
       </Button>
+    )}
+
+    {process.env.BUILD_VERSION && (
+      <GithubInfo className="user-popup__github-info" />
     )}
   </div>
 ));
