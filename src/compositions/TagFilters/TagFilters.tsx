@@ -2,7 +2,7 @@ import { FC, ReactElement } from 'react';
 
 import { CollectionTokenAttribute } from '@airswap/utils';
 
-import Checkbox from '../../components/Checkbox/Checkbox';
+import CheckboxGroup from '../CheckboxGroup/CheckboxGroup';
 
 interface TagFiltersProps {
   tagOptions: CollectionTokenAttribute[];
@@ -12,13 +12,15 @@ interface TagFiltersProps {
 
 const TagFilters: FC<TagFiltersProps> = ({ tagOptions, onChange, className = '' }): ReactElement => (
   <form className={`tag-filters ${className}`}>
-    {tagOptions.map(tagOption => (
-      <Checkbox
-        label={tagOption.label}
-        value={`${tagOption.value}`}
-        onChange={onChange}
-      />
-    ))}
+    <CheckboxGroup
+      checkboxes={tagOptions.map(tagOption => ({
+        key: `${tagOption.value}`,
+        label: tagOption.label,
+        value: `${tagOption.value}`,
+        onChange,
+      }))}
+      label="Tags"
+    />
   </form>
 );
 

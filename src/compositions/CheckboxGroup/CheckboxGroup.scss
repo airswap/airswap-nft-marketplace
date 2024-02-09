@@ -1,0 +1,29 @@
+@import 'src/styles';
+
+$component: checkbox-group;
+
+.#{$component} {
+    padding: 1rem;
+    background: var(--c-dark);
+
+    &[open] {
+        padding-block-end: 2rem;
+
+        .#{$component}__summary-icon {
+            transform: rotate(180deg);
+        }
+    }
+
+    &__summary {
+        display: flex;
+        justify-content: space-between;
+    }
+
+    &__list {
+        margin-block-start: 1rem;
+    }
+
+    &__list-item + &__list-item {
+        margin-block-start: .5rem;
+    }
+}

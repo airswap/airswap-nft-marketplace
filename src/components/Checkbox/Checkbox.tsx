@@ -8,7 +8,7 @@ import './Checkbox.scss';
 
 export type HTMLInputProps = JSX.IntrinsicElements['input'];
 
-interface CheckboxProps extends Omit<HTMLInputProps, 'onChange'> {
+export interface CheckboxProps extends Omit<HTMLInputProps, 'onChange'> {
   label: string;
   value: string;
   onChange: (value: string) => void;
@@ -48,7 +48,7 @@ const Checkbox: FC<CheckboxProps> = ({
       />
 
       <div className={`checkbox__box ${checkClassName}`}>
-        <Icon name="checkbox-check" className="checkbox__icon" />
+        <Icon name="check" className="checkbox__icon" />
       </div>
 
       <span className={`checkbox__label ${labelClassName}`}>{label}</span>
