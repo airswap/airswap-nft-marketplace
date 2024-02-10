@@ -1,0 +1,6 @@
+.tag-filters {
+
+    &__group + &__group {
+        margin-block-start: .5rem;
+    }
+}

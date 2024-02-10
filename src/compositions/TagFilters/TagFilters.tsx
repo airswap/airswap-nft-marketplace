@@ -1,8 +1,11 @@
-import { FC, ReactElement } from 'react';
+import { FC, memo, ReactElement } from 'react';
 
 import { CollectionTokenAttribute } from '@airswap/utils';
 
 import CheckboxGroup from '../CheckboxGroup/CheckboxGroup';
+import { getTagFilterGroups } from './helpers';
+
+import './TagFilters.scss';
 
 interface TagFiltersProps {
   tagOptions: CollectionTokenAttribute[];
@@ -10,18 +13,25 @@ interface TagFiltersProps {
   className?: string;
 }
 
-const TagFilters: FC<TagFiltersProps> = ({ tagOptions, onChange, className = '' }): ReactElement => (
-  <form className={`tag-filters ${className}`}>
-    <CheckboxGroup
-      checkboxes={tagOptions.map(tagOption => ({
-        key: `${tagOption.value}`,
-        label: tagOption.label,
-        value: `${tagOption.value}`,
-        onChange,
-      }))}
-      label="Tags"
-    />
-  </form>
-);
+const TagFilters: FC<TagFiltersProps> = ({ tagOptions, onChange, className = '' }): ReactElement => {
+  const groups = getTagFilterGroups(tagOptions);
 
-export default TagFilters;
+  return (
+    <form className={`tag-filters ${className}`}>
+      {groups.map(group => (
+        <CheckboxGroup
+          checkboxes={group.options.map(tagOption => ({
+            key: `${tagOption.value}`,
+            label: tagOption.label,
+            value: `${tagOption.value}`,
+            onChange,
+          }))}
+          label={group.label}
+          className="tag-filters__group"
+        />
+      ))}
+    </form>
+  );
+};
+
+export default memo(TagFilters);

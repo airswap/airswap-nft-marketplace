@@ -3,11 +3,10 @@
 $component: checkbox-group;
 
 .#{$component} {
-    padding: 1rem;
+    border-radius: .25rem;
     background: var(--c-dark);
 
     &[open] {
-        padding-block-end: 2rem;
 
         .#{$component}__summary-icon {
             transform: rotate(180deg);
@@ -17,10 +16,20 @@ $component: checkbox-group;
     &__summary {
         display: flex;
         justify-content: space-between;
+        padding: 1rem;
+        cursor: pointer;
+    }
+
+    &__summary-icon {
+        min-width: 1.5rem;
+        min-height: 1.5rem;
+        color: var(--c-text-grey);
     }
 
     &__list {
-        margin-block-start: 1rem;
+        margin-block-start: .25rem;
+        padding: 1rem;
+        padding-block-start: 0;
     }
 
     &__list-item + &__list-item {

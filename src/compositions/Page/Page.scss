@@ -55,7 +55,8 @@ $component: page;
         @include for-size(tablet-portrait-up) {
             top: var(--desktop-top-bar-height);
             height: calc(100% - var(--desktop-top-bar-height));
-            min-height: calc(100svh - var(--desktop-top-bar-height));
+            min-height: calc(100vh - var(--desktop-top-bar-height));
+            min-height: calc(100dvh - var(--desktop-top-bar-height));
         }
     }
 
@@ -65,7 +66,8 @@ $component: page;
         position: fixed;
         width: calc(100% - var(--page-padding) * 2);
         left: var(--page-padding);
-        top: calc(100svh - 3rem - var(--page-padding));
+        top: calc(100vh - 3rem - var(--page-padding));
+        top: calc(100dvh - 3rem - var(--page-padding));
 
         @include for-size(tablet-portrait-up) {
             display: none;

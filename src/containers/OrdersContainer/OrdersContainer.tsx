@@ -5,6 +5,7 @@ import { CollectionTokenInfo, TokenInfo } from '@airswap/utils';
 import Icon from '../../components/Icon/Icon';
 import LoadingSpinner from '../../components/LoadingSpinner/LoadingSpinner';
 import EmptyState from '../../compositions/EmptyState/EmptyState';
+import ConnectedFilters from '../../connectors/ConnectedFilters/ConnectedFilters';
 import { ExtendedFullOrder } from '../../entities/FullOrder/FullOrder';
 import { routes } from '../../routes';
 import OrdersListItem from './subcomponents/OrdersListItem/OrdersListItem';
@@ -52,23 +53,27 @@ const OrdersContainer: FC<OrdersContainerProps> = ({
 
   return (
     <div className={`orders-container ${className}`}>
-      <ul className="orders-container__orders">
-        {orders
-          .map(order => (
-            <li key={order.key}>
-              <OrdersListItem
-                showExpiryDate={showExpiryDate}
-                currencyTokenInfo={currencyTokenInfo}
-                highlightOrderNonce={highlightOrderNonce}
-                order={order}
-                tokens={tokens}
-              />
-            </li>
-          ))}
-      </ul>
-      {isLoading && <LoadingSpinner className="orders-container__loading-spinner" />}
-      <div className="orders-container__end-of-orders-icon-wrapper">
-        {(!isLoading && isEndOfOrders) && <Icon name="airswap" className="orders-container__end-of-orders-icon" />}
+      <ConnectedFilters className="orders-container__filters" />
+
+      <div className="orders-container__orders-wrapper">
+        <ul className="orders-container__orders">
+          {orders
+            .map(order => (
+              <li key={order.key}>
+                <OrdersListItem
+                  showExpiryDate={showExpiryDate}
+                  currencyTokenInfo={currencyTokenInfo}
+                  highlightOrderNonce={highlightOrderNonce}
+                  order={order}
+                  tokens={tokens}
+                />
+              </li>
+            ))}
+        </ul>
+        {isLoading && <LoadingSpinner className="orders-container__loading-spinner" />}
+        <div className="orders-container__end-of-orders-icon-wrapper">
+          {(!isLoading && isEndOfOrders) && <Icon name="airswap" className="orders-container__end-of-orders-icon" />}
+        </div>
       </div>
     </div>
   );

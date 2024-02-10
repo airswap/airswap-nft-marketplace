@@ -3,7 +3,7 @@
 .owned-nfts-container {
 
     &__tokens {
-        @extend %nfts-grid;
+        @extend %nfts-4-col-grid;
     }
 
     &__loader,

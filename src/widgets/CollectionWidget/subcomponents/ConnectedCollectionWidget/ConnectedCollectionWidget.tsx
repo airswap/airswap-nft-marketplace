@@ -9,7 +9,6 @@ import { TokenInfo } from '@airswap/utils';
 import { BaseProvider } from '@ethersproject/providers';
 
 import SearchInput from '../../../../components/SearchInput/SearchInput';
-import ConnectedFilters from '../../../../connectors/ConnectedFilters/ConnectedFilters';
 import { INDEXER_ORDERS_OFFSET } from '../../../../constants/indexer';
 import OrdersContainer from '../../../../containers/OrdersContainer/OrdersContainer';
 import { filterCollectionTokenBySearchValue } from '../../../../entities/CollectionToken/CollectionTokenHelpers';
@@ -97,7 +96,6 @@ const ConnectedCollectionWidget: FC<ConnectedCollectionWidgetProps> = ({ currenc
           value={searchValue || ''}
           className="collection-widget__search-input"
         />
-        <ConnectedFilters className="collection-widget__filters" />
         <h2 className="collection-widget__subtitle">
           {searchValue ? 'Search results' : 'All listings'}
         </h2>
