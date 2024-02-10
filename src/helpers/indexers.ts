@@ -17,7 +17,12 @@ export const getUndefinedAfterTimeout = (time: number): Promise<undefined> => ne
   setTimeout(() => resolve(undefined), time);
 });
 
-export const getOrdersFromIndexers = async (filter: OrderFilter, indexerUrls: string[], provider: BaseProvider): Promise<ExtendedFullOrder[]> => {
+export const getOrdersFromIndexers = async (
+  filter: OrderFilter,
+  indexerUrls: string[],
+  provider: BaseProvider,
+  isDemoAccount?: boolean,
+): Promise<ExtendedFullOrder[]> => {
   if (!indexerUrls.length) {
     console.error('[getOrdersFromIndexers] No indexer urls provided');
   }
@@ -46,6 +51,6 @@ export const getOrdersFromIndexers = async (filter: OrderFilter, indexerUrls: st
   const validOrders = await getFullOrdersIsValid(uniqueOrders, provider);
 
   return uniqueOrders.map((fullOrder, index) => (
-    transformToExtendedFullOrder(fullOrder, noncesUsed[index], validOrders[index])
+    transformToExtendedFullOrder(fullOrder, noncesUsed[index], isDemoAccount || validOrders[index])
   ));
 };

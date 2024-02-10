@@ -18,12 +18,17 @@ ExtendedFullOrder[],
 GetCollectionOrdersParams,
 AppThunkApiConfig
 >('collection/getCollectionOrders', async ({ provider, ...filter }, { dispatch, getState }) => {
-  const { indexer } = getState();
+  const { config, indexer } = getState();
 
   dispatch(setOffset(filter.limit + filter.offset));
 
   try {
-    return await getOrdersFromIndexers(filter, indexer.urls, provider);
+    return await getOrdersFromIndexers(
+      filter,
+      indexer.urls,
+      provider,
+      config.isDemoAccount,
+    );
   } catch {
     dispatch(addGetOrderFailedToast());
 

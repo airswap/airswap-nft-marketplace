@@ -9,6 +9,7 @@ const useMapWeb3ReactToStore = (): void => {
   const dispatch = useAppDispatch();
 
   const { libraries } = useAppSelector((state) => state.web3);
+  const { impersonateAddress } = useAppSelector((state) => state.config);
 
   const {
     account,
@@ -21,13 +22,14 @@ const useMapWeb3ReactToStore = (): void => {
   useDebounce(() => {
     dispatch(setWeb3Data({
       isActive,
-      account: account || undefined,
+      account: impersonateAddress || account || undefined,
       chainId,
     }));
   }, 100, [
     isActive,
     account,
     chainId,
+    impersonateAddress,
     library,
   ]);
 

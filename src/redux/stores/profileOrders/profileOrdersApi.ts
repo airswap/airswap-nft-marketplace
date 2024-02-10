@@ -17,12 +17,17 @@ ExtendedFullOrder[],
 GetProfileOrdersParams,
 AppThunkApiConfig
 >('profileOrders/getProfileOrders', async ({ provider, ...filter }, { dispatch, getState }) => {
-  const { indexer } = getState();
+  const { config, indexer } = getState();
 
   try {
     dispatch(setOrdersOffset((filter.limit || 0) + (filter.offset || 0)));
 
-    return await getOrdersFromIndexers(filter, indexer.urls, provider);
+    return await getOrdersFromIndexers(
+      filter,
+      indexer.urls,
+      provider,
+      config.isDemoAccount,
+    );
   } catch {
     dispatch(addGetOrderFailedToast());
 

@@ -8,7 +8,7 @@ $component: user-popup;
     border: 1px solid var(--c-dark-border);
     border-radius: .25rem;
     width: 17.125rem;
-    padding: 0.5rem;
+    padding: .5rem .5rem 1rem;
     background: var(--c-dark);
 
     @include for-size(tablet-portrait-up) {
@@ -17,13 +17,15 @@ $component: user-popup;
 
     &__wallet-info {
         margin-bottom: 0.5rem;
+        padding-block: .5rem;
     }
 
     &__wallet-info-avatar {
         display: none;
     }
 
-    &__nav-link {
+    &__nav-link,
+    &__button {
         @extend %button;
         @extend %button-border-style;
 
@@ -36,7 +38,6 @@ $component: user-popup;
         font-size: .875rem;
         
         &:hover, &:focus {
-            font-weight: var(--fw-500);
             color: var(--c-white);
             background-color: var(--c-grey);
         }

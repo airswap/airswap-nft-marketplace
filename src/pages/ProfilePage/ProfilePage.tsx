@@ -1,17 +1,17 @@
 import React, { FC } from 'react';
 
-import Page from '../../compositions/Page/Page';
+import ConnectedPage from '../../connectors/ConnectedPage/ConnectedPage';
 import ProfileWidget from '../../widgets/ProfileWidget/ProfileWidget';
 
 import './ProfilePage.scss';
 
 const ProfilePage: FC = () => (
-  <Page
+  <ConnectedPage
     className="profile-page"
     contentClassName="profile-page__content"
   >
     <ProfileWidget />
-  </Page>
+  </ConnectedPage>
 );
 
 export default ProfilePage;

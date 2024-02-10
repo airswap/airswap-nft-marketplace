@@ -1,15 +1,9 @@
-import React, { FC, ReactNode, useState } from 'react';
+import React, { FC, PropsWithChildren, useState } from 'react';
 
 import classNames from 'classnames';
 import { Helmet } from 'react-helmet';
 
 import Button from '../../components/Button/Button';
-import useEnsAddress from '../../hooks/useEnsAddress';
-import { useAppDispatch, useAppSelector } from '../../redux/hooks';
-import { clearLastProviderFromLocalStorage } from '../../redux/stores/web3/web3Api';
-import { setShowConnectModal } from '../../redux/stores/web3/web3Slice';
-import { getConnection } from '../../web3-connectors/connections';
-import { tryDeactivateConnector } from '../../web3-connectors/helpers';
 import WalletConnector from '../../widgets/WalletConnector/WalletConnector';
 import MobileMenu from '../MobileMenu/MobileMenu';
 import TopBar from '../TopBar/TopBar';
@@ -17,23 +11,47 @@ import TopBar from '../TopBar/TopBar';
 import './Page.scss';
 
 interface PageProps {
-  children?: ReactNode;
+  isActive: boolean;
+  listButtonIsDisabled: boolean;
+  showConnectModal: boolean;
+  showDesktopConnectButton: boolean;
+  showDesktopUserButton: boolean;
+  showDisableDemoAccountButton: boolean;
+  showMobileMenuButton: boolean;
+  userWalletButtonIsDisabled: boolean;
+  account?: string;
+  avatarUrl?: string;
+  collectionName: string;
+  ensAddress?: string;
+  onConnectButtonClick: () => void;
+  onCloseWalletConnectorButtonClick: () => void;
+  onDisableDemoAccountButtonClick: () => void;
+  onDisconnectButtonClick: () => void;
   className?: string;
   contentClassName?: string;
 }
 
-const Page: FC<PageProps> = ({ className = '', contentClassName = '', children }) => {
-  const dispatch = useAppDispatch();
-
-  const { isActive, account, chainId } = useAppSelector(state => state.web3);
-  const { config } = useAppSelector((state) => state);
-  const { isInitialized, showConnectModal, connectionType } = useAppSelector((state) => state.web3);
-  const { avatarUrl } = useAppSelector((state) => state.user);
-
-  const ensAddress = useEnsAddress(account || '');
-
-  const chainIdIsCorrect = !!chainId && chainId === config.chainId;
-
+const Page: FC<PropsWithChildren<PageProps>> = ({
+  isActive,
+  listButtonIsDisabled,
+  onCloseWalletConnectorButtonClick,
+  showConnectModal,
+  showDesktopUserButton,
+  showDesktopConnectButton,
+  showDisableDemoAccountButton,
+  showMobileMenuButton,
+  userWalletButtonIsDisabled,
+  account,
+  avatarUrl,
+  collectionName,
+  ensAddress,
+  onConnectButtonClick,
+  onDisableDemoAccountButtonClick,
+  onDisconnectButtonClick,
+  className = '',
+  contentClassName = '',
+  children,
+}) => {
   const [mobileMenuIsVisible, setMobileMenuIsVisible] = useState(false);
 
   const pageClassName = classNames('page', {
@@ -44,49 +62,45 @@ const Page: FC<PageProps> = ({ className = '', contentClassName = '', children }
     setMobileMenuIsVisible(!mobileMenuIsVisible);
   };
 
-  const handleDisconnectButtonClick = (): void => {
-    if (!connectionType) {
-      return;
-    }
-
-    tryDeactivateConnector(getConnection(connectionType).connector);
-    clearLastProviderFromLocalStorage();
-  };
-
-  const toggleShowWalletConnector = (): void => {
-    dispatch(setShowConnectModal(!showConnectModal));
-  };
-
   return (
     <div className={pageClassName}>
       <Helmet>
-        <title>{config.collectionName}</title>
+        <title>{collectionName}</title>
       </Helmet>
+
       <TopBar
-        listButtonIsDisabled={!chainIdIsCorrect || !account}
+        listButtonIsDisabled={listButtonIsDisabled}
         mobileMenuIsVisible={mobileMenuIsVisible}
-        showDesktopConnectButton={isInitialized && !isActive}
-        showDesktopUserButton={isInitialized && isActive}
-        userWalletButtonIsDisabled={!chainIdIsCorrect}
+        showDesktopConnectButton={showDesktopConnectButton}
+        showDesktopUserButton={showDesktopUserButton}
+        showDisableDemoAccountButton={showDisableDemoAccountButton}
+        showMobileMenuButton={showMobileMenuButton}
+        userWalletButtonIsDisabled={userWalletButtonIsDisabled}
         avatarUrl={avatarUrl}
         account={account}
         ensAddress={ensAddress}
-        onConnectButtonClick={toggleShowWalletConnector}
-        onDisconnectButtonClick={handleDisconnectButtonClick}
+        onConnectButtonClick={onConnectButtonClick}
+        onDisableDemoAccountButtonClick={onDisableDemoAccountButtonClick}
+        onDisconnectButtonClick={onDisconnectButtonClick}
         onMobileMenuButtonClick={handleIconButtonClick}
         className="page__top-bar"
       />
-      {account && (
+
+      {(account && isActive) && (
         <MobileMenu
           isHidden={!mobileMenuIsVisible}
+          showDisableDemoAccountButton={showDisableDemoAccountButton}
           avatarUrl={avatarUrl}
           address={account}
+          onDisableDemoAccountButtonClick={onDisableDemoAccountButtonClick}
           onNavLinkClick={handleIconButtonClick}
+          onLogoutButtonClick={onDisconnectButtonClick}
           className="page__mobile-menu"
         />
       )}
+
       <WalletConnector
-        onCloseButtonClick={toggleShowWalletConnector}
+        onCloseButtonClick={onCloseWalletConnectorButtonClick}
         className="page__wallet-connector"
       />
 
@@ -96,7 +110,7 @@ const Page: FC<PageProps> = ({ className = '', contentClassName = '', children }
         {(!isActive && !showConnectModal) && (
           <Button
             text="Connect wallet"
-            onClick={toggleShowWalletConnector}
+            onClick={onConnectButtonClick}
             className="page__connect-wallet-button"
           />
         )}
