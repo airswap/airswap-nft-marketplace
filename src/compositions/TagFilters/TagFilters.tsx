@@ -18,6 +18,8 @@ const TagFilters: FC<TagFiltersProps> = ({ tagOptions, onChange, className = '' 
 
   return (
     <form className={`tag-filters ${className}`}>
+      <h3 className="tag-filters__title">Traits</h3>
+
       {groups.map(group => (
         <CheckboxGroup
           checkboxes={group.options.map(tagOption => ({

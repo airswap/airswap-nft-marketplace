@@ -17,6 +17,7 @@ interface OrdersContainerProps {
   isEndOfOrders: boolean;
   isLoading: boolean;
   showExpiryDate?: boolean;
+  showSearchResults?: boolean;
   currencyTokenInfo: TokenInfo;
   highlightOrderNonce?: string;
   listCallToActionText?: string;
@@ -30,6 +31,7 @@ const OrdersContainer: FC<OrdersContainerProps> = ({
   isEndOfOrders,
   isLoading,
   showExpiryDate = false,
+  showSearchResults = false,
   currencyTokenInfo,
   highlightOrderNonce,
   listCallToActionText,
@@ -40,13 +42,19 @@ const OrdersContainer: FC<OrdersContainerProps> = ({
   if (!isLoading && !orders.length) {
     return (
       <div className={`orders-container ${className}`}>
-        <EmptyState
-          hasButton={hasListCallToActionButton}
-          buttonText="List a token"
-          route={routes.listNft()}
-          text={listCallToActionText}
-          className="orders-container__empty-state"
-        />
+        <ConnectedFilters className="orders-container__filters" />
+
+        <div className="orders-container__orders-wrapper">
+          <h2 className="orders-container__orders-title">{showSearchResults ? 'Search results' : 'All listings'}</h2>
+
+          <EmptyState
+            hasButton={hasListCallToActionButton}
+            buttonText="List a token"
+            route={routes.listNft()}
+            text={listCallToActionText}
+            className="orders-container__empty-state"
+          />
+        </div>
       </div>
     );
   }
@@ -56,6 +64,8 @@ const OrdersContainer: FC<OrdersContainerProps> = ({
       <ConnectedFilters className="orders-container__filters" />
 
       <div className="orders-container__orders-wrapper">
+        <h2 className="orders-container__orders-title">{showSearchResults ? 'Search results' : 'All listings'}</h2>
+
         <ul className="orders-container__orders">
           {orders
             .map(order => (

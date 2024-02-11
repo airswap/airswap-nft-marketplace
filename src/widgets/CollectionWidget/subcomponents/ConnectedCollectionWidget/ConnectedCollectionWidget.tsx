@@ -96,13 +96,12 @@ const ConnectedCollectionWidget: FC<ConnectedCollectionWidgetProps> = ({ currenc
           value={searchValue || ''}
           className="collection-widget__search-input"
         />
-        <h2 className="collection-widget__subtitle">
-          {searchValue ? 'Search results' : 'All listings'}
-        </h2>
+
         <OrdersContainer
           hasListCallToActionButton={!!userTokens.length && !hasServerError}
           isEndOfOrders={isTotalOrdersReached}
           isLoading={isLoading || offset === 0}
+          showSearchResults={!!searchValue}
           currencyTokenInfo={currencyTokenInfo}
           listCallToActionText={listCallToActionText}
           orders={filteredOrders}

@@ -5,7 +5,7 @@
 	left: 0;
 	top: var(--top-bar-height);
 	width: calc(100svw - var(--scrollbar-width));
-	height: calc(100svh - (var(--top-bar-height) + 3rem + var(--page-padding) * 2));
+	height: calc(100dvh - (var(--top-bar-height) + 3rem + var(--page-padding) * 2));
 	padding: var(--page-padding);
 	padding-bottom: 0;
 	overflow-y: auto;
