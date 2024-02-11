@@ -5,6 +5,7 @@
     @extend %button;
     @extend %button-border-style;
 
+    position: relative;
     border-color: transparent;
     content-visibility: auto;
     contain-intrinsic-size: 10rem;

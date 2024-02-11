@@ -48,6 +48,7 @@ const ConnectedProfileOrdersWidget: FC<ConnectedProfileOrdersWidgetProps> = ({
 
   const { chainId, collectionToken } = useAppSelector((state) => state.config);
   const { tokenIdsWithBalance: userTokenIdsWithBalance } = useAppSelector((state) => state.balances);
+  const { activeTags } = useAppSelector((state) => state.filters);
   const { avatarUrl } = useAppSelector((state) => state.user);
   const {
     hasServerError,
@@ -74,30 +75,29 @@ const ConnectedProfileOrdersWidget: FC<ConnectedProfileOrdersWidgetProps> = ({
       return orderToken ? filterCollectionTokenBySearchValue(orderToken, searchValue) : true;
     })), [orders, tokens, searchValue]);
   const userIsProfileAccount = account === profileAccount;
-  const listCallToActionText = getListCallToActionText(searchValue, !!orders.length, hasServerError);
+  const hasFilter = !!searchValue || !!activeTags.length;
+  const listCallToActionText = getListCallToActionText(hasFilter, !!orders.length, hasServerError);
 
-  const getOrders = () => {
-    if (isLoading || isTotalOrdersReached) {
-      return;
-    }
-
+  const getOrders = (newOffset: number) => {
     dispatch(getProfileOrders({
       signerWallet: profileAccount,
-      offset,
+      offset: newOffset,
       limit: INDEXER_ORDERS_OFFSET,
       provider,
+      tags: activeTags,
     }));
   };
 
-  useEffect((): () => void => {
-    getOrders();
+  useEffect(() => {
+    dispatch(reset());
+    getOrders(0);
+  }, [activeTags]);
 
-    return () => dispatch(reset());
-  }, []);
+  useEffect((): () => void => () => dispatch(reset()), []);
 
   useEffect(() => {
-    if (scrolledToBottom) {
-      getOrders();
+    if (scrolledToBottom && !isTotalOrdersReached && !isLoading) {
+      getOrders(offset);
     }
   }, [scrolledToBottom]);
 
@@ -125,6 +125,7 @@ const ConnectedProfileOrdersWidget: FC<ConnectedProfileOrdersWidgetProps> = ({
           isEndOfOrders={isTotalOrdersReached}
           isLoading={isLoading || offset === 0}
           showExpiryDate
+          showSearchResults={hasFilter}
           currencyTokenInfo={currencyTokenInfo}
           highlightOrderNonce={highlightOrderNonce || undefined}
           listCallToActionText={listCallToActionText}

@@ -40,12 +40,16 @@
         }
     }
 
-    &__mobile-tag-filters {
-        color: var(--c-white);
-        padding-bottom: 5rem;
+    &__mobile-dialog {
 
         @include for-size(tablet-portrait-up) {
             display: none;
         }
+
+    }
+
+    &__mobile-tag-filters {
+        color: var(--c-white);
+        padding-bottom: 5rem;
     }
 }

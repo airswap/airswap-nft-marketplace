@@ -1,8 +1,8 @@
-import { FC, ReactElement } from 'react';
+import { FC, ReactElement, useEffect } from 'react';
 
 import FiltersContainer from '../../containers/FiltersContainer/FiltersContainer';
 import { useAppDispatch, useAppSelector } from '../../redux/hooks';
-import { setActiveTags } from '../../redux/stores/filters/filtersSlice';
+import { resetSelectedFilters, setActiveTags } from '../../redux/stores/filters/filtersSlice';
 
 interface ConnectedFiltersProps {
   className?: string;
@@ -16,6 +16,10 @@ const ConnectedFilters: FC<ConnectedFiltersProps> = ({ className = '' }): ReactE
   const handleFiltersChange = (values: string[]) => {
     dispatch(setActiveTags(values));
   };
+
+  useEffect(() => () => {
+    dispatch(resetSelectedFilters());
+  }, []);
 
   return (
     <FiltersContainer

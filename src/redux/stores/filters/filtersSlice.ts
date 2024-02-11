@@ -8,7 +8,6 @@ export interface FiltersState {
   activeTags: string[];
   tagOptions: CollectionTokenAttribute[];
   search: string;
-  selectedTags: string[];
 }
 
 const initialState: FiltersState = {
@@ -16,23 +15,23 @@ const initialState: FiltersState = {
   activeTags: [],
   tagOptions: [],
   search: '',
-  selectedTags: [],
 };
 
 export const FiltersSlice = createSlice({
   name: 'filtersReducer',
   initialState,
   reducers: {
+    resetSelectedFilters(state): FiltersState {
+      return {
+        ...state,
+        activeTags: [],
+        search: '',
+      };
+    },
     setActiveTags(state, action: PayloadAction<string[]>): FiltersState {
       return {
         ...state,
         activeTags: action.payload,
-      };
-    },
-    setSelectedTags(state, action: PayloadAction<string[]>): FiltersState {
-      return {
-        ...state,
-        selectedTags: action.payload,
       };
     },
     setSearch(state, action: PayloadAction<string>): FiltersState {
@@ -62,8 +61,8 @@ export const FiltersSlice = createSlice({
 });
 
 export const {
+  resetSelectedFilters,
   setActiveTags,
-  setSelectedTags,
   setSearch,
 } = FiltersSlice.actions;
 
