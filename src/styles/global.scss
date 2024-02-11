@@ -12,6 +12,10 @@ body {
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
   background: var(--c-black);
+
+  &:has(dialog[open]) {
+    overflow: hidden
+  }
 }
 
 code {

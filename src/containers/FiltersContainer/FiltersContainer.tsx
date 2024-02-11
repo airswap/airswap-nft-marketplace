@@ -1,9 +1,15 @@
-import React, { FC, ReactElement } from 'react';
+import React, {
+  FC,
+  ReactElement,
+  useEffect,
+  useRef,
+} from 'react';
 
 import { CollectionTokenAttribute } from '@airswap/utils';
 import classNames from 'classnames';
 
-import IconButton from '../../compositions/IconButton/IconButton';
+import Button from '../../components/Button/Button';
+import Dialog from '../../compositions/Dialog/Dialog';
 import TagFilters from '../../compositions/TagFilters/TagFilters';
 import useToggle from '../../hooks/useToggle';
 
@@ -22,11 +28,9 @@ const FiltersContainer: FC<FiltersContainerProps> = ({
   onChange,
   className = '',
 }): ReactElement => {
-  const [showMobileFilters, toggleShowMobileFilters] = useToggle(false);
+  const dialogRef = useRef<HTMLDialogElement>(null);
 
-  const handleCloseButtonClick = () => {
-    toggleShowMobileFilters();
-  };
+  const [showMobileFilters, toggleShowMobileFilters] = useToggle(false);
 
   const handleTagChange = (tag: string) => {
     if (activeTags.includes(tag)) {
@@ -35,6 +39,17 @@ const FiltersContainer: FC<FiltersContainerProps> = ({
 
     return onChange([...activeTags, tag]);
   };
+
+  const onDialogClose = () => {
+    toggleShowMobileFilters(false);
+  };
+
+  useEffect(() => {
+    if (showMobileFilters) {
+      dialogRef.current?.showModal();
+      window?.scroll({ top: 0, behavior: 'smooth' });
+    }
+  }, [showMobileFilters]);
 
   const containerClassName = classNames('filters-container', {
     'filters-container--show-mobile': showMobileFilters,
@@ -45,12 +60,10 @@ const FiltersContainer: FC<FiltersContainerProps> = ({
       <div className="filters-container__header">
         <h2 className="filters-container__title">Filters</h2>
 
-        <IconButton
-          hideLabel
-          icon="close"
-          text="Close"
-          onClick={handleCloseButtonClick}
-          className="filters-container__close-button"
+        <Button
+          text="Filters"
+          onClick={toggleShowMobileFilters}
+          className="filters-container__mobile-button"
         />
       </div>
 
@@ -59,6 +72,21 @@ const FiltersContainer: FC<FiltersContainerProps> = ({
         onChange={handleTagChange}
         className="filters-container__tag-filters"
       />
+
+      {showMobileFilters && (
+        <Dialog
+          label="Filters"
+          ref={dialogRef}
+          onClose={onDialogClose}
+          className="filters-container__mobile-dialog"
+        >
+          <TagFilters
+            tagOptions={tagOptions}
+            onChange={handleTagChange}
+            className="filters-container__mobile-tag-filters"
+          />
+        </Dialog>
+      )}
     </div>
   );
 };

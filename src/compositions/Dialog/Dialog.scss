@@ -1,32 +1,58 @@
+@import "src/styles";
+
 .dialog {
-    margin: 1rem auto;
+    top: var(--top-bar-height);
+    margin: 0;
     width: 100%;
+    min-width: 100%;
     height: 100vh;
-    height: 100dvh;
-    padding: 0;
-    max-width: 40rem;
-    overflow: hidden;
+    height: calc(100dvh - var(--top-bar-height));
+    padding: var(--page-padding);
+    overflow-y: auto;
+    overflow-x: hidden;
+    background: var(--c-black);
 
     &::backdrop {
         background-color: rgba(0, 0, 0, .5);
         cursor: pointer;
     }
 
-    &__content {
+    @include for-size(tablet-portrait-up) {
+        top: unset;
+        margin: auto;
+        max-width: 40rem;
+        min-width: unset;
+        background: none;
+    }
+
+    &__header {
         display: flex;
-        position: relative;
-        padding-top: 2rem;
-        max-height: 100%;
-        min-height: 100%;
-        overflow: hidden;
-        background: var(--c-dark);
+        justify-content: space-between;
+        margin-block-end: 1.5rem;
+        width: 100%;
+    }
+
+    &__label {
+        font-size: 1.125rem;
+        font-weight: var(--fw-700);
     }
 
     &__close-button {
-        position: absolute;
-        top: 1rem;
-        right: 1rem;
+        justify-content: flex-end;
+        margin-inline-start: auto;
         width: 1.5rem;
         color: var(--c-white);
+    }
+
+    &__content {
+        display: flex;
+        flex-direction: column;
+        position: relative;
+        overflow: hidden;
+
+        @include for-size(tablet-portrait-up) {
+            padding: var(--page-padding);
+            background: var(--c-dark);
+        }
     }
 }
