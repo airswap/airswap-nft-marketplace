@@ -8,13 +8,19 @@ import { getTagFilterGroups } from './helpers';
 import './TagFilters.scss';
 
 interface TagFiltersProps {
-  tagOptions: CollectionTokenAttribute[];
+  activeValues: string[];
+  options: CollectionTokenAttribute[];
   onChange: (value: string) => void;
   className?: string;
 }
 
-const TagFilters: FC<TagFiltersProps> = ({ tagOptions, onChange, className = '' }): ReactElement => {
-  const groups = getTagFilterGroups(tagOptions);
+const TagFilters: FC<TagFiltersProps> = ({
+  activeValues,
+  options,
+  onChange,
+  className = '',
+}): ReactElement => {
+  const groups = getTagFilterGroups(options);
 
   return (
     <form className={`tag-filters ${className}`}>
@@ -22,8 +28,10 @@ const TagFilters: FC<TagFiltersProps> = ({ tagOptions, onChange, className = '' 
 
       {groups.map(group => (
         <CheckboxGroup
+          key={group.label}
           checkboxes={group.options.map(tagOption => ({
             key: `${tagOption.value}`,
+            checked: activeValues.includes(`${tagOption.value}`),
             label: tagOption.label,
             value: `${tagOption.value}`,
             onChange,

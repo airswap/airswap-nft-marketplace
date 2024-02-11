@@ -42,7 +42,7 @@
 
     &__mobile-tag-filters {
         color: var(--c-white);
-        padding-bottom: 4rem;
+        padding-bottom: 5rem;
 
         @include for-size(tablet-portrait-up) {
             display: none;

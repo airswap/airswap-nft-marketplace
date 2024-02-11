@@ -21,11 +21,15 @@
         width: 100%;
     }
 
-    &__title {
+    &__orders-title {
+        height: 3rem;
+        line-height: 2.5;
         font-weight: var(--fw-700);
         font-size: 1.125rem;
 
         @include for-size(desktop-up) {
+            height: unset;
+            line-height: unset;
             font-size: 1.25rem;
         }
     }

@@ -3,6 +3,7 @@ import React, {
   ReactElement,
   useEffect,
   useRef,
+  useState,
 } from 'react';
 
 import { CollectionTokenAttribute } from '@airswap/utils';
@@ -10,8 +11,8 @@ import classNames from 'classnames';
 
 import Button from '../../components/Button/Button';
 import Dialog from '../../compositions/Dialog/Dialog';
+import MobileFilterButtons from '../../compositions/MobileFilterButtons/MobileFilterButtons';
 import TagFilters from '../../compositions/TagFilters/TagFilters';
-import useToggle from '../../hooks/useToggle';
 
 import './FiltersContainer.scss';
 
@@ -30,7 +31,8 @@ const FiltersContainer: FC<FiltersContainerProps> = ({
 }): ReactElement => {
   const dialogRef = useRef<HTMLDialogElement>(null);
 
-  const [showMobileFilters, toggleShowMobileFilters] = useToggle(false);
+  const [showMobileFilters, setShowMobileFilters] = useState(false);
+  const [isMobileFiltersClosing, setIsMobileFiltersClosing] = useState(false);
 
   const handleTagChange = (tag: string) => {
     if (activeTags.includes(tag)) {
@@ -41,7 +43,20 @@ const FiltersContainer: FC<FiltersContainerProps> = ({
   };
 
   const onDialogClose = () => {
-    toggleShowMobileFilters(false);
+    setShowMobileFilters(false);
+    setIsMobileFiltersClosing(false);
+  };
+
+  const onMobileButtonClick = () => {
+    setShowMobileFilters(!showMobileFilters);
+  };
+
+  const handleMobileFiltersCloseButtonClick = () => {
+    setIsMobileFiltersClosing(true);
+  };
+
+  const handleResetButtonClick = () => {
+    onChange([]);
   };
 
   useEffect(() => {
@@ -62,28 +77,37 @@ const FiltersContainer: FC<FiltersContainerProps> = ({
 
         <Button
           text="Filters"
-          onClick={toggleShowMobileFilters}
+          onClick={onMobileButtonClick}
           className="filters-container__mobile-button"
         />
       </div>
 
       <TagFilters
-        tagOptions={tagOptions}
+        activeValues={activeTags}
+        options={tagOptions}
         onChange={handleTagChange}
         className="filters-container__tag-filters"
       />
 
       {showMobileFilters && (
         <Dialog
+          isClosing={isMobileFiltersClosing}
           label="Filters"
           ref={dialogRef}
           onClose={onDialogClose}
           className="filters-container__mobile-dialog"
         >
           <TagFilters
-            tagOptions={tagOptions}
+            activeValues={activeTags}
+            options={tagOptions}
             onChange={handleTagChange}
             className="filters-container__mobile-tag-filters"
+          />
+          <MobileFilterButtons
+            amountOfFilters={activeTags.length}
+            onCloseButtonClick={handleMobileFiltersCloseButtonClick}
+            onResetFiltersButtonClick={handleResetButtonClick}
+            className="filters-container__mobile-filter-buttons"
           />
         </Dialog>
       )}
