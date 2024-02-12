@@ -14,10 +14,11 @@ import OrdersContainer from '../../../../containers/OrdersContainer/OrdersContai
 import { filterCollectionTokenBySearchValue } from '../../../../entities/CollectionToken/CollectionTokenHelpers';
 import useCollectionImage from '../../../../hooks/useCollectionImage';
 import useCollectionTokens from '../../../../hooks/useCollectionTokens';
+import { useGetOrders } from '../../../../hooks/useGetOrders';
 import useScrollToBottom from '../../../../hooks/useScrollToBottom';
 import { useAppDispatch, useAppSelector } from '../../../../redux/hooks';
 import { getCollectionOrders } from '../../../../redux/stores/collection/collectionApi';
-import { reset } from '../../../../redux/stores/collection/collectionSlice';
+import { reset, startLoading } from '../../../../redux/stores/collection/collectionSlice';
 import getListCallToActionText from '../../helpers/getListCallToActionText';
 import CollectionPortrait from '../CollectionPortrait/CollectionPortrait';
 
@@ -54,12 +55,12 @@ const ConnectedCollectionWidget: FC<ConnectedCollectionWidgetProps> = ({ currenc
     }));
   };
 
-  useEffect(() => {
-    dispatch(reset());
-    getOrders(0);
-  }, [activeTags]);
-
-  useEffect((): () => void => () => dispatch(reset()), []);
+  useGetOrders(
+    activeTags,
+    getOrders,
+    reset,
+    startLoading,
+  );
 
   useEffect(() => {
     if (scrolledToBottom && !isLoading && !isTotalOrdersReached) {

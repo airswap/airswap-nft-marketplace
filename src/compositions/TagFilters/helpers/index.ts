@@ -13,9 +13,7 @@ interface TagFiltersGroup {
 export const getTagFilterGroups = (tagOptions: CollectionTokenAttribute[]): TagFiltersGroup[] => {
   const groups = tagOptions
     .map(getCollectionTokenAttributeGroup)
-    .filter(getUniqueSingleDimensionArray)
-    // TODO: Remove this before making PR
-    .filter((group) => group.indexOf('\\') === -1);
+    .filter(getUniqueSingleDimensionArray);
 
   return groups.map((group) => ({
     label: group,

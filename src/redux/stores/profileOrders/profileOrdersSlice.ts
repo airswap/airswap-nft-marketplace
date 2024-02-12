@@ -37,6 +37,10 @@ const profileSlice = createSlice({
       ...state,
       offset: action.payload,
     }),
+    startLoading: (state): ProfileOrdersState => ({
+      ...state,
+      isLoading: true,
+    }),
   },
   extraReducers: builder => {
     builder.addCase(getProfileOrders.pending, (state): ProfileOrdersState => ({
@@ -74,6 +78,7 @@ const profileSlice = createSlice({
 
 export const {
   reset,
+  startLoading,
   setOrders,
   setOrdersOffset,
 } = profileSlice.actions;

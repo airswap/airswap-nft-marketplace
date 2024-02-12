@@ -36,6 +36,10 @@ export const collectionSlice = createSlice({
       ...state,
       orders: action.payload,
     }),
+    startLoading: (state): CollectionState => ({
+      ...state,
+      isLoading: true,
+    }),
   },
   extraReducers: (builder) => {
     builder.addCase(getCollectionOrders.fulfilled, (state, action: PayloadAction<ExtendedFullOrder[]>): CollectionState => {
@@ -69,6 +73,7 @@ export const {
   reset,
   setOffset,
   setOrders,
+  startLoading,
 } = collectionSlice.actions;
 
 export default collectionSlice.reducer;

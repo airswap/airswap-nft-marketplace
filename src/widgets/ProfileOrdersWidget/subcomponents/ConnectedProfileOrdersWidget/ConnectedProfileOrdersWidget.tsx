@@ -19,10 +19,11 @@ import getOwnedTokensByAccountUrl from '../../../../helpers/airswap/getOwnedToke
 import useCollectionImage from '../../../../hooks/useCollectionImage';
 import useCollectionTokens from '../../../../hooks/useCollectionTokens';
 import useEnsAddress from '../../../../hooks/useEnsAddress';
+import { useGetOrders } from '../../../../hooks/useGetOrders';
 import useScrollToBottom from '../../../../hooks/useScrollToBottom';
 import { useAppDispatch, useAppSelector } from '../../../../redux/hooks';
 import { getProfileOrders } from '../../../../redux/stores/profileOrders/profileOrdersApi';
-import { reset } from '../../../../redux/stores/profileOrders/profileOrdersSlice';
+import { reset, startLoading } from '../../../../redux/stores/profileOrders/profileOrdersSlice';
 import ProfileHeader from '../../../ProfileWidget/subcomponents/ProfileHeader/ProfileHeader';
 import getListCallToActionText from '../../helpers/getListCallToActionText';
 
@@ -88,12 +89,12 @@ const ConnectedProfileOrdersWidget: FC<ConnectedProfileOrdersWidgetProps> = ({
     }));
   };
 
-  useEffect(() => {
-    dispatch(reset());
-    getOrders(0);
-  }, [activeTags]);
-
-  useEffect((): () => void => () => dispatch(reset()), []);
+  useGetOrders(
+    activeTags,
+    getOrders,
+    reset,
+    startLoading,
+  );
 
   useEffect(() => {
     if (scrolledToBottom && !isTotalOrdersReached && !isLoading) {

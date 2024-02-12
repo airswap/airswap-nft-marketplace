@@ -3,6 +3,10 @@
 	grid-template-columns: repeat(2, 1fr);
 	gap: 1rem;
 
+	> * {
+		min-width: 0;
+	}
+
 	@include for-size(phone-only) {
 		grid-template-columns: 1fr 1fr;
 		gap: .875rem;

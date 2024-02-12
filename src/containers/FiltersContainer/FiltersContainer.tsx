@@ -103,6 +103,7 @@ const FiltersContainer: FC<FiltersContainerProps> = ({
             onChange={handleTagChange}
             className="filters-container__mobile-tag-filters"
           />
+
           <MobileFilterButtons
             amountOfFilters={activeTags.length}
             onCloseButtonClick={handleMobileFiltersCloseButtonClick}

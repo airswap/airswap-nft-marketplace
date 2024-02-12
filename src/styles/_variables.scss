@@ -17,6 +17,8 @@ $c-light-red: #FF6D64;
 }
 
 :root {
+    --c-black-rgb: 0, 0, 0;
+
     --c-primary: #{$c-primary};
     --c-primary-dark: #{$c-primary-dark};
     --c-white: #{$c-white};

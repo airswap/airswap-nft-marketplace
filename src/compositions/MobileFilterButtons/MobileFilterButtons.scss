@@ -13,6 +13,7 @@
     height: var(--mobile-filter-buttons-height);
     padding: 1rem var(--page-padding);
     background: var(--c-dark);
+    box-shadow: 0 0 1.875rem 0 rgba(var(--c-black-rgb), .65);
 
     &__clear-button,
     &__close-button,
