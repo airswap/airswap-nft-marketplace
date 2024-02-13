@@ -19,6 +19,7 @@ import IconButton from '../IconButton/IconButton';
 import './Dialog.scss';
 
 interface DialogProps extends DialogHTMLAttributes<HTMLDialogElement>, RefAttributes<HTMLDialogElement> {
+  // Use isClosing for when you want to close the dialog from the parent component
   isClosing?: boolean;
   label?: string;
   onClose: () => void;

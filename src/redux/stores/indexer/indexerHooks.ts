@@ -38,7 +38,6 @@ export const useIndexers = (): void => {
   }, [library]);
 
   useEffect(() => {
-    console.log(lastUserOrder);
     if (lastUserOrder) sendAndClearLastOrder(lastUserOrder.order, lastUserOrder.token);
   }, [lastUserOrder]);
 };
