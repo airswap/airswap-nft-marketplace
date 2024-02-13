@@ -92,7 +92,9 @@ const Dialog: ForwardRefExoticComponent<DialogProps> = forwardRef(({
           />
         </div>
 
-        {children}
+        <div className="dialog__children-wrapper">
+          {children}
+        </div>
       </div>
     </dialog>
   );

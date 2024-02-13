@@ -27,11 +27,16 @@
     }
 
     @include for-size(tablet-portrait-up) {
-        top: unset;
+        top: 0;
         margin: auto;
+        padding: 0;
+        padding-block: 2rem;
         max-width: 40rem;
         min-width: unset;
+        max-height: 100%;
+        height: auto;
         background: none;
+        overflow: hidden;
 
         &[open] {
             animation: fadeIn .2s ease-out normal;
@@ -72,8 +77,17 @@
         overflow: hidden;
 
         @include for-size(tablet-portrait-up) {
+            border-radius: .25rem;
+            height: 100%;
             padding: var(--page-padding);
             background: var(--c-dark);
+        }
+    }
+
+    &__children-wrapper {
+
+        @include for-size(tablet-portrait-up) {
+            height: calc(100% - 3rem);
         }
     }
 }

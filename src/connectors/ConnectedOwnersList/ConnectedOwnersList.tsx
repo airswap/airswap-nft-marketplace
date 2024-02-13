@@ -17,10 +17,16 @@ import { reset } from '../../redux/stores/owners/ownersSlice';
 interface ConnectedOwnersListProps {
   library: BaseProvider;
   tokenId: string;
+  tokenName?: string;
   onClose: () => void;
 }
 
-const ConnectedOwnersList: FC<ConnectedOwnersListProps> = ({ library, tokenId, onClose }): ReactElement => {
+const ConnectedOwnersList: FC<ConnectedOwnersListProps> = ({
+  library,
+  tokenId,
+  tokenName,
+  onClose,
+}): ReactElement => {
   const dispatch = useAppDispatch();
 
   const { isLoading, owners, pageKey } = useAppSelector((state) => state.owners);
@@ -51,6 +57,7 @@ const ConnectedOwnersList: FC<ConnectedOwnersListProps> = ({ library, tokenId, o
 
   return (
     <Dialog
+      label={`Owners of ${tokenName || tokenId}`}
       ref={dialogRef}
       onClose={onClose}
     >
