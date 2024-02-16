@@ -1,10 +1,10 @@
-const getListCallToActionText = (searchValue: string, userHasOrders: boolean, hasServerError: boolean): string => {
+const getListCallToActionText = (hasFilter: boolean, userHasOrders: boolean, hasServerError: boolean): string => {
   if (hasServerError) {
     return 'Unable to fetch listings.';
   }
 
-  if (userHasOrders && searchValue.length) {
-    return 'No listing results. Try another search term.';
+  if (userHasOrders && hasFilter) {
+    return 'No listing results. Try changing filters.';
   }
 
   return 'No active listings by this wallet.';

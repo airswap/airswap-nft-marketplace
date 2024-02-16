@@ -1,18 +1,21 @@
 @import "src/styles/index";
 
 .nft-detail-proceed-button {
+	--proceed-button-height: calc(3rem + var(--page-padding) * 2);
+
 	position: fixed;
-	bottom: 0;
+	top: calc(100vh - var(--proceed-button-height));
+	top: calc(100dvh - var(--proceed-button-height));
 	left: 0;
 	width: calc(100svw - var(--scrollbar-width));
-	height: calc(3rem + var(--page-padding) * 2);
+	height: var(--proceed-button-height);
 	background-color: var(--c-grey);
 	padding: var(--page-padding);
 	z-index: 10;
 
 	@include for-size(tablet-portrait-up) {
 		position: relative;
-		bottom: unset;
+		top: unset;
 		left: unset;
 		margin-block-start: 3rem;
 		width: 12.1875rem;

@@ -19,10 +19,11 @@ import getOwnedTokensByAccountUrl from '../../../../helpers/airswap/getOwnedToke
 import useCollectionImage from '../../../../hooks/useCollectionImage';
 import useCollectionTokens from '../../../../hooks/useCollectionTokens';
 import useEnsAddress from '../../../../hooks/useEnsAddress';
+import { useGetOrders } from '../../../../hooks/useGetOrders';
 import useScrollToBottom from '../../../../hooks/useScrollToBottom';
 import { useAppDispatch, useAppSelector } from '../../../../redux/hooks';
 import { getProfileOrders } from '../../../../redux/stores/profileOrders/profileOrdersApi';
-import { reset } from '../../../../redux/stores/profileOrders/profileOrdersSlice';
+import { reset, startLoading } from '../../../../redux/stores/profileOrders/profileOrdersSlice';
 import ProfileHeader from '../../../ProfileWidget/subcomponents/ProfileHeader/ProfileHeader';
 import getListCallToActionText from '../../helpers/getListCallToActionText';
 
@@ -48,6 +49,7 @@ const ConnectedProfileOrdersWidget: FC<ConnectedProfileOrdersWidgetProps> = ({
 
   const { chainId, collectionToken } = useAppSelector((state) => state.config);
   const { tokenIdsWithBalance: userTokenIdsWithBalance } = useAppSelector((state) => state.balances);
+  const { activeTags } = useAppSelector((state) => state.filters);
   const { avatarUrl } = useAppSelector((state) => state.user);
   const {
     hasServerError,
@@ -74,30 +76,29 @@ const ConnectedProfileOrdersWidget: FC<ConnectedProfileOrdersWidgetProps> = ({
       return orderToken ? filterCollectionTokenBySearchValue(orderToken, searchValue) : true;
     })), [orders, tokens, searchValue]);
   const userIsProfileAccount = account === profileAccount;
-  const listCallToActionText = getListCallToActionText(searchValue, !!orders.length, hasServerError);
+  const hasFilter = !!searchValue || !!activeTags.length;
+  const listCallToActionText = getListCallToActionText(hasFilter, !!orders.length, hasServerError);
 
-  const getOrders = () => {
-    if (isLoading || isTotalOrdersReached) {
-      return;
-    }
-
+  const getOrders = (newOffset: number) => {
     dispatch(getProfileOrders({
       signerWallet: profileAccount,
-      offset,
+      offset: newOffset,
       limit: INDEXER_ORDERS_OFFSET,
       provider,
+      tags: activeTags,
     }));
   };
 
-  useEffect((): () => void => {
-    getOrders();
-
-    return () => dispatch(reset());
-  }, []);
+  useGetOrders(
+    activeTags,
+    getOrders,
+    reset,
+    startLoading,
+  );
 
   useEffect(() => {
-    if (scrolledToBottom) {
-      getOrders();
+    if (scrolledToBottom && !isTotalOrdersReached && !isLoading) {
+      getOrders(offset);
     }
   }, [scrolledToBottom]);
 
@@ -125,6 +126,7 @@ const ConnectedProfileOrdersWidget: FC<ConnectedProfileOrdersWidgetProps> = ({
           isEndOfOrders={isTotalOrdersReached}
           isLoading={isLoading || offset === 0}
           showExpiryDate
+          showSearchResults={hasFilter}
           currencyTokenInfo={currencyTokenInfo}
           highlightOrderNonce={highlightOrderNonce || undefined}
           listCallToActionText={listCallToActionText}

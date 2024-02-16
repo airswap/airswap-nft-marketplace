@@ -1,3 +1,8 @@
+:root {
+    --c-highlight-start: rgba(43, 113, 255, .45);
+    --c-highlight-end: rgba(43, 113, 255, .8);
+}
+
 @keyframes spin {
     from { transform: rotate(0deg) }
     to { transform: rotate(1turn) }
@@ -8,9 +13,14 @@
     to { transform: scale(1) }
 }
 
-:root {
-    --c-highlight-start: rgba(43, 113, 255, .45);
-    --c-highlight-end: rgba(43, 113, 255, .8);
+@keyframes fadeIn {
+    from { opacity: 0 }
+    to { opacity: 1 }
+}
+
+@keyframes fadeOut {
+    from { opacity: 1 }
+    to { opacity: 0 }
 }
 
 @keyframes highlight {
@@ -22,5 +32,23 @@
     }
     to {
         box-shadow: 0 0 15.625rem 1rem var(--c-highlight-start);
+    }
+}
+
+@keyframes slideIn {
+    from {
+        transform: translateY(-100%);
+    }
+    to {
+        transform: translateY(0%);
+    }
+}
+
+@keyframes slideOut {
+    from {
+        transform: translateY(0%);
+    }
+    to {
+        transform: translateY(-100%);
     }
 }

@@ -14,7 +14,7 @@ interface PageProps {
   isActive: boolean;
   listButtonIsDisabled: boolean;
   showConnectModal: boolean;
-  showDesktopConnectButton: boolean;
+  showConnectButton: boolean;
   showDesktopUserButton: boolean;
   showDisableDemoAccountButton: boolean;
   showMobileMenuButton: boolean;
@@ -37,7 +37,7 @@ const Page: FC<PropsWithChildren<PageProps>> = ({
   onCloseWalletConnectorButtonClick,
   showConnectModal,
   showDesktopUserButton,
-  showDesktopConnectButton,
+  showConnectButton,
   showDisableDemoAccountButton,
   showMobileMenuButton,
   userWalletButtonIsDisabled,
@@ -71,7 +71,7 @@ const Page: FC<PropsWithChildren<PageProps>> = ({
       <TopBar
         listButtonIsDisabled={listButtonIsDisabled}
         mobileMenuIsVisible={mobileMenuIsVisible}
-        showDesktopConnectButton={showDesktopConnectButton}
+        showDesktopConnectButton={showConnectButton}
         showDesktopUserButton={showDesktopUserButton}
         showDisableDemoAccountButton={showDisableDemoAccountButton}
         showMobileMenuButton={showMobileMenuButton}
@@ -107,7 +107,7 @@ const Page: FC<PropsWithChildren<PageProps>> = ({
       <div className={`page__content ${contentClassName}`}>
         {children}
 
-        {(!isActive && !showConnectModal) && (
+        {showConnectButton && (
           <Button
             text="Connect wallet"
             onClick={onConnectButtonClick}

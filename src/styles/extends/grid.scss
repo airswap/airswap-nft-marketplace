@@ -1,8 +1,11 @@
-%nfts-grid {
+%nfts-3-col-grid {
 	display: grid;
-	grid-column: 1 / 3;
-	grid-template-columns: repeat(3, 1fr);
+	grid-template-columns: repeat(2, 1fr);
 	gap: 1rem;
+
+	> * {
+		min-width: 0;
+	}
 
 	@include for-size(phone-only) {
 		grid-template-columns: 1fr 1fr;
@@ -10,11 +13,19 @@
 	}
 
 	@include for-size(tablet-portrait-up) {
-		grid-template-columns: repeat(4, 1fr);
+		grid-template-columns: repeat(3, 1fr);
 		gap: 1.25rem;
 	}
 
 	@include for-size(tablet-landscape-up) {
 		gap: 1.5rem;
+	}
+}
+
+%nfts-4-col-grid {
+	@extend %nfts-3-col-grid;
+
+	@include for-size(tablet-landscape-up) {
+		grid-template-columns: repeat(4, 1fr);
 	}
 }

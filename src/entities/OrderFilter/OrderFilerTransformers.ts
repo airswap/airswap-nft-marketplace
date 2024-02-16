@@ -10,6 +10,7 @@ export const transformOrderFilterToAirswapOrderFilter = (orderFilter: OrderFilte
     signerId,
     senderWallet,
     senderToken,
+    tags,
   } = orderFilter;
 
   return {
@@ -19,5 +20,6 @@ export const transformOrderFilterToAirswapOrderFilter = (orderFilter: OrderFilte
     signerId,
     senderWallet,
     senderToken,
+    tags,
   };
 };

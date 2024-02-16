@@ -43,6 +43,11 @@ const ConnectedPage: FC<PropsWithChildren<ConnectedPageProps>> = ({
     dispatch(setShowConnectModal(!showConnectModal));
   };
 
+  const handleConnectButtonClick = (): void => {
+    toggleShowWalletConnector();
+    window.scrollTo(0, 0);
+  };
+
   const handleDisableDemoAccountClick = (): void => {
     dispatch(disableDemoAccount());
   };
@@ -52,7 +57,7 @@ const ConnectedPage: FC<PropsWithChildren<ConnectedPageProps>> = ({
       isActive={isActive}
       listButtonIsDisabled={!chainIdIsCorrect || !account}
       showConnectModal={showConnectModal}
-      showDesktopConnectButton={isInitialized && !isActive}
+      showConnectButton={isInitialized && !isActive}
       showDesktopUserButton={isInitialized && isActive}
       showDisableDemoAccountButton={config.isDemoAccount}
       showMobileMenuButton={isActive}
@@ -62,7 +67,7 @@ const ConnectedPage: FC<PropsWithChildren<ConnectedPageProps>> = ({
       collectionName={config.collectionName}
       ensAddress={ensAddress}
       onCloseWalletConnectorButtonClick={toggleShowWalletConnector}
-      onConnectButtonClick={toggleShowWalletConnector}
+      onConnectButtonClick={handleConnectButtonClick}
       onDisableDemoAccountButtonClick={handleDisableDemoAccountClick}
       onDisconnectButtonClick={handleDisconnectButtonClick}
       className={className}

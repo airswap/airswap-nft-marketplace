@@ -1,0 +1,38 @@
+@import 'src/styles';
+
+$component: checkbox-group;
+
+.#{$component} {
+    border-radius: .25rem;
+    background: var(--c-dark);
+
+    &[open] {
+
+        .#{$component}__summary-icon {
+            transform: rotate(180deg);
+        }
+    }
+
+    &__summary {
+        display: flex;
+        justify-content: space-between;
+        padding: 1rem;
+        cursor: pointer;
+    }
+
+    &__summary-icon {
+        min-width: 1.5rem;
+        min-height: 1.5rem;
+        color: var(--c-text-grey);
+    }
+
+    &__list {
+        margin-block-start: .25rem;
+        padding: 1rem;
+        padding-block-start: 0;
+    }
+
+    &__list-item + &__list-item {
+        margin-block-start: .5rem;
+    }
+}

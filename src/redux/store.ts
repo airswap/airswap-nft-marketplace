@@ -10,6 +10,7 @@ import balancesReducer from './stores/balances/balancesSlice';
 import { configureBalancesSubscriber } from './stores/balances/balancesSubscriber';
 import collectionReducer from './stores/collection/collectionSlice';
 import configReducer from './stores/config/configSlice';
+import filterReducer from './stores/filters/filtersSlice';
 import indexerReducer from './stores/indexer/indexerSlice';
 import listNftReducer from './stores/listNft/listNftSlice';
 import metadataReducer from './stores/metadata/metadataSlice';
@@ -31,6 +32,7 @@ export const store = configureStore({
     balances: balancesReducer,
     collection: collectionReducer,
     config: configReducer,
+    filters: filterReducer,
     indexer: indexerReducer,
     listNft: listNftReducer,
     metadata: metadataReducer,

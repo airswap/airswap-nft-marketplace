@@ -1,0 +1,44 @@
+@import "src/styles";
+
+$component: checkbox;
+
+.checkbox {
+    display: flex;
+    position: relative;
+
+    &__input {
+        position: absolute;
+        opacity: 0;
+    }
+
+    &__input:checked {
+
+        & + .#{$component}__box {
+            background-color: var(--c-primary);
+        }
+
+        & + .#{$component}__box .#{$component}__icon {
+            display: block;
+        }
+    }
+
+    &__box {
+        @extend %flex-align-center;
+
+        position: relative;
+        width: 1.5rem;
+        height: 1.5rem;
+        border-radius: .25rem;
+        background-color: var(--c-black);
+    }
+
+    &__icon {
+        display: none;
+        width: .875rem;
+    }
+
+    &__label {
+        margin-inline-start: 1rem;
+        font-weight: var(--fw-500);
+    }
+}

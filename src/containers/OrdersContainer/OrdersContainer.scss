@@ -3,10 +3,41 @@
 .orders-container {
     padding-bottom: var(--page-padding);
 
-    &__orders {
-        @extend %nfts-grid;
+    @include for-size(tablet-portrait-up) {
+        display: flex;
+        gap: 1.5rem;
+    }
 
+    &__filters {
         width: 100%;
+
+        @include for-size(tablet-portrait-up) {
+            width: 35%;
+            max-width: 16.625rem;
+        }
+    }
+
+    &__orders-wrapper {
+        width: 100%;
+    }
+
+    &__orders-title {
+        height: 3rem;
+        line-height: 2.5;
+        font-weight: var(--fw-700);
+        font-size: 1.125rem;
+
+        @include for-size(desktop-up) {
+            height: unset;
+            line-height: unset;
+            font-size: 1.25rem;
+        }
+    }
+
+    &__orders {
+        @extend %nfts-3-col-grid;
+
+        margin-block-start: 1.75rem;
     }
 
     &__empty-state {

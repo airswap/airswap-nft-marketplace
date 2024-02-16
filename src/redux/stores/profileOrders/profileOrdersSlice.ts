@@ -1,7 +1,9 @@
+import { FullOrder } from '@airswap/utils';
 import { createSlice, PayloadAction } from '@reduxjs/toolkit';
 
 import { INDEXER_ORDERS_OFFSET } from '../../../constants/indexer';
 import { ExtendedFullOrder } from '../../../entities/FullOrder/FullOrder';
+import { getUniqueArrayChildren } from '../../../helpers/array';
 import { getProfileOrders } from './profileOrdersApi';
 
 export interface ProfileOrdersState {
@@ -35,6 +37,10 @@ const profileSlice = createSlice({
       ...state,
       offset: action.payload,
     }),
+    startLoading: (state): ProfileOrdersState => ({
+      ...state,
+      isLoading: true,
+    }),
   },
   extraReducers: builder => {
     builder.addCase(getProfileOrders.pending, (state): ProfileOrdersState => ({
@@ -43,10 +49,10 @@ const profileSlice = createSlice({
     }));
 
     builder.addCase(getProfileOrders.fulfilled, (state, action): ProfileOrdersState => {
-      const newOrders = [
+      const newOrders = getUniqueArrayChildren<FullOrder>([
         ...state.orders,
         ...action.payload,
-      ];
+      ], 'nonce');
       const isTotalOrdersReached = action.payload.length < INDEXER_ORDERS_OFFSET;
 
       return {
@@ -72,6 +78,7 @@ const profileSlice = createSlice({
 
 export const {
   reset,
+  startLoading,
   setOrders,
   setOrdersOffset,
 } = profileSlice.actions;

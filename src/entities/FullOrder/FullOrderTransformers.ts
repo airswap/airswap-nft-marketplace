@@ -27,4 +27,3 @@ export const transformToExtendedFullOrder = (fullOrder: FullOrder, isTaken: bool
   key: getFullOrderKey(fullOrder),
   state: getFullOrderState(fullOrder, isTaken, isValid),
 });
-

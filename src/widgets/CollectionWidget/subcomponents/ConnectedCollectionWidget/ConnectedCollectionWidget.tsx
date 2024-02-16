@@ -14,10 +14,11 @@ import OrdersContainer from '../../../../containers/OrdersContainer/OrdersContai
 import { filterCollectionTokenBySearchValue } from '../../../../entities/CollectionToken/CollectionTokenHelpers';
 import useCollectionImage from '../../../../hooks/useCollectionImage';
 import useCollectionTokens from '../../../../hooks/useCollectionTokens';
+import { useGetOrders } from '../../../../hooks/useGetOrders';
 import useScrollToBottom from '../../../../hooks/useScrollToBottom';
 import { useAppDispatch, useAppSelector } from '../../../../redux/hooks';
 import { getCollectionOrders } from '../../../../redux/stores/collection/collectionApi';
-import { reset } from '../../../../redux/stores/collection/collectionSlice';
+import { reset, startLoading } from '../../../../redux/stores/collection/collectionSlice';
 import getListCallToActionText from '../../helpers/getListCallToActionText';
 import CollectionPortrait from '../CollectionPortrait/CollectionPortrait';
 
@@ -33,6 +34,7 @@ const ConnectedCollectionWidget: FC<ConnectedCollectionWidgetProps> = ({ currenc
   const { bannerImage } = useCollectionImage();
 
   const { collectionToken, collectionName } = useAppSelector((state) => state.config);
+  const { activeTags } = useAppSelector((state) => state.filters);
   const { tokenIdsWithBalance } = useAppSelector((state) => state.balances);
   const {
     hasServerError,
@@ -44,27 +46,25 @@ const ConnectedCollectionWidget: FC<ConnectedCollectionWidgetProps> = ({ currenc
 
   const [searchValue, setSearchValue] = useState<string>('');
 
-  const getOrders = () => {
-    if (isLoading || isTotalOrdersReached) {
-      return;
-    }
-
+  const getOrders = (newOffset: number) => {
     dispatch(getCollectionOrders({
-      offset,
+      offset: newOffset,
       limit: INDEXER_ORDERS_OFFSET,
       provider,
+      tags: activeTags,
     }));
   };
 
-  useEffect((): () => void => {
-    getOrders();
-
-    return () => dispatch(reset());
-  }, []);
+  useGetOrders(
+    activeTags,
+    getOrders,
+    reset,
+    startLoading,
+  );
 
   useEffect(() => {
-    if (scrolledToBottom) {
-      getOrders();
+    if (scrolledToBottom && !isLoading && !isTotalOrdersReached) {
+      getOrders(offset);
     }
   }, [scrolledToBottom]);
 
@@ -77,7 +77,8 @@ const ConnectedCollectionWidget: FC<ConnectedCollectionWidgetProps> = ({ currenc
 
       return orderToken ? filterCollectionTokenBySearchValue(orderToken, searchValue) : true;
     })), [orders, tokens, searchValue]);
-  const listCallToActionText = getListCallToActionText(searchValue, !!userTokens.length, hasServerError);
+  const hasFilter = !!searchValue || !!activeTags.length;
+  const listCallToActionText = getListCallToActionText(hasFilter, !!userTokens.length, hasServerError);
 
   return (
     <div className={`collection-widget ${className}`}>
@@ -94,13 +95,12 @@ const ConnectedCollectionWidget: FC<ConnectedCollectionWidgetProps> = ({ currenc
           value={searchValue || ''}
           className="collection-widget__search-input"
         />
-        <h2 className="collection-widget__subtitle">
-          {searchValue ? 'Search results' : 'All listings'}
-        </h2>
+
         <OrdersContainer
           hasListCallToActionButton={!!userTokens.length && !hasServerError}
           isEndOfOrders={isTotalOrdersReached}
           isLoading={isLoading || offset === 0}
+          showSearchResults={hasFilter}
           currencyTokenInfo={currencyTokenInfo}
           listCallToActionText={listCallToActionText}
           orders={filteredOrders}

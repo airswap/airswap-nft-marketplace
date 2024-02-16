@@ -1,0 +1,15 @@
+.tag-filters {
+
+    &__title {
+        font-size: 1.125rem;
+        font-weight: var(--fw-700);
+    }
+
+    &__group:first-of-type {
+        margin-block-start: 1rem;
+    }
+
+    &__group + &__group {
+        margin-block-start: .5rem;
+    }
+}

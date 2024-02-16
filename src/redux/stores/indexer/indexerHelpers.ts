@@ -1,5 +1,6 @@
 import { Server } from '@airswap/libraries';
 import {
+  CollectionTokenInfo,
   Direction,
   FullOrder,
   Indexes,
@@ -7,6 +8,7 @@ import {
 } from '@airswap/utils';
 
 import { INDEXER_ORDER_RESPONSE_TIME_MS } from '../../../constants/indexer';
+import { transformCollectionTokenAttributeToString } from '../../../entities/CollectionTokenAttribute/CollectionTokenAttributeTransformers';
 import { transformOrderFilterToAirswapOrderFilter } from '../../../entities/OrderFilter/OrderFilerTransformers';
 import { OrderFilter } from '../../../entities/OrderFilter/OrderFilter';
 import { getUndefinedAfterTimeout, isPromiseFulfilledResult } from '../../../helpers/indexers';
@@ -51,9 +53,9 @@ export const getServers = async (indexerUrls: string[]): Promise<Server[]> => {
   return fulfilledResults.map((result) => result.value);
 };
 
-const addOrderHelper = (server: Server, order: FullOrder): Promise<boolean> => new Promise((resolve, reject) => {
+const addOrderHelper = (server: Server, order: FullOrder, token: CollectionTokenInfo): Promise<boolean> => new Promise((resolve, reject) => {
   server
-    .addOrder(order, ['Background:Mold'])
+    .addOrder(order, token.attributes?.map(transformCollectionTokenAttributeToString))
     .then((response) => {
       resolve(response);
     })
@@ -68,6 +70,7 @@ const addOrderHelper = (server: Server, order: FullOrder): Promise<boolean> => n
 
 export const sendOrderToIndexers = async (
   order: FullOrder,
+  token: CollectionTokenInfo,
   indexerUrls: string[],
 ): Promise<boolean | undefined> => {
   const servers = await getServers(indexerUrls);
@@ -77,7 +80,7 @@ export const sendOrderToIndexers = async (
   }
 
   return Promise.any([
-    ...servers.map(server => addOrderHelper(server, order)),
+    ...servers.map(server => addOrderHelper(server, order, token)),
     getUndefinedAfterTimeout(INDEXER_ORDER_RESPONSE_TIME_MS),
   ]);
 };

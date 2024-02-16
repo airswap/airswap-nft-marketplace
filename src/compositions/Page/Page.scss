@@ -27,7 +27,7 @@ $component: page;
         left: 0;
         top: var(--top-bar-height);
         width: 100vw;
-        height: calc(100svh - var(--top-bar-height));
+        height: calc(100dvh - var(--top-bar-height));
         z-index: 5;
 
         @include for-size(tablet-portrait-up) {
@@ -46,7 +46,7 @@ $component: page;
         left: 0;
         width: 100%;
         height: calc(100% - var(--top-bar-height));
-        min-height: calc(100svh - var(--top-bar-height));
+        min-height: calc(100dvh - var(--top-bar-height));
         z-index: 4;
         overflow-y: auto;
         visibility: hidden;
@@ -55,7 +55,8 @@ $component: page;
         @include for-size(tablet-portrait-up) {
             top: var(--desktop-top-bar-height);
             height: calc(100% - var(--desktop-top-bar-height));
-            min-height: calc(100svh - var(--desktop-top-bar-height));
+            min-height: calc(100vh - var(--desktop-top-bar-height));
+            min-height: calc(100dvh - var(--desktop-top-bar-height));
         }
     }
 
@@ -65,7 +66,8 @@ $component: page;
         position: fixed;
         width: calc(100% - var(--page-padding) * 2);
         left: var(--page-padding);
-        top: calc(100svh - 3rem - var(--page-padding));
+        top: calc(100vh - 3rem - var(--page-padding));
+        top: calc(100dvh - 3rem - var(--page-padding));
 
         @include for-size(tablet-portrait-up) {
             display: none;

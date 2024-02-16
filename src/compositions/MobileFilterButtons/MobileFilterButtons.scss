@@ -1,0 +1,42 @@
+@import "src/styles";
+
+.mobile-filter-buttons {
+    --mobile-filter-buttons-height: 5rem;
+
+    display: flex;
+    justify-content: space-between;
+    gap: 1rem;
+    position: fixed;
+    top: calc(100dvh - var(--mobile-filter-buttons-height));
+    left: 0;
+    width: 100%;
+    height: var(--mobile-filter-buttons-height);
+    padding: 1rem var(--page-padding);
+    background: var(--c-dark);
+    box-shadow: 0 0 1.875rem 0 rgba(var(--c-black-rgb), .65);
+
+    &__clear-button,
+    &__close-button,
+    &__apply-button {
+        padding-inline: 1.5rem;
+
+        @include for-size(phone-only) {
+            padding-inline: .5rem;
+        }
+    }
+
+    &__clear-button,
+    &__close-button {
+        @extend %button--is-secondary;
+
+        width: 40%;
+        border-color: var(--c-light-grey);
+        background: var(--c-dark);
+    }
+
+    &__apply-button {
+        @extend %button--is-primary;
+
+        width: 60%;
+    }
+}

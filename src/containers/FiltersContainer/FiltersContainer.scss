@@ -1,0 +1,55 @@
+@import 'src/styles';
+
+.filters-container {
+
+    &__header {
+        display: flex;
+        justify-content: space-between;
+        position: relative;
+        width: 100%;
+    }
+
+    &__mobile-button {
+        @extend %button--is-secondary;
+
+        position: absolute;
+        right: 0;
+        color: var(--c-white);
+
+        @include for-size(tablet-portrait-up) {
+            display: none;
+        }
+    }
+
+    &__title {
+        display: none;
+
+        @include for-size(desktop-up) {
+            display: block;
+            font-size: 1.25rem;
+            font-weight: var(--fw-700);
+        }
+    }
+
+    &__tag-filters {
+        display: none;
+
+        @include for-size(tablet-portrait-up) {
+            display: block;
+            margin-block-start: 1.25rem;
+        }
+    }
+
+    &__mobile-dialog {
+
+        @include for-size(tablet-portrait-up) {
+            display: none;
+        }
+
+    }
+
+    &__mobile-tag-filters {
+        color: var(--c-white);
+        padding-bottom: 5rem;
+    }
+}

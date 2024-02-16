@@ -7,6 +7,7 @@ export interface OrderFilter {
   signerId?: AirswapOrderFilter['signerId'];
   senderWallet?: AirswapOrderFilter['senderWallet'];
   senderToken?: AirswapOrderFilter['senderToken'];
+  tags?: AirswapOrderFilter['tags'];
   offset?: number;
   limit?: number;
 }

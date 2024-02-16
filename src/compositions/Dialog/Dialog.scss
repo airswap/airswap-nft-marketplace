@@ -1,32 +1,93 @@
+@import "src/styles";
+
 .dialog {
-    margin: 1rem auto;
+    top: var(--top-bar-height);
+    margin: 0;
     width: 100%;
+    min-width: 100%;
     height: 100vh;
-    height: 100svh;
-    padding: 0;
-    max-width: 40rem;
-    overflow: hidden;
+    height: calc(100dvh - var(--top-bar-height));
+    padding: var(--page-padding);
+    overflow-y: auto;
+    overflow-x: hidden;
+    background: var(--c-black);
 
     &::backdrop {
         background-color: rgba(0, 0, 0, .5);
+        opacity: 0;
         cursor: pointer;
+    }
+
+    &[open] {
+        animation: slideIn .3s ease-out normal;
+    }
+
+    &--is-closing {
+        animation: slideOut .3s ease-in normal !important;
+    }
+
+    @include for-size(tablet-portrait-up) {
+        top: 0;
+        margin: auto;
+        padding: 0;
+        padding-block: 2rem;
+        max-width: 40rem;
+        min-width: unset;
+        max-height: 100%;
+        height: auto;
+        background: none;
+        overflow: hidden;
+
+        &[open] {
+            animation: fadeIn .2s ease-out normal;
+        }
+
+        &--is-closing {
+            animation: fadeOut .2s ease-in normal !important;
+        }
+
+        &::backdrop {
+            opacity: 1;
+        }
+    }
+
+    &__header {
+        display: flex;
+        justify-content: space-between;
+        margin-block-end: 1.5rem;
+        width: 100%;
+    }
+
+    &__label {
+        font-size: 1.125rem;
+        font-weight: var(--fw-700);
+    }
+
+    &__close-button {
+        justify-content: flex-end;
+        margin-inline-start: auto;
+        width: 1.5rem;
+        color: var(--c-white);
     }
 
     &__content {
         display: flex;
+        flex-direction: column;
         position: relative;
-        padding-top: 2rem;
-        max-height: 100%;
-        min-height: 100%;
         overflow: hidden;
-        background: var(--c-dark);
+
+        @include for-size(tablet-portrait-up) {
+            border-radius: .25rem;
+            height: 100%;
+            padding: var(--page-padding);
+            background: var(--c-dark);
+        }
     }
 
-    &__close-button {
-        position: absolute;
-        top: 1rem;
-        right: 1rem;
-        width: 1.5rem;
-        color: var(--c-white);
+    &__children-wrapper {
+
+        @include for-size(tablet-portrait-up) {
+            height: calc(100% - 3rem);
+        }
     }
 }

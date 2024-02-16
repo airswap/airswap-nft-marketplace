@@ -1,13 +1,18 @@
-import { FullOrder } from '@airswap/utils';
+import { CollectionTokenInfo, FullOrder } from '@airswap/utils';
 import { createSlice, PayloadAction } from '@reduxjs/toolkit';
 
 import { ExtendedFullOrder } from '../../../entities/FullOrder/FullOrder';
 import { AppError } from '../../../errors/appError';
 import { getActiveUserOrders } from './listNftApi';
 
+interface LastUserOrder {
+  order: FullOrder;
+  token: CollectionTokenInfo;
+}
+
 export interface ListNftState {
   isLoadingUserOrders: boolean;
-  lastUserOrder?: FullOrder;
+  lastUserOrder?: LastUserOrder;
   userOrders: ExtendedFullOrder[];
   error?: AppError;
 }
@@ -25,9 +30,9 @@ export const listNftSlice = createSlice({
   name: 'make-otc',
   initialState,
   reducers: {
-    setUserOrder: (
+    setLastUserOrder: (
       state,
-      action: PayloadAction<FullOrder>,
+      action: PayloadAction<LastUserOrder>,
     ): ListNftState => {
       localStorage.setItem(lastUserOrderLocalStorageKey, JSON.stringify(action.payload));
 
@@ -67,7 +72,7 @@ export const listNftSlice = createSlice({
 });
 
 export const {
-  setUserOrder,
+  setLastUserOrder,
   clearLastUserOrder,
   setError,
   reset,

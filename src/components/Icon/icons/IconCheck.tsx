@@ -3,8 +3,8 @@ import React, { FC, ReactElement } from 'react';
 import { SvgIconProps } from '../Icon';
 
 const IconCheck: FC<SvgIconProps> = ({ className = '' }): ReactElement => (
-  <svg fill="none" viewBox="0 0 24 24" className={className}>
-    <path d="M9 16.2L4.8 12l-1.4 1.4L9 19 21 7l-1.4-1.4L9 16.2z" />
+  <svg fill="none" viewBox="0 0 14 11" className={className}>
+    <path d="M4.95703 10.9993L0.207031 6.24935L1.39453 5.06185L4.95703 8.62435L12.6029 0.978516L13.7904 2.16602L4.95703 10.9993Z" />
   </svg>
 );
 

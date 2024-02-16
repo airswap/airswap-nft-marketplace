@@ -1,6 +1,6 @@
 import { useEffect } from 'react';
 
-import { FullOrder } from '@airswap/utils';
+import { CollectionTokenInfo, FullOrder } from '@airswap/utils';
 
 import useDefaultLibrary from '../../../hooks/useDefaultProvider';
 import { useAppDispatch, useAppSelector } from '../../hooks';
@@ -17,10 +17,10 @@ export const useIndexers = (): void => {
   const { isInitialized, isLoading, urls } = useAppSelector(state => state.indexer);
   const library = useDefaultLibrary(chainId);
 
-  const sendAndClearLastOrder = async (lastOrder: FullOrder) => {
+  const sendAndClearLastOrder = async (lastOrder: FullOrder, token: CollectionTokenInfo) => {
     if (!isInitialized) return;
 
-    const isSuccessful = await sendOrderToIndexers(lastOrder, urls);
+    const isSuccessful = await sendOrderToIndexers(lastOrder, token, urls);
 
     if (isSuccessful) {
       dispatch(setLastSentOrder(lastOrder));
@@ -38,6 +38,6 @@ export const useIndexers = (): void => {
   }, [library]);
 
   useEffect(() => {
-    if (lastUserOrder) sendAndClearLastOrder(lastUserOrder);
+    if (lastUserOrder) sendAndClearLastOrder(lastUserOrder.order, lastUserOrder.token);
   }, [lastUserOrder]);
 };

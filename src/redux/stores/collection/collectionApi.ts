@@ -11,6 +11,7 @@ interface GetCollectionOrdersParams {
   limit: number;
   offset: number;
   provider: BaseProvider;
+  tags: string[];
 }
 
 export const getCollectionOrders = createAsyncThunk<
