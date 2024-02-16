@@ -19,6 +19,7 @@ import useScrollToBottom from '../../../../hooks/useScrollToBottom';
 import { useAppDispatch, useAppSelector } from '../../../../redux/hooks';
 import { getCollectionOrders } from '../../../../redux/stores/collection/collectionApi';
 import { reset, startLoading } from '../../../../redux/stores/collection/collectionSlice';
+import { useFilters } from '../../../../redux/stores/filters/filtersHooks';
 import getListCallToActionText from '../../helpers/getListCallToActionText';
 import CollectionPortrait from '../CollectionPortrait/CollectionPortrait';
 
@@ -32,6 +33,7 @@ const ConnectedCollectionWidget: FC<ConnectedCollectionWidgetProps> = ({ currenc
   const dispatch = useAppDispatch();
   const scrolledToBottom = useScrollToBottom();
   const { bannerImage } = useCollectionImage();
+  useFilters();
 
   const { collectionToken, collectionName } = useAppSelector((state) => state.config);
   const { activeTags } = useAppSelector((state) => state.filters);
