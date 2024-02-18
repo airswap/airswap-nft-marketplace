@@ -16,12 +16,12 @@ const useEnsAddress = (address?: string): string | undefined => {
   const [lookedUpAddress, setLookedUpAddress] = useState<string | null>(null);
 
   const lookupAddress = async (provider: Web3Provider, value: string) => {
-    // Note: lookupAddress only seems to work on mainnet.
     const newLookedUpAddress = await provider.lookupAddress(value);
     setLookedUpAddress(newLookedUpAddress);
   };
 
   useEffect(() => {
+    // Note: lookupAddress only seems to work on mainnet.
     if (!library || !address || chainId !== 1) {
       return;
     }
