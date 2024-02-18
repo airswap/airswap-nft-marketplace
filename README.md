@@ -9,14 +9,15 @@ First, please give us a star! ⭐️
 ### Stack
 
 - React
-- NodeJS v16
+- Redux
+- Node 18.16.0
 - Yarn
 
 ### Quick start
 
 ```
-$ git clone https://github.com/<YOUR-GITHUB-USER>/airswap-web
-$ cd airswap-web
+$ git clone https://github.com/<YOUR-GITHUB-USER>/airswap-marketplace
+$ cd airswap-marketplace
 $ yarn install
 $ yarn start
 ```
