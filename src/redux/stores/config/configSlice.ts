@@ -4,9 +4,9 @@ import { createSlice } from '@reduxjs/toolkit';
 import { RootState } from '../../store';
 import { getCollectionTokenKind, getCurrencyTokenKind, getSwapContractAddress } from './configApi';
 import {
-  getCollectionTokenKindLocalStorageKey,
-  getCurrencyTokenKindLocalStorageKey, getSwapContractAddressLocalStorageKey,
+  getSwapContractAddressLocalStorageKey,
   getTokenKindFromLocalStorage,
+  getTokenKindLocalStorageKey,
 } from './configHelpers';
 
 export interface ConfigState {
@@ -28,6 +28,10 @@ export interface ConfigState {
   swapContractAddress?: string | null;
 }
 
+const currencyToken = (process.env.REACT_APP_CURRENCY_TOKEN || '').toLowerCase();
+const collectionToken = (process.env.REACT_APP_COLLECTION_TOKEN || '').toLowerCase();
+const chainId = process.env.REACT_APP_CHAIN_ID ? parseInt(process.env.REACT_APP_CHAIN_ID, 10) : 1;
+
 const initialState: ConfigState = {
   hasFailedCollectionToken: false,
   hasFailedCurrencyToken: false,
@@ -35,16 +39,16 @@ const initialState: ConfigState = {
   isDemoAccount: !!process.env.REACT_APP_IMPERSONATE_ADDRESS,
   isLoadingCollectionTokenKind: false,
   isLoadingCurrencyTokenKind: false,
-  chainId: process.env.REACT_APP_CHAIN_ID ? parseInt(process.env.REACT_APP_CHAIN_ID, 10) : 1,
-  currencyToken: (process.env.REACT_APP_CURRENCY_TOKEN || '').toLowerCase(),
-  currencyTokenKind: getTokenKindFromLocalStorage(localStorage.getItem(getCurrencyTokenKindLocalStorageKey())),
-  collectionToken: (process.env.REACT_APP_COLLECTION_TOKEN || '').toLowerCase(),
-  collectionTokenKind: getTokenKindFromLocalStorage(localStorage.getItem(getCollectionTokenKindLocalStorageKey())),
+  chainId,
+  currencyToken,
+  currencyTokenKind: getTokenKindFromLocalStorage(localStorage.getItem(getTokenKindLocalStorageKey(currencyToken))),
+  collectionToken,
+  collectionTokenKind: getTokenKindFromLocalStorage(localStorage.getItem(getTokenKindLocalStorageKey(collectionToken))),
   collectionName: process.env.REACT_APP_COLLECTION_NAME || '',
   collectionImage: process.env.REACT_APP_COLLECTION_IMAGE || '',
   impersonateAddress: process.env.REACT_APP_IMPERSONATE_ADDRESS,
   storageServerUrl: process.env.REACT_APP_STORAGE_SERVER_URL || '',
-  swapContractAddress: localStorage.getItem(getSwapContractAddressLocalStorageKey()),
+  swapContractAddress: localStorage.getItem(getSwapContractAddressLocalStorageKey(chainId)),
 };
 
 const configSlice = createSlice({
@@ -65,7 +69,9 @@ const configSlice = createSlice({
       isLoadingCollectionTokenKind: true,
     }));
     builder.addCase(getCollectionTokenKind.fulfilled, (state, action): ConfigState => {
-      localStorage.setItem(getCollectionTokenKindLocalStorageKey(), action.payload || '');
+      if (action.payload) {
+        localStorage.setItem(getTokenKindLocalStorageKey(collectionToken), action.payload);
+      }
 
       return {
         ...state,
@@ -83,7 +89,9 @@ const configSlice = createSlice({
       isLoadingCurrencyTokenKind: true,
     }));
     builder.addCase(getCurrencyTokenKind.fulfilled, (state, action): ConfigState => {
-      localStorage.setItem(getCurrencyTokenKindLocalStorageKey(), action.payload || '');
+      if (action.payload) {
+        localStorage.setItem(getTokenKindLocalStorageKey(currencyToken), action.payload);
+      }
 
       return {
         ...state,
@@ -97,7 +105,9 @@ const configSlice = createSlice({
       hasFailedCurrencyToken: true,
     }));
     builder.addCase(getSwapContractAddress.fulfilled, (state, action): ConfigState => {
-      localStorage.setItem(getSwapContractAddressLocalStorageKey(), action.payload || '');
+      if (action.payload) {
+        localStorage.setItem(getSwapContractAddressLocalStorageKey(chainId), action.payload);
+      }
 
       return {
         ...state,

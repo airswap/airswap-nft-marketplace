@@ -5,9 +5,8 @@ import { ethers } from 'ethers';
 
 import { getEnumKeyByEnumValue } from '../../../helpers/enum';
 
-export const getCollectionTokenKindLocalStorageKey = (): string => 'airswap-marketplace/collection-token-kind';
-export const getCurrencyTokenKindLocalStorageKey = (): string => 'airswap-marketplace/currency-token-kind';
-export const getSwapContractAddressLocalStorageKey = (): string => 'airswap-marketplace/swap-contract-address';
+export const getTokenKindLocalStorageKey = (address: string): string => `airswap-marketplace/token-kind/${address}`;
+export const getSwapContractAddressLocalStorageKey = (chainId: number): string => `airswap-marketplace/swap-contract-address/${chainId}`;
 
 export const getTokenKindFromLocalStorage = (value: string | null): TokenKinds | undefined => {
   if (!value) {
