@@ -2,6 +2,7 @@
   "name": "airswap-marketplace",
   "version": "0.1.0",
   "private": true,
+  "homepage": ".",
   "scripts": {
     "start": "craco --openssl-legacy-provider start",
     "build": "craco --openssl-legacy-provider build",
