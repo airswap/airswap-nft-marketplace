@@ -3,6 +3,11 @@ import { createSlice } from '@reduxjs/toolkit';
 
 import { RootState } from '../../store';
 import { getCollectionTokenKind, getCurrencyTokenKind, getSwapContractAddress } from './configApi';
+import {
+  getCollectionTokenKindLocalStorageKey,
+  getCurrencyTokenKindLocalStorageKey, getSwapContractAddressLocalStorageKey,
+  getTokenKindFromLocalStorage,
+} from './configHelpers';
 
 export interface ConfigState {
   hasFailedCollectionToken: boolean;
@@ -32,11 +37,14 @@ const initialState: ConfigState = {
   isLoadingCurrencyTokenKind: false,
   chainId: process.env.REACT_APP_CHAIN_ID ? parseInt(process.env.REACT_APP_CHAIN_ID, 10) : 1,
   currencyToken: (process.env.REACT_APP_CURRENCY_TOKEN || '').toLowerCase(),
+  currencyTokenKind: getTokenKindFromLocalStorage(localStorage.getItem(getCurrencyTokenKindLocalStorageKey())),
   collectionToken: (process.env.REACT_APP_COLLECTION_TOKEN || '').toLowerCase(),
+  collectionTokenKind: getTokenKindFromLocalStorage(localStorage.getItem(getCollectionTokenKindLocalStorageKey())),
   collectionName: process.env.REACT_APP_COLLECTION_NAME || '',
   collectionImage: process.env.REACT_APP_COLLECTION_IMAGE || '',
   impersonateAddress: process.env.REACT_APP_IMPERSONATE_ADDRESS,
   storageServerUrl: process.env.REACT_APP_STORAGE_SERVER_URL || '',
+  swapContractAddress: localStorage.getItem(getSwapContractAddressLocalStorageKey()),
 };
 
 const configSlice = createSlice({
@@ -56,11 +64,15 @@ const configSlice = createSlice({
       ...state,
       isLoadingCollectionTokenKind: true,
     }));
-    builder.addCase(getCollectionTokenKind.fulfilled, (state, action): ConfigState => ({
-      ...state,
-      isLoadingCollectionTokenKind: false,
-      collectionTokenKind: action.payload,
-    }));
+    builder.addCase(getCollectionTokenKind.fulfilled, (state, action): ConfigState => {
+      localStorage.setItem(getCollectionTokenKindLocalStorageKey(), action.payload || '');
+
+      return {
+        ...state,
+        isLoadingCollectionTokenKind: false,
+        collectionTokenKind: action.payload,
+      };
+    });
     builder.addCase(getCollectionTokenKind.rejected, (state): ConfigState => ({
       ...state,
       isLoadingCollectionTokenKind: false,
@@ -70,20 +82,28 @@ const configSlice = createSlice({
       ...state,
       isLoadingCurrencyTokenKind: true,
     }));
-    builder.addCase(getCurrencyTokenKind.fulfilled, (state, action): ConfigState => ({
-      ...state,
-      isLoadingCurrencyTokenKind: false,
-      currencyTokenKind: action.payload,
-    }));
+    builder.addCase(getCurrencyTokenKind.fulfilled, (state, action): ConfigState => {
+      localStorage.setItem(getCurrencyTokenKindLocalStorageKey(), action.payload || '');
+
+      return {
+        ...state,
+        isLoadingCurrencyTokenKind: false,
+        currencyTokenKind: action.payload,
+      };
+    });
     builder.addCase(getCurrencyTokenKind.rejected, (state): ConfigState => ({
       ...state,
       isLoadingCurrencyTokenKind: false,
       hasFailedCurrencyToken: true,
     }));
-    builder.addCase(getSwapContractAddress.fulfilled, (state, action): ConfigState => ({
-      ...state,
-      swapContractAddress: action.payload,
-    }));
+    builder.addCase(getSwapContractAddress.fulfilled, (state, action): ConfigState => {
+      localStorage.setItem(getSwapContractAddressLocalStorageKey(), action.payload || '');
+
+      return {
+        ...state,
+        swapContractAddress: action.payload,
+      };
+    });
     builder.addCase(getSwapContractAddress.rejected, (state): ConfigState => ({
       ...state,
       swapContractAddress: null,
