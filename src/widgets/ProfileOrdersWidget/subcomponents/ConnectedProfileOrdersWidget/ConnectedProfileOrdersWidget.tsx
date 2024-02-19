@@ -22,6 +22,7 @@ import useEnsAddress from '../../../../hooks/useEnsAddress';
 import { useGetOrders } from '../../../../hooks/useGetOrders';
 import useScrollToBottom from '../../../../hooks/useScrollToBottom';
 import { useAppDispatch, useAppSelector } from '../../../../redux/hooks';
+import { useFilters } from '../../../../redux/stores/filters/filtersHooks';
 import { getProfileOrders } from '../../../../redux/stores/profileOrders/profileOrdersApi';
 import { reset, startLoading } from '../../../../redux/stores/profileOrders/profileOrdersSlice';
 import ProfileHeader from '../../../ProfileWidget/subcomponents/ProfileHeader/ProfileHeader';
@@ -46,6 +47,7 @@ const ConnectedProfileOrdersWidget: FC<ConnectedProfileOrdersWidgetProps> = ({
   const [searchParams] = useSearchParams();
   const { bannerImage } = useCollectionImage();
   const scrolledToBottom = useScrollToBottom();
+  useFilters();
 
   const { chainId, collectionToken } = useAppSelector((state) => state.config);
   const { tokenIdsWithBalance: userTokenIdsWithBalance } = useAppSelector((state) => state.balances);

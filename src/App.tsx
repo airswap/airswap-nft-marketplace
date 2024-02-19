@@ -10,7 +10,6 @@ import DebugPage from './pages/DebugPage/DebugPage';
 import { useAppSelector } from './redux/hooks';
 import { useConfig } from './redux/stores/config/configHooks';
 import { selectConfigFailed } from './redux/stores/config/configSlice';
-import { useFilters } from './redux/stores/filters/filtersHooks';
 import { useIndexers } from './redux/stores/indexer/indexerHooks';
 import { useMetadata } from './redux/stores/metadata/metadataHooks';
 import { useTransactions } from './redux/stores/transactions/transactionsHooks';
@@ -26,7 +25,6 @@ const ConnectedApp = () => {
   useTransactions();
   useMetadata();
   useIndexers();
-  useFilters();
   useSwitchChain();
   useWeb3();
   useSwapEventsSubscriber();
