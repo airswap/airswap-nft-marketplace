@@ -1,6 +1,7 @@
 import { FC, PropsWithChildren, ReactElement } from 'react';
 
 import Page from '../../compositions/Page/Page';
+import useCollectionName from '../../hooks/useCollectionName';
 import useEnsAddress from '../../hooks/useEnsAddress';
 import { useAppDispatch, useAppSelector } from '../../redux/hooks';
 import { disableDemoAccount } from '../../redux/stores/config/configSlice';
@@ -27,6 +28,7 @@ const ConnectedPage: FC<PropsWithChildren<ConnectedPageProps>> = ({
   const { avatarUrl } = useAppSelector((state) => state.user);
 
   const ensAddress = useEnsAddress(account || '');
+  const collectionName = useCollectionName();
 
   const chainIdIsCorrect = !!chainId && chainId === config.chainId;
 
@@ -64,7 +66,7 @@ const ConnectedPage: FC<PropsWithChildren<ConnectedPageProps>> = ({
       userWalletButtonIsDisabled={!chainIdIsCorrect}
       avatarUrl={avatarUrl}
       account={account}
-      collectionName={config.collectionName}
+      collectionName={collectionName}
       ensAddress={ensAddress}
       onCloseWalletConnectorButtonClick={toggleShowWalletConnector}
       onConnectButtonClick={handleConnectButtonClick}

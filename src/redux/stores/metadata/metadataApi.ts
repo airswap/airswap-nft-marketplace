@@ -25,11 +25,9 @@ export const getProtocolFee = async (
   return protocolFee.toNumber();
 };
 
-export const getCollectionImageBanner = createAsyncThunk<
-string | null,
+export const getCollectionContractMetadata = createAsyncThunk<
+NftContract,
 string
->('metadata/getCollectionImageBanner', async (collectionToken: string) => {
-  const response: NftContract = await alchemy.nft.getContractMetadata(collectionToken);
-
-  return response.openSeaMetadata?.imageBannerUrl || null;
-});
+>('metadata/getCollectionContractMetadata', async (collectionToken: string) => (
+  alchemy.nft.getContractMetadata(collectionToken)
+));

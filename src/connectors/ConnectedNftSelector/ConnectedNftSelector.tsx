@@ -9,6 +9,7 @@ import { BigNumber } from 'bignumber.js';
 
 import SelectNft from '../../compositions/SelectNft/SelectNft';
 import { getUniqueSingleDimensionArray } from '../../helpers/array';
+import useCollectionName from '../../hooks/useCollectionName';
 import useCollectionTokens from '../../hooks/useCollectionTokens';
 import { useAppSelector } from '../../redux/hooks';
 
@@ -25,9 +26,11 @@ const ConnectedNftSelector: FC<ConnectedNftSelectorProps> = ({
   onClickNft,
   className = '',
 }): ReactElement => {
-  const { collectionToken, collectionName } = useAppSelector(state => state.config);
+  const { collectionToken } = useAppSelector(state => state.config);
   const { tokenIdsWithBalance } = useAppSelector(state => state.balances);
   const { userOrders } = useAppSelector(state => state.listNft);
+
+  const collectionName = useCollectionName();
 
   const [tokens, setTokens] = useState<string[]>([selectedToken]);
   const [viewedTokens, setViewedTokens] = useState<string[]>([]);

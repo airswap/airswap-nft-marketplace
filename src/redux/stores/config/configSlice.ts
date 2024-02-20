@@ -4,6 +4,7 @@ import { createSlice } from '@reduxjs/toolkit';
 import { RootState } from '../../store';
 import { getCollectionTokenKind, getCurrencyTokenKind, getSwapContractAddress } from './configApi';
 import {
+  getCurrencyTokenAddress,
   getSwapContractAddressLocalStorageKey,
   getTokenKindFromLocalStorage,
   getTokenKindLocalStorageKey,
@@ -28,9 +29,10 @@ export interface ConfigState {
   swapContractAddress?: string | null;
 }
 
-const currencyToken = (process.env.REACT_APP_CURRENCY_TOKEN || '').toLowerCase();
 const collectionToken = (process.env.REACT_APP_COLLECTION_TOKEN || '').toLowerCase();
-const chainId = process.env.REACT_APP_CHAIN_ID ? parseInt(process.env.REACT_APP_CHAIN_ID, 10) : 1;
+const chainIdFallback = 1;
+const chainId = process.env.REACT_APP_CHAIN_ID ? parseInt(process.env.REACT_APP_CHAIN_ID, 10) : chainIdFallback;
+const currencyToken = getCurrencyTokenAddress(chainId);
 
 const initialState: ConfigState = {
   hasFailedCollectionToken: false,

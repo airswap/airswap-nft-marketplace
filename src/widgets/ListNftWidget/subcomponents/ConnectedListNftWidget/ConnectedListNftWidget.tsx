@@ -11,6 +11,7 @@ import { AppErrorType, isAppError } from '../../../../errors/appError';
 import { toMaxAllowedDecimalsNumberString } from '../../../../helpers/input';
 import useApproveNftTransaction from '../../../../hooks/useApproveNftTransaction';
 import useCollectionImage from '../../../../hooks/useCollectionImage';
+import useCollectionName from '../../../../hooks/useCollectionName';
 import useCollectionToken from '../../../../hooks/useCollectionToken';
 import useIndexedOrderResult from '../../../../hooks/useIndexedOrderResult';
 import useInsufficientAmount from '../../../../hooks/useInsufficientAmount';
@@ -65,11 +66,12 @@ const ConnectedListNftWidget: FC<ListNftWidgetProps> = ({
 }) => {
   const dispatch = useAppDispatch();
   const { bannerImage } = useCollectionImage();
+  const collectionName = useCollectionName();
 
   // Store data
   const { error: ordersError } = useAppSelector(state => state.orders);
   const { error: listNftError } = useAppSelector(state => state.listNft);
-  const { isDemoAccount, collectionToken, collectionName } = useAppSelector(state => state.config);
+  const { isDemoAccount, collectionToken } = useAppSelector(state => state.config);
   const { protocolFee, projectFee } = useAppSelector(state => state.metadata);
 
   // User input states

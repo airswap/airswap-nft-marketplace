@@ -3,6 +3,7 @@ import React, { FC } from 'react';
 import { FullOrder } from '@airswap/utils';
 
 import useCollectionImage from '../../hooks/useCollectionImage';
+import useCollectionName from '../../hooks/useCollectionName';
 import useCollectionToken from '../../hooks/useCollectionToken';
 import useFullOrderNonceUsed from '../../hooks/useFullOrderNonceUsed';
 import useWeb3ReactLibrary from '../../hooks/useWeb3ReactLibrary';
@@ -20,8 +21,9 @@ interface BuyNftWidgetProps {
 const BuyNftWidget: FC<BuyNftWidgetProps> = ({ order, className = '' }) => {
   const { library, chainId } = useWeb3ReactLibrary();
   const { bannerImage } = useCollectionImage();
+  const collectionName = useCollectionName();
 
-  const { collectionName, collectionToken, chainId: configChainId } = useAppSelector((state) => state.config);
+  const { collectionToken, chainId: configChainId } = useAppSelector((state) => state.config);
   const { isLoading: isMetadataLoading, currencyTokenInfo } = useAppSelector(state => state.metadata);
   const { isActive, account, connectionType } = useAppSelector(state => state.web3);
 
