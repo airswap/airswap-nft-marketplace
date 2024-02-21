@@ -12,7 +12,7 @@ const useCollectionName = (): string => {
     return '';
   }
 
-  return metadata.collectionName || 'NFT Collection';
+  return metadata.collectionName || 'Unknown';
 };
 
 export default useCollectionName;
