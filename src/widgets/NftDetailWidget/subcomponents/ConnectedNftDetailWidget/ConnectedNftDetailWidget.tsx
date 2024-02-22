@@ -128,8 +128,10 @@ const ConnectedNftDetailWidget: FC<ConnectedNftDetailWidgetProps> = ({
       </div>
 
       <NftDetailPortrait
+        alt={collectionTokenInfo.name || ''}
         id={collectionTokenInfo.id}
-        backgroundImage={collectionTokenInfo.image || bannerImage}
+        image={collectionTokenInfo.image || bannerImage}
+        video=""
         className="nft-detail-widget__portrait"
       />
 

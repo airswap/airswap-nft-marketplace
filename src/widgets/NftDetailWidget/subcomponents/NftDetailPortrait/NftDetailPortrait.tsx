@@ -1,34 +1,37 @@
-import React, { CSSProperties, FC } from 'react';
+import React, { FC } from 'react';
 
 import LoadingSpinner from '../../../../components/LoadingSpinner/LoadingSpinner';
+import NftMedia from '../../../../components/NftMedia/NftMedia';
 
 import './NftDetailPortrait.scss';
 
 interface CollectionPortraitProps {
-  backgroundImage: string;
+  alt: string;
+  image?: string;
   id: string;
+  video?: string;
   className?: string;
 }
 
 const NftDetailPortrait: FC<CollectionPortraitProps> = ({
-  backgroundImage,
+  alt,
   id,
+  image,
+  video,
   className = '',
-}) => {
-  const cssProperties: CSSProperties = {
-    viewTransitionName: `nft-image-${id}`,
-    backgroundImage: `url("${backgroundImage}")`,
-  };
+}) => (
+  <div className={`nft-detail-portrait ${className}`}>
+    <LoadingSpinner className="nft-detail-portrait__loading-spinner" />
 
-  return (
-    <div className={`nft-detail-portrait ${className}`}>
-      <LoadingSpinner className="nft-detail-portrait__loading-spinner" />
-      <div
-        style={cssProperties}
-        className="nft-detail-portrait__image"
-      />
-    </div>
-  );
-};
+    <NftMedia
+      controls
+      alt={alt}
+      id={id}
+      image={image}
+      video={video}
+      className="nft-detail-portrait__media"
+    />
+  </div>
+);
 
 export default NftDetailPortrait;

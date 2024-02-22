@@ -2,8 +2,8 @@ import React, { FC, ReactElement, useMemo } from 'react';
 
 import { CollectionTokenInfo, TokenInfo } from '@airswap/utils';
 
-import NftCard from '../../../../components/NftCard/NftCard';
 import NftCardSkeleton from '../../../../components/NftCardSkeleton/NftCardSkeleton';
+import NftCard from '../../../../compositions/NftCard/NftCard';
 import { ExtendedFullOrder } from '../../../../entities/FullOrder/FullOrder';
 import {
   getFullOrderExpiryDate,
