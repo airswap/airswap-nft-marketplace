@@ -1,3 +1,4 @@
+import { WETH } from '@airswap/libraries';
 import { TokenKinds } from '@airswap/utils';
 import erc20AbiContract from '@openzeppelin/contracts/build/contracts/ERC20.json';
 import erc721AbiContract from '@openzeppelin/contracts/build/contracts/ERC721.json';
@@ -7,6 +8,22 @@ import { getEnumKeyByEnumValue } from '../../../helpers/enum';
 
 export const getTokenKindLocalStorageKey = (address: string): string => `airswap-marketplace/token-kind/${address}`;
 export const getSwapContractAddressLocalStorageKey = (chainId: number): string => `airswap-marketplace/swap-contract-address/${chainId}`;
+
+export const getCurrencyTokenAddress = (chainId: number): string => {
+  if (process.env.REACT_APP_CURRENCY_TOKEN) {
+    return process.env.REACT_APP_CURRENCY_TOKEN.toLowerCase();
+  }
+
+  const wethAddress = WETH.getAddress(chainId);
+
+  if (wethAddress) {
+    return wethAddress;
+  }
+
+  console.error('No WETH address found for currency token fallback');
+
+  return '';
+};
 
 export const getTokenKindFromLocalStorage = (value: string | null): TokenKinds | undefined => {
   if (!value) {

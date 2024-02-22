@@ -4,7 +4,7 @@ import { createSlice, PayloadAction } from '@reduxjs/toolkit';
 import { EnsAddressesMap } from '../../../entities/Address/Address';
 import { CollectionTokenInfoMap } from '../../../entities/CollectionToken/CollectionToken';
 import { fetchProtocolFee } from './metadataActions';
-import { getCollectionImageBanner, getCurrencyTokenInfo } from './metadataApi';
+import { getCollectionContractMetadata, getCurrencyTokenInfo } from './metadataApi';
 import {
   getCollectionTokensLocalStorageKey,
   getLocalStorageCollectionImage,
@@ -15,6 +15,7 @@ export interface MetadataState {
   isLoading: boolean;
   bannerImage?: string | null;
   currencyTokenInfo?: TokenInfo;
+  collectionName?: string | null;
   collectionTokens: CollectionTokenInfoMap;
   ensAddresses: EnsAddressesMap
   projectFee: number;
@@ -80,12 +81,17 @@ const metadataSlice = createSlice({
       protocolFee: action.payload,
     }));
 
-    builder.addCase(getCollectionImageBanner.fulfilled, (state, action): MetadataState => {
-      setLocalStorageCollectionImageBanner(action.payload);
+    builder.addCase(getCollectionContractMetadata.fulfilled, (state, action): MetadataState => {
+      const { openSeaMetadata, name } = action.payload;
+      const { imageBannerUrl, collectionName } = openSeaMetadata;
+      const bannerImage = openSeaMetadata?.imageBannerUrl || null;
+
+      setLocalStorageCollectionImageBanner(bannerImage);
 
       return {
         ...state,
-        bannerImage: action.payload,
+        bannerImage: imageBannerUrl || null,
+        collectionName: collectionName || name || null,
       };
     });
   },

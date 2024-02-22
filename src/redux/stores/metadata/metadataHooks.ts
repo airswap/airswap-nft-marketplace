@@ -3,7 +3,7 @@ import { useEffect } from 'react';
 import useDefaultLibrary from '../../../hooks/useDefaultProvider';
 import { useAppDispatch, useAppSelector } from '../../hooks';
 import { fetchProtocolFee } from './metadataActions';
-import { getCollectionImageBanner, getCurrencyTokenInfo } from './metadataApi';
+import { getCollectionContractMetadata, getCurrencyTokenInfo } from './metadataApi';
 import { setCollectionTokens } from './metadataSlice';
 import { getLocalStorageCollectionTokens } from './metdataHelpers';
 
@@ -14,6 +14,7 @@ export const useMetadata = (): void => {
   const {
     isLoading,
     bannerImage,
+    collectionName,
     currencyTokenInfo,
     protocolFee,
   } = useAppSelector(state => state.metadata);
@@ -43,8 +44,8 @@ export const useMetadata = (): void => {
       }));
     }
 
-    if (bannerImage === undefined) {
-      dispatch(getCollectionImageBanner(collectionToken));
+    if (bannerImage === undefined || collectionName === undefined) {
+      dispatch(getCollectionContractMetadata(collectionToken));
     }
   }, [library]);
 };

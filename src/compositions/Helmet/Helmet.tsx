@@ -2,14 +2,14 @@ import { FC, ReactElement } from 'react';
 
 import { Helmet as ReactHelmet } from 'react-helmet';
 
-import { useAppSelector } from '../../redux/hooks';
+import useCollectionName from '../../hooks/useCollectionName';
 
 interface HelmetProps {
   title?: string;
 }
 
 const Helmet: FC<HelmetProps> = ({ title }): ReactElement => {
-  const { collectionName } = useAppSelector((state) => state.config);
+  const collectionName = useCollectionName();
 
   return (
     <ReactHelmet>

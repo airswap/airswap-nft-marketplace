@@ -13,6 +13,7 @@ import { INDEXER_ORDERS_OFFSET } from '../../../../constants/indexer';
 import OrdersContainer from '../../../../containers/OrdersContainer/OrdersContainer';
 import { filterCollectionTokenBySearchValue } from '../../../../entities/CollectionToken/CollectionTokenHelpers';
 import useCollectionImage from '../../../../hooks/useCollectionImage';
+import useCollectionName from '../../../../hooks/useCollectionName';
 import useCollectionTokens from '../../../../hooks/useCollectionTokens';
 import { useGetOrders } from '../../../../hooks/useGetOrders';
 import useScrollToBottom from '../../../../hooks/useScrollToBottom';
@@ -35,7 +36,7 @@ const ConnectedCollectionWidget: FC<ConnectedCollectionWidgetProps> = ({ currenc
   const { bannerImage } = useCollectionImage();
   useFilters();
 
-  const { collectionToken, collectionName } = useAppSelector((state) => state.config);
+  const { collectionToken } = useAppSelector((state) => state.config);
   const { activeTags } = useAppSelector((state) => state.filters);
   const { tokenIdsWithBalance } = useAppSelector((state) => state.balances);
   const {
@@ -46,6 +47,7 @@ const ConnectedCollectionWidget: FC<ConnectedCollectionWidgetProps> = ({ currenc
     orders,
   } = useAppSelector((state) => state.collection);
 
+  const collectionName = useCollectionName();
   const [searchValue, setSearchValue] = useState<string>('');
 
   const getOrders = (newOffset: number) => {
