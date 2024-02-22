@@ -12,12 +12,14 @@ import { transformCollectionTokenAttributeToString } from '../../../entities/Col
 import { transformOrderFilterToAirswapOrderFilter } from '../../../entities/OrderFilter/OrderFilerTransformers';
 import { OrderFilter } from '../../../entities/OrderFilter/OrderFilter';
 import { getUndefinedAfterTimeout, isPromiseFulfilledResult } from '../../../helpers/indexers';
+import { getCurrencyTokenAddress } from '../config/configHelpers';
 
 export const getOrdersFromServer = async (server: Server, filter: OrderFilter): Promise<OrderResponse<FullOrder> | undefined> => {
+  const chainId = +(process.env.REACT_APP_CHAIN_ID || '1');
   const defaultFilter: Partial<OrderFilter> = {
-    chainId: +(process.env.REACT_APP_CHAIN_ID || '1'),
+    chainId,
     signerToken: process.env.REACT_APP_COLLECTION_TOKEN,
-    senderToken: process.env.REACT_APP_CURRENCY_TOKEN,
+    senderToken: getCurrencyTokenAddress(chainId),
   };
 
   const filterWithDefaults: OrderFilter = {

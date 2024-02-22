@@ -83,14 +83,14 @@ const metadataSlice = createSlice({
 
     builder.addCase(getCollectionContractMetadata.fulfilled, (state, action): MetadataState => {
       const { openSeaMetadata, name } = action.payload;
-      const { imageBannerUrl, collectionName } = openSeaMetadata;
-      const bannerImage = openSeaMetadata?.imageBannerUrl || null;
+      const { imageBannerUrl, imageUrl, collectionName } = openSeaMetadata;
+      const bannerImage = imageBannerUrl || imageUrl || null;
 
       setLocalStorageCollectionImageBanner(bannerImage);
 
       return {
         ...state,
-        bannerImage: imageBannerUrl || null,
+        bannerImage,
         collectionName: collectionName || name || null,
       };
     });
