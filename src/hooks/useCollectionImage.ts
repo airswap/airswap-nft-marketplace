@@ -4,7 +4,7 @@ const useCollectionImage = (): { bannerImage: string; } => {
   const { bannerImage } = useAppSelector(state => state.metadata);
   const { collectionImage } = useAppSelector(state => state.config);
   const isLoading = bannerImage === undefined;
-  const fallbackImage = '/collection/market-night-scene.png';
+  const fallbackImage = '/collection/airswap-default-marketplace-cover.jpg';
 
   if (collectionImage) {
     return {
