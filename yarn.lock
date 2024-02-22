@@ -28,10 +28,10 @@
   dependencies:
     get-parameter-names "^0.3.0"
 
-"@airswap/libraries@4.2.8":
-  version "4.2.8"
-  resolved "https://registry.yarnpkg.com/@airswap/libraries/-/libraries-4.2.8.tgz#d5017949cf35776d8f8995235e7d7e6a7b94c59a"
-  integrity sha512-jPfXmAd5cU1L8S3RpZSi9HNQ7C7j08DMsZr9Qkt5ZfMTi4opigkvF4orAscTfd3xm/q2g5zhNc6kdQbF5vIeWQ==
+"@airswap/libraries@4.2.12":
+  version "4.2.12"
+  resolved "https://registry.yarnpkg.com/@airswap/libraries/-/libraries-4.2.12.tgz#46a4b9468269fc0a08812e098fdf66e3b8dbe018"
+  integrity sha512-AjEvDhH3m3E+CqlW8+Hx9Ft31CAhHeN4lZOpjr1xFALkeXuUk3Xk3CwQbpe1+a8bOrxezHPgOS/pXIIGyY3yNQ==
   dependencies:
     "@airswap/batch-call" "4.2.1"
     "@airswap/jsonrpc-client-websocket" "0.0.1"
@@ -40,10 +40,10 @@
     "@airswap/staking" "4.2.1"
     "@airswap/swap" "4.2.1"
     "@airswap/swap-erc20" "4.2.1"
-    "@airswap/utils" "4.2.6"
+    "@airswap/utils" "4.2.9"
     "@airswap/wrapper" "4.2.1"
     browser-or-node "^2.1.1"
-    ethers "^5.6.9"
+    ethers "^5.7.2"
     jayson "^4.0.0"
     tiny-typed-emitter "^2.1.0"
     websocket "^1.0.34"
@@ -83,17 +83,17 @@
   dependencies:
     "@openzeppelin/contracts" "^4.8.3"
 
-"@airswap/utils@4.2.6":
-  version "4.2.6"
-  resolved "https://registry.yarnpkg.com/@airswap/utils/-/utils-4.2.6.tgz#9c448b704cd96658b46902f77bdb20377f03f08f"
-  integrity sha512-IdN8sFAcf2NmiGx6L7nBMA3jdpBIIskGGcxx75Yt1wthEcyhDijMRRJRttD9aaGPPU6MDdXOXoeEBF/ApeYM8g==
+"@airswap/utils@4.2.9":
+  version "4.2.9"
+  resolved "https://registry.yarnpkg.com/@airswap/utils/-/utils-4.2.9.tgz#27f2a17ed95f2eecd03231bf9f052e934ae0fcb5"
+  integrity sha512-KqA/MupbsgMvj7u/uNlxhtbeABVqhQ170BBo/sbE/plGfrq/iGk0h4dkQmleU/hAvhpGq+h+SnYE+7DF3yo2cg==
   dependencies:
     "@metamask/eth-sig-util" "^5.0.2"
     "@openzeppelin/contracts" "^4.8.3"
     "@uniswap/token-lists" "^1.0.0-beta.24"
     bignumber.js "^9.0.1"
     ethereumjs-util "^7.1.5"
-    ethers "^5.6.9"
+    ethers "^5.7.2"
     lz-string "^1.5.0"
     valid-url "^1.0.9"
 
@@ -7079,7 +7079,7 @@ ethereumjs-util@^7.1.5:
     ethereum-cryptography "^0.1.3"
     rlp "^2.2.4"
 
-ethers@^5.6.9, ethers@^5.7.2:
+ethers@^5.7.2:
   version "5.7.2"
   resolved "https://registry.yarnpkg.com/ethers/-/ethers-5.7.2.tgz#3a7deeabbb8c030d4126b24f84e525466145872e"
   integrity sha512-wswUsmWo1aOK8rR7DIKiWSw9DbLWe6x98Jrn8wcTflTVvaXhAMaB5zGAXy0GYQEQp9iO1iSHWVyARQm11zUtyg==
@@ -12340,10 +12340,10 @@ react-universal-interface@^0.6.2:
   resolved "https://registry.yarnpkg.com/react-universal-interface/-/react-universal-interface-0.6.2.tgz#5e8d438a01729a4dbbcbeeceb0b86be146fe2b3b"
   integrity sha512-dg8yXdcQmvgR13RIlZbTRQOoUrDciFVoSBZILwjE2LFISxZZ8loVJKAkuzswl5js8BHda79bIb2b84ehU8IjXw==
 
-react-use@^17.4.0:
-  version "17.4.2"
-  resolved "https://registry.yarnpkg.com/react-use/-/react-use-17.4.2.tgz#26d43c774ccb733a17a87be62e12fbcbc5654173"
-  integrity sha512-1jPtmWLD8OJJNYCdYLJEH/HM+bPDfJuyGwCYeJFgPmWY8ttwpgZnW5QnzgM55CYUByUiTjHxsGOnEpLl6yQaoQ==
+react-use@^17.5.0:
+  version "17.5.0"
+  resolved "https://registry.yarnpkg.com/react-use/-/react-use-17.5.0.tgz#1fae45638828a338291efa0f0c61862db7ee6442"
+  integrity sha512-PbfwSPMwp/hoL847rLnm/qkjg3sTRCvn6YhUZiHaUa3FA6/aNoFX79ul5Xt70O1rK+9GxSVqkY0eTwMdsR/bWg==
   dependencies:
     "@types/js-cookie" "^2.2.6"
     "@xobotyi/scrollbar-width" "^1.9.5"

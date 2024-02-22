@@ -32,14 +32,14 @@ export const getLocalStorageCollectionTokens = (collectionAddress: string): { [i
 type LocalStorageCollectionImage = { value: string | null };
 
 export const setLocalStorageCollectionImageBanner = (image: string | null): void => {
-  const collectionToken = process.env.REACT_APP_COLLECTION_TOKEN_ADDRESS as string;
+  const collectionToken = process.env.REACT_APP_COLLECTION_TOKEN as string;
   const value: LocalStorageCollectionImage = { value: image };
 
   localStorage.setItem(getCollectionImageBannerLocalStorageKey(collectionToken), JSON.stringify(value));
 };
 
 export const getLocalStorageCollectionImage = (): string | null | undefined => {
-  const collectionToken = process.env.REACT_APP_COLLECTION_TOKEN_ADDRESS as string;
+  const collectionToken = process.env.REACT_APP_COLLECTION_TOKEN as string;
   const item = localStorage.getItem(getCollectionImageBannerLocalStorageKey(collectionToken));
 
   if (!item) {
