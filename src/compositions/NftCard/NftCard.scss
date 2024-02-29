@@ -1,4 +1,4 @@
-@import "src/styles/index";
+@import "../../styles/index";
 
 .nft-card {
     @extend %nft-card;
@@ -12,10 +12,8 @@
         @extend %nft-card--is-highlighted;
     }
 
-    &__img {
+    &__media {
         width: 100%;
-        aspect-ratio: 1;
-        object-fit: contain;
     }
 
     &__header {

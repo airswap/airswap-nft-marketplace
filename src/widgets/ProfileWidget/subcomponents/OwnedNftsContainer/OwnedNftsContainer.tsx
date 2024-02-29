@@ -4,7 +4,7 @@ import { CollectionTokenInfo, TokenInfo } from '@airswap/utils';
 
 import Icon from '../../../../components/Icon/Icon';
 import LoadingSpinner from '../../../../components/LoadingSpinner/LoadingSpinner';
-import NftCard from '../../../../components/NftCard/NftCard';
+import NftCard from '../../../../compositions/NftCard/NftCard';
 import { ExtendedFullOrder } from '../../../../entities/FullOrder/FullOrder';
 import { getFullOrderReadableSenderAmountPlusTotalFees } from '../../../../entities/FullOrder/FullOrderHelpers';
 import { TokenIdsWithBalance } from '../../../../entities/TokenIdsWithBalance/TokenIdsWithBalance';

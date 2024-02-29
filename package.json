@@ -10,8 +10,8 @@
     "eject": "react-scripts eject"
   },
   "dependencies": {
-    "@airswap/libraries": "4.2.12",
-    "@airswap/utils": "4.2.9",
+    "@airswap/libraries": "4.2.13",
+    "@airswap/utils": "4.2.10",
     "@coinbase/wallet-sdk": "^3.7.2",
     "@ethersproject/abi": "^5.7.0",
     "@ethersproject/providers": "^5.7.2",
