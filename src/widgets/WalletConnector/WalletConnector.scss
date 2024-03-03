@@ -32,7 +32,8 @@
             border: 1px solid var(--c-dark-border);
             border-radius: .5rem;
             width: 18rem;
-            height: 19rem;
+            height: fit-content;
+            min-height: 19rem;
             padding: 1rem;
             background-color: var(--c-dark);
         }

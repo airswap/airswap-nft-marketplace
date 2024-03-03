@@ -1,5 +1,5 @@
 import { ConnectionType } from './connections';
-import { getHasMetaMaskExtensionInstalled } from './helpers';
+import { getHasMetaMaskExtensionInstalled, getHasRabbyExtensionInstalled } from './helpers';
 
 export type WalletProvider = {
   name: string;
@@ -10,15 +10,29 @@ export type WalletProvider = {
 };
 
 const walletConnectProjectId = process.env.REACT_APP_WALLET_CONNECT_PROJECT_ID;
+const isMetamaskInstalled = getHasMetaMaskExtensionInstalled();
+const isRabbyInstalled = getHasRabbyExtensionInstalled();
+
+const metamask: WalletProvider = {
+  name: 'MetaMask',
+  logo: 'logos/metamask.svg',
+  isInstalled: isMetamaskInstalled,
+  url: 'https://metamask.io/',
+  type: ConnectionType.injected,
+};
+
+const rabby: WalletProvider = {
+  name: 'Rabby',
+  logo: 'logos/rabby.svg',
+  isInstalled: isRabbyInstalled,
+  url: 'https://rabby.io/',
+  type: ConnectionType.injected,
+};
 
 const walletProviders: WalletProvider[] = [
-  {
-    name: 'MetaMask',
-    logo: 'logos/metamask.svg',
-    isInstalled: getHasMetaMaskExtensionInstalled(),
-    url: 'https://metamask.io/',
-    type: ConnectionType.injected,
-  },
+  ...(!isMetamaskInstalled && !isRabbyInstalled) ? [metamask, rabby] : [],
+  ...(isMetamaskInstalled && isRabbyInstalled) ? [rabby] : [],
+  ...(isMetamaskInstalled && !isRabbyInstalled) ? [metamask] : [],
   ...(walletConnectProjectId ? [
     {
       name: 'WalletConnect',
