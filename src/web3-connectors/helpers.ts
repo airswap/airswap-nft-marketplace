@@ -8,6 +8,8 @@ const getIsBraveWallet = (): boolean => window.ethereum?.isBraveWallet ?? false;
 
 export const getHasMetaMaskExtensionInstalled = (): boolean => (window.ethereum?.isMetaMask ?? false) && !getIsBraveWallet();
 
+export const getHasRabbyExtensionInstalled = (): boolean => !!window.ethereum?.isRabby;
+
 export const onConnectionError = (error: Error) => {
   console.error(`web3-react error: ${error}`);
 };
