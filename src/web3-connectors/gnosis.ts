@@ -1,4 +1,3 @@
-// eslint-disable-next-line import/no-extraneous-dependencies
 import { initializeConnector } from '@web3-react/core';
 import { GnosisSafe } from '@web3-react/gnosis-safe';
 

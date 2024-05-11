@@ -83,13 +83,11 @@ const WalletConnector: FC<WalletConnectorProps> = ({ onCloseButtonClick, classNa
 
   useEffect(() => {
     const gnosisSafe = buildGnosisSafeConnector();
-    console.log(gnosisSafe);
 
     try {
-      // eslint-disable-next-line no-unused-expressions
-      gnosisSafe.connector.connectEagerly && gnosisSafe.connector.connectEagerly();
+      activateWalletEagerly(gnosisSafe.connector, gnosisSafe.type);
     } catch (e) {
-      console.log(e);
+      console.error(e);
     }
   }, []);
 
