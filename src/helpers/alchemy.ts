@@ -6,6 +6,7 @@ import { SupportedChain } from '../constants/supportedChains';
 const chainIdAlchemyChainRecord: Record<SupportedChain, Network> = {
   [ChainIds.MAINNET]: Network.ETH_MAINNET,
   [ChainIds.POLYGON]: Network.MATIC_MAINNET,
+  [ChainIds.BASE]: Network.BASE_MAINNET,
   [ChainIds.MUMBAI]: Network.MATIC_MUMBAI,
   [ChainIds.SEPOLIA]: Network.ETH_SEPOLIA,
 };
