@@ -23,22 +23,28 @@ export const chainInfo: Record<SupportedChain, ChainInfo> = {
     nativeCurrency: nativeCurrency[ChainIds.MAINNET],
     rpcUrl: rpcUrls[ChainIds.MAINNET] as string,
   },
-  [ChainIds.SEPOLIA]: {
-    explorer: 'https://sepolia.etherscan.io/',
-    label: 'Sepolia',
-    nativeCurrency: nativeCurrency[ChainIds.SEPOLIA],
-    rpcUrl: rpcUrls[ChainIds.SEPOLIA] as string,
-  },
   [ChainIds.POLYGON]: {
     explorer: 'https://polygonscan.com/',
     label: 'Polygon',
     nativeCurrency: nativeCurrency[ChainIds.POLYGON],
     rpcUrl: rpcUrls[ChainIds.POLYGON] as string,
   },
+  [ChainIds.BASE]: {
+    explorer: 'https://basescan.org/',
+    label: 'Base',
+    nativeCurrency: nativeCurrency[ChainIds.BASE],
+    rpcUrl: rpcUrls[ChainIds.BASE] as string,
+  },
   [ChainIds.MUMBAI]: {
     explorer: 'https://mumbai.polygonscan.com/',
     label: 'Mumbai',
     nativeCurrency: nativeCurrency[ChainIds.MUMBAI],
     rpcUrl: rpcUrls[ChainIds.MUMBAI] as string,
+  },
+  [ChainIds.SEPOLIA]: {
+    explorer: 'https://sepolia.etherscan.io/',
+    label: 'Sepolia',
+    nativeCurrency: nativeCurrency[ChainIds.SEPOLIA],
+    rpcUrl: rpcUrls[ChainIds.SEPOLIA] as string,
   },
 };
