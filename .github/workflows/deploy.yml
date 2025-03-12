@@ -11,7 +11,7 @@ jobs:
       - name: Version
         uses: actions/setup-node@v3
         with:
-          node-version: '18.16.0'
+          node-version: "18.16.0"
       - name: Checkout 🛎️
         uses: actions/checkout@v2.3.1
       - name: Install and Build 🔧
@@ -27,25 +27,10 @@ jobs:
         run: |
           yarn
           yarn build
-
+          zip -r build.zip build/
+          cp build.zip build/
       - name: Pages Deploy
         uses: JamesIves/github-pages-deploy-action@4.1.4
         with:
           branch: gh-pages
           folder: build
-
-      - name: IPFS (Infura)
-        uses: aquiladev/ipfs-action@master
-        with:
-          path: ./build
-          service: infura
-          infuraProjectId: ${{ secrets.INFURA_PROJECT_ID }}
-          infuraProjectSecret: ${{ secrets.INFURA_PROJECT_SECRET }}
-
-      - name: IPFS (Pinata)
-        uses: aquiladev/ipfs-action@master
-        with:
-          path: ./build
-          service: pinata
-          pinataKey: ${{ secrets.PINATA_KEY }}
-          pinataSecret: ${{ secrets.PINATA_SECRET }}
